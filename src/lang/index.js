@@ -15,7 +15,7 @@ const resources = {
     fr: { translation: fr},
 }
 
-const lng = 'jp';
+const lng = 'vi';
 
 i18n.use(initReactI18next)
     .init({

@@ -5,7 +5,7 @@ Assets.loadAssetsGroup('icons', {
     camera: require('assets/icon/camera.png'),
     add: require('assets/icon/add.png'),
     back: require('assets/icon/back.png'),
-    bell: require('assets/icon/bell.png'),
+    notification: require('assets/icon/bell.png'),
     cancel: require('assets/icon/cancel.png'),
     comment: require('assets/icon/comment.png'),
     diaphragm: require('assets/icon/diaphragm.png'),
@@ -25,5 +25,6 @@ Assets.loadAssetsGroup('icons', {
     google: require('assets/icon/google.png'),
     send: require('assets/icon/send.png'),
     plus_only: require('assets/icon/plus_only.png'),
-    line: require('assets/icon/line.png')
+    line: require('assets/icon/line.png'),
+    settings: require('assets/icon/settings.png'),
 })

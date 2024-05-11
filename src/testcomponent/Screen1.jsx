@@ -1,23 +1,50 @@
-import Modals from 'components/Modals'
+import IconCustom from 'components/IconCustom';
 import Wapper from 'components/Wapper'
-import React, { useState } from 'react'
-import { ScrollView, StatusBar, StyleSheet } from 'react-native'
-import { Text, View } from 'react-native-ui-lib'
+import { t } from 'lang';
+import React from 'react'
+import { StyleSheet } from 'react-native';
+import { Avatar, Image, Text, View } from 'react-native-ui-lib';
 const Screen1 = () => {
-  const [show, setshow] = useState(true)
   return (
-    <Wapper>
-      <Text onPress={() => setshow(true)}>aaaaaaaaaaaaaaaaaa</Text>
-      <Modals modalVisible={show} modalhiden={setshow}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-        </ScrollView>
-      </Modals>
-      </Wapper>
+    <Wapper
+      gadient
+      // renderleft
+      customleft={() => (
+        <View marginT-xx>
+          <Text appname style={{ fontFamily: 'Anton-Regular' }}>Yumyarn</Text>
+        </View>
+      )}
+      // renderright
+      customright={() => (
+        <View flex row right marginT-xx centerV>
+          <IconCustom name={'search'} />
+          <View marginH-xx>
+            <IconCustom name={'notification'} />
+          </View>
+          <Avatar source={require('assets/icon/diaphragm.png')} size={30} />
+        </View>
+      )}
+
+
+    // title={t('create_post.title')}
+
+    // header
+    // customheader={() => (
+    //   <View flex paddingT-xx bg-red>
+    //   </View>
+    // )}
+    >
+      <View flex >
+        <Text>aaaaaaaaaaaaaaaaaaaaaaa</Text>
+        <Text>aaaaaaaaaaaaaaaaaaaaaaa</Text>
+        <Text>aaaaaaaaaaaaaaaaaaaaaaa</Text>
+      </View>
+    </Wapper>
   )
 }
 
 export default Screen1
 
 const styles = StyleSheet.create({
-  
+
 })

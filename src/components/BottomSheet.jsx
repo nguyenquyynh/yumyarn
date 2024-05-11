@@ -3,9 +3,9 @@ import { Modal, Pressable, StyleSheet } from 'react-native'
 import React, { Children } from 'react'
 
 const Modals = ({
-  modalVisible = true,
-  modalhiden,
-  children
+  modalVisible = true, // show bottomsheet
+  modalhiden, // function dissmis bottomsheet
+  children // render your component
 }) => {
   return (
     <View flex absF>{modalVisible &&
