@@ -7,32 +7,34 @@ import { Avatar, Image, Text, View } from 'react-native-ui-lib';
 const Screen1 = () => {
   return (
     <Wapper
-      gadient
-      // renderleft
-      customleft={() => (
-        <View marginT-xx>
-          <Text appname style={{ fontFamily: 'Anton-Regular' }}>Yumyarn</Text>
-        </View>
-      )}
-      // renderright
-      customright={() => (
-        <View flex row right marginT-xx centerV>
-          <IconCustom name={'search'} />
-          <View marginH-xx>
-            <IconCustom name={'notification'} />
-          </View>
-          <Avatar source={require('assets/icon/diaphragm.png')} size={30} />
-        </View>
-      )}
+      // gadient //màu gadient
+      // //custom từng bên
+      // customleft={() => (
+      //   <View marginT-xx>
+      //     <Text appname style={{ fontFamily: 'Anton-Regular' }}>Yumyarn</Text>
+      //   </View>
+      // )}
+      // customright={() => (
+      //   <View flex row right marginT-xx centerV>
+      //     <IconCustom name={'search'} />
+      //     <View marginH-xx>
+      //       <IconCustom name={'notification'} />
+      //     </View>
+      //     <Avatar source={require('assets/icon/diaphragm.png')} size={30} />
+      //   </View>
+      // )}
 
-
+      //hiển thị mặc định
+    //   renderright
+    //   renderleft
     // title={t('create_post.title')}
 
-    // header
-    // customheader={() => (
-    //   <View flex paddingT-xx bg-red>
-    //   </View>
-    // )}
+    //custom header theo ý muốn
+    header
+    customheader={() => (
+      <View flex paddingT-xx bg-red>
+      </View>
+    )}
     >
       <View flex >
         <Text>aaaaaaaaaaaaaaaaaaaaaaa</Text>
