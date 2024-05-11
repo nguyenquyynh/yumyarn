@@ -1,0 +1,68 @@
+{
+    "app": {
+        "name_app": "YumYarn",
+        "camera": "Máy ảnh",
+        "library": "Thư viên",
+        "following": "Đang theo dõi",
+        "follow": "Theo dõi",
+        "more": "xem thêm",
+        "search": "Tìm kiếm",
+        "yumyarn_id": "YumYarn ID",
+        "address" : "Địa chỉ",
+        "phone" :"SĐT",
+        "email": "Email",
+        "name": "Tên",
+        "inta": "Instagram",
+        "yout": "Youtube",
+        "x": "X",
+        "add": "Thêm",
+        "video": "Video",
+        "post": "Bài viết",
+        "restaurant": "Nhà hàng",
+        "get_started": "Bắt đầu",
+        "next": "Kế"
+    },
+    "wellcome": {
+        "greeting": "Chào mừng bạn đến với",
+        "diversity": "Đa dạng",
+        "reality": "Thực tế",
+        "help_one": "Giúp bạn chọn những quán ăn ngon và tiện lợi.",
+        "help_two": " Được đánh giá từ những trải nghiệm thực tế."
+    },
+    "login": {
+        "policy": "Tôi đã đọc chính sách bảo mật",
+        "google": "TIẾP TỤC VỚI GOOGLE"
+    },
+    "post": {
+        "edit": "Chỉnh sửa",
+        "report": "Báo cáo"
+    },
+    "notification": {
+        "title": "Thông báo",
+        "like": "đã thích bài viết của bạn",
+        "follow": "đã theo dõi bạn",
+        "system": "Thông báo hệ thống"
+    },
+    "profile" :{
+        "postting": "Bài viết",
+        "followers": "Người theo dõi",
+        "following" : "Đang theo dõi",
+        "edit_profile": "Chỉnh sửa thông tin cá nhân",
+        "about_me": "Giới thiệu về bạn",
+        "social_media": "Mạng xã hội"
+    },
+    "create_post": {
+        "title": "Tạo bài viết",
+        "post": "Đăng",
+        "content_hint": "Viết về thứ gì đó thật ngon...",
+        "hashtag_hint": "Thêm #hashtag để người khác dễ tìm thấy bạn.",
+        "loacation_hint": "Đừng quên thêm vị trí để mọi người dễ tìm thấy."
+    },
+    "add_location": {
+        "title": "Thêm vị trí",
+        "choose": "Chọn"
+    },
+    "loading": {
+        "content": "Ăn gì hôm nay...."
+    }
+}

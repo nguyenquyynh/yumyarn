@@ -1,0 +1,68 @@
+{
+    "app": {
+        "name_app": "YumYarn",
+        "camera": "Camera",
+        "library": "Library",
+        "following": "Following",
+        "follow": "Follow",
+        "more": "more",
+        "search": "Search",
+        "yumyarn_id": "YumYarn ID",
+        "address" : "Address",
+        "phone" :"Phone",
+        "email": "Email",
+        "name": "Name",
+        "inta": "Instagram",
+        "yout": "Youtube",
+        "x": "X",
+        "add": "Add",
+        "video": "Video",
+        "post": "Post",
+        "restaurant": "Restaurant",
+        "get_started": "Get Started",
+        "next": "Next"
+    },
+    "wellcome": {
+        "greeting": "Welcome to",
+        "diversity": "Diversity",
+        "reality": "Reality",
+        "help_one": "Helps you choose delicious and convenient restaurants.",
+        "help_two": "Evaluated from actual experiences."
+    },
+    "login": {
+        "policy": "I have read the Privace Policy",
+        "google": "CONTINUE WITH GOOGLE"
+    },
+    "post": {
+        "edit": "Edit",
+        "report": "Report"
+    },
+    "notification": {
+        "title": "Notificatition",
+        "like": "liked your post",
+        "follow": "followed you",
+        "system": "System notification"
+    },
+    "profile" :{
+        "postting": "Postting",
+        "followers": "Followers",
+        "following" : "Following",
+        "edit_profile": "Edit profile",
+        "about_me": "About me",
+        "social_media": "Social media"
+    },
+    "create_post": {
+        "title": "Create post",
+        "post": "Post",
+        "content_hint": "Let's write about something really delicious...",
+        "hashtag_hint": "Add #hashtag so others can easily find you.",
+        "loacation_hint": "Don't forget to add a location that's easy for people to find"
+    },
+    "add_location": {
+        "title": "Add location",
+        "choose": "Choose"
+    },
+    "loading": {
+        "content": "What will we eat today...."
+    }
+}

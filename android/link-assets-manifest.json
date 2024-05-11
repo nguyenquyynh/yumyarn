@@ -1,0 +1,53 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Anton-Regular.ttf",
+      "sha1": "49243712633711db3b673d0b03536e0180cd7ddb"
+    },
+    {
+      "path": "assets/fonts/BungeeInline-Regular.ttf",
+      "sha1": "1c51c2c14a21488cbe7e9721ff12fb29a06de232"
+    },
+    {
+      "path": "assets/fonts/Inter-Black.ttf",
+      "sha1": "f79fa58ace5f55e338c99bf71e7e0702841df6f2"
+    },
+    {
+      "path": "assets/fonts/Inter-Bold.ttf",
+      "sha1": "47ff07c75746682133b81e7ac0537ce50a4c9916"
+    },
+    {
+      "path": "assets/fonts/Inter-Light.ttf",
+      "sha1": "cbb2506d8da21edbb2dc8cfa26e3b42a97d138f8"
+    },
+    {
+      "path": "assets/fonts/Inter-Medium.ttf",
+      "sha1": "e76f580811e031813e7150131a0724811cdd737a"
+    },
+    {
+      "path": "assets/fonts/Inter-Regular.ttf",
+      "sha1": "cfa780d0b50b2bb7eacb82984f1b18a95aaa40c5"
+    },
+    {
+      "path": "assets/fonts/Signika-Bold.ttf",
+      "sha1": "ef4f5544d79ce1ce9e8846781f33c2fc9aa758ef"
+    },
+    {
+      "path": "assets/fonts/Signika-Light.ttf",
+      "sha1": "45b7d460d42c3243aea0d55ca7e6f25435083cff"
+    },
+    {
+      "path": "assets/fonts/Signika-Medium.ttf",
+      "sha1": "39b4dc82b14b44c6af840c466856b000699aae8d"
+    },
+    {
+      "path": "assets/fonts/Signika-Regular.ttf",
+      "sha1": "8896526035ed999d700234f41d3d1928cfb9e415"
+    },
+    {
+      "path": "assets/fonts/Signika-SemiBold.ttf",
+      "sha1": "0dea78c92b3980ba4597930bce13caa7b8aa21b9"
+    }
+  ]
+}

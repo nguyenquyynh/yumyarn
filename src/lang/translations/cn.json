@@ -1,0 +1,68 @@
+{
+    "app": {
+      "name_app": "YumYarn",
+      "camera": "相机",
+      "library": "图书馆",
+      "following": "关注",
+      "follow": "关注",
+      "more": "查看更多",
+      "search": "搜索",
+      "yumyarn_id": "YumYarn ID",
+      "address": "地址",
+      "phone": "电话号码",
+      "email": "电子邮件",
+      "name": "姓名",
+      "inta": "Instagram",
+      "yout": "Youtube",
+      "x": "X",
+      "add": "添加",
+      "video": "视频",
+      "post": "帖子",
+      "restaurant": "餐厅",
+      "get_started": "开始",
+      "next": "下一步"
+    },
+    "wellcome": {
+      "greeting": "欢迎来到",
+      "diversity": "多样性",
+      "reality": "真实",
+      "help_one": "帮助您选择美味实惠的餐厅。",
+      "help_two": " 基于真实体验进行评价。"
+    },
+    "login": {
+      "policy": "我已经阅读了隐私政策",
+      "google": "使用 Google 账户登录"
+    },
+    "post": {
+      "edit": "编辑",
+      "report": "举报"
+    },
+    "notification": {
+      "title": "通知",
+      "like": "喜欢了您的帖子",
+      "follow": "关注了您",
+      "system": "系统通知"
+    },
+    "profile": {
+      "postting": "帖子",
+      "followers": "粉丝",
+      "following": "关注",
+      "edit_profile": "编辑个人资料",
+      "about_me": "关于我",
+      "social_media": "社交媒体"
+    },
+    "create_post": {
+      "title": "创建帖子",
+      "post": "发布",
+      "content_hint": "写点好吃的吧...",
+      "hashtag_hint": "添加 #标签让别人更容易找到你。",
+      "loacation_hint": "别忘了添加位置，让大家更容易找到。"
+    },
+    "add_location": {
+      "title": "添加位置",
+      "choose": "选择"
+    },
+    "loading": {
+      "content": "今天吃什么...."
+    }
+  }

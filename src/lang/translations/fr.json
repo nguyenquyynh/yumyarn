@@ -1,0 +1,68 @@
+{
+    "app": {
+      "name_app": "YumYarn",
+      "camera": "Appareil photo",
+      "library": "Bibliothèque",
+      "following": "Abonnements",
+      "follow": "Suivre",
+      "more": "Plus",
+      "search": "Rechercher",
+      "yumyarn_id": "Identifiant YumYarn",
+      "address": "Adresse",
+      "phone": "Téléphone",
+      "email": "Email",
+      "name": "Nom",
+      "inta": "Instagram",
+      "yout": "Youtube",
+      "x": "X",
+      "add": "Ajouter",
+      "video": "Vidéo",
+      "post": "Publication",
+      "restaurant": "Restaurant",
+      "get_started": "Commencer",
+      "next": "Suivant"
+    },
+    "wellcome": {
+      "greeting": "Bienvenue sur",
+      "diversity": "Diversité",
+      "reality": "Réalité",
+      "help_one": "Aidez-vous à choisir des restaurants délicieux et pratiques.",
+      "help_two": "Basé sur des expériences réelles."
+    },
+    "login": {
+      "policy": "J'ai lu la politique de confidentialité",
+      "google": "CONTINUER AVEC GOOGLE"
+    },
+    "post": {
+      "edit": "Modifier",
+      "report": "Signaler"
+    },
+    "notification": {
+      "title": "Notifications",
+      "like": "a aimé votre publication",
+      "follow": "vous a suivi",
+      "system": "Notification système"
+    },
+    "profile": {
+      "postting": "Publications",
+      "followers": "Abonnés",
+      "following": "Abonnements",
+      "edit_profile": "Modifier le profil",
+      "about_me": "À propos de moi",
+      "social_media": "Réseaux sociaux"
+    },
+    "create_post": {
+      "title": "Créer une publication",
+      "post": "Publier",
+      "content_hint": "Écrivez sur quelque chose de délicieux...",
+      "hashtag_hint": "Ajoutez des #hashtags pour que les gens vous trouvent plus facilement.",
+      "loacation_hint": "N'oubliez pas d'ajouter un emplacement pour que les gens puissent le trouver."
+    },
+    "add_location": {
+      "title": "Ajouter un emplacement",
+      "choose": "Choisir"
+    },
+    "loading": {
+      "content": "Que manger aujourd'hui..."
+    }
+  }

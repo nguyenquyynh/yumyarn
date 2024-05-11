@@ -14,6 +14,18 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-yumyarn-yumyarnTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-yumyarn-yumyarnTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		14523C0519CE48BC9D28B13D /* Anton-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C94A20CE183D47D1BF5F410F /* Anton-Regular.ttf */; };
+		96A749160A1B403FAD455D43 /* BungeeInline-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EABC8F605A4B4D14BA0E44F7 /* BungeeInline-Regular.ttf */; };
+		1F7F25CE7F794B1983707E3D /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F329AC4151AB4DA2AA040478 /* Inter-Black.ttf */; };
+		B36CA005BAC64FC59225C22D /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7A434BC537B84DE38C9B397A /* Inter-Bold.ttf */; };
+		3AE6BAD8EBFE439B8D49F1DC /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA14F0CD07464180AE85D4C7 /* Inter-Light.ttf */; };
+		453FD4A730934E88BE3EFDA0 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B15B843F2FA04F3DBD622E55 /* Inter-Medium.ttf */; };
+		9D9ADF2B7EB647E5821DFEEE /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60115D5C64AF4644B89584AF /* Inter-Regular.ttf */; };
+		CA573B6A9CF54106A9E319F8 /* Signika-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B70BFB0D7C6F4269B96CD57B /* Signika-Bold.ttf */; };
+		E187D0DB01224C2FB40572CC /* Signika-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E806589E41CF4353832B6462 /* Signika-Light.ttf */; };
+		7668D905DF564CFD89CCEFCB /* Signika-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 369C4CA3C90A4D57BC9232C2 /* Signika-Medium.ttf */; };
+		BEF28C13CE2448B1BB68ADFC /* Signika-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2465578084A34C0A98FD87B2 /* Signika-Regular.ttf */; };
+		71550B21494A4B1880A29367 /* Signika-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6098123006AA478095948939 /* Signika-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +48,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = yumyarn/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = yumyarn/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = yumyarn/main.m; sourceTree = "<group>"; };
-	    13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = yumyarn/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = yumyarn/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-yumyarn-yumyarnTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-yumyarn-yumyarnTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-yumyarn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-yumyarn.debug.xcconfig"; path = "Target Support Files/Pods-yumyarn/Pods-yumyarn.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-yumyarn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-yumyarn.release.xcconfig"; path = "Target Support Files/Pods-yumyarn/Pods-yumyarn.release.xcconfig"; sourceTree = "<group>"; };
@@ -45,6 +57,18 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = yumyarn/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-yumyarn-yumyarnTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-yumyarn-yumyarnTests.release.xcconfig"; path = "Target Support Files/Pods-yumyarn-yumyarnTests/Pods-yumyarn-yumyarnTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		C94A20CE183D47D1BF5F410F /* Anton-Regular.ttf */ = {isa = PBXFileReference; name = "Anton-Regular.ttf"; path = "../assets/fonts/Anton-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EABC8F605A4B4D14BA0E44F7 /* BungeeInline-Regular.ttf */ = {isa = PBXFileReference; name = "BungeeInline-Regular.ttf"; path = "../assets/fonts/BungeeInline-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F329AC4151AB4DA2AA040478 /* Inter-Black.ttf */ = {isa = PBXFileReference; name = "Inter-Black.ttf"; path = "../assets/fonts/Inter-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7A434BC537B84DE38C9B397A /* Inter-Bold.ttf */ = {isa = PBXFileReference; name = "Inter-Bold.ttf"; path = "../assets/fonts/Inter-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CA14F0CD07464180AE85D4C7 /* Inter-Light.ttf */ = {isa = PBXFileReference; name = "Inter-Light.ttf"; path = "../assets/fonts/Inter-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B15B843F2FA04F3DBD622E55 /* Inter-Medium.ttf */ = {isa = PBXFileReference; name = "Inter-Medium.ttf"; path = "../assets/fonts/Inter-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		60115D5C64AF4644B89584AF /* Inter-Regular.ttf */ = {isa = PBXFileReference; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B70BFB0D7C6F4269B96CD57B /* Signika-Bold.ttf */ = {isa = PBXFileReference; name = "Signika-Bold.ttf"; path = "../assets/fonts/Signika-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E806589E41CF4353832B6462 /* Signika-Light.ttf */ = {isa = PBXFileReference; name = "Signika-Light.ttf"; path = "../assets/fonts/Signika-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		369C4CA3C90A4D57BC9232C2 /* Signika-Medium.ttf */ = {isa = PBXFileReference; name = "Signika-Medium.ttf"; path = "../assets/fonts/Signika-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2465578084A34C0A98FD87B2 /* Signika-Regular.ttf */ = {isa = PBXFileReference; name = "Signika-Regular.ttf"; path = "../assets/fonts/Signika-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6098123006AA478095948939 /* Signika-SemiBold.ttf */ = {isa = PBXFileReference; name = "Signika-SemiBold.ttf"; path = "../assets/fonts/Signika-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +148,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				1B0D341BED024C9F9132FE1A /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -149,6 +174,26 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		1B0D341BED024C9F9132FE1A /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				C94A20CE183D47D1BF5F410F /* Anton-Regular.ttf */,
+				EABC8F605A4B4D14BA0E44F7 /* BungeeInline-Regular.ttf */,
+				F329AC4151AB4DA2AA040478 /* Inter-Black.ttf */,
+				7A434BC537B84DE38C9B397A /* Inter-Bold.ttf */,
+				CA14F0CD07464180AE85D4C7 /* Inter-Light.ttf */,
+				B15B843F2FA04F3DBD622E55 /* Inter-Medium.ttf */,
+				60115D5C64AF4644B89584AF /* Inter-Regular.ttf */,
+				B70BFB0D7C6F4269B96CD57B /* Signika-Bold.ttf */,
+				E806589E41CF4353832B6462 /* Signika-Light.ttf */,
+				369C4CA3C90A4D57BC9232C2 /* Signika-Medium.ttf */,
+				2465578084A34C0A98FD87B2 /* Signika-Regular.ttf */,
+				6098123006AA478095948939 /* Signika-SemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -245,6 +290,18 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				14523C0519CE48BC9D28B13D /* Anton-Regular.ttf in Resources */,
+				96A749160A1B403FAD455D43 /* BungeeInline-Regular.ttf in Resources */,
+				1F7F25CE7F794B1983707E3D /* Inter-Black.ttf in Resources */,
+				B36CA005BAC64FC59225C22D /* Inter-Bold.ttf in Resources */,
+				3AE6BAD8EBFE439B8D49F1DC /* Inter-Light.ttf in Resources */,
+				453FD4A730934E88BE3EFDA0 /* Inter-Medium.ttf in Resources */,
+				9D9ADF2B7EB647E5821DFEEE /* Inter-Regular.ttf in Resources */,
+				CA573B6A9CF54106A9E319F8 /* Signika-Bold.ttf in Resources */,
+				E187D0DB01224C2FB40572CC /* Signika-Light.ttf in Resources */,
+				7668D905DF564CFD89CCEFCB /* Signika-Medium.ttf in Resources */,
+				BEF28C13CE2448B1BB68ADFC /* Signika-Regular.ttf in Resources */,
+				71550B21494A4B1880A29367 /* Signika-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
