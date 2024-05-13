@@ -1,12 +1,12 @@
 import { StatusBar, StyleSheet, Text } from 'react-native'
 import React from 'react'
-import Screen1 from 'src/testcomponent/Screen1'
 import { View } from 'react-native-ui-lib'
+import ScreenGGmap from 'src/testcomponent/ScreenGGmap'
 
 const App = () => {
   return (
     <View flex>
-      <Screen1 />
+      <ScreenGGmap/>
     </View>
 
   )
