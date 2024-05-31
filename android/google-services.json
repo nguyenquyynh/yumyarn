@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "254299987381",
+    "project_id": "ggmap-422603",
+    "storage_bucket": "ggmap-422603.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:254299987381:android:f85c8fdc811d541fbecdfc",
+        "android_client_info": {
+          "package_name": "com.yumyarn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "254299987381-irn8m2sog6ltro5oiki7e97hjd6evi93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yumyarn",
+            "certificate_hash": "9cd061fabf4e39bc847176d2de8880c35e505f18"
+          }
+        },
+        {
+          "client_id": "254299987381-28gqrb6m1luci16l176tfpmkbtoue0eq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmvO4G-GDElg4_o5DHCu-95ARlcDFSWiM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "254299987381-28gqrb6m1luci16l176tfpmkbtoue0eq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
