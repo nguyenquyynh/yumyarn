@@ -3,11 +3,14 @@ import React from 'react'
 import { View } from 'react-native-ui-lib'
 import ScreenGGmap from 'src/testcomponent/ScreenGGmap'
 import Signin from 'src/testcomponent/Signin'
+import ImageAndVideoLibary from 'src/testcomponent/SelectImageAndVideoInLibary'
+
 
 const App = () => {
   return (
     <View flex>
-      <Signin/>
+      {/* <Signin/> */}
+      <ImageAndVideoLibary/>
     </View>
 
   )

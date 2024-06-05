@@ -4704,6 +4704,11 @@ react-native-hyperlink@^0.0.22:
     linkify-it "^4.0.1"
     mdurl "^1.0.1"
 
+react-native-image-picker@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-7.1.2.tgz"
+  integrity sha512-b5y5nP60RIPxlAXlptn2QwlIuZWCUDWa/YPUVjgHc0Ih60mRiOg1PSzf0IjHSLeOZShCpirpvSPGnDExIpTRUg==
+
 react-native-indicators@^0.17.0:
   version "0.17.0"
   resolved "https://registry.npmjs.org/react-native-indicators/-/react-native-indicators-0.17.0.tgz"
@@ -4804,6 +4809,11 @@ react-native-ui-lib@^7.21.2:
     tinycolor2 "^1.4.2"
     url-parse "^1.2.0"
     wix-react-native-text-size "~1.0.0"
+
+react-native-video@^6.1.2:
+  version "6.1.2"
+  resolved "https://registry.npmjs.org/react-native-video/-/react-native-video-6.1.2.tgz"
+  integrity sha512-oKk4hLhcWiL+k5CRgqs+/Bvp23QrHFGx3ylawrF4OWjKRekGeHNCf2mSf7+er66ZmktMtJC0ofBTgEPq4rRG6A==
 
 react-native-vision-camera@^4.0.3:
   version "4.0.3"
