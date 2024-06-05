@@ -3,7 +3,7 @@ import React from 'react'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
 const Signin = () => {
   GoogleSignin.configure({
-    webClientId: "254299987381-28gqrb6m1luci16l176tfpmkbtoue0eq.apps.googleusercontent.com",
+    webClientId: process.env.GOOGLE_SIGNINAPI,
   })
   const handleSignin = async () => {
     console.log('google signin........')
