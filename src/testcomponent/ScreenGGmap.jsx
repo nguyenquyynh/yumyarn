@@ -1,10 +1,8 @@
 import { Dimensions, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-
 const ScreenGGmap = ({
-
   defaultlocation = {
     latitude: 10.853970547367098,
     longitude: 106.62585228681564,
@@ -19,7 +17,6 @@ const ScreenGGmap = ({
   const [loaction, setloaction] = useState(innitlocation);
   const [address, setAddress] = useState('address')
   const [name, setName] = useState('name')
-
   useEffect(() => {
     console.log("address", address)
   }, [address])
@@ -31,7 +28,7 @@ const ScreenGGmap = ({
   }, [loaction])
 
   const revversLoacation = async (loaction) => {
-    await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${loaction?.latitude},${loaction?.longitude}&lang=vi-VN&apiKey=FH7DN1Hho-XX-zKmi9BB6-AQnvGA0_hvltrkaiD9TgA`, {
+    await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${loaction?.latitude},${loaction?.longitude}&lang=vi-VN&apiKey=${process.env.MAPAPI_KEY}`, {
       method: 'GET',
     }).then(async (response) => {
       const a = await response.json()
@@ -42,7 +39,7 @@ const ScreenGGmap = ({
     )
       .catch(err => console.log(err));
   }
-  //chọn địa điểm
+  //chọn địa điểm msker trên bản đồ
   const handlePoiLocation = (point) => {
     if (point?.coordinate) {
       const duration = 500
@@ -79,7 +76,6 @@ const ScreenGGmap = ({
     latitude: loaction.latitude,
     longitude: loaction.longitude,
   })
-
   return (
     <View style={[styles.container, StyleSheet.absoluteFillObject]}>
       <MapView
@@ -91,7 +87,7 @@ const ScreenGGmap = ({
           longitudeDelta: 0.005,
         }}
         moveOnMarkerPress
-        showsUserLocation = {true}
+        showsUserLocation={true}
         onPress={loaction => handlePoiLocation(loaction.nativeEvent)}
         onPoiClick={el => handlePoiLocation(el.nativeEvent)}
         showsMyLocationButton
@@ -108,10 +104,11 @@ const ScreenGGmap = ({
           fetchDetails={true}
           placeholder="Search"
           query={{
-            key: "AIzaSyCsyFAGALpQ3JWZgvkxwK0HXn_VoLz_voI",
-            language: "en",
+            key: process.env.GOOGLE_PLACEHOLDERAUTOCOMPLETE,
+            language: "vi",
           }}
           onPress={(data, details = null) => {
+            console.log("data", data)
             setloaction({
               latitude: details?.geometry?.location?.lat,
               longitude: details?.geometry?.location?.lng
