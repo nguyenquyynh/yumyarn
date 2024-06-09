@@ -3,16 +3,15 @@ import React from 'react'
 import { View } from 'react-native-ui-lib'
 import ScreenGGmap from 'src/testcomponent/ScreenGGmap'
 import Signin from 'src/testcomponent/Signin'
-// import Signin from 'src/testcomponent/Signin'
-// import ImageAndVideoLibary from 'src/testcomponent/SelectImageAndVideoInLibary'
+import AddAdrressScreen from 'containers/post/AddAdrressScreen'
 
 
 const App = () => {
   return (
     <View flex>
-      <Signin/>
+      {/* <Signin/> */}
       {/* <ImageAndVideoLibary/> */}
-      {/* <ScreenGGmap/> */}
+      <AddAdrressScreen/>
     </View>
 
   )

@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React from 'react'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
+import { Button, Text } from 'react-native-ui-lib'
 const Signin = () => {
   GoogleSignin.configure({
     webClientId: process.env.GOOGLE_SIGNINAPI,
@@ -21,9 +22,19 @@ const Signin = () => {
     }
   }
 
+  const handleSignout = async () => {
+    console.log('google sign out........')
+    await GoogleSignin.signOut()
+  }
+
   return (
     <View>
-      <Text onPress={handleSignin}>login with gg</Text>
+      <Button onPress={handleSignin}>
+        <Text white xviiiText>Login with google</Text>
+      </Button>
+      <Button onPress={handleSignout}>
+        <Text white xviiiText>Logout</Text>
+      </Button>
     </View>
   )
 }
