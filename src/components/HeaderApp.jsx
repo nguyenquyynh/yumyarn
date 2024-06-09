@@ -3,8 +3,9 @@ import React from 'react'
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'
 import { Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import IconApp from './IconApp';
 
-const Header = ({
+const HeaderApp = ({
     gadient = false,
     renderleft,
     iconleft,
@@ -29,10 +30,9 @@ const Header = ({
             <View flex row centerV padding-xx absF>
                 {renderleft ?
                     <TouchableOpacity flex left paddingT-xx>
-                        <Image
+                        <IconApp
                             assetName={iconleft}
-                            width={sizeiconleft}
-                            height={sizeiconleft} />
+                            size={sizeiconleft}/>
                     </TouchableOpacity> : customleft && customleft?.()}
                 {title &&
                     <View flex absH paddingT-xx center>
@@ -42,17 +42,16 @@ const Header = ({
                     </View>}
                 {renderright ?
                     <TouchableOpacity flex right paddingT-xx>
-                        <Image
+                        <IconApp
                             assetName={iconright}
-                            width={sizeiconright}
-                            height={sizeiconright} />
+                            size={sizeiconright} />
                     </TouchableOpacity> : customright && customright?.()}
             </View>
         </View>
     )
 }
 
-export default Header
+export default HeaderApp
 
 const styles = StyleSheet.create({
     title: {
