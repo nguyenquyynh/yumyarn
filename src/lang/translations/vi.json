@@ -20,7 +20,7 @@
         "post": "Bài viết",
         "restaurant": "Nhà hàng",
         "get_started": "Bắt đầu",
-        "next": "Kế"
+        "next": "Tiếp theo "
     },
     "wellcome": {
         "greeting": "Chào mừng bạn đến với",
@@ -30,7 +30,8 @@
         "help_two": " Được đánh giá từ những trải nghiệm thực tế."
     },
     "login": {
-        "policy": "Tôi đã đọc chính sách bảo mật",
+        "i_read":"Tôi đã đọc",
+        "policy": "Chính sách bảo mật",
         "google": "TIẾP TỤC VỚI GOOGLE"
     },
     "post": {
@@ -64,5 +65,12 @@
     },
     "loading": {
         "content": "Ăn gì hôm nay...."
+    },
+    "setting":{
+        "setting":"Cài đặt",
+        "language":"Ngôn ngữ",
+        "Community_standards":"Tiêu chuẩn cộng đồng",
+        "delete_the_account":"xóa tài khoản",
+        "log_out":"Đăng xuất"
     }
 }
