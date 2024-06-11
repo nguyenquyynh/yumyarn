@@ -161,7 +161,8 @@ const AddAdrressScreen = ({
     //Giao diện nút chọn góc phải
     const renderButtonRight = () => {
         return (
-            <ButtonApp iconleft={"search"}
+            <ButtonApp 
+            iconleft={"search"}
                 iconright={"notifycation"}
                 color={Colors.white}
                 padding={'padding-10'}

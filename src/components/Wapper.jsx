@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native-ui-lib';
-import { StatusBar } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import HeaderApp from './HeaderApp';
 
 const Wapper = ({
@@ -22,7 +22,7 @@ const Wapper = ({
   return (
     <View flex>
        <StatusBar translucent backgroundColor="transparent" />
-      <View flex-2>
+      <View style={styles.header}>
         {!header ?
           <HeaderApp
             gadient={gadient}
@@ -45,3 +45,8 @@ const Wapper = ({
 }
 
 export default Wapper
+const styles = StyleSheet.create({
+  header:{
+    height: 100
+  }
+})
