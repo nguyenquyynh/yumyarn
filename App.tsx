@@ -3,17 +3,21 @@ import React from 'react'
 import { View } from 'react-native-ui-lib'
 import ScreenGGmap from 'src/testcomponent/ScreenGGmap'
 import Signin from 'src/testcomponent/Signin'
-import AddAdrressScreen from 'containers/post/AddAdrressScreen'
+import CameraApp from 'components/CameraApp'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 
 const App = () => {
   return (
-    <View flex>
-      {/* <Signin/> */}
-      {/* <ImageAndVideoLibary/> */}
-      <AddAdrressScreen/>
-    </View>
-
+    <GestureHandlerRootView>
+      <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}/>
+      <View flex> 
+          
+          {/* <Signin/> */}
+          <CameraApp/>
+        </View>
+    </GestureHandlerRootView>
+   
   )
 }
 
