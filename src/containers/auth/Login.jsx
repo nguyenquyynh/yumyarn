@@ -1,7 +1,8 @@
 import { ImageBackground, StyleSheet } from 'react-native'
 import React from 'react'
-import { Text, View, Colors, Image, Button } from 'react-native-ui-lib'
+import { Text, View, Colors, Image, Button, Icon, Checkbox } from 'react-native-ui-lib'
 import { t } from 'lang'
+import IconApp from 'components/IconApp'
 
 const Login = () => {
     return (
@@ -14,15 +15,19 @@ const Login = () => {
                     <Text largeText>Tiếng việt</Text>
                     <Image
                         source={require("../../assets/icon/down_arrow.png")}
-                        style={{ left: 20 }}
+                        style={styles.image}
                     />
                 </View>
                 <Button style={styles.button}>
-                    <Image
-                        source={require("../../assets/icon/gg.png")}
-                    />
+                    <IconApp assetName={"google"} />
                     <Text xviiText>{t("login.google")}</Text>
                 </Button>
+                <View style={styles.viewpolicy} >
+
+                    <Text xviiText>{t("login.i_read")} <Text xviiText color={Colors.white} >{t("login.policy")}</Text></Text>
+
+                    <Checkbox />
+                </View>
             </View>
         </ImageBackground>
 
@@ -36,17 +41,27 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
+    image: {
+        left: 20
+    },
     textCenter: {
         alignSelf: 'center',
-        marginTop: 80
+        marginTop: 80,
+        fontWeight:'bold'
     },
-    button:{
-        width:322,
-        height:55,
-        justifyContent:'space-evenly',
-        backgroundColor:'#FFFFFF',
-        alignSelf:'center',
-        marginTop:43,
-        borderRadius:20
-      },
+    
+    viewpolicy: {
+        padding: 40,
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
+    button: {
+        width: 322,
+        height: 55,
+        justifyContent: 'space-evenly',
+        backgroundColor: '#FFFFFF',
+        alignSelf: 'center',
+        marginTop: 43,
+        borderRadius: 20
+    },
 })

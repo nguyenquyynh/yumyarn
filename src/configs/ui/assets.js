@@ -28,4 +28,10 @@ Assets.loadAssetsGroup('icons', {
     line: require('assets/icon/line.png'),
     settings: require('assets/icon/settings.png'),
     gps: require('assets/icon/gps.png'),
+    languages:require('assets/icon/languages.png'),
+    right_arrow:require('assets/icon/right_arrow.png'),
+    protection:require('assets/icon/protection.png'),
+    notes:require('assets/icon/notes.png'),
+    unhappy:require('assets/icon/unhappy.png'),
+    log_out:require('assets/icon/log_out.png')
 })

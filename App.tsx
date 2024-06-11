@@ -4,6 +4,8 @@ import { View } from 'react-native-ui-lib'
 import ScreenGGmap from 'src/testcomponent/ScreenGGmap'
 import Signin from 'src/testcomponent/Signin'
 import AddAdrressScreen from 'containers/post/AddAdrressScreen'
+import Setting from 'containers/auth/Setting'
+import Login from 'containers/auth/Login'
 
 
 const App = () => {
@@ -11,7 +13,9 @@ const App = () => {
     <View flex>
       {/* <Signin/> */}
       {/* <ImageAndVideoLibary/> */}
-      <AddAdrressScreen/>
+      {/* <AddAdrressScreen/> */}
+      {/* <Setting/> */}
+      <Login/>
     </View>
 
   )

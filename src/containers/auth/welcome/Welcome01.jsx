@@ -73,5 +73,6 @@ const styles = StyleSheet.create({
     },
     textCenter:{
     alignSelf:'center',
+    fontWeight:'bold',
     },
 })
