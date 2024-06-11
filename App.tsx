@@ -6,18 +6,21 @@ import Signin from 'src/testcomponent/Signin'
 import AddAdrressScreen from 'containers/post/AddAdrressScreen'
 import Setting from 'containers/auth/Setting'
 import Login from 'containers/auth/Login'
+import CameraApp from 'components/CameraApp'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 
 const App = () => {
   return (
-    <View flex>
-      {/* <Signin/> */}
-      {/* <ImageAndVideoLibary/> */}
-      {/* <AddAdrressScreen/> */}
-      {/* <Setting/> */}
-      <Login/>
-    </View>
-
+    <GestureHandlerRootView>
+      <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}/>
+      <View flex> 
+          
+          {/* <Signin/> */}
+          <CameraApp/>
+        </View>
+    </GestureHandlerRootView>
+   
   )
 }
 
