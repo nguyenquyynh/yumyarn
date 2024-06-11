@@ -1,12 +1,13 @@
 import { Alert, Dimensions, StyleSheet, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
-import { Colors, Shadows, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Colors, Shadows, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import ButtonApp from 'components/ButtonApp'
 import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 const AddAdrressScreen = ({
     defaultlocation = {
         latitude: 10.853970547367098,
@@ -29,6 +30,7 @@ const AddAdrressScreen = ({
     const [address, setAddress] = useState('address')
     const [search, setSearch] = useState('')
 
+    //Lấy vị trí nguời dùng
     const getGeolocation = () => {
         Geolocation.getCurrentPosition(location => {
             setloaction(new innitLocation(location.coords.latitude, location.coords.longitude, 0.005, 0.005))
@@ -47,11 +49,11 @@ const AddAdrressScreen = ({
                 setAddress(a.items[0]?.address?.label);
             }
         }
-        )
-            .catch(err => console.log(err));
+        ).catch(err => console.log(err));
     }
-    //chọn địa điểm msker trên bản đồ
-    const handlePoiLocation = (point) => {
+    //chọn địa điểm marker trên bản đồ
+    const handlePoiLocation = (el) => {
+        const point = el.nativeEvent
         if (point?.coordinate) {
             const duration = 500
             if (loaction.latitude !== point.coordinate.latitude) {
@@ -124,27 +126,37 @@ const AddAdrressScreen = ({
         await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&input=${keysearch}&inputtype=textquery&key=${process.env.SEARCHAPI_KEY}`)
             .then(async response => {
                 const data = await response.json()
+                console.log(data)
                 if (data.status == 'OK') {
                     Alert.alert(data.candidates[0].formatted_address)
-                    const location = data.candidates[0].geometry.location.latitude
+                    const location = data.candidates[0].geometry.location
                     setloaction({
-                        latitude: location.latitude,
-                        longitude: location.longitude
+                        latitude: location.lat,
+                        longitude: location.lng,
+                        longitudeDelta: loaction.longitudeDelta,
+                        latitudeDelta: loaction.latitudeDelta
                     })
+
+                    setMarker({
+                        latitude: location.lat,
+                        longitude: location.lng,
+                        latitudeDelta: loaction.latitudeDelta,
+                        longitudeDelta: loaction.longitudeDelta
+                    });
                 }
             })
             .catch(async error => {
                 const data = await error.json
-                console.log(data);
+                console.log(data + "eror");
             })
 
     }
     //Tạo đánh dấu địa điểm đã chọn
     var coordinate = new AnimatedRegion({
-        latitude : marker.latitude,
-        longitude : marker.longitude,
-        latitudeDelta : marker.latitudeDelta,
-        longitudeDelta : marker.longitudeDelta
+        latitude: marker.latitude,
+        longitude: marker.longitude,
+        latitudeDelta: marker.latitudeDelta,
+        longitudeDelta: marker.longitudeDelta
     })
     //Giao diện nút chọn góc phải
     const renderButtonRight = () => {
@@ -157,6 +169,22 @@ const AddAdrressScreen = ({
             />
         )
     }
+    //Thay đổi vùng chọn bản đồ
+    const religionZoneChange = (religion) => {
+        if (
+            Math.abs(religion.latitude - loaction.latitude) > 0.0001 ||
+            Math.abs(religion.longitude - loaction.longitude) > 0.0001 ||
+            Math.abs(religion.latitudeDelta - loaction.latitudeDelta) > 0.0001 ||
+            Math.abs(religion.longitudeDelta - loaction.longitudeDelta) > 0.0001
+        ) {
+            setloaction({
+                latitude: religion.latitude,
+                longitude: religion.longitude,
+                latitudeDelta: religion.latitudeDelta,
+                longitudeDelta: religion.longitudeDelta,
+            });
+        }
+    }
     return (
         <Wapper gadient={true} title={t('add_location.title')} renderleft customright={renderButtonRight}>
             <View flex style={StyleSheet.absoluteFillObject}>
@@ -168,20 +196,10 @@ const AddAdrressScreen = ({
                         latitudeDelta: loaction.latitudeDelta,
                         longitudeDelta: loaction.longitudeDelta,
                     }}
-                    onRegionChangeComplete={religion => {
-                        console.log(religion);
-                        setloaction(
-                            {
-                                latitude: religion.latitude,
-                                longitude: religion.longitude,
-                                latitudeDelta: religion.latitudeDelta,
-                                longitudeDelta: religion.longitudeDelta,
-                            }
-                        )
-                    }}
+                    onRegionChangeComplete={religionZoneChange}
                     moveOnMarkerPress
                     showsUserLocation={true}
-                    onPress={loaction => handlePoiLocation(loaction.nativeEvent)}
+                    onPress={handlePoiLocation}
                     provider='google'
                 >
                     <MarkerAnimated
@@ -202,10 +220,28 @@ const AddAdrressScreen = ({
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View flex absB right padding-20>
-                    <TouchableOpacity bg-white padding-10 br20 >
+
+
+                {/* <GooglePlacesAutocomplete
+                    placeholder='Search'
+                    query={{
+                        key: process.env.SEARCHAPI_KEY,
+                        language: 'vi',
+                        components: 'country:vn' 
+                    }}
+                    fetchDetails={true}
+                    onPress={(data, details = null) => console.log(data, details)}
+                    onFail={error => console.log(error)}
+                    onNotFound={() => console.log('no results')}
+                /> */}
+
+                <View flex absB right padding-20 row centerV>
+                    <TouchableOpacity bg-white padding-10 br20 onPress={getGeolocation}>
                         <IconApp size={22} assetName={"gps"} />
                     </TouchableOpacity>
+                    <View flex bg-white marginL-x br20 paddingH-v>
+                        <Text vText >{address}</Text>
+                    </View>
                 </View>
             </View>
         </Wapper>
