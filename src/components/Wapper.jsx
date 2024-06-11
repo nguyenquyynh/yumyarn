@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native-ui-lib';
 import { StatusBar } from 'react-native';
-import Header from './Header';
+import HeaderApp from './HeaderApp';
 
 const Wapper = ({
   header = false, // call if you want to custom header
@@ -24,7 +24,7 @@ const Wapper = ({
        <StatusBar translucent backgroundColor="transparent" />
       <View flex-2>
         {!header ?
-          <Header
+          <HeaderApp
             gadient={gadient}
             title={title}
             iconleft={!iconleft ? 'back' : iconleft}

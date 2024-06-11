@@ -1,7 +1,9 @@
-import { Dimensions, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Dimensions, StyleSheet, TextInput } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import { Button, Image, TouchableOpacity, View } from 'react-native-ui-lib'
+import IconCustom from 'components/IconCustom'
 const ScreenGGmap = ({
   defaultlocation = {
     latitude: 10.853970547367098,
@@ -17,16 +19,8 @@ const ScreenGGmap = ({
   const [loaction, setloaction] = useState(innitlocation);
   const [address, setAddress] = useState('address')
   const [name, setName] = useState('name')
-  useEffect(() => {
-    console.log("address", address)
-  }, [address])
-  useEffect(() => {
-    console.log("name", name)
-  }, [name])
-  useEffect(() => {
-    console.log("loaction", loaction)
-  }, [loaction])
-
+  const [search, setSearch] = useState('66/5C Tổ 128 ấp Đông')
+  
   const revversLoacation = async (loaction) => {
     await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${loaction?.latitude},${loaction?.longitude}&lang=vi-VN&apiKey=${process.env.MAPAPI_KEY}`, {
       method: 'GET',
@@ -70,7 +64,63 @@ const ScreenGGmap = ({
       }
     }
   }
+  //Tìm kiếm địa điểm theo địa chỉ
+  const handlerSearch = async (keyvalue) => {
+    const urlEncoding = {
+      " ": "%20",
+      "!": "%21",
+      "\"": "%22",
+      "#": "%23",
+      "$": "%24",
+      "%": "%25",
+      "&": "%26",
+      "'": "%27",
+      "(": "%28",
+      ")": "%29",
+      "*": "%2A",
+      "+": "%2B",
+      ",": "%2C",
+      "-": "%2D",
+      ".": "%2E",
+      "/": "%2F",
+      ":": "%3A",
+      ";": "%3B",
+      "<": "%3C",
+      "=": "%3D",
+      ">": "%3E",
+      "?": "%3F",
+      "@": "%40",
+      "[": "%5B",
+      "\\": "%5C",
+      "]": "%5D",
+      "^": "%5E",
+      "_": "%5F",
+      "`": "%60",
+      "{": "%7B",
+      "|": "%7C",
+      "}": "%7D",
+      "~": "%7E"
+    };
+    var keysearch = search.split('').map(char => urlEncoding[char] || char).join('');
 
+    await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&input=${keysearch}&inputtype=textquery&key=${process.env.SEARCHAPI_KEY}`)
+      .then(async response => {
+        const data = await response.json()
+        if (data.status == 'OK') {
+          Alert.alert(data.candidates[0].formatted_address)
+          const location = data.candidates[0].geometry.location.latitude
+          setloaction({
+            latitude: location.latitude,
+            longitude: location.longitude
+          })
+        }
+      })
+      .catch(async error => {
+        const data = await error.json
+        console.log(data);
+      })
+
+  }
   //Tạo đánh dấu địa điểm đã chọn
   var coordinate = new AnimatedRegion({
     latitude: loaction.latitude,
@@ -99,22 +149,19 @@ const ScreenGGmap = ({
         />
       </MapView>
       <View style={{ position: 'absolute', width: '100%', top: 0, left: 0, padding: 20 }}>
-        <GooglePlacesAutocomplete
-          GooglePlacesDetailsQuery={{ fields: "geometry" }}
-          fetchDetails={true}
-          placeholder="Search"
-          query={{
-            key: process.env.GOOGLE_PLACEHOLDERAUTOCOMPLETE,
-            language: "vi",
-          }}
-          onPress={(data, details = null) => {
-            console.log("data", data)
-            setloaction({
-              latitude: details?.geometry?.location?.lat,
-              longitude: details?.geometry?.location?.lng
-            })
-          }}
-        />
+        <View centerV row bg-white>
+          <View flex-6>
+            <TextInput style={{
+              backgroundColor: 'white',
+              color: 'black'
+            }}
+              value={search}
+              onChangeText={setSearch}/>
+          </View>
+          <TouchableOpacity flex-1 center onPress={handlerSearch}>
+            <IconCustom size={30} name={'search'} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   )
