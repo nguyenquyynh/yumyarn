@@ -35,4 +35,10 @@ Assets.loadAssetsGroup('icons', {
     switch_camera: require('assets/icon/switch_camera.png'),
     tickCamera: require('assets/icon/tickCamera.png'),
     crop: require('assets/icon/crop.png'),
+    languages:require('assets/icon/languages.png'),
+    right_arrow:require('assets/icon/right_arrow.png'),
+    protection:require('assets/icon/protection.png'),
+    notes:require('assets/icon/notes.png'),
+    unhappy:require('assets/icon/unhappy.png'),
+    log_out:require('assets/icon/log_out.png')
 })
