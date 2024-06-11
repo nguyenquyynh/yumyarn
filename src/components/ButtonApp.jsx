@@ -5,11 +5,11 @@ import IconApp from './IconApp'
 import { BOLD } from 'configs/fonts'
 
 const ButtonApp = ({
-    padding = 10,
-    margirn = 0,
     title = 'Title',
+    outline,
     background = Colors.yellow,
     color = Colors.white,
+    colorborder,
     renderleft,
     renderright,
     customlefft,
@@ -19,12 +19,13 @@ const ButtonApp = ({
     iconright,
     onclick,
     customcontent,
-    ...props
+    props,
 }) => {
+    var bordercolor = outline ? colorborder : background
     return (
-        <View left paddingT-xx>
+        <View style={props}>
             {customcontent ||
-                <View br20 paddingH-xv paddingV-iv backgroundColor={background} centerH row >
+                <View br20 paddingH-xv paddingV-iv backgroundColor={background} centerH row style={{borderWidth: 1, borderColor: bordercolor}}>
                     <View>
                         {customlefft || renderleft ? <IconApp assetName={iconleft} size={iconsize} /> : <View />}
                     </View>

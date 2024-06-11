@@ -17,8 +17,10 @@ const Modals = ({
           <Pressable bg-red height={'100%'} onPress={() => { modalhiden(false) }}>
           </Pressable>
           <View flex bottom absF marginT-cc>
-            <View centerH paddingT-x bg-white style={styles.viewModal}>
-              <Image assetName='line' tintColor='gray' width={60} height={10} />
+            <View paddingT-x bg-white style={styles.viewModal}>
+              <View centerH>
+                <Image assetName='line' tintColor='gray' width={60} height={10} />
+              </View>
               <View padding-x>
                 {children}
               </View>
@@ -28,7 +30,6 @@ const Modals = ({
       </View>
     }
     </View>
-
   )
 }
 

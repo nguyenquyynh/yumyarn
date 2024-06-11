@@ -40,5 +40,6 @@ Assets.loadAssetsGroup('icons', {
     protection:require('assets/icon/protection.png'),
     notes:require('assets/icon/notes.png'),
     unhappy:require('assets/icon/unhappy.png'),
-    log_out:require('assets/icon/log_out.png')
+    log_out:require('assets/icon/log_out.png'),
+    warning: require('assets/icon/warning.png'),
 })

@@ -7,7 +7,7 @@ const IconApp = ({
     props,
 }) => {
     return (
-        <Image style={{props}} assetName={assetName} width={size} height={size} />
+        <Image style={props} assetName={assetName} width={size} height={size} />
     )
 }
 

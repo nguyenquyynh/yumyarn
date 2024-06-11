@@ -44,6 +44,12 @@
         "follow": "đã theo dõi bạn",
         "system": "Thông báo hệ thống"
     },
+    "title_model" : {
+        "remove_account" : "Bạn có muốn xóa tài khoản không ?",
+        "cancel" : "Hủy",
+        "ok": "Đồng ý",
+        "content_remove_account" : "Tài khoản bị xóa sẽ vĩnh viễn không thể khôi phục"
+    },
     "profile" :{
         "postting": "Bài viết",
         "followers": "Người theo dõi",
