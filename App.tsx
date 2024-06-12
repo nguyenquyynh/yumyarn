@@ -10,18 +10,20 @@ import CameraApp from 'components/CameraApp'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Welcome01 from 'containers/auth/welcome/Welcome01'
 import Welcome02 from 'containers/auth/welcome/Welcome02'
+import SelectImageAndVideoInLibary from 'src/testcomponent/SelectImageAndVideoInLibary'
 
 
 const App = () => {
   return (
-    <GestureHandlerRootView>
+    <View flex>
       <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}/>
       <View flex> 
           {/* <Signin/> */}
           {/* <CameraApp/> */}
-          <Setting/>
+          {/* <Setting/> */}
+          <SelectImageAndVideoInLibary/>
         </View>
-    </GestureHandlerRootView>
+    </View>
    
   )
 }

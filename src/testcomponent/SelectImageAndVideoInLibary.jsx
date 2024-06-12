@@ -10,7 +10,12 @@ const ImageAndVideoLibary = () => {
   const selectMedia = () => {
     let options = {
       mediaType: 'mixed', // 'photo' cho chỉ ảnh, 'video' cho chỉ video, 'mixed' cho cả hai
+      selectionLimit: 5,
+      storageOptions: {
+        skipBackup: true,
+      }
     };
+
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
         console.log('User cancelled media picker');
