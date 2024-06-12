@@ -17,8 +17,10 @@ const ImageAndVideoLibary = (props) => {
    await  launchImageLibrary(options, (response) => {
       if (response.didCancel) {
         console.log('User cancelled media picker');
+        closeModal()
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage);
+        closeModal()
       } else {
         console.log(response.assets);
 

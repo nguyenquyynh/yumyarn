@@ -1,14 +1,14 @@
 import { StatusBar, StyleSheet, Text } from 'react-native'
 import React from 'react'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import DevNavigation from 'containers/navigations/DevNavigation'
+import { View } from 'react-native-ui-lib'
 
 const App = () => {
   return (
-    <GestureHandlerRootView>
+    <View flex>
       <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
         <DevNavigation />
-    </GestureHandlerRootView>
+    </View>
 
   )
 }

@@ -1,4 +1,4 @@
-import { FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FlatList, Modal, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 import Wapper from 'components/Wapper';
 import { t } from 'lang';
@@ -16,12 +16,7 @@ const MainPost = () => {
   const [open_camera, setopen_camera] = useState(false);
   const [open_library, setopen_library] = useState(false)
   const navigation = useNavigation()
-  const [images, setImages] = useState([
-    { id: '1', uri: 'https://via.placeholder.com/150' },
-    { id: '2', uri: 'https://via.placeholder.com/150' },
-    { id: '3', uri: 'https://via.placeholder.com/150' },
-    { id: '4', uri: 'https://via.placeholder.com/150' }
-  ]);
+  const [images, setImages] = useState([]);
 
   // Hàm xóa ảnh
   const handleRemoveImage = (id) => {
