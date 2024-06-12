@@ -3,8 +3,17 @@ import React from 'react'
 import { Text, View, Colors, Image, Button, Icon, Checkbox } from 'react-native-ui-lib'
 import { t } from 'lang'
 import IconApp from 'components/IconApp'
+import { userLogin } from 'src/hooks/api/auth'
+import { useDispatch } from 'react-redux'
+import { auth_login } from 'reducers/auth'
 
 const Login = () => {
+    const dispatch = useDispatch()
+    const handlerAuthenSignin = async () => {
+        console.log("login...............")
+        const reponse =  await userLogin()
+        await dispatch(auth_login(reponse))
+    }
     return (
         <ImageBackground
             source={require("../../assets/icon/login.png")}
@@ -18,7 +27,7 @@ const Login = () => {
                         style={styles.image}
                     />
                 </View>
-                <Button style={styles.button}>
+                <Button style={styles.button} onPress={handlerAuthenSignin}>
                     <IconApp assetName={"google"} />
                     <Text xviiText>{t("login.google")}</Text>
                 </Button>

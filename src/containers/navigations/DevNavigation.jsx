@@ -7,6 +7,7 @@ import Setting from 'containers/setting/Setting'
 import { NavigationContainer } from '@react-navigation/native'
 import DevScreen from './DevScreen'
 import { Welcome } from 'containers/auth/Welcome'
+import Login from 'containers/auth/Login'
 
 const DevNavigation = () => {
     const Stack = createNativeStackNavigator()
@@ -18,6 +19,7 @@ const DevNavigation = () => {
                 <Stack.Screen name='Addadress' component={AddAdrressScreen} />
                 <Stack.Screen name='Setting' component={Setting} />
                 <Stack.Screen name='Welcome' component={Welcome} />
+                <Stack.Screen name='Login' component={Login} />
             </Stack.Navigator>
         </NavigationContainer>
     )

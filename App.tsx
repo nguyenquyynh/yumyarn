@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { store, persistor } from 'src/store/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { I18nProvider } from 'lang'
+import MainNavigation from 'containers/navigations/MainNavigation'
 const App = () => {
   return (
     <Provider store={store}>
@@ -13,7 +14,8 @@ const App = () => {
         <PersistGate loading={null} persistor={persistor}>
           <GestureHandlerRootView>
             <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-            <DevNavigation />
+            {/* <DevNavigation /> */}
+            <MainNavigation />
           </GestureHandlerRootView>
         </PersistGate>
       </I18nProvider>
