@@ -1,4 +1,4 @@
-import { FlatList, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FlatList, Modal, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 import Wapper from 'components/Wapper';
 import { t } from 'lang';
@@ -7,9 +7,14 @@ import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
 import { useNavigation } from '@react-navigation/native';
+import CameraApp from 'components/CameraApp';
+import Video from 'react-native-video';
+import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
 
 const MainPost = () => {
   const [modelshow, setModelshow] = useState(false);
+  const [open_camera, setopen_camera] = useState(false);
+  const [open_library, setopen_library] = useState(false)
   const navigation = useNavigation()
   const [images, setImages] = useState([
     { id: '1', uri: 'https://via.placeholder.com/150' },
@@ -46,7 +51,10 @@ const MainPost = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.imageWrapper}>
-      <Image source={{ uri: item.uri }} style={styles.imageitem} />
+      { item.uri?.endsWith('.mp4') ?
+        <Video source={{ uri: item.uri }} style={styles.imageitem} paused controls                             /> :
+        <Image source={{ uri: item.uri }} style={styles.imageitem} />
+      }
       <TouchableOpacity
         style={styles.removeIcon}
         onPress={() => handleRemoveImage(item.id)}
@@ -111,16 +119,58 @@ const MainPost = () => {
       </View>
       <Modals modalhiden={setModelshow} modalVisible={modelshow}>
         <View style={styles.modals}>
-          <TouchableOpacity style={styles.contentcamera}>
+          <TouchableOpacity
+            // style={styles.contentcamera} 
+            onPress={() => setopen_camera(true)}>
             <IconApp assetName={"diaphragm"} size={50} />
             <Text style={styles.textcamera}>{t("app.camera")}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.contentlibrary}>
+          <TouchableOpacity
+          // style={styles.contentlibrary}
+          onPress={() => setopen_library(true)}
+          >
             <IconApp assetName={"library"} size={50} />
             <Text style={styles.textlibrary}>{t("app.library")}</Text>
           </TouchableOpacity>
         </View>
       </Modals>
+
+      <Modal visible={open_camera} animationType="slide">
+        <CameraApp
+          closeModal={() => setopen_camera(false)}
+          updateListMedia={(medias) => {
+            if(medias != null){
+              var one_media = {
+                id: images.length + 1,
+                uri: medias
+              }
+              
+              images.push(one_media)
+            }         
+          }}
+        />
+      </Modal>
+
+      <Modal visible={open_library} animationType="slide">
+        <ImageAndVideoLibary
+          closeModal={() => setopen_library(false)}
+          updateListMedia={(medias) => {
+            if(medias.length > 0) {
+              medias.forEach(ele => {
+                if(ele != null){
+                  var one_media = {
+                    id: images.length + 1,
+                    uri: ele.uri
+                  }
+                  
+                  images.push(one_media)
+                } 
+              });
+            }
+                    
+          }}
+        />
+      </Modal>
     </Wapper>
   );
 };
