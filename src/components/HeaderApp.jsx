@@ -15,6 +15,8 @@ const HeaderApp = ({
     customright,
     sizeiconleft = 25,
     sizeiconright = 25,
+    funtleft,
+    funtright,
     title,
 }) => {
 
@@ -28,24 +30,29 @@ const HeaderApp = ({
                     style={{ height: '100%' }}
                 />}
             <View flex row centerV padding-xx absF>
-                {renderleft ?
-                    <TouchableOpacity flex left paddingT-xx>
-                        <IconApp
-                            assetName={iconleft}
-                            size={sizeiconleft}/>
-                    </TouchableOpacity> : customleft && customleft?.()}
+                <View flex left paddingT-xx>
+                    {renderleft ?
+                        <TouchableOpacity onPress={funtleft}>
+                            <IconApp
+                                assetName={iconleft}
+                                size={sizeiconleft} />
+                        </TouchableOpacity> : customleft && customleft?.()}
+                </View>
                 {title &&
                     <View flex absH paddingT-xx center>
                         <Text title style={styles.title}>
                             {title ? title : ""}
                         </Text>
                     </View>}
-                {renderright ?
-                    <TouchableOpacity flex right paddingT-xx>
-                        <IconApp
-                            assetName={iconright}
-                            size={sizeiconright} />
-                    </TouchableOpacity> : customright && customright?.()}
+                <View flex right paddingT-xx>
+                    {renderright ?
+                        <TouchableOpacity onPress={funtright}>
+                            <IconApp
+                                assetName={iconright}
+                                size={sizeiconright} />
+                        </TouchableOpacity> : customright && customright?.()}
+                </View>
+
             </View>
         </View>
     )

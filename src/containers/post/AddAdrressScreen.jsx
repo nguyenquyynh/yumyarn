@@ -8,6 +8,7 @@ import ButtonApp from 'components/ButtonApp'
 import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import { useNavigation } from '@react-navigation/native'
 const AddAdrressScreen = ({
     defaultlocation = {
         latitude: 10.853970547367098,
@@ -25,11 +26,16 @@ const AddAdrressScreen = ({
             this.longitudeDelta = longitudeDelta
         }
     }
+    const navigation = useNavigation()
     const [loaction, setloaction] = useState(defaultlocation);
     const [marker, setMarker] = useState(defaultlocation)
-    const [address, setAddress] = useState('address')
+    const [address, setAddress] = useState('')
     const [search, setSearch] = useState('')
 
+    //Hàm chuyển component
+    const gotoScreen = (screen) => {
+        navigation.navigate(screen)
+    }
     //Lấy vị trí nguời dùng
     const getGeolocation = () => {
         Geolocation.getCurrentPosition(location => {
@@ -161,7 +167,7 @@ const AddAdrressScreen = ({
     //Giao diện nút chọn góc phải
     const renderButtonRight = () => {
         return (
-            <ButtonApp props={styles.button_chosse} iconleft={"search"}
+            <ButtonApp iconleft={"search"}
                 iconright={"notifycation"}
                 color={Colors.white}
                 padding={'padding-10'}
@@ -186,7 +192,7 @@ const AddAdrressScreen = ({
         }
     }
     return (
-        <Wapper gadient={true} title={t('add_location.title')} renderleft customright={renderButtonRight}>
+        <Wapper gadient={true} title={t('add_location.title')} renderleft customright={renderButtonRight} funtleft={() => { navigation.goBack() }}>
             <View flex style={StyleSheet.absoluteFillObject}>
                 <MapView
                     style={[styles.map, StyleSheet.absoluteFillObject]}
@@ -224,9 +230,9 @@ const AddAdrressScreen = ({
                     <TouchableOpacity bg-white padding-x br20 onPress={getGeolocation}>
                         <IconApp size={22} assetName={"gps"} />
                     </TouchableOpacity>
-                    <View flex bg-white marginL-x br20 paddingH-v>
+                    {address && <View flex bg-white marginL-x br20 paddingH-v>
                         <Text vText >{address}</Text>
-                    </View>
+                    </View>}
                 </View>
             </View>
         </Wapper>
@@ -247,5 +253,4 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 10,
     },
-    button_chosse: { marginTop: 20 }
 })

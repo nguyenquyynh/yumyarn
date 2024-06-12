@@ -11,6 +11,8 @@ const Wapper = ({
   iconright,
   renderleft = false,
   renderright = false,
+  funtleft,
+  funtright,
   sizeiconleft,
   sizeiconright,
   customleft,
@@ -35,6 +37,8 @@ const Wapper = ({
             customright={customright}
             sizeiconright={sizeiconright}
             sizeiconleft={sizeiconleft}
+            funtleft={funtleft}
+            funtright={funtright}
           /> : customheader && customheader?.()}
       </View>
       <View flex-15>
