@@ -1,14 +1,26 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { StyleSheet } from 'react-native'
+import { Button, Text, View } from 'react-native-ui-lib'
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increment } from 'src/store/reducers/ex'
 
-const Welcome = () => {
+export function Welcome() {
+    const count = useSelector((state) => state.user)
+    const dispatch = useDispatch()
     return (
-        <View>
-            <Text>Welcome</Text>
+        <View style={styles.container}>
         </View>
     )
 }
-
-export default Welcome
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 10,
+    },
+    count: {
+        fontSize: 20,
+        marginHorizontal: 10,
+    },
+});
