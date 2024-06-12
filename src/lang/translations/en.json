@@ -32,6 +32,8 @@
     "login": {
         "i_read": "I have read",
         "policy": "Privacy Policy",
+        "register": "Your account has been registered! Log in now",
+        "verify": "Check your email inbox that you used during registration to verify your account",
         "google": "CONTINUE WITH GOOGLE"
     },
     "post": {

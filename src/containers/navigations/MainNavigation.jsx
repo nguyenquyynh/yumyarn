@@ -6,7 +6,6 @@ import MainApp from './MainApp'
 
 const MainNavigation = () => {
   const auth = useSelector(state => state.auth)
-  console.log(auth)
   return (
     <NavigationContainer>
       {auth.isLogin ? <MainApp /> : <Authen />}

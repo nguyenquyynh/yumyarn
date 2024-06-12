@@ -1,5 +1,5 @@
-import { ImageBackground, StyleSheet } from 'react-native'
-import React from 'react'
+import { Alert, ImageBackground, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
 import { Text, View, Colors, Image, Button, Icon, Checkbox } from 'react-native-ui-lib'
 import { t } from 'lang'
 import IconApp from 'components/IconApp'
@@ -8,11 +8,19 @@ import { useDispatch } from 'react-redux'
 import { auth_login } from 'reducers/auth'
 
 const Login = () => {
+    // const [showNotifi, setShowNotifi] = useState(false)
+    // const [notifycontent, setNotifycontent] = useState('')
     const dispatch = useDispatch()
     const handlerAuthenSignin = async () => {
         console.log("login...............")
-        const reponse =  await userLogin()
-        await dispatch(auth_login(reponse))
+        const reponse = await userLogin()
+        if (reponse.status) {
+            await dispatch(auth_login(reponse.data))
+        } else {
+            // setShowNotifi(true)
+            // setNotifycontent(reponse.data)
+            Alert.alert(reponse.data)
+        }
     }
     return (
         <ImageBackground
@@ -56,9 +64,9 @@ const styles = StyleSheet.create({
     textCenter: {
         alignSelf: 'center',
         marginTop: 80,
-        fontWeight:'bold'
+        fontWeight: 'bold'
     },
-    
+
     viewpolicy: {
         padding: 40,
         justifyContent: 'space-between',

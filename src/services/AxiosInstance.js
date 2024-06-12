@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AxiosInstance = (contentType = 'application/json') => {
     const axiosInstance = axios.create({
-        baseURL: process.env.BASEAPI_URL
+        baseURL: 'http://192.168.1.29:3001/'
     });
 
     axiosInstance.interceptors.request.use(
