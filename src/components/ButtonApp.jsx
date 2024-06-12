@@ -25,7 +25,10 @@ const ButtonApp = ({
     return (
         <View style={props}>
             {customcontent ||
-                <View br20 paddingH-xv paddingV-iv backgroundColor={background} centerH row style={{borderWidth: 1, borderColor: bordercolor}}>
+                <TouchableOpacity br20 paddingH-xv paddingV-iv centerH row
+                    backgroundColor={background}
+                    style={{ borderWidth: 1, borderColor: bordercolor }}
+                    onPress={onclick}>
                     <View>
                         {customlefft || renderleft ? <IconApp assetName={iconleft} size={iconsize} /> : <View />}
                     </View>
@@ -33,7 +36,7 @@ const ButtonApp = ({
                     <View>
                         {customright || renderright ? <IconApp assetName={iconright} size={iconsize} /> : <View />}
                     </View>
-                </View>
+                </TouchableOpacity>
             }
         </View>
     )
@@ -42,7 +45,7 @@ const ButtonApp = ({
 export default ButtonApp
 
 const styles = StyleSheet.create({
-    title:{
+    title: {
         fontFamily: BOLD
     }
 })

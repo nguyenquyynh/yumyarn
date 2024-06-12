@@ -1,4 +1,4 @@
-import { FlatList, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { FlatList, KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 import Wapper from 'components/Wapper';
 import { t } from 'lang';
@@ -6,9 +6,11 @@ import { Colors, Image, TouchableOpacity } from 'react-native-ui-lib';
 import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
+import { useNavigation } from '@react-navigation/native';
 
 const MainPost = () => {
   const [modelshow, setModelshow] = useState(false);
+  const navigation = useNavigation()
   const [images, setImages] = useState([
     { id: '1', uri: 'https://via.placeholder.com/150' },
     { id: '2', uri: 'https://via.placeholder.com/150' },
@@ -26,6 +28,10 @@ const MainPost = () => {
     setModelshow(true);
   };
 
+  // Hàm chuyển component
+  const gotoScreen = (screen) => {
+    navigation.navigate(screen)
+  }
   const buttonright = () => {
     return (
       <ButtonApp
@@ -54,13 +60,14 @@ const MainPost = () => {
     <Wapper
       gadient
       renderleft
+      funtleft={() => { navigation.goBack() }}
       iconleft={"back"}
       title={t("create_post.title")}
       customright={buttonright}
     >
       <View style={styles.container} >
         <View style={styles.body}>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <TextInput
               style={styles.input}
               placeholder={t("create_post.content_hint")}
@@ -74,6 +81,7 @@ const MainPost = () => {
               multiline
             />
             <FlatList
+              scrollEnabled={false}
               style={styles.imageListContainer}
               data={images}
               showsVerticalScrollIndicator={false}
@@ -92,14 +100,14 @@ const MainPost = () => {
             </View>
           </ScrollView>
         </View>
-        <View style={styles.foodter}>
+        <TouchableOpacity style={styles.foodter} onPress={() => { gotoScreen("Addadress") }}>
           <View style={styles.contentlocation}>
             <IconApp assetName={"location"} size={34} />
             <Text numberOfLines={1} style={styles.textloctation}>
               {t("create_post.loacation_hint")}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
       <Modals modalhiden={setModelshow} modalVisible={modelshow}>
         <View style={styles.modals}>
@@ -155,8 +163,8 @@ const styles = StyleSheet.create({
     width: '100%',
     borderWidth: 1,
     borderTopColor: 'black',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     flexDirection: 'row',
     padding: 10,
     alignItems: 'center',
