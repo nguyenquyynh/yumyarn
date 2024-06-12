@@ -6,15 +6,22 @@ import IconApp from 'components/IconApp'
 import Wapper from 'components/Wapper'
 import NotificationModalApp from 'components/commons/NotificationModalApp'
 import { useNavigation } from '@react-navigation/native'
+import { userLogout } from 'src/hooks/api/auth'
+import { useDispatch } from 'react-redux'
+import { auth_logout } from 'reducers/auth'
 
 const Setting = () => {
     const [showModel, setShowModel] = useState(false)
     const navigation = useNavigation()
+    const dispatch = useDispatch()
     const handlerRemoveAccount = () => {
         setShowModel(true)
     }
     const gotoScreen = (screen) => {
         navigation.navigate(screen)
+    }
+    const handlerSignout = async () => {
+        await dispatch( auth_logout())
     }
     return (
         <View flex>
@@ -23,7 +30,7 @@ const Setting = () => {
                 title={t("setting.setting")}
                 renderleft
                 iconleft={"back"}
-                funtleft={() => {navigation.goBack()}}
+                funtleft={() => { navigation.goBack() }}
             >
                 <View flex style={styles.container}>
                     <View style={styles.viewVIT}>
@@ -51,10 +58,10 @@ const Setting = () => {
                         <IconApp assetName={"unhappy"} size={24} />
                         <Text xviiText style={styles.text}>{t("setting.delete_the_account")}</Text>
                     </TouchableOpacity>
-                    <View style={styles.viewIT1}>
+                    <TouchableOpacity style={styles.viewIT1} onPress={handlerSignout}>
                         <IconApp assetName={"log_out"} size={24} />
                         <Text xviiText style={styles.text}>{t("setting.log_out")}</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
 
             </Wapper>

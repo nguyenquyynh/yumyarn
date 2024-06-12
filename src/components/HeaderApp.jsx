@@ -1,16 +1,19 @@
-import fonts from 'configs/fonts'
+import fonts, { BLACK } from 'configs/fonts'
 import React from 'react'
 import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient'
 import { Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import IconApp from './IconApp';
+import TextApp from './commons/TextApp';
 
 const HeaderApp = ({
     gadient = false,
+    colortitle,
     renderleft,
     iconleft,
     customleft,
     renderright,
+    titlesize,
     iconright,
     customright,
     sizeiconleft = 25,
@@ -40,9 +43,7 @@ const HeaderApp = ({
                 </View>
                 {title &&
                     <View flex absH paddingT-xx center>
-                        <Text title style={styles.title}>
-                            {title ? title : ""}
-                        </Text>
+                        <TextApp size={titlesize} color={colortitle || Colors.black} style={styles.title} text={title ? title : ""}/>
                     </View>}
                 <View flex right paddingT-xx>
                     {renderright ?

@@ -1,10 +1,27 @@
-import { ImageBackground, StyleSheet } from 'react-native'
-import React from 'react'
+import { Alert, ImageBackground, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
 import { Text, View, Colors, Image, Button, Icon, Checkbox } from 'react-native-ui-lib'
 import { t } from 'lang'
 import IconApp from 'components/IconApp'
+import { userLogin } from 'src/hooks/api/auth'
+import { useDispatch } from 'react-redux'
+import { auth_login } from 'reducers/auth'
 
 const Login = () => {
+    // const [showNotifi, setShowNotifi] = useState(false)
+    // const [notifycontent, setNotifycontent] = useState('')
+    const dispatch = useDispatch()
+    const handlerAuthenSignin = async () => {
+        console.log("login...............")
+        const reponse = await userLogin()
+        if (reponse.status) {
+            await dispatch(auth_login(reponse.data))
+        } else {
+            // setShowNotifi(true)
+            // setNotifycontent(reponse.data)
+            Alert.alert(reponse.data)
+        }
+    }
     return (
         <ImageBackground
             source={require("../../assets/icon/login.png")}
@@ -18,7 +35,7 @@ const Login = () => {
                         style={styles.image}
                     />
                 </View>
-                <Button style={styles.button}>
+                <Button style={styles.button} onPress={handlerAuthenSignin}>
                     <IconApp assetName={"google"} />
                     <Text xviiText>{t("login.google")}</Text>
                 </Button>
@@ -47,9 +64,9 @@ const styles = StyleSheet.create({
     textCenter: {
         alignSelf: 'center',
         marginTop: 80,
-        fontWeight:'bold'
+        fontWeight: 'bold'
     },
-    
+
     viewpolicy: {
         padding: 40,
         justifyContent: 'space-between',

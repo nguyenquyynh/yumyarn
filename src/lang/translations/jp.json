@@ -1,68 +1,84 @@
 {
     "app": {
         "name_app": "YumYarn",
-        "camera": "カメラ ",
-        "library": "ライブラリ ",
+        "camera": "カメラ",
+        "library": "ライブラリ",
         "following": "フォロー中",
-        "follow": "フォロー ",
-        "more": "詳細を見る",
+        "follow": "フォローする",
+        "more": "もっと見る",
         "search": "検索",
-        "yumyarn_id": "ヤムヤーン ID",
-        "address" : "住所 ",
-        "phone" :"電話番号",
-        "email": "メールアドレス",
-        "name": "名前 ",
-        "inta": "Instagram",
-        "yout": "Youtube",
+        "yumyarn_id": "YumYarn ID",
+        "address": "住所",
+        "phone": "電話番号",
+        "email": "メール",
+        "name": "名前",
+        "inta": "インスタグラム",
+        "yout": "YouTube",
         "x": "X",
-        "add": "追加 ",
-        "video": "動画 ",
-        "post": "投稿 ",
-        "restaurant": "レストラン ",
-        "get_started": "はじめる ",
+        "add": "追加",
+        "video": "ビデオ",
+        "post": "投稿",
+        "restaurant": "レストラン",
+        "get_started": "始める",
         "next": "次へ"
     },
     "wellcome": {
-        "greeting": "ようこそ、ヤムヤーンへ！",
-        "diversity": "多様性 ",
-        "reality": "リアル",
-        "help_one": "あなたにぴったりの美味しいお店を見つけましょう！",
-        "help_two": "実際の体験に基づいた評価です"
+        "greeting": "ようこそ",
+        "diversity": "多様性",
+        "reality": "現実",
+        "help_one": "おいしくて便利なレストランを選ぶのに役立ちます。",
+        "help_two": "実際の体験からのレビュー。"
     },
     "login": {
-        "policy": "利用規約とプライバシーポリシーに同意しました",
-        "google": "GOOGLE でログイン"
+        "i_read": "私は読んだ",
+        "policy": "プライバシーポリシー",
+        "register": "アカウントが登録されました！今すぐログイン",
+        "verify": "登録時に提供したメールボックスを確認してアカウントを確認してください",
+        "google": "Googleで続行"
     },
     "post": {
         "edit": "編集",
         "report": "報告"
     },
     "notification": {
-        "title": "通知 ",
-        "like": "あなたの投稿をいいねしました",
+        "title": "通知",
+        "like": "あなたの投稿にいいねしました",
         "follow": "あなたをフォローしました",
         "system": "システム通知"
     },
-    "profile" :{
-        "postting": " 投稿",
+    "title_model": {
+        "remove_account": "アカウントを削除しますか？",
+        "cancel": "キャンセル",
+        "ok": "確認",
+        "content_remove_account": "削除されたアカウントは永久に復元できません"
+    },
+    "profile": {
+        "postting": "投稿",
         "followers": "フォロワー",
-        "following" : "フォロー中",
+        "following": "フォロー中",
         "edit_profile": "プロフィール編集",
-        "about_me": "自己紹介",
-        "social_media": "社会的ネットワーク"
+        "about_me": "私について",
+        "social_media": "ソーシャルメディア"
     },
     "create_post": {
-        "title": "投稿作成",
-        "post": "投稿 ",
-        "content_hint": "美味しいものについて書いてみましょう...",
-        "hashtag_hint": "ハッシュタグを追加して、検索されやすくしましょう",
-        "loacation_hint": " 場所を追加して、みんなが見つけやすくしましょう"
+        "title": "投稿を作成",
+        "post": "投稿",
+        "content_hint": "おいしいものについて書いてください...",
+        "hashtag_hint": "#ハッシュタグを追加して、他の人があなたを見つけやすくします。",
+        "loacation_hint": "場所を追加して、みんなが見つけやすくするのを忘れないでください。"
     },
     "add_location": {
         "title": "場所を追加",
         "choose": "選択"
     },
     "loading": {
-        "content": "今日のお昼はなに？"
+        "content": "今日は何を食べる...."
+    },
+    "setting": {
+        "setting": "設定",
+        "language": "言語",
+        "Community_standards": "コミュニティ基準",
+        "delete_the_account": "アカウントを削除",
+        "log_out": "ログアウト"
     }
 }

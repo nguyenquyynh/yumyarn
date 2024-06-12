@@ -18,15 +18,17 @@ const Wapper = ({
   customleft,
   customright,
   title,
+  titlesize,
   children
 }) => {
 
   return (
     <View flex>
-       <StatusBar translucent backgroundColor="transparent" />
+      <StatusBar translucent backgroundColor="transparent" />
       <View style={styles.header}>
         {!header ?
           <HeaderApp
+          titlesize={titlesize}
             gadient={gadient}
             title={title}
             iconleft={!iconleft ? 'back' : iconleft}
@@ -50,7 +52,7 @@ const Wapper = ({
 
 export default Wapper
 const styles = StyleSheet.create({
-  header:{
+  header: {
     height: 100
   }
 })

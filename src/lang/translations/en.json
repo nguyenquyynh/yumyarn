@@ -5,15 +5,15 @@
         "library": "Library",
         "following": "Following",
         "follow": "Follow",
-        "more": "more",
+        "more": "See more",
         "search": "Search",
         "yumyarn_id": "YumYarn ID",
-        "address" : "Address",
-        "phone" :"Phone",
+        "address": "Address",
+        "phone": "Phone",
         "email": "Email",
         "name": "Name",
         "inta": "Instagram",
-        "yout": "Youtube",
+        "yout": "YouTube",
         "x": "X",
         "add": "Add",
         "video": "Video",
@@ -27,10 +27,13 @@
         "diversity": "Diversity",
         "reality": "Reality",
         "help_one": "Helps you choose delicious and convenient restaurants.",
-        "help_two": "Evaluated from actual experiences."
+        "help_two": "Reviewed from real experiences."
     },
     "login": {
-        "policy": "I have read the Privace Policy",
+        "i_read": "I have read",
+        "policy": "Privacy Policy",
+        "register": "Your account has been registered! Log in now",
+        "verify": "Check your email inbox that you used during registration to verify your account",
         "google": "CONTINUE WITH GOOGLE"
     },
     "post": {
@@ -38,31 +41,44 @@
         "report": "Report"
     },
     "notification": {
-        "title": "Notificatition",
+        "title": "Notification",
         "like": "liked your post",
         "follow": "followed you",
         "system": "System notification"
     },
-    "profile" :{
-        "postting": "Postting",
+    "title_model": {
+        "remove_account": "Do you want to delete the account?",
+        "cancel": "Cancel",
+        "ok": "Confirm",
+        "content_remove_account": "Deleted account will be permanently unrecoverable"
+    },
+    "profile": {
+        "postting": "Posts",
         "followers": "Followers",
-        "following" : "Following",
-        "edit_profile": "Edit profile",
-        "about_me": "About me",
-        "social_media": "Social media"
+        "following": "Following",
+        "edit_profile": "Edit Profile",
+        "about_me": "About Me",
+        "social_media": "Social Media"
     },
     "create_post": {
-        "title": "Create post",
+        "title": "Create Post",
         "post": "Post",
-        "content_hint": "Let's write about something really delicious...",
-        "hashtag_hint": "Add #hashtag so others can easily find you.",
-        "loacation_hint": "Don't forget to add a location that's easy for people to find"
+        "content_hint": "Write about something delicious...",
+        "hashtag_hint": "Add #hashtag to make it easier for others to find you.",
+        "loacation_hint": "Don't forget to add a location to make it easier for everyone to find."
     },
     "add_location": {
-        "title": "Add location",
+        "title": "Add Location",
         "choose": "Choose"
     },
     "loading": {
-        "content": "What will we eat today...."
+        "content": "What to eat today...."
+    },
+    "setting": {
+        "setting": "Settings",
+        "language": "Language",
+        "Community_standards": "Community Standards",
+        "delete_the_account": "Delete Account",
+        "log_out": "Log Out"
     }
 }
