@@ -1,12 +1,15 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import Authen from './Authen'
 import { NavigationContainer } from '@react-navigation/native'
+import { useSelector } from 'react-redux'
+import MainApp from './MainApp'
 
 const MainNavigation = () => {
+  const auth = useSelector(state => state.auth)
+  console.log(auth)
   return (
     <NavigationContainer>
-      <Authen />
+      {auth.isLogin ? <MainApp /> : <Authen />}
     </NavigationContainer>
   )
 }

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { signOutGoogle } from 'services/Google'
 
 const INITIAL_STATE = {
     user: {},
@@ -10,11 +11,11 @@ export const auth = createSlice({
     initialState: INITIAL_STATE,
     reducers: {
         auth_logout: () => {
-            
+            signOutGoogle()
             return INITIAL_STATE
         },
-        auth_login: (state) => {
-
+        auth_login: (state, action) => {
+            return {...state, ...action.payload, isLogin: true}
         }
     },
 })
