@@ -13,6 +13,10 @@ Typography.loadTypographies(
         fontSize: 28,
         lineHeight: 30
       },
+      xviText:{
+        fontSize: 16,
+        lineHeight: 18
+      },
       xxivText: {
         fontSize: 24,
         lineHeight: 35

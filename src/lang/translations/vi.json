@@ -2,7 +2,7 @@
     "app": {
         "name_app": "YumYarn",
         "camera": "Máy ảnh",
-        "library": "Thư viên",
+        "library": "Thư viện",
         "following": "Đang theo dõi",
         "follow": "Theo dõi",
         "more": "xem thêm",
@@ -43,6 +43,12 @@
         "like": "đã thích bài viết của bạn",
         "follow": "đã theo dõi bạn",
         "system": "Thông báo hệ thống"
+    },
+    "title_model" : {
+        "remove_account" : "Bạn có muốn xóa tài khoản không ?",
+        "cancel" : "Hủy",
+        "ok": "Đồng ý",
+        "content_remove_account" : "Tài khoản bị xóa sẽ vĩnh viễn không thể khôi phục"
     },
     "profile" :{
         "postting": "Bài viết",

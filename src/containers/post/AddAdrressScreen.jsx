@@ -8,6 +8,7 @@ import ButtonApp from 'components/ButtonApp'
 import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import { useNavigation } from '@react-navigation/native'
 const AddAdrressScreen = ({
     defaultlocation = {
         latitude: 10.853970547367098,
@@ -25,11 +26,16 @@ const AddAdrressScreen = ({
             this.longitudeDelta = longitudeDelta
         }
     }
+    const navigation = useNavigation()
     const [loaction, setloaction] = useState(defaultlocation);
     const [marker, setMarker] = useState(defaultlocation)
-    const [address, setAddress] = useState('address')
+    const [address, setAddress] = useState('')
     const [search, setSearch] = useState('')
 
+    //Hàm chuyển component
+    const gotoScreen = (screen) => {
+        navigation.navigate(screen)
+    }
     //Lấy vị trí nguời dùng
     const getGeolocation = () => {
         Geolocation.getCurrentPosition(location => {
@@ -186,7 +192,7 @@ const AddAdrressScreen = ({
         }
     }
     return (
-        <Wapper gadient={true} title={t('add_location.title')} renderleft customright={renderButtonRight}>
+        <Wapper gadient={true} title={t('add_location.title')} renderleft customright={renderButtonRight} funtleft={() => { navigation.goBack() }}>
             <View flex style={StyleSheet.absoluteFillObject}>
                 <MapView
                     style={[styles.map, StyleSheet.absoluteFillObject]}
@@ -220,28 +226,13 @@ const AddAdrressScreen = ({
                         </TouchableOpacity>
                     </View>
                 </View>
-
-
-                {/* <GooglePlacesAutocomplete
-                    placeholder='Search'
-                    query={{
-                        key: process.env.SEARCHAPI_KEY,
-                        language: 'vi',
-                        components: 'country:vn' 
-                    }}
-                    fetchDetails={true}
-                    onPress={(data, details = null) => console.log(data, details)}
-                    onFail={error => console.log(error)}
-                    onNotFound={() => console.log('no results')}
-                /> */}
-
-                <View flex absB right padding-20 row centerV>
-                    <TouchableOpacity bg-white padding-10 br20 onPress={getGeolocation}>
+                <View flex absB right padding-xx row centerV>
+                    <TouchableOpacity bg-white padding-x br20 onPress={getGeolocation}>
                         <IconApp size={22} assetName={"gps"} />
                     </TouchableOpacity>
-                    <View flex bg-white marginL-x br20 paddingH-v>
+                    {address && <View flex bg-white marginL-x br20 paddingH-v>
                         <Text vText >{address}</Text>
-                    </View>
+                    </View>}
                 </View>
             </View>
         </Wapper>
@@ -261,5 +252,5 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 3.84,
         elevation: 10,
-    }
+    },
 })

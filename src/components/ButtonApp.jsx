@@ -5,11 +5,11 @@ import IconApp from './IconApp'
 import { BOLD } from 'configs/fonts'
 
 const ButtonApp = ({
-    padding = 10,
-    margirn = 0,
     title = 'Title',
+    outline,
     background = Colors.yellow,
     color = Colors.white,
+    colorborder,
     renderleft,
     renderright,
     customlefft,
@@ -19,12 +19,16 @@ const ButtonApp = ({
     iconright,
     onclick,
     customcontent,
-    ...props
+    props,
 }) => {
+    var bordercolor = outline ? colorborder : background
     return (
-        <View left paddingT-xx>
+        <View style={props}>
             {customcontent ||
-                <View br20 paddingH-xv paddingV-iv backgroundColor={background} centerH row >
+                <TouchableOpacity br20 paddingH-xv paddingV-iv centerH row
+                    backgroundColor={background}
+                    style={{ borderWidth: 1, borderColor: bordercolor }}
+                    onPress={onclick}>
                     <View>
                         {customlefft || renderleft ? <IconApp assetName={iconleft} size={iconsize} /> : <View />}
                     </View>
@@ -32,7 +36,7 @@ const ButtonApp = ({
                     <View>
                         {customright || renderright ? <IconApp assetName={iconright} size={iconsize} /> : <View />}
                     </View>
-                </View>
+                </TouchableOpacity>
             }
         </View>
     )
@@ -41,7 +45,7 @@ const ButtonApp = ({
 export default ButtonApp
 
 const styles = StyleSheet.create({
-    title:{
+    title: {
         fontFamily: BOLD
     }
 })

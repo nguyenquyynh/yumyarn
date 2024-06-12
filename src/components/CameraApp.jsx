@@ -227,7 +227,6 @@ const CameraApp = () => {
                 </View>
 
                 <View style={{ flex: 7 }}>
-                    <GestureHandlerRootView>
                         <GestureDetector gesture={Gesture.Exclusive(gesture, tapGesture)}>
                             <ReanimatedCamera
                                 style={styles.camera}
@@ -244,7 +243,6 @@ const CameraApp = () => {
                                 animatedProps={animated_props}
                             />
                         </GestureDetector>
-                    </GestureHandlerRootView>
                     {is_capturing && video_status &&
                         <Text style={styles.recordingTimeText}>
                             {recording_time}

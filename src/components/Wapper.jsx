@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native-ui-lib';
-import { StatusBar } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import HeaderApp from './HeaderApp';
 
 const Wapper = ({
@@ -11,6 +11,8 @@ const Wapper = ({
   iconright,
   renderleft = false,
   renderright = false,
+  funtleft,
+  funtright,
   sizeiconleft,
   sizeiconright,
   customleft,
@@ -22,7 +24,7 @@ const Wapper = ({
   return (
     <View flex>
        <StatusBar translucent backgroundColor="transparent" />
-      <View flex-2>
+      <View style={styles.header}>
         {!header ?
           <HeaderApp
             gadient={gadient}
@@ -35,6 +37,8 @@ const Wapper = ({
             customright={customright}
             sizeiconright={sizeiconright}
             sizeiconleft={sizeiconleft}
+            funtleft={funtleft}
+            funtright={funtright}
           /> : customheader && customheader?.()}
       </View>
       <View flex-15>
@@ -45,3 +49,8 @@ const Wapper = ({
 }
 
 export default Wapper
+const styles = StyleSheet.create({
+  header:{
+    height: 100
+  }
+})
