@@ -1,16 +1,23 @@
-import { StatusBar, StyleSheet, Text } from 'react-native'
+import { StatusBar, StyleSheet } from 'react-native'
 import React from 'react'
-import { View } from 'react-native-ui-lib'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import MainNavigation from 'containers/navigations/MainNavigation'
 import DevNavigation from 'containers/navigations/DevNavigation'
-
+import { Provider } from 'react-redux'
+import { store, persistor } from 'src/store/store'
+import { PersistGate } from 'redux-persist/integration/react'
+import { I18nProvider } from 'lang'
 const App = () => {
   return (
-    <GestureHandlerRootView>
-      <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-        <DevNavigation />
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <I18nProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <GestureHandlerRootView>
+            <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
+            <DevNavigation />
+          </GestureHandlerRootView>
+        </PersistGate>
+      </I18nProvider>
+    </Provider>
 
   )
 }
