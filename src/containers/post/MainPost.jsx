@@ -1,4 +1,4 @@
-import { FlatList, Modal, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, FlatList, Modal, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 import Wapper from 'components/Wapper';
 import { t } from 'lang';
@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import CameraApp from 'components/CameraApp';
 import Video from 'react-native-video';
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
+import { createpost } from 'src/hooks/api/post';
 
 const MainPost = () => {
   const [modelshow, setModelshow] = useState(false);
@@ -17,8 +18,9 @@ const MainPost = () => {
   const [open_library, setopen_library] = useState(false)
   const navigation = useNavigation()
   const [images, setImages] = useState([]);
-  const [save_image, setsave_image] = useState([]);
-  const [is_loading, setis_loading] = useState(false)
+  const [is_loading, setis_loading] = useState(false);
+  const [content, setcontent] = useState("")
+  const [hashtag, sethashtag] = useState("")
   // Hàm xóa ảnh
   const handleRemoveImage = (id) => {
     setImages(images.filter(image => image.id !== id));
@@ -41,7 +43,7 @@ const MainPost = () => {
         color={Colors.white}
         padding={'padding-10'}
         title={t("create_post.post")}
-        onclick={createPost}
+        onclick={checkCreatePost}
       />
     );
   };
@@ -70,14 +72,62 @@ const MainPost = () => {
     }
   }
 
+  const checkCreatePost = async () => {
+    if(content == null){
+      Alert.alert("Vui lòng nhập nội dung")
+    }
+    else if(images.length <= 0){
+      Alert.alert("Vui lòng chọn ảnh")
+    }
+    else{
+      createPost()
+    }
+  }
+
+  const extractHashtags = (inputString) => {
+    const words = inputString.split(' ');
+    const result = [];
+    for (let ele of words) {
+        if (ele.startsWith('#')) {
+            // Loại bỏ dấu # và thêm dấu cách ở cuối
+            result.push(ele.substring(1) + ' ');
+        }
+    }
+
+    return result;
+}
+
   const createPost = async () => {
     setis_loading(true)
     const uploadPromises = images.map(image => onUploadMedia(image))
     const uploadedUrls = await Promise.all(uploadPromises);
     const validUrls = uploadedUrls.filter(url => url !== null);
-    setsave_image(validUrls);
 
-    console.log(validUrls)
+    const body = {
+      media: validUrls,
+      address: {
+        detail: "Quận 12",
+        longitude: 123.123,
+        latitude: 123.123,
+        longitudeDelta: 123.123,
+        latitudeDelta: 123.123
+      },
+      create_by: "665c11ebfc13ae2944c633f0",
+      hashtags: extractHashtags(hashtag),
+      content: content,
+    }
+
+    const response = await createpost(body)
+    console.log(response)
+    if(response.status){
+      console.log(response.data)
+      setImages([])
+      sethashtag("")
+      setcontent("")
+      Alert.alert("Thành công")
+    }else{
+      Alert.alert("Thất bại")
+    }
     setis_loading(false)
   }
 
@@ -99,7 +149,7 @@ const MainPost = () => {
   if(is_loading){
     return (
       <View style={{flex : 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>Đang tải ảnh và video lên cloud</Text>
+        <Text style={{color: "Black"}}>Đang tải ảnh và video lên cloud</Text>
       </View>
     )
   }
@@ -118,11 +168,15 @@ const MainPost = () => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <TextInput
               style={styles.input}
+              value={content}
+              onChangeText={setcontent}
               placeholder={t("create_post.content_hint")}
               placeholderTextColor="black"
               multiline
             />
             <TextInput
+              value= {hashtag}
+              onChangeText={sethashtag}
               style={styles.hashtagHint}
               placeholder={t("create_post.hashtag_hint")}
               placeholderTextColor="black"
@@ -242,7 +296,7 @@ const styles = StyleSheet.create({
   modals: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     paddingVertical: 20,
   },
   textcamera: {

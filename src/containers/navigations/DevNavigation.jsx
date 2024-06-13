@@ -6,7 +6,7 @@ import AddAdrressScreen from 'containers/post/AddAdrressScreen'
 import Setting from 'containers/setting/Setting'
 import { NavigationContainer } from '@react-navigation/native'
 import DevScreen from './DevScreen'
-import { Welcome } from 'containers/auth/Welcome'
+import Welcome  from 'containers/auth/Welcome'
 import Login from 'containers/auth/Login'
 
 const DevNavigation = () => {
