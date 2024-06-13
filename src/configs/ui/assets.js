@@ -28,6 +28,7 @@ Assets.loadAssetsGroup('icons', {
     line: require('assets/icon/line.png'),
     settings: require('assets/icon/settings.png'),
     arrow_back: require('assets/icon/arrow_back.png'),
+    arrow_down: require('assets/icon/down_arrow.png'),
     gps: require('assets/icon/gps.png'),
     clock: require('assets/icon/clock.png'),
     flash: require('assets/icon/flash.png'),
@@ -42,4 +43,10 @@ Assets.loadAssetsGroup('icons', {
     unhappy:require('assets/icon/unhappy.png'),
     log_out:require('assets/icon/log_out.png'),
     warning: require('assets/icon/warning.png'),
+    vietnam: require('assets/icon/vietnam.png'),
+    france: require('assets/icon/france.png'),
+    english: require('assets/icon/english.png'),
+    china: require('assets/icon/china.png'),
+    japan: require('assets/icon/japan.png'),
+    logoapp: require('assets/icon/logo.png'),
 })

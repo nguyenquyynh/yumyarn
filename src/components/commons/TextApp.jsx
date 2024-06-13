@@ -13,7 +13,7 @@ const TextApp = ({
 }) => {
   return (
     <Translation>
-        {(t,{i18n}) => <Text title color={ color || Colors.black} style={[style, size && {fontSize: size }]}>{t(text)}</Text>}
+        {(t,{i18n}) => <Text title color={ color || Colors.black} style={[style, size && {fontSize: size }]}>{t(text)} </Text>}
     </Translation>
   )
 }
