@@ -6,14 +6,16 @@ import { store, persistor } from 'src/store/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { I18nProvider } from 'lang'
 import MainNavigation from 'containers/navigations/MainNavigation'
+import Spiwertext from 'src/testcomponent/Spiwertext'
 const App = () => {
   return (
     <Provider store={store}>
       <I18nProvider>
         <PersistGate loading={null} persistor={persistor}>  
             <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-            {/* <DevNavigation /> */}
-            <MainNavigation />
+            <DevNavigation />
+            {/* <MainNavigation /> */}
+            {/* <Spiwertext/> */}
         </PersistGate>
       </I18nProvider>
     </Provider>

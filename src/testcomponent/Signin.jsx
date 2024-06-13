@@ -7,9 +7,9 @@ const Signin = () => {
     webClientId: process.env.GOOGLE_SIGNINAPI,
   })
   const handleSignin = async () => {
+      showPlayServicesUpdateDialog: true
     console.log('google signin........')
     await GoogleSignin.hasPlayServices({
-      showPlayServicesUpdateDialog: true
     })
     try {
       await GoogleSignin.hasPlayServices()
