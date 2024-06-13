@@ -120,7 +120,7 @@ const CameraView = (props) => {
                     onRecordingError: (error) => console.log(error),
                     onRecordingFinished: (video) => {
                         console.log(video);
-                        setlistiamge(video.path);
+                        setlistiamge(video);
                     },
                     flash: check_flash && !front_camera ? "on" : "off",
                     fileType: "mp4"
@@ -155,7 +155,7 @@ const CameraView = (props) => {
                 });
 
                 console.log(photo);
-                setlistiamge(photo.path);
+                setlistiamge(photo);
             } catch (error) {
                 console.log('Lỗi khi chụp ảnh:', error);
             }
@@ -246,7 +246,7 @@ const CameraView = (props) => {
                                         if (!is_capturing) {
                                             setswitch_tick(!switch_tick)
                                             closeModal()
-                                            updateListMedia("file://" + listiamge)
+                                            updateListMedia(listiamge)
                                         }
                                     }}>
                                         <Image assetName='tickCamera' width={70} height={70} />

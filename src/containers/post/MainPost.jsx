@@ -17,7 +17,8 @@ const MainPost = () => {
   const [open_library, setopen_library] = useState(false)
   const navigation = useNavigation()
   const [images, setImages] = useState([]);
-
+  const [save_image, setsave_image] = useState([]);
+  const [is_loading, setis_loading] = useState(false)
   // Hàm xóa ảnh
   const handleRemoveImage = (id) => {
     setImages(images.filter(image => image.id !== id));
@@ -40,14 +41,50 @@ const MainPost = () => {
         color={Colors.white}
         padding={'padding-10'}
         title={t("create_post.post")}
+        onclick={createPost}
       />
     );
   };
 
+  const onUploadMedia = async (file) => {
+    const { uri, type, name } = file
+    try {
+      const data = new FormData();
+      data.append('file', { uri, type, name });
+      data.append('upload_preset', 'ml_default');
+      data.append('cloud_name', 'dnodsjqql');
+
+      const response = await fetch('https://api.cloudinary.com/v1_1/dnodsjqql/upload', {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+        },
+        body: data
+      });
+
+      const newData = await response.json();
+      return newData.url
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  const createPost = async () => {
+    setis_loading(true)
+    const uploadPromises = images.map(image => onUploadMedia(image))
+    const uploadedUrls = await Promise.all(uploadPromises);
+    const validUrls = uploadedUrls.filter(url => url !== null);
+    setsave_image(validUrls);
+
+    console.log(validUrls)
+    setis_loading(false)
+  }
+
   const renderItem = ({ item }) => (
     <View style={styles.imageWrapper}>
-      { item.uri?.endsWith('.mp4') ?
-        <Video source={{ uri: item.uri }} style={styles.imageitem} paused controls                             /> :
+      {item.uri?.endsWith('.mp4') ?
+        <Video source={{ uri: item.uri }} style={styles.imageitem} paused controls /> :
         <Image source={{ uri: item.uri }} style={styles.imageitem} />
       }
       <TouchableOpacity
@@ -58,6 +95,14 @@ const MainPost = () => {
       </TouchableOpacity>
     </View>
   );
+
+  if(is_loading){
+    return (
+      <View style={{flex : 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text>Đang tải ảnh và video lên cloud</Text>
+      </View>
+    )
+  }
 
   return (
     <Wapper
@@ -121,8 +166,8 @@ const MainPost = () => {
             <Text style={styles.textcamera}>{t("app.camera")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-          // style={styles.contentlibrary}
-          onPress={() => setopen_library(true)}
+            // style={styles.contentlibrary}
+            onPress={() => setopen_library(true)}
           >
             <IconApp assetName={"library"} size={50} />
             <Text style={styles.textlibrary}>{t("app.library")}</Text>
@@ -134,14 +179,18 @@ const MainPost = () => {
         <CameraApp
           closeModal={() => setopen_camera(false)}
           updateListMedia={(medias) => {
-            if(medias != null){
+
+            if (medias != null) {
+              const filename = medias.path.split('/').pop()
               var one_media = {
                 id: images.length + 1,
-                uri: medias
+                type: medias.path.endsWith('.mp4') ? "video/mp4": "image/jpeg",
+                uri: "file://" + medias.path,
+                name: filename
               }
-              
+
               images.push(one_media)
-            }         
+            }
           }}
         />
       </Modal>
@@ -150,19 +199,21 @@ const MainPost = () => {
         <ImageAndVideoLibary
           closeModal={() => setopen_library(false)}
           updateListMedia={(medias) => {
-            if(medias.length > 0) {
+            if (medias.length > 0) {
               medias.forEach(ele => {
-                if(ele != null){
+                if (ele != null) {
                   var one_media = {
                     id: images.length + 1,
-                    uri: ele.uri
+                    type: ele.type,
+                    uri: ele.uri,
+                    name: ele.fileName
                   }
-                  
+
                   images.push(one_media)
-                } 
+                }
               });
             }
-                    
+
           }}
         />
       </Modal>
@@ -189,7 +240,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   modals: {
-    width: '50%',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 20,
