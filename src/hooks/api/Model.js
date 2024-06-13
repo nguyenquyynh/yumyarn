@@ -20,3 +20,7 @@ export const USERS_AUTHEN= {
     VERIFY: "VERIFY",
     ERROR: "ERROR"
 }
+
+export const POST = {
+    CREATEPOST: "create"
+}
