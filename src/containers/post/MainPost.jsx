@@ -20,6 +20,7 @@ const MainPost = () => {
   const [images, setImages] = useState([]);
   const [is_loading, setis_loading] = useState(false);
   const [content, setcontent] = useState("")
+  const [hashtag, sethashtag] = useState("")
   // Hàm xóa ảnh
   const handleRemoveImage = (id) => {
     setImages(images.filter(image => image.id !== id));
@@ -83,6 +84,19 @@ const MainPost = () => {
     }
   }
 
+  const extractHashtags = (inputString) => {
+    const words = inputString.split(' ');
+    const result = [];
+    for (let ele of words) {
+        if (ele.startsWith('#')) {
+            // Loại bỏ dấu # và thêm dấu cách ở cuối
+            result.push(ele.substring(1) + ' ');
+        }
+    }
+
+    return result;
+}
+
   const createPost = async () => {
     setis_loading(true)
     const uploadPromises = images.map(image => onUploadMedia(image))
@@ -99,7 +113,7 @@ const MainPost = () => {
         latitudeDelta: 123.123
       },
       create_by: "665c11ebfc13ae2944c633f0",
-      hashtags: [],
+      hashtags: extractHashtags(hashtag),
       content: content,
     }
 
@@ -108,6 +122,7 @@ const MainPost = () => {
     if(response.status){
       console.log(response.data)
       setImages([])
+      sethashtag("")
       setcontent("")
       Alert.alert("Thành công")
     }else{
@@ -160,6 +175,8 @@ const MainPost = () => {
               multiline
             />
             <TextInput
+              value= {hashtag}
+              onChangeText={sethashtag}
               style={styles.hashtagHint}
               placeholder={t("create_post.hashtag_hint")}
               placeholderTextColor="black"
