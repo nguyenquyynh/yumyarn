@@ -12,8 +12,8 @@ const App = () => {
       <I18nProvider>
         <PersistGate loading={null} persistor={persistor}>  
             <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-            {/* <DevNavigation /> */}
-            <MainNavigation />
+            <DevNavigation />
+            {/* <MainNavigation /> */}
         </PersistGate>
       </I18nProvider>
     </Provider>

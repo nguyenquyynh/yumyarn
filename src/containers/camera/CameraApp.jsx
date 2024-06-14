@@ -1,9 +1,6 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { PermissionsAndroid, Pressable, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Reanimated, { Extrapolation, interpolate, runOnJS, useAnimatedProps, useSharedValue } from 'react-native-reanimated';
-import { Image, View } from 'react-native-ui-lib';
-import { Camera, useCameraDevice, useCameraFormat } from 'react-native-vision-camera';
+import React, { useEffect, useState } from 'react';
+import { PermissionsAndroid, StyleSheet, Text } from 'react-native';
+import { View } from 'react-native-ui-lib';
 import CameraView from './CameraView';
 
 const CameraApp = (props) => {
