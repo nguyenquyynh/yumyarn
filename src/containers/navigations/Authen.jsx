@@ -7,7 +7,7 @@ import Login from 'containers/auth/Login';
 const Authen = () => {
     const Stack = createNativeStackNavigator();
     return (
-        <Stack.Navigator screenOptions={{
+        <Stack.Navigator initialRouteName='Welcome' screenOptions={{
             headerShown: false
         }}>
             <Stack.Screen name='Login' component={Login} />

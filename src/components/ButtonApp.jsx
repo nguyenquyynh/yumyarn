@@ -9,6 +9,7 @@ const ButtonApp = ({
     outline,
     background = Colors.yellow,
     color = Colors.white,
+    sizeText = 23,
     colorborder,
     renderleft,
     renderright,
@@ -32,7 +33,7 @@ const ButtonApp = ({
                     <View>
                         {customlefft || renderleft ? <IconApp assetName={iconleft} size={iconsize} /> : <View />}
                     </View>
-                    <Text color={color} style={styles.title}>{title}</Text>
+                    <Text color={color} style={[styles.title, {fontSize: sizeText}]}>{title}</Text>
                     <View>
                         {customright || renderright ? <IconApp assetName={iconright} size={iconsize} /> : <View />}
                     </View>

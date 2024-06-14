@@ -15,7 +15,7 @@ const Login = () => {
     const dishpatch = useDispatch()
     const setting = useSelector(state => state.setting)
 
-    const [showNotifi, setShowNotifi] = useState(true)
+    const [showNotifi, setShowNotifi] = useState(false)
     const [notifycontent, setNotifycontent] = useState('')
     const [isShowModal, setIsShowModal] = useState(false)
     const [policy, setPolicy] = useState(false)
@@ -62,9 +62,9 @@ const Login = () => {
         </View>)
     }
     return (
-        <View bg-yellow flex>
+        <View flex>
             <View flex>
-                <View centerH flex>
+                <View centerH flex  paddingT-xx>
                     <Text margin-xl text20BO color={Colors.orange} center>{t("app.name_app")}</Text>
                     <IconApp assetName={"logoapp"} size={200} />
                 </View>
