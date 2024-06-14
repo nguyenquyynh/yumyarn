@@ -7,10 +7,10 @@ import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
 import { useNavigation } from '@react-navigation/native';
-import CameraApp from 'components/CameraApp';
 import Video from 'react-native-video';
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
 import { createpost } from 'src/hooks/api/post';
+import CameraApp from 'containers/camera/CameraApp';
 
 const MainPost = () => {
   const [modelshow, setModelshow] = useState(false);
@@ -213,14 +213,16 @@ const MainPost = () => {
       </View>
       <Modals modalhiden={setModelshow} modalVisible={modelshow}>
         <View style={styles.modals}>
-          <TouchableOpacity
-            // style={styles.contentcamera} 
+          <TouchableOpacity 
+            centerH
+            centerV
             onPress={() => setopen_camera(true)}>
             <IconApp assetName={"diaphragm"} size={50} />
             <Text style={styles.textcamera}>{t("app.camera")}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            // style={styles.contentlibrary}
+            centerH
+            centerV
             onPress={() => setopen_library(true)}
           >
             <IconApp assetName={"library"} size={50} />

@@ -1,5 +1,6 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { PermissionsAndroid, Pressable, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { isFulfilled } from '@reduxjs/toolkit';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Pressable, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
 import Reanimated, { Extrapolation, interpolate, runOnJS, useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import { Image, View } from 'react-native-ui-lib';
@@ -25,7 +26,7 @@ const CameraView = (props) => {
         { type: 'video' },
     ]);
     const [intervalId, setintervalId] = useState(null);
-    const [listiamge, setlistiamge] = useState(null);
+    const [itemiamge, set_itemiamge] = useState(null);
     const [is_capturing, setis_capturing] = useState(false);
 
     if (device == null) {
@@ -113,6 +114,16 @@ const CameraView = (props) => {
         setintervalId(null);
     };
 
+    useEffect(() => {
+        if (recording_time >= 30) {
+            camera_ref.current?.stopRecording();
+            setis_capturing(false);
+            stopRecordingTimer();
+        }
+    },
+        [recording_time]
+    )
+
     const videoCapture = async () => {
         if (!is_capturing) {
             try {
@@ -120,7 +131,7 @@ const CameraView = (props) => {
                     onRecordingError: (error) => console.log(error),
                     onRecordingFinished: (video) => {
                         console.log(video);
-                        setlistiamge(video);
+                        set_itemiamge(video);
                     },
                     flash: check_flash && !front_camera ? "on" : "off",
                     fileType: "mp4"
@@ -155,7 +166,7 @@ const CameraView = (props) => {
                 });
 
                 console.log(photo);
-                setlistiamge(photo);
+                set_itemiamge(photo);
             } catch (error) {
                 console.log('Lỗi khi chụp ảnh:', error);
             }
@@ -171,7 +182,11 @@ const CameraView = (props) => {
         <GestureHandlerRootView>
             <View flex>
                 <View style={styles.headerCamera}>
-                    <Pressable onPress={closeModal}>
+                    <Pressable onPress={() => {
+                        setis_capturing(false);
+                        stopRecordingTimer();
+                        closeModal();
+                    }}>
                         <Image assetName='arrow_back' width={24} height={24} />
                     </Pressable>
                     <TouchableOpacity onPress={() => setcheck_flash(!check_flash)}>
@@ -217,9 +232,22 @@ const CameraView = (props) => {
                         ))}
                     </View>
                     <View style={styles.viewfeature}>
-                        <View style={{ width: 70, height: 70 }}>
-                            
-                        </View>
+                        {
+                            !is_capturing && !switch_tick ?
+                                <Pressable style={{ width: 70, height: 70, alignItems: 'center', justifyContent: 'center' }}
+                                onPress={() => {
+                                    setswitch_tick(!switch_tick);
+                                    set_itemiamge(null)
+                                }}>
+                                    <Text>Cancle</Text>
+                                </Pressable>
+                                :
+                                <View style={{ width: 70, height: 70, }}>
+
+                                </View>
+
+                        }
+
                         {switch_tick && !video_status ?
                             <Pressable
                                 style={styles.tickCamera}
@@ -246,7 +274,7 @@ const CameraView = (props) => {
                                         if (!is_capturing) {
                                             setswitch_tick(!switch_tick)
                                             closeModal()
-                                            updateListMedia(listiamge)
+                                            updateListMedia(itemiamge)
                                         }
                                     }}>
                                         <Image assetName='tickCamera' width={70} height={70} />
@@ -257,7 +285,13 @@ const CameraView = (props) => {
                                 <Image assetName='crop' width={30} height={30} />
                             </Pressable>
                             :
-                            <Pressable style={styles.switchCamera} onPress={() => !is_capturing && setfront_camera(!front_camera)}>
+                            <Pressable style={styles.switchCamera} onPress={() => {
+                                if(video_status)
+                                    setfront_camera(!front_camera)
+                                else if(!is_capturing){
+                                    setfront_camera(!front_camera)
+                                }
+                            } }>
                                 <Image assetName='switch_camera' width={30} height={30} />
                             </Pressable>
                         }
