@@ -1,84 +1,91 @@
 {
+    "add_location": {
+        "choose": "Choose",
+        "title": "Add Location"
+    },
     "app": {
-        "name_app": "YumYarn",
-        "camera": "Camera",
-        "library": "Library",
-        "following": "Following",
-        "follow": "Follow",
-        "more": "See more",
-        "search": "Search",
-        "yumyarn_id": "YumYarn ID",
-        "address": "Address",
-        "phone": "Phone",
-        "email": "Email",
-        "name": "Name",
-        "inta": "Instagram",
-        "yout": "YouTube",
-        "x": "X",
         "add": "Add",
-        "video": "Video",
+        "address": "Address",
+        "camera": "Camera",
+        "email": "Email",
+        "follow": "Follow",
+        "following": "Following",
+        "get_started": "Get Started",
+        "inta": "Instagram",
+        "library": "Library",
+        "more": "See more",
+        "name": "Name",
+        "name_app": "YumYarn",
+        "next": "Next",
+        "phone": "Phone",
         "post": "Post",
         "restaurant": "Restaurant",
-        "get_started": "Get Started",
-        "next": "Next"
+        "search": "Search",
+        "video": "Video",
+        "x": "X",
+        "yout": "YouTube",
+        "yumyarn_id": "YumYarn ID"
     },
-    "wellcome": {
-        "greeting": "Welcome to",
-        "diversity": "Diversity",
-        "reality": "Reality",
-        "help_one": "Helps you choose delicious and convenient restaurants.",
-        "help_two": "Reviewed from real experiences."
+    "create_post": {
+        "content_hint": "Write about something delicious...",
+        "hashtag_hint": "Add #hashtag to make it easier for others to find you.",
+        "loacation_hint": "Don't forget to add a location to make it easier for everyone to find.",
+        "post": "Post",
+        "title": "Create Post"
+    },
+    "loading": {
+        "content": "What to eat today...."
     },
     "login": {
+        "google": "CONTINUE WITH GOOGLE",
         "i_read": "I have read",
         "policy": "Privacy Policy",
         "register": "Your account has been registered! Log in now",
-        "verify": "Check your email inbox that you used during registration to verify your account",
-        "google": "CONTINUE WITH GOOGLE"
+        "verify": "Check your email inbox that you used during registration to verify your account"
+    },
+    "notification": {
+        "follow": "followed you",
+        "like": "liked your post",
+        "system": "System notification",
+        "title": "Notification"
     },
     "post": {
         "edit": "Edit",
         "report": "Report"
     },
-    "notification": {
-        "title": "Notification",
-        "like": "liked your post",
-        "follow": "followed you",
-        "system": "System notification"
-    },
-    "title_model": {
-        "remove_account": "Do you want to delete the account?",
-        "cancel": "Cancel",
-        "ok": "Confirm",
-        "content_remove_account": "Deleted account will be permanently unrecoverable"
-    },
     "profile": {
-        "postting": "Posts",
+        "about_me": "About Me",
+        "edit_profile": "Edit Profile",
         "followers": "Followers",
         "following": "Following",
-        "edit_profile": "Edit Profile",
-        "about_me": "About Me",
+        "postting": "Posts",
         "social_media": "Social Media"
     },
-    "create_post": {
-        "title": "Create Post",
-        "post": "Post",
-        "content_hint": "Write about something delicious...",
-        "hashtag_hint": "Add #hashtag to make it easier for others to find you.",
-        "loacation_hint": "Don't forget to add a location to make it easier for everyone to find."
-    },
-    "add_location": {
-        "title": "Add Location",
-        "choose": "Choose"
-    },
-    "loading": {
-        "content": "What to eat today...."
-    },
     "setting": {
-        "setting": "Settings",
-        "language": "Language",
         "Community_standards": "Community Standards",
         "delete_the_account": "Delete Account",
-        "log_out": "Log Out"
+        "language": "Language",
+        "log_out": "Log Out",
+        "setting": "Settings"
+    },
+    "title_model": {
+        "address_error": "Please select an address.",
+        "cancel": "Cancel",
+        "content_error": "Please enter content.",
+        "content_remove_account": "Deleted accounts cannot be recovered permanently.",
+        "error": "Error",
+        "image_error": "Please select an image.",
+        "ok": "OK",
+        "post_faile": "Failed to share your experience.",
+        "post_success": "Your experience has been shared successfully.",
+        "remove_account": "Do you want to delete your account?",
+        "success": "Success"
+    },
+    "wellcome": {
+        "diversity": "Diversity",
+        "greeting": "Welcome to",
+        "help_one": "Helps you choose delicious and convenient restaurants.",
+        "help_two": "Reviewed from real experiences.",
+        "reality": "Reality"
     }
 }

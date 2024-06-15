@@ -20,7 +20,7 @@ const ScreenGGmap = ({
   const [address, setAddress] = useState('address')
   const [name, setName] = useState('name')
   const [search, setSearch] = useState('66/5C Tổ 128 ấp Đông')
-  
+
   const revversLoacation = async (loaction) => {
     await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${loaction?.latitude},${loaction?.longitude}&lang=vi-VN&apiKey=${process.env.MAPAPI_KEY}`, {
       method: 'GET',
@@ -101,24 +101,19 @@ const ScreenGGmap = ({
       "}": "%7D",
       "~": "%7E"
     };
-    var keysearch = search.split('').map(char => urlEncoding[char] || char).join('');
+    var keysearch = keyvalue.trim()
+    // search.split('').map(char => urlEncoding[char] || char).join('');
 
-    await fetch(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address%2Cname%2Crating%2Copening_hours%2Cgeometry&input=${keysearch}&inputtype=textquery&key=${process.env.SEARCHAPI_KEY}`)
-      .then(async response => {
-        const data = await response.json()
-        if (data.status == 'OK') {
-          Alert.alert(data.candidates[0].formatted_address)
-          const location = data.candidates[0].geometry.location.latitude
-          setloaction({
-            latitude: location.latitude,
-            longitude: location.longitude
-          })
-        }
-      })
-      .catch(async error => {
-        const data = await error.json
-        console.log(data);
-      })
+    const locationsearch = `${loaction.latitude, loaction.longitude}&radius=2000`
+    const url = `${process.env.URL_SEARCH}?query=${keysearch}&location=${locationsearch}&key=${process.env.SEARCHAPI_KEY}`
+
+    try {
+      const response = await fetch(url)
+      const data = await response.json()
+      console.log(data)
+    } catch (error) {
+      console.log(error);
+    }
 
   }
   //Tạo đánh dấu địa điểm đã chọn
@@ -156,7 +151,7 @@ const ScreenGGmap = ({
               color: 'black'
             }}
               value={search}
-              onChangeText={setSearch}/>
+              onChangeText={setSearch} />
           </View>
           <TouchableOpacity flex-1 center onPress={handlerSearch}>
             <IconCustom size={30} name={'search'} />

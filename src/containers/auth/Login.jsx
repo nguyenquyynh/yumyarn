@@ -25,7 +25,7 @@ const Login = () => {
         if (policy) {
             const reponse = await userLogin()
             if (reponse.status) {
-                await dispatch(auth_login(reponse.data))
+                await dishpatch(auth_login(reponse.data))
             } else {
                 setShowNotifi(true)
                 setNotifycontent(reponse.data)

@@ -11,12 +11,17 @@ import Video from 'react-native-video';
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
 import { createpost } from 'src/hooks/api/post';
 import CameraApp from 'containers/camera/CameraApp';
+import NotificationModalApp from 'components/commons/NotificationModalApp';
 
-const MainPost = () => {
+const MainPost = ({ route }) => {
+  const navigation = useNavigation()
+  const { locationname, location_lat, loaction_lng } = route.params || { locationvalue: null, locationlatitude: null, locationlongitude: null };
   const [modelshow, setModelshow] = useState(false);
   const [open_camera, setopen_camera] = useState(false);
   const [open_library, setopen_library] = useState(false)
-  const navigation = useNavigation()
+  const [isnotifiy, setIsnotifiy] = useState(false)
+  const [notifycontent, setNotifycontent] = useState("")
+  const [notifytitle, setNotifytitle] = useState("")
   const [images, setImages] = useState([]);
   const [is_loading, setis_loading] = useState(false);
   const [content, setcontent] = useState("")
@@ -32,8 +37,8 @@ const MainPost = () => {
   };
 
   // Hàm chuyển component
-  const gotoScreen = (screen) => {
-    navigation.navigate(screen)
+  const gotoScreen = (screen, props) => {
+    navigation.navigate(screen, props)
   }
   const buttonright = () => {
     return (
@@ -42,6 +47,7 @@ const MainPost = () => {
         iconright={"notifycation"}
         color={Colors.white}
         padding={'padding-10'}
+        sizeText={14}
         title={t("create_post.post")}
         onclick={checkCreatePost}
       />
@@ -73,13 +79,21 @@ const MainPost = () => {
   }
 
   const checkCreatePost = async () => {
-    if(content == null){
-      Alert.alert("Vui lòng nhập nội dung")
+    if (content.trim() === '') {
+      setNotifytitle(t("title_model.content_error"))
+      setNotifycontent(t("title_model.post_faile"))
+      setIsnotifiy(true)
     }
-    else if(images.length <= 0){
-      Alert.alert("Vui lòng chọn ảnh")
+    else if (images.length <= 0) {
+      setNotifytitle(t("title_model.image_error"))
+      setNotifycontent(t("title_model.post_faile"))
+      setIsnotifiy(true)
+    } else if (locationname == null || loaction_lng == null || location_lat == null) {
+      setNotifytitle(t("title_model.address_error"))
+      setNotifycontent(t("title_model.post_faile"))
+      setIsnotifiy(true)
     }
-    else{
+    else {
       createPost()
     }
   }
@@ -88,47 +102,55 @@ const MainPost = () => {
     const words = inputString.split(' ');
     const result = [];
     for (let ele of words) {
-        if (ele.startsWith('#')) {
-            // Loại bỏ dấu # và thêm dấu cách ở cuối
-            result.push(ele.substring(1) + ' ');
-        }
+      if (ele.startsWith('#')) {
+        // Loại bỏ dấu # và thêm dấu cách ở cuối
+        result.push(ele.substring(1) + ' ');
+      }
     }
 
     return result;
-}
+  }
 
   const createPost = async () => {
-    setis_loading(true)
-    const uploadPromises = images.map(image => onUploadMedia(image))
-    const uploadedUrls = await Promise.all(uploadPromises);
-    const validUrls = uploadedUrls.filter(url => url !== null);
+    try {
+      setis_loading(true)
+      const uploadPromises = images.map(image => onUploadMedia(image))
+      const uploadedUrls = await Promise.all(uploadPromises);
+      const validUrls = uploadedUrls.filter(url => url !== null);
 
-    const body = {
-      media: validUrls,
-      address: {
-        detail: "Quận 12",
-        longitude: 123.123,
-        latitude: 123.123,
-        longitudeDelta: 123.123,
-        latitudeDelta: 123.123
-      },
-      create_by: "665c11ebfc13ae2944c633f0",
-      hashtags: extractHashtags(hashtag),
-      content: content,
-    }
+      const body = {
+        media: validUrls,
+        address: {
+          detail: locationname,
+          longitude: loaction_lng,
+          latitude: location_lat,
+          longitudeDelta: 0.005,
+          latitudeDelta: 0.005
+        },
+        create_by: "665c11ebfc13ae2944c633f0",
+        hashtags: extractHashtags(hashtag),
+        content: content,
+      }
+      const response = await createpost(body)
+      if (response.status) {
+        console.log(response.data)
+        setImages([])
+        sethashtag("")
+        setcontent("")
 
-    const response = await createpost(body)
-    console.log(response)
-    if(response.status){
-      console.log(response.data)
-      setImages([])
-      sethashtag("")
-      setcontent("")
-      Alert.alert("Thành công")
-    }else{
-      Alert.alert("Thất bại")
+        setNotifytitle(t("title_model.success"))
+        setNotifycontent(t("title_model.post_success"))
+        setIsnotifiy(true)
+      } else {
+        setNotifytitle(t("title_model.error"))
+        setNotifycontent(t("title_model.post_faile"))
+        setIsnotifiy(true)
+      }
+      setis_loading(false)
+    } catch (error) {
+      console.log(error)
+      setis_loading(false)
     }
-    setis_loading(false)
   }
 
   const renderItem = ({ item }) => (
@@ -146,10 +168,90 @@ const MainPost = () => {
     </View>
   );
 
-  if(is_loading){
+  //Modal pick Media
+  const renderModalPickImage = () => {
+    return (<Modals modalhiden={setModelshow} modalVisible={modelshow}>
+      <View style={styles.modals}>
+        <TouchableOpacity
+          centerH
+          centerV
+          onPress={() => setopen_camera(true)}>
+          <IconApp assetName={"diaphragm"} size={50} />
+          <Text style={styles.textcamera}>{t("app.camera")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          centerH
+          centerV
+          onPress={() => setopen_library(true)}
+        >
+          <IconApp assetName={"library"} size={50} />
+          <Text style={styles.textlibrary}>{t("app.library")}</Text>
+        </TouchableOpacity>
+      </View>
+    </Modals>)
+  }
+  //Modal camera
+  const rendermodalCamera = () => {
+    return (<Modal visible={open_camera} animationType="slide">
+      <CameraApp
+        closeModal={() => setopen_camera(false)}
+        updateListMedia={(medias) => {
+
+          if (medias != null) {
+            const filename = medias.path.split('/').pop()
+            var one_media = {
+              id: images.length + 1,
+              type: medias.path.endsWith('.mp4') ? "video/mp4" : "image/jpeg",
+              uri: "file://" + medias.path,
+              name: filename
+            }
+
+            images.push(one_media)
+          }
+          setModelshow(!modelshow)
+        }}
+      />
+    </Modal>)
+  }
+  //Modal Library
+  const renderModalLibrary = () => {
+    return (<Modal visible={open_library} animationType="slide">
+      <ImageAndVideoLibary
+        closeModal={() => setopen_library(false)}
+        updateListMedia={(medias) => {
+          if (medias.length > 0) {
+            medias.forEach(ele => {
+              if (ele != null) {
+                var one_media = {
+                  id: images.length + 1,
+                  type: ele.type,
+                  uri: ele.uri,
+                  name: ele.fileName
+                }
+
+                images.push(one_media)
+              }
+            });
+          }
+
+          setModelshow(!modelshow)
+        }}
+      />
+    </Modal>)
+  }
+  //Modal notify
+  const renderNotification = () => {
+    return (<NotificationModalApp
+      modalhiden={setIsnotifiy}
+      modalVisible={isnotifiy}
+      title={notifytitle}
+      asseticon={"logoapp"}
+      content={notifycontent} />)
+  }
+  if (is_loading) {
     return (
-      <View style={{flex : 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{color: "Black"}}>Đang tải ảnh và video lên cloud</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ color: "Black" }}>Đang tải ảnh và video lên cloud</Text>
       </View>
     )
   }
@@ -175,7 +277,7 @@ const MainPost = () => {
               multiline
             />
             <TextInput
-              value= {hashtag}
+              value={hashtag}
               onChangeText={sethashtag}
               style={styles.hashtagHint}
               placeholder={t("create_post.hashtag_hint")}
@@ -206,73 +308,15 @@ const MainPost = () => {
           <View style={styles.contentlocation}>
             <IconApp assetName={"location"} size={34} />
             <Text numberOfLines={1} style={styles.textloctation}>
-              {t("create_post.loacation_hint")}
+              {locationname || t("create_post.loacation_hint")}
             </Text>
           </View>
         </TouchableOpacity>
       </View>
-      <Modals modalhiden={setModelshow} modalVisible={modelshow}>
-        <View style={styles.modals}>
-          <TouchableOpacity 
-            centerH
-            centerV
-            onPress={() => setopen_camera(true)}>
-            <IconApp assetName={"diaphragm"} size={50} />
-            <Text style={styles.textcamera}>{t("app.camera")}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            centerH
-            centerV
-            onPress={() => setopen_library(true)}
-          >
-            <IconApp assetName={"library"} size={50} />
-            <Text style={styles.textlibrary}>{t("app.library")}</Text>
-          </TouchableOpacity>
-        </View>
-      </Modals>
-
-      <Modal visible={open_camera} animationType="slide">
-        <CameraApp
-          closeModal={() => setopen_camera(false)}
-          updateListMedia={(medias) => {
-
-            if (medias != null) {
-              const filename = medias.path.split('/').pop()
-              var one_media = {
-                id: images.length + 1,
-                type: medias.path.endsWith('.mp4') ? "video/mp4": "image/jpeg",
-                uri: "file://" + medias.path,
-                name: filename
-              }
-
-              images.push(one_media)
-            }
-          }}
-        />
-      </Modal>
-
-      <Modal visible={open_library} animationType="slide">
-        <ImageAndVideoLibary
-          closeModal={() => setopen_library(false)}
-          updateListMedia={(medias) => {
-            if (medias.length > 0) {
-              medias.forEach(ele => {
-                if (ele != null) {
-                  var one_media = {
-                    id: images.length + 1,
-                    type: ele.type,
-                    uri: ele.uri,
-                    name: ele.fileName
-                  }
-
-                  images.push(one_media)
-                }
-              });
-            }
-
-          }}
-        />
-      </Modal>
+      {renderModalPickImage()}
+      {rendermodalCamera()}
+      {renderModalLibrary()}
+      {renderNotification()}
     </Wapper>
   );
 };
@@ -293,7 +337,7 @@ const styles = StyleSheet.create({
   },
   foodter: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   modals: {
     width: '100%',
@@ -319,6 +363,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 15,
     flexDirection: 'row',
     padding: 10,
+    paddingHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -326,7 +371,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 15,
     fontWeight: 'bold',
-    marginLeft: 20
+    marginLeft: 10
   },
   imageListContainer: {
     padding: 10,

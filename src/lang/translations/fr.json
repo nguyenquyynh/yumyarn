@@ -1,84 +1,91 @@
 {
+  "add_location": {
+    "choose": "Choisir",
+    "title": "Ajouter un emplacement"
+  },
   "app": {
-      "name_app": "YumYarn",
-      "camera": "Appareil photo",
-      "library": "Bibliothèque",
-      "following": "Suivant",
-      "follow": "Suivre",
-      "more": "Voir plus",
-      "search": "Recherche",
-      "yumyarn_id": "YumYarn ID",
-      "address": "Adresse",
-      "phone": "Téléphone",
-      "email": "E-mail",
-      "name": "Nom",
-      "inta": "Instagram",
-      "yout": "YouTube",
-      "x": "X",
-      "add": "Ajouter",
-      "video": "Vidéo",
-      "post": "Poste",
-      "restaurant": "Restaurant",
-      "get_started": "Commencer",
-      "next": "Suivant"
-  },
-  "wellcome": {
-      "greeting": "Bienvenue à",
-      "diversity": "Diversité",
-      "reality": "Réalité",
-      "help_one": "Vous aide à choisir des restaurants délicieux et pratiques.",
-      "help_two": "Évalué à partir d'expériences réelles."
-  },
-  "login": {
-      "i_read": "J'ai lu",
-      "policy": "Politique de confidentialité",
-      "register": "Votre compte a été enregistré ! Connectez-vous maintenant",
-      "verify": "Veuillez vérifier votre boîte e-mail pour vérifier votre compte",
-      "google": "CONTINUER AVEC GOOGLE"
-  },
-  "post": {
-      "edit": "Modifier",
-      "report": "Signaler"
-  },
-  "notification": {
-      "title": "Notification",
-      "like": "a aimé votre poste",
-      "follow": "vous a suivi",
-      "system": "Notification système"
-  },
-  "title_model": {
-      "remove_account": "Voulez-vous supprimer le compte?",
-      "cancel": "Annuler",
-      "ok": "Confirmer",
-      "content_remove_account": "Le compte supprimé sera irrécupérable de façon permanente"
-  },
-  "profile": {
-      "postting": "Publications",
-      "followers": "Abonnés",
-      "following": "Suivant",
-      "edit_profile": "Modifier le profil",
-      "about_me": "À propos de moi",
-      "social_media": "Réseaux sociaux"
+    "add": "Ajouter",
+    "address": "Adresse",
+    "camera": "Appareil photo",
+    "email": "E-mail",
+    "follow": "Suivre",
+    "following": "Suivant",
+    "get_started": "Commencer",
+    "inta": "Instagram",
+    "library": "Bibliothèque",
+    "more": "Voir plus",
+    "name": "Nom",
+    "name_app": "YumYarn",
+    "next": "Suivant",
+    "phone": "Téléphone",
+    "post": "Poste",
+    "restaurant": "Restaurant",
+    "search": "Recherche",
+    "video": "Vidéo",
+    "x": "X",
+    "yout": "YouTube",
+    "yumyarn_id": "YumYarn ID"
   },
   "create_post": {
-      "title": "Créer un poste",
-      "post": "Publier",
-      "content_hint": "Écrivez sur quelque chose de délicieux...",
-      "hashtag_hint": "Ajoutez #hashtag pour que les autres puissent vous trouver plus facilement.",
-      "loacation_hint": "N'oubliez pas d'ajouter un emplacement pour que tout le monde puisse vous trouver plus facilement."
-  },
-  "add_location": {
-      "title": "Ajouter un emplacement",
-      "choose": "Choisir"
+    "content_hint": "Écrivez sur quelque chose de délicieux...",
+    "hashtag_hint": "Ajoutez #hashtag pour que les autres puissent vous trouver plus facilement.",
+    "loacation_hint": "N'oubliez pas d'ajouter un emplacement pour que tout le monde puisse vous trouver plus facilement.",
+    "post": "Publier",
+    "title": "Créer un poste"
   },
   "loading": {
-      "content": "Que manger aujourd'hui...."
+    "content": "Que manger aujourd'hui...."
+  },
+  "login": {
+    "google": "CONTINUER AVEC GOOGLE",
+    "i_read": "J'ai lu",
+    "policy": "Politique de confidentialité",
+    "register": "Votre compte a été enregistré ! Connectez-vous maintenant",
+    "verify": "Veuillez vérifier votre boîte e-mail pour vérifier votre compte"
+  },
+  "notification": {
+    "follow": "vous a suivi",
+    "like": "a aimé votre poste",
+    "system": "Notification système",
+    "title": "Notification"
+  },
+  "post": {
+    "edit": "Modifier",
+    "report": "Signaler"
+  },
+  "profile": {
+    "about_me": "À propos de moi",
+    "edit_profile": "Modifier le profil",
+    "followers": "Abonnés",
+    "following": "Suivant",
+    "postting": "Publications",
+    "social_media": "Réseaux sociaux"
   },
   "setting": {
-      "setting": "Paramètres",
-      "language": "Langue",
-      "Community_standards": "Normes communautaires",
-      "delete_the_account": "Supprimer le compte",
-      "log_out": "Se déconnecter"
+    "Community_standards": "Normes communautaires",
+    "delete_the_account": "Supprimer le compte",
+    "language": "Langue",
+    "log_out": "Se déconnecter",
+    "setting": "Paramètres"
+  },
+  "title_model": {
+    "address_error": "Veuillez sélectionner une adresse.",
+    "cancel": "Annuler",
+    "content_error": "Veuillez saisir du contenu.",
+    "content_remove_account": "Les comptes supprimés ne peuvent pas être récupérés de manière permanente.",
+    "error": "Erreur",
+    "image_error": "Veuillez sélectionner une image.",
+    "ok": "OK",
+    "post_faile": "Impossible de partager votre expérience.",
+    "post_success": "Votre expérience a été partagée avec succès.",
+    "remove_account": "Voulez-vous supprimer votre compte ?",
+    "success": "Succès"
+  },
+  "wellcome": {
+    "diversity": "Diversité",
+    "greeting": "Bienvenue à",
+    "help_one": "Vous aide à choisir des restaurants délicieux et pratiques.",
+    "help_two": "Évalué à partir d'expériences réelles.",
+    "reality": "Réalité"
   }
 }
