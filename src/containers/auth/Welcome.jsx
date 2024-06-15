@@ -64,7 +64,7 @@ const Welcome = () => {
           <Text center color={Colors.black} text30BO>{index == 0 ? t("wellcome.greeting") : t("wellcome.greeting")}</Text>
           <Text color={Colors.orange} text20BO>{t("app.name_app")}</Text>
           <View margin-lx>
-            <IconApp assetName={index == 0 ? "camera" : "logoapp"} size={250} />
+            <IconApp assetName={index == 0 ? "logoapp2" : "logoapp3"} size={250} />
           </View>
           <View paddingH-lx center>
             <Text center color={Colors.black} text30BO>{index == 0 ? t("wellcome.diversity") : t("wellcome.reality")}</Text>

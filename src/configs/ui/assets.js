@@ -49,4 +49,6 @@ Assets.loadAssetsGroup('icons', {
     china: require('assets/icon/china.png'),
     japan: require('assets/icon/japan.png'),
     logoapp: require('assets/icon/logo.png'),
+    logoapp2: require('assets/icon/logoapp2.png'),
+    logoapp3: require('assets/icon/logoapp3.png'),
 })
