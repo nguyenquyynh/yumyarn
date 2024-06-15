@@ -9,7 +9,7 @@ const ButtonApp = ({
     outline,
     background = Colors.yellow,
     color = Colors.white,
-    sizeText = 23,
+    sizeText = 14,
     colorborder,
     renderleft,
     renderright,

@@ -19,7 +19,7 @@ const NotificationModalApp = ({
         <View flex absF>{modalVisible &&
             <View flex bg-tr_black >
                 <Modal
-                    animationType="slide"
+                    animationType="fade"
                     transparent={true}
                     visible={modalVisible}>
                     <Pressable height={'100%'}>

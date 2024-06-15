@@ -1,84 +1,91 @@
 {
+  "add_location": {
+    "choose": "选择",
+    "title": "添加位置"
+  },
   "app": {
-      "name_app": "YumYarn",
-      "camera": "相机",
-      "library": "图书馆",
-      "following": "正在关注",
-      "follow": "关注",
-      "more": "查看更多",
-      "search": "搜索",
-      "yumyarn_id": "YumYarn ID",
-      "address": "地址",
-      "phone": "电话",
-      "email": "电子邮件",
-      "name": "姓名",
-      "inta": "Instagram",
-      "yout": "YouTube",
-      "x": "X",
-      "add": "添加",
-      "video": "视频",
-      "post": "帖子",
-      "restaurant": "餐厅",
-      "get_started": "开始",
-      "next": "下一个"
-  },
-  "wellcome": {
-      "greeting": "欢迎来到",
-      "diversity": "多样性",
-      "reality": "现实",
-      "help_one": "帮助您选择美味便捷的餐厅。",
-      "help_two": "根据真实体验进行评价。"
-  },
-  "login": {
-      "i_read": "我已阅读",
-      "policy": "隐私政策",
-      "register": "您的帳戶已註冊！立即登入",
-      "verify": "請檢查您註冊時提供的電子郵件信箱以驗證您的帳戶",
-      "google": "继续使用谷歌"
-  },
-  "post": {
-      "edit": "编辑",
-      "report": "报告"
-  },
-  "notification": {
-      "title": "通知",
-      "like": "喜欢了你的帖子",
-      "follow": "关注了你",
-      "system": "系统通知"
-  },
-  "title_model": {
-      "remove_account": "你想删除账户吗？",
-      "cancel": "取消",
-      "ok": "确认",
-      "content_remove_account": "删除的账户将无法恢复"
-  },
-  "profile": {
-      "postting": "帖子",
-      "followers": "粉丝",
-      "following": "正在关注",
-      "edit_profile": "编辑个人信息",
-      "about_me": "关于我",
-      "social_media": "社交媒体"
+    "add": "添加",
+    "address": "地址",
+    "camera": "相机",
+    "email": "电子邮件",
+    "follow": "关注",
+    "following": "正在关注",
+    "get_started": "开始",
+    "inta": "Instagram",
+    "library": "图书馆",
+    "more": "查看更多",
+    "name": "姓名",
+    "name_app": "YumYarn",
+    "next": "下一个",
+    "phone": "电话",
+    "post": "帖子",
+    "restaurant": "餐厅",
+    "search": "搜索",
+    "video": "视频",
+    "x": "X",
+    "yout": "YouTube",
+    "yumyarn_id": "YumYarn ID"
   },
   "create_post": {
-      "title": "创建帖子",
-      "post": "发布",
-      "content_hint": "写一些好吃的东西...",
-      "hashtag_hint": "添加 #hashtag 让别人更容易找到你。",
-      "loacation_hint": "不要忘记添加位置让大家更容易找到。"
-  },
-  "add_location": {
-      "title": "添加位置",
-      "choose": "选择"
+    "content_hint": "写一些好吃的东西...",
+    "hashtag_hint": "添加 #hashtag 让别人更容易找到你。",
+    "loacation_hint": "不要忘记添加位置让大家更容易找到。",
+    "post": "发布",
+    "title": "创建帖子"
   },
   "loading": {
-      "content": "今天吃什么...."
+    "content": "今天吃什么...."
+  },
+  "login": {
+    "google": "继续使用谷歌",
+    "i_read": "我已阅读",
+    "policy": "隐私政策",
+    "register": "您的帳戶已註冊！立即登入",
+    "verify": "請檢查您註冊時提供的電子郵件信箱以驗證您的帳戶"
+  },
+  "notification": {
+    "follow": "关注了你",
+    "like": "喜欢了你的帖子",
+    "system": "系统通知",
+    "title": "通知"
+  },
+  "post": {
+    "edit": "编辑",
+    "report": "报告"
+  },
+  "profile": {
+    "about_me": "关于我",
+    "edit_profile": "编辑个人信息",
+    "followers": "粉丝",
+    "following": "正在关注",
+    "postting": "帖子",
+    "social_media": "社交媒体"
   },
   "setting": {
-      "setting": "设置",
-      "language": "语言",
-      "Community_standards": "社区标准",
-      "delete_the_account": "删除账户",
-      "log_out": "登出"
+    "Community_standards": "社区标准",
+    "delete_the_account": "删除账户",
+    "language": "语言",
+    "log_out": "登出",
+    "setting": "设置"
+  },
+  "title_model": {
+    "address_error": "请选择地址。",
+    "cancel": "取消",
+    "content_error": "请输入内容。",
+    "content_remove_account": "删除的帐户无法永久恢复。",
+    "error": "失败",
+    "image_error": "请选择图片。",
+    "ok": "确认",
+    "post_faile": "分享您的体验失败。",
+    "post_success": "您的体验已成功分享。",
+    "remove_account": "您确定要删除帐户吗？",
+    "success": "成功"
+  },
+  "wellcome": {
+    "diversity": "多样性",
+    "greeting": "欢迎来到",
+    "help_one": "帮助您选择美味便捷的餐厅。",
+    "help_two": "根据真实体验进行评价。",
+    "reality": "现实"
   }
 }

@@ -50,7 +50,14 @@
         "remove_account" : "Bạn có muốn xóa tài khoản không ?",
         "cancel" : "Hủy",
         "ok": "Đồng ý",
-        "content_remove_account" : "Tài khoản bị xóa sẽ vĩnh viễn không thể khôi phục"
+        "content_remove_account" : "Tài khoản bị xóa sẽ vĩnh viễn không thể khôi phục",
+        "post_success" : "Trải nghiệm của bạn đã được chia sẻ",
+        "post_faile" : "Trải nghiệm của bạn đã được chia sẻ",
+        "success" : "Thành công",
+        "error" : "Thất bại",
+        "content_error": "Vui lòng nhập nội dung",
+        "image_error" : "Vui lòng chọn ảnh",
+        "address_error" : "Vui lòng chọn địa chỉ"
     },
     "profile" :{
         "postting": "Bài viết",
