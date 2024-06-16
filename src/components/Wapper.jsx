@@ -2,11 +2,13 @@ import React from 'react';
 import { View } from 'react-native-ui-lib';
 import { StatusBar, StyleSheet } from 'react-native';
 import HeaderApp from './HeaderApp';
+import LoadingApp from './commons/LoadingApp';
 
 const Wapper = ({
-  header = false, // call if you want to custom header
-  customheader, //funtion return UI
-  gadient, // Show linearGadient Top
+  loading = false,
+  header = false,
+  customheader,
+  gadient,
   iconleft,
   iconright,
   renderleft = false,
@@ -25,27 +27,29 @@ const Wapper = ({
   return (
     <View flex>
       <StatusBar translucent backgroundColor="transparent" />
-      <View style={styles.header}>
-        {!header ?
-          <HeaderApp
-          titlesize={titlesize}
-            gadient={gadient}
-            title={title}
-            iconleft={!iconleft ? 'back' : iconleft}
-            iconright={!iconright ? 'settings' : iconright}
-            renderleft={renderleft}
-            renderright={renderright}
-            customleft={customleft}
-            customright={customright}
-            sizeiconright={sizeiconright}
-            sizeiconleft={sizeiconleft}
-            funtleft={funtleft}
-            funtright={funtright}
-          /> : customheader && customheader?.()}
-      </View>
-      <View flex-15>
-        {children}
-      </View>
+      {loading ? <LoadingApp loading={loading}/> : <View flex>
+        <View style={styles.header}>
+          {!header ?
+            <HeaderApp
+              titlesize={titlesize}
+              gadient={gadient}
+              title={title}
+              iconleft={!iconleft ? 'back' : iconleft}
+              iconright={!iconright ? 'settings' : iconright}
+              renderleft={renderleft}
+              renderright={renderright}
+              customleft={customleft}
+              customright={customright}
+              sizeiconright={sizeiconright}
+              sizeiconleft={sizeiconleft}
+              funtleft={funtleft}
+              funtright={funtright}
+            /> : customheader && customheader?.()}
+        </View>
+        <View flex-15>
+          {children}
+        </View>
+      </View>}
     </View>
   )
 }

@@ -1,14 +1,17 @@
-import { Alert, Dimensions, Keyboard, StyleSheet, TextInput } from 'react-native'
+import { Dimensions, Keyboard, StyleSheet, TextInput } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import MapView, { AnimatedRegion, Marker, MarkerAnimated } from 'react-native-maps'
-import { Colors, Shadows, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import ButtonApp from 'components/ButtonApp'
 import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import { useNavigation } from '@react-navigation/native'
+
+const WIDTH_DIMENSION = Dimensions.get('window').width;
+const HEIGHT_DIMENSION = Dimensions.get('window').height;
+
 const AddAdrressScreen = ({ route }) => {
     const { defaultlocation } = route.params || {
         defaultlocation: {
@@ -60,7 +63,7 @@ const AddAdrressScreen = ({ route }) => {
                 });
             }
 
-           
+
         }
         ).catch(err => console.log(err));
     }
@@ -150,7 +153,7 @@ const AddAdrressScreen = ({ route }) => {
                 sizeText={13}
                 onclick={() => {
                     navigation.navigate("Post", {
-                        locationname: address?.name, 
+                        locationname: address?.name,
                         location_lat: address?.latitude,
                         loaction_lng: address?.longitude
                     })
@@ -185,7 +188,7 @@ const AddAdrressScreen = ({ route }) => {
             <View flex style={StyleSheet.absoluteFillObject}>
                 <MapView
                     ref={map}
-                    style={[styles.map, StyleSheet.absoluteFillObject]}
+                    style={[styles.mapSize, StyleSheet.absoluteFillObject]}
                     region={{
                         latitude: loaction.latitude,
                         longitude: loaction.longitude,
@@ -251,9 +254,9 @@ const AddAdrressScreen = ({ route }) => {
 export default AddAdrressScreen
 
 const styles = StyleSheet.create({
-    map: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height
+    mapSize:
+    {
+        flex: 1
     },
     shadow: {
         shadowColor: Colors.black,
@@ -263,26 +266,3 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
 })
-
-// var data = [
-//     { address: "01 Đ. Quang Trung, Phường 3, Gò Vấp, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.826334, longitude: 106.6792287, name: "McDonald's" },
-//     { address: "683 Đ. Âu Cơ, Tân Thành, Tân Phú, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.7884856, longitude: 106.6405601, name: "McDonald’s" },
-//     { address: "2-6Bis Đ. Điện Biên Phủ, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 70000, Vietnam", latitude: 10.7924818, longitude: 106.6988354, name: "McDonald's Dakao" },
-//     { address: "460 Đ. 3 Tháng 2, Phường 12, Quận 10, Thành phố Hồ Chí Minh, Vietnam", latitude: 10.768439, longitude: 106.6680117, name: "McDonald's" },
-//     { address: "Phòng A1, Tầng trệt, Khu vực thương mại Nhà giữ xe Ga Quốc Nội, Tân Bình, 700000, Vietnam", latitude: 10.8132539, longitude: 106.6629848, name: "McDonald's Tân Sơn Nhất" },
-//     { address: "TTTM Sài Gòn Centre, B2, 65 Đ. Lê Lợi, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.7731883, longitude: 106.7009194, name: "McDonald's" },
-//     { address: "242 Đ. Phạm Văn Đồng, Hiệp Bình Chánh, Thủ Đức, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.8276003, longitude: 106.7212132, name: "McDonald's" },
-//     { address: "Tầng trệt, Chung cư H3, 384 Hoàng Diệu, Quận 4, Ho Chi Minh City, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.7601771, longitude: 106.6989783, name: "McDonald's" },
-//     { address: "TTTM Vincom megamall, 161 Đ. Võ Nguyên Giáp, Thảo Điền, Thủ Đức, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.8023307, longitude: 106.741712, name: "McDonald's" },
-//     { address: "30 Đ. Tân Thắng, Sơn Kỳ, Tân Phú, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.8016988, longitude: 106.6175257, name: "McDonald's Aeon Mall Celadon Tân Phú" },
-//     { address: "1 Đ. Trần Hưng Đạo, Phường Nguyễn Thái Bình, Quận 1, Thành phố Hồ Chí Minh, Vietnam", latitude: 10.7696618, longitude: 106.6977815, name: "Mc Cafe" },
-//     { address: "425 Đ. Âu Cơ, Phú Trung, Tân Phú, Thành phố Hồ Chí Minh, Vietnam", latitude: 10.7780879, longitude: 106.6455019, name: "MC coffee" },
-//     { address: "26 Bàu Cát, Phường 14, Tân Bình, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.7922117, longitude: 106.6413588, name: "MC Coffee" },
-//     { address: "Tầng trệt, TTTM Centre Mall, C6/27 Đ. Phạm Hùng, Bình Hưng, Bình Chánh, Thành phố Hồ Chí Minh 700000, Vietnam", latitude: 10.7332423, longitude: 106.6742668, name: "McDonald's" },
-//     { address: "242 Nguyễn Văn Lượng, Phường 10, Gò Vấp, Thành phố Hồ Chí Minh 70000, Vietnam", latitude: 10.8378986, longitude: 106.6713175, name: "McDonald's Lotte Gò Vấp" },
-//     { address: "34A Đ. 16, Linh Chiểu, Thủ Đức, Thành phố Hồ Chí Minh 70000, Vietnam", latitude: 10.8585607, longitude: 106.7610063, name: "MC coffe" },
-//     { address: "10 Đường số 33, Tân Thông Hội, Củ Chi, Thành phố Hồ Chí Minh, Vietnam", latitude: 10.9702707, longitude: 106.5057716, name: "MC coffee" },
-//     { address: "Tan Thanh, Tân Phú, Ho Chi Minh City, Vietnam", latitude: 10.7895096, longitude: 106.6339342, name: "Công Ty Cp Thời Trang Mc Việt Nam Tổng Đại Lý Phía Nam" },
-//     { address: "13a Trần Văn Chẩm, Tân Thông Hội, Củ Chi, Thành phố Hồ Chí Minh, Vietnam", latitude: 10.9593163, longitude: 106.5106499, name: "MC COFFEE" },
-//     { address: "502 Hà Huy Giáp, Thạnh Lộc, Quận 12, Thành phố Hồ Chí Minh, Vietnam", latitude: 10.8749805, longitude: 106.6769001, name: "Đại lý thời trang MC FASHION Quận 12-Thời trang nữ công sở" }
-// ];
