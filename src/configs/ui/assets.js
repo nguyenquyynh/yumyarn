@@ -51,4 +51,6 @@ Assets.loadAssetsGroup('icons', {
     logoapp: require('assets/icon/logo.png'),
     logoapp2: require('assets/icon/logoapp2.png'),
     logoapp3: require('assets/icon/logoapp3.png'),
+    starving: require('assets/gif/starving.gif'),
+    history: require('assets/icon/history.png'),
 })
