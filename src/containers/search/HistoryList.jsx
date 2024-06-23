@@ -12,6 +12,7 @@ const HistoryList = ({
     const dispatch = useDispatch()
     const data_history = useSelector(state => state.search.history);
     const [history, setHistory] = useState(data_history);
+
     useEffect(() => {
         if (keyword.trim() != "") {
             setHistory(data_history.filter(item => item.includes(keyword.trim())))
@@ -21,29 +22,30 @@ const HistoryList = ({
     }, [keyword])
 
     const handlerRemoveHistory = (item) => {
+        setHistory(data_history.filter(el => el != item))
         dispatch(history_remaove(item))
     }
     const renderItemHistory = (item) => {
         return (
             <View flex row padding-x centerV spread>
-                <TouchableOpacity row centerV flex-9 onPress={() => {setKeyword(item)}}>
+                <TouchableOpacity row centerV flex-9 onPress={() => { setKeyword(item) }}>
                     <IconApp assetName={"history"} />
                     <View marginL-x>
-                        <Text numberOfLines={1} text70BO>{item.length > 12 ? item.substring(0, 30) + '...' : item}</Text>
+                        <Text numberOfLines={1} text70BO>{item.length > 30 ? item.substring(0, 30) + '...' : item}</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity flex-1 center onPress={() => {handlerRemoveHistory(item)}}>
-                    <IconApp assetName={"core"} size={15}/>
+                <TouchableOpacity flex-1 center onPress={() => { handlerRemoveHistory(item) }}>
+                    <IconApp assetName={"core"} size={15} />
                 </TouchableOpacity>
             </View>
         )
     }
     return (
-        <View style={{ flex: 1 }}>
+        <View flex paddingH-x bg-white>
             {history && (
                 <FlatList
                     data={history}
-                    keyExtractor={() => Math.random() * 10}
+                    keyExtractor={() => Math.random() * 100}
                     renderItem={({ item }) => renderItemHistory(item)}
                 />
             )}

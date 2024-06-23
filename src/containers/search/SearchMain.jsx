@@ -15,7 +15,7 @@ const SearchMain = () => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const [keyword, setKeyword] = useState('')
-    const [data_search, setData_search] = useState(false)
+    const [data_search, setData_search] = useState(true)
     var windowWidth = Dimensions.get('window').width;
 
     const gotoScreen = (srceen, props) => {
@@ -58,7 +58,7 @@ const SearchMain = () => {
     return (
         <Wapper gadient header customheader={customerHeader}>
             {
-                data_search ? <SearchList /> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
+                data_search ? <SearchList data={data_search} /> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
             }
         </Wapper>
     )
