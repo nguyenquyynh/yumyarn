@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
@@ -6,14 +6,12 @@ import en from './translations/en.json';
 import vi from './translations/vi.json';
 import jp from './translations/jp.json';
 import cn from './translations/cn.json';
-import fr from './translations/fr.json';
 
 const resources = {
     en: { translation: en },
     vi: { translation: vi },
     jp: { translation: jp },
     cn: { translation: cn },
-    fr: { translation: fr },
 };
 
 i18n.use(initReactI18next).init({
@@ -30,9 +28,9 @@ export const I18nProvider = ({ children }) => {
 
     useEffect(() => {
         if (setting && setting.language) {
-           i18n.changeLanguage(setting.language)
+            i18n.changeLanguage(setting.language)
         }
-    },[setting]);
+    }, [setting]);
 
     return children;
 };

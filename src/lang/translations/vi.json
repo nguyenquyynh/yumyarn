@@ -21,7 +21,10 @@
         "user": "Người dùng",
         "restaurant": "Nhà hàng",
         "get_started": "Bắt đầu",
-        "next": "Tiếp theo "
+        "next": "Tiếp theo ",
+        "thousand": "N",
+        "milion" : "Tr",
+        "bilion" : "T"
     },
     "wellcome": {
         "greeting": "Chào mừng bạn đến với",

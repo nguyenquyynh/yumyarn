@@ -8,19 +8,27 @@ export const Model = {
     NOTIFIES: "notifies",
     POSTS: "posts",
     REQUESTS: "requests",
+    SUGGEST: 'searchsuggest'
 }
 
 export const USERS = {
     AUTHEN: "authen",
-    VERIFY: "verify"
+    VERIFY: "verify",
+    SEARCH: "search",
 }
 export const USERS_AUTHEN= {
     REGISTER: "REGISTER",
     LOGIN: "LOGIN",
     VERIFY: "VERIFY",
-    ERROR: "ERROR"
+    ERROR: "ERROR",
 }
 
 export const POST = {
-    CREATEPOST: "create"
+    CREATEPOST: "create",
+    SEARCH: "search",
+}
+
+export const SUGGEST = {
+    ADD: 'add',
+    SUGGEST: 'suggest'
 }
