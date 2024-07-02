@@ -1,11 +1,23 @@
-import { StyleSheet } from 'react-native'
-import React from 'react'
+import { FlatList, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native-ui-lib'
+import UserRender from 'components/commons/UserRender';
 
-const UserSearch = () => {
+const UserSearch = ({ route }) => {
+  const { data, setdata } = route.params;
+  const [datalist, setDatalist] = useState(data.user.data)
+
+  useEffect(() => {
+    setDatalist(data.user.data)
+  }, [data])
+
   return (
     <View flex bg-white>
-      <Text>UserSearch</Text>
+      <FlatList
+        data={datalist}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <UserRender item={item}/>}
+      />
     </View>
   )
 }

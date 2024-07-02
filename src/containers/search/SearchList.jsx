@@ -8,11 +8,12 @@ import { t } from 'lang'
 import { BOLD } from 'configs/fonts'
 
 const SearchList = ({
-  data,
+  keyword,
+  data
 }) => {
   var windowWidth = Dimensions.get('window').width;
   const Toptab = createMaterialTopTabNavigator()
-
+  console.log(keyword)
   const tabBarIndicatorStyle = {
     width: (windowWidth - 40) / 3,
     marginLeft: (windowWidth - 40) / 12,
@@ -27,10 +28,10 @@ const SearchList = ({
         tabBarLabelStyle: styles.tabbarlabel,
         tabBarActiveTintColor: Colors.black,
         tabBarInactiveTintColor: 'gray',
-        tabBarPressColor : Colors.transparent
+        tabBarPressColor: Colors.transparent
       }}>
-        <Toptab.Screen name={t("app.post")} component={PostSearch} />
-        <Toptab.Screen name={t("app.user")} component={UserSearch} />
+        <Toptab.Screen name={t("app.post")} component={PostSearch} initialParams={{ data, keyword }} />
+        <Toptab.Screen name={t("app.user")} component={UserSearch} initialParams={{ data, keyword }} />
       </Toptab.Navigator>
     </View>
 
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   tabbar: {
     borderBottomWidth: 1,
-    borderBottomColor: 'gray'
+    borderBottomColor: 'gray',
   },
   tabbarlabel: {
     fontWeight: 'bold',

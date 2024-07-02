@@ -10,21 +10,32 @@ import HistoryList from './HistoryList'
 import SearchList from './SearchList'
 import { useDispatch } from 'react-redux'
 import { history_addsearch } from 'reducers/search'
+import { add_search, search_post, search_user } from 'src/hooks/api/search'
 
 const SearchMain = () => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const [keyword, setKeyword] = useState('')
-    const [data_search, setData_search] = useState(true)
+    const [data_search, setData_search] = useState()
     var windowWidth = Dimensions.get('window').width;
 
     const gotoScreen = (srceen, props) => {
         navigation.navigate(srceen, props)
     }
-    const hanlderSearch = () => {
+    const hanlderSearch = async () => {
         if (keyword.trim().length > 0) {
             dispatch(history_addsearch(keyword))
+            await add_search(keyword)
+            const resault_post = await search_post(keyword, 1)
+            const resault_user = await search_user(keyword, 1)
+            setData_search({
+                posts: resault_post,
+                user: resault_user
+            })
         }
+    }
+    const handlerFocus = () => {
+        setData_search(null)
     }
     const customerHeader = () => {
         return (
@@ -42,7 +53,9 @@ const SearchMain = () => {
                         </Pressable>
                         <View bg-white row flex br20 marginL-xvi centerV paddingL-x style={styles.searchinput}>
                             <View flex>
-                                <TextInput placeholder={t("app.search")} value={keyword} onChangeText={value => setKeyword(value)} />
+                                <TextInput placeholder={t("app.search")} value={keyword}
+                                    onFocus={handlerFocus}
+                                    onChangeText={value => setKeyword(value)} />
                             </View>
                             <View paddingH-x>
                                 <Pressable onPress={hanlderSearch}>
@@ -58,7 +71,7 @@ const SearchMain = () => {
     return (
         <Wapper gadient header customheader={customerHeader}>
             {
-                data_search ? <SearchList data={data_search} /> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
+                data_search ? <SearchList data={data_search} keyword={keyword}/> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
             }
         </Wapper>
     )

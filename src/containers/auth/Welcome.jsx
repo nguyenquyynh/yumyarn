@@ -1,11 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
-import { Button, Colors, Text, View } from 'react-native-ui-lib';
+import { Colors, Text, View } from 'react-native-ui-lib';
 import Swiper from 'react-native-swiper';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import Login from './Login';
-import Welcome01 from './welcome/Welcome01';
-import Welcome02 from './welcome/Welcome02';
 import { t } from 'lang';
 import IconApp from 'components/IconApp';
 import ButtonApp from 'components/ButtonApp';
@@ -15,7 +13,6 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const Welcome = () => {
   const [toggle, setToggle] = useState(false);
   const [indexswiper, setindexSwiper] = useState(0)
-  const swiperRef = useRef(null);
 
   const translateXL = useSharedValue(0);
   const translateXR = useSharedValue(0);
