@@ -32,3 +32,9 @@ export const SUGGEST = {
     ADD: 'add',
     SUGGEST: 'suggest'
 }
+
+export const FOLLOW = {
+    CHECK: 'check',
+    UNFOLLOW: 'unfollow',
+    FOLLOW: 'follow'
+}

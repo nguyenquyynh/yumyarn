@@ -48,9 +48,9 @@ const search_post = async (keyword, page) => {
     }
 }
 
-const search_user = async (keyword, page) => {
+const search_user = async (keyword, page, user) => {
     try {
-        const resault = await AxiosInstance().get(`${Model.USERS}/${USERS.SEARCH}?q=${keyword}&page=${page}`, null)
+        const resault = await AxiosInstance().get(`${Model.USERS}/${USERS.SEARCH}?q=${keyword}&page=${page}&user=${user}`, null)
         if (resault.status) {
             return { status: true, data: resault.data }
         } else {

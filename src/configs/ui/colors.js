@@ -6,7 +6,7 @@ Colors.loadColors({
     orange: "#FE5200",
     hashtag: "#A50917",
     red: "#F70015",
-    gray: "#D9D9D9",
+    gray: "#868686",
     black: "#000000",
     white: "#FFFFFF",
     light_green: "#4FB018",
