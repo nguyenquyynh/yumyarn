@@ -27,7 +27,7 @@ const SearchMain = () => {
             dispatch(history_addsearch(keyword))
             await add_search(keyword)
             const resault_post = await search_post(keyword, 1)
-            const resault_user = await search_user(keyword, 1)
+            const resault_user = await search_user(keyword, 1, "66864113e67776aad635649b")
             setData_search({
                 posts: resault_post,
                 user: resault_user

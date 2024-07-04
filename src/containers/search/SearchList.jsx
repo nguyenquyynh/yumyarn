@@ -13,7 +13,6 @@ const SearchList = ({
 }) => {
   var windowWidth = Dimensions.get('window').width;
   const Toptab = createMaterialTopTabNavigator()
-  console.log(keyword)
   const tabBarIndicatorStyle = {
     width: (windowWidth - 40) / 3,
     marginLeft: (windowWidth - 40) / 12,
