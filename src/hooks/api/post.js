@@ -18,3 +18,19 @@ export async function createpost(data) {
     }
 
 }
+
+export async function getPost(dataRequest) {
+    try {
+        const resault = await AxiosInstance().get(`${Model.POSTS}?create_by=${dataRequest.id}&page=${dataRequest.page}`)
+
+        if (resault.status) {
+            return { status: true, data : resault.data }
+        } else {
+            return { status: false, data : resault.data }
+        }
+        
+    } catch (error) {
+        console.log(error+ "Lỗi")
+        return Promise.reject(error)
+    }
+}

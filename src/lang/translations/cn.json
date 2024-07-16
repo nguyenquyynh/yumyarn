@@ -24,7 +24,14 @@
     "next": "下一个",
     "thousand": "千",
     "milion": "百万",
-    "bilion": "十亿"
+    "bilion": "十亿",
+    "day": "天",
+    "month": "月",
+    "year": "年",
+    "second": "秒",
+    "minute": "分",
+    "hour": "小时",
+    "ago": "前"
   },
   "welcome": {
     "greeting": "欢迎来到",

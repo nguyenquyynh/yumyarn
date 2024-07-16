@@ -1,29 +1,31 @@
 
 import IconApp from 'components/IconApp'
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { Avatar, Image, Text, View } from 'react-native-ui-lib'
 import ReadMore from 'react-native-read-more-text';
 import Swiper from 'react-native-swiper';
 import NumberApp from 'components/commons/NumberApp';
 import Video from 'react-native-video';
+import ChangeTimeApp from 'components/commons/ChangeTimeApp';
 
-const RenderPost = () => {
-    const content = "Duy nhất 2 ngày 1 đêm tại #HaLong đi tất tần tật các địa điểm mà tui mới săn được nè đi thử nha 🌊 Duy nhất 2 ngày 1 đêm tại #HaLong đi tất tần tật các địa điểm mà tui mới săn được nè đi thử nha 🌊 Duy nhất 2 ngày 1 đêm tại #HaLong đi tất tần tật các địa điểm mà tui mới săn được nè đi thử nha 🌊 Duy nhất 2 ngày 1 đêm tại #HaLong đi tất tần tật các địa điểm mà tui mới săn được nè đi thử nha 🌊"
-    const listImage = [
-        "https://cdn.pixabay.com/photo/2017/06/14/03/00/coffe-2400874_640.jpg",
-        "https://res.cloudinary.com/dnodsjqql/video/upload/v1718267205/aztd9kgncwda8obdm19r.mp4",
-        "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"
-    ];
-    const countFire = 120000000;
-    const countComment = 130312;
-    const address = "93 Đ. Thạnh Lộc 15, Thạnh Lộc, Quận 12, Thành phố Hồ Chí Minh, Việt Nam"
+const RenderPost = ({ item }) => {
+    const content = item?.content
+    const listImage = item?.media  || [];
+    const countFire = item?.fire;
+    const countComment = item?.comments;
+    const address = item?.address?.detail
 
+    const dateNow = new Date();
+    const datePast = new Date(parseInt(item?.update_at));
+    const differenceInMilliseconds = dateNow - datePast;
+    const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
+    
     const renderRevealedFooter = (handlePress) => {
         return (
-            <View  >
+            <View>
                 <View row>
-                    <IconApp assetName={"location"} size={15} props={{ alignSelf: "center"}}/>
+                    <IconApp assetName={"location"} size={15} props={{ alignSelf: "center" }} />
                     <Text text text70BO marginL-2>
                         {address}
                     </Text>
@@ -47,22 +49,20 @@ const RenderPost = () => {
         <View paddingH-12 paddingB-40 marginT-20 bg-white>
             <View row spread marginB-28 paddingH-11 style={[Style.line]} paddingT-10>
                 <View row center>
-                    <IconApp assetName={"english"} size={50} />
+                    <Avatar source={{ uri: item?.create_by?.avatar }} size={50} />
                     <View marginL-15>
                         <Text xviText text60BO>
-                            Vũ Vân
+                            {item?.create_by?.name}
                         </Text>
 
-                        <Text xiitext>
-                            30p
-                        </Text>
+                        <ChangeTimeApp second={differenceInSeconds}/>
                     </View>
                 </View>
 
                 <View row center>
                     <View marginR-10 paddingH-7 paddingV-7 style={Style.outline}>
                         <Text text text70BO>
-                            Đang theo dõi
+                            {item?.follow ? 'Đang theo dõi' : 'Theo dõi'}
                         </Text>
                     </View>
 
@@ -87,9 +87,9 @@ const RenderPost = () => {
                     {listImage.map((item, index) => (
                         <View key={index}  >
                             {
-                                item.endsWith(".mp4") ? 
-                                <Video source={{ uri: item }} style={Style.styleImage} paused controls/> :
-                                <Image source={{ uri: item }} style={Style.styleImage} />
+                                item.endsWith(".mp4") ?
+                                    <Video source={{ uri: item }} style={Style.styleImage} paused controls /> :
+                                    <Image source={{ uri: item }} style={Style.styleImage} />
                             }
                         </View>
                     ))}
@@ -111,7 +111,7 @@ const RenderPost = () => {
     )
 }
 
-export default RenderPost
+export default memo(RenderPost)
 
 
 const Style = StyleSheet.create({
@@ -128,7 +128,7 @@ const Style = StyleSheet.create({
     borderRadiusSwiper: {
         borderRadius: 10,
         width: "100%",
-        height: 500
+        height: 500,
     },
     styleImage: {
         width: "100%",
