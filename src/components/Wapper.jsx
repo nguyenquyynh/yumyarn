@@ -6,7 +6,7 @@ import LoadingApp from './commons/LoadingApp';
 
 const Wapper = ({
   loading = false,
-  header = false,
+  header = true,
   customheader,
   gadient,
   iconleft,
@@ -27,24 +27,25 @@ const Wapper = ({
   return (
     <View flex>
       <StatusBar translucent backgroundColor="transparent" />
-      {loading ? <LoadingApp loading={loading}/> : <View flex>
+      {loading ? <LoadingApp loading={loading} /> : <View flex>
         <View style={styles.header}>
-          {!header ?
-            <HeaderApp
-              titlesize={titlesize}
-              gadient={gadient}
-              title={title}
-              iconleft={!iconleft ? 'back' : iconleft}
-              iconright={!iconright ? 'settings' : iconright}
-              renderleft={renderleft}
-              renderright={renderright}
-              customleft={customleft}
-              customright={customright}
-              sizeiconright={sizeiconright}
-              sizeiconleft={sizeiconleft}
-              funtleft={funtleft}
-              funtright={funtright}
-            /> : customheader && customheader?.()}
+          {header && <HeaderApp
+            titlesize={titlesize}
+            gadient={gadient}
+            title={title}
+            iconleft={!iconleft ? 'back' : iconleft}
+            iconright={!iconright ? 'settings' : iconright}
+            renderleft={renderleft}
+            renderright={renderright}
+            customleft={customleft}
+            customright={customright}
+            sizeiconright={sizeiconright}
+            sizeiconleft={sizeiconleft}
+            funtleft={funtleft}
+            funtright={funtright}
+            customheader={customheader}
+          />}
+
         </View>
         <View flex-15>
           {children}

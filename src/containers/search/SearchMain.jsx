@@ -40,12 +40,6 @@ const SearchMain = () => {
     const customerHeader = () => {
         return (
             <View flex>
-                <LinearGradient
-                    start={{ x: 1, y: 0 }} end={{ x: 1, y: 1 }}
-                    locations={[0, 1]}
-                    colors={[Colors.yellow, Colors.white]}
-                    style={{ height: '100%' }}
-                />
                 <View absF bottom paddingB-xi>
                     <View centerV row paddingH-xvi>
                         <Pressable onPress={() => { navigation.goBack() }}>
@@ -69,7 +63,7 @@ const SearchMain = () => {
         )
     }
     return (
-        <Wapper gadient header customheader={customerHeader}>
+        <Wapper gadient customheader={customerHeader}>
             {
                 data_search ? <SearchList data={data_search} keyword={keyword}/> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
             }

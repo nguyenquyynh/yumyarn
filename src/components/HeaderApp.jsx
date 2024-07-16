@@ -8,6 +8,7 @@ import TextApp from './commons/TextApp';
 
 const HeaderApp = ({
     gadient = false,
+    customheader,
     colortitle,
     renderleft,
     iconleft,
@@ -32,29 +33,33 @@ const HeaderApp = ({
                     colors={[Colors.yellow, Colors.white]}
                     style={{ height: '100%' }}
                 />}
-            <View flex row centerV padding-xx absF>
-                <View flex left paddingT-xx>
-                    {renderleft ?
-                        <TouchableOpacity onPress={funtleft}>
-                            <IconApp
-                                assetName={iconleft}
-                                size={sizeiconleft} />
-                        </TouchableOpacity> : customleft && customleft?.()}
+            {customheader ?
+                <View absF>
+                    {customheader()}
+                </View> :
+                <View flex row centerV padding-xx absF>
+                    <View flex left paddingT-xx>
+                        {renderleft ?
+                            <TouchableOpacity onPress={funtleft}>
+                                <IconApp
+                                    assetName={iconleft}
+                                    size={sizeiconleft} />
+                            </TouchableOpacity> : customleft && customleft?.()}
+                    </View>
+                    {title &&
+                        <View flex absH paddingT-xx center>
+                            <TextApp size={titlesize} color={colortitle || Colors.black} style={styles.title} text={title ? title : ""} />
+                        </View>}
+                    <View flex right paddingT-xx>
+                        {renderright ?
+                            <TouchableOpacity onPress={funtright}>
+                                <IconApp
+                                    assetName={iconright}
+                                    size={sizeiconright} />
+                            </TouchableOpacity> : customright && customright?.()}
+                    </View>
                 </View>
-                {title &&
-                    <View flex absH paddingT-xx center>
-                        <TextApp size={titlesize} color={colortitle || Colors.black} style={styles.title} text={title ? title : ""}/>
-                    </View>}
-                <View flex right paddingT-xx>
-                    {renderright ?
-                        <TouchableOpacity onPress={funtright}>
-                            <IconApp
-                                assetName={iconright}
-                                size={sizeiconright} />
-                        </TouchableOpacity> : customright && customright?.()}
-                </View>
-
-            </View>
+            }
         </View>
     )
 }
