@@ -12,7 +12,7 @@ const PostSearch = ({ route }) => {
   }, [data])
 
   const onScrollPosts = async () => {
-    const page = Math.floor(datalist.length / 10) + 1
+    const page = Math.ceil(datalist.length / 10) + 1
     const resault_post = await search_post(keyword, page)
     setDatalist([...datalist, ...resault_post.data])
   }
