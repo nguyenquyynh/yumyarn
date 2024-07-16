@@ -184,7 +184,7 @@ const AddAdrressScreen = ({ route }) => {
         </TouchableOpacity>)
     }
     return (
-        <Wapper gadient={true} title={t('add_location.title')} renderleft customright={renderButtonRight} funtleft={() => { navigation.goBack() }}>
+        <Wapper gadient title={t('add_location.title')} renderleft customright={renderButtonRight} funtleft={() => { navigation.goBack() }}>
             <View flex style={StyleSheet.absoluteFillObject}>
                 <MapView
                     ref={map}
