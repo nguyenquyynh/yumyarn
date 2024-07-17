@@ -1,96 +1,102 @@
 {
-    "app": {
-      "name_app": "おいしいヤーン",
-      "camera": "カメラ",
-      "library": "ライブラリ",
-      "following": "フォロー中",
-      "follow": "フォローする",
-      "more": "もっと見る",
-      "search": "検索",
-      "yumyarn_id": "おいしいヤーン ID",
-      "address": "住所",
-      "phone": "電話番号",
-      "email": "メール",
-      "name": "名前",
-      "inta": "インスタグラム",
-      "yout": "ユーチューブ",
-      "x": "閉じる",
-      "add": "追加",
-      "video": "ビデオ",
-      "post": "投稿",
-      "user": "ユーザー",
-      "restaurant": "レストラン",
-      "get_started": "始める",
-      "next": "次へ",
-      "thousand": "千",
-      "milion": "百万",
-      "bilion": "十億"
-    },
-    "welcome": {
-      "greeting": "ようこそ",
-      "diversity": "多様性",
-      "reality": "現実",
-      "help_one": "美味しくて便利なレストランを選ぶお手伝いをします。",
-      "help_two": "実際の体験から評価されています。"
-    },
-    "login": {
-      "i_read": "読みました",
-      "register": "アカウントが登録されました！今すぐログイン",
-      "verify": "登録したメールを確認してアカウントを認証してください",
-      "policy": "プライバシーポリシー",
-      "google": "GOOGLE で続行"
-    },
-    "post": {
-      "edit": "編集",
-      "report": "報告"
-    },
-    "notification": {
-      "title": "通知",
-      "like": "があなたの投稿を「いいね！」しました",
-      "follow": "があなたをフォローし始めました",
-      "system": "システム通知"
-    },
-    "title_model": {
-      "remove_account": "アカウントを削除しますか？",
-      "cancel": "キャンセル",
-      "ok": "OK",
-      "content_remove_account": "削除されたアカウントは復元できません",
-      "post_success": "あなたの体験がシェアされました",
-      "post_faile": "あなたの体験はシェアされませんでした",
-      "success": "成功",
-      "error": "エラー",
-      "content_error": "内容を入力してください",
-      "image_error": "画像を選択してください",
-      "address_error": "住所を選択してください"
-    },
-    "profile": {
-      "postting": "投稿",
-      "followers": "フォロワー",
-      "following": "フォロー中",
-      "edit_profile": "プロフィールを編集",
-      "about_me": "私について",
-      "social_media": "ソーシャルメディア"
-    },
-    "create_post": {
-      "title": "投稿を作成",
-      "post": "投稿",
-      "content_hint": "美味しいものについて書いてください...",
-      "hashtag_hint": "他の人があなたを見つけやすいように#ハッシュタグを追加してください。",
-      "location_hint": "場所を追加することを忘れないでください。"
-    },
-    "add_location": {
-      "title": "場所を追加",
-      "choose": "選択"
-    },
-    "loading": {
-      "content": "今日は何を食べよう..."
-    },
-    "setting": {
-      "setting": "設定",
-      "language": "言語",
-      "Community_standards": "コミュニティ基準",
-      "delete_the_account": "アカウントを削除",
-      "log_out": "ログアウト"
-    }
+  "app": {
+    "name_app": "おいしいヤーン",
+    "camera": "カメラ",
+    "library": "ライブラリ",
+    "following": "フォロー中",
+    "follow": "フォローする",
+    "more": "もっと見る",
+    "search": "検索",
+    "yumyarn_id": "おいしいヤーン ID",
+    "address": "住所",
+    "phone": "電話番号",
+    "email": "メール",
+    "name": "名前",
+    "inta": "インスタグラム",
+    "yout": "ユーチューブ",
+    "x": "閉じる",
+    "add": "追加",
+    "video": "ビデオ",
+    "post": "投稿",
+    "user": "ユーザー",
+    "restaurant": "レストラン",
+    "get_started": "始める",
+    "next": "次へ",
+    "thousand": "千",
+    "milion": "百万",
+    "bilion": "十億",
+    "day": "日",
+    "month": "月",
+    "year": "年",
+    "second": "秒",
+    "minute": "分",
+    "hour": "時",
+    "ago": "前"
+  },
+  "welcome": {
+    "greeting": "ようこそ",
+    "diversity": "多様性",
+    "reality": "現実",
+    "help_one": "美味しくて便利なレストランを選ぶお手伝いをします。",
+    "help_two": "実際の体験から評価されています。"
+  },
+  "login": {
+    "i_read": "読みました",
+    "register": "アカウントが登録されました！今すぐログイン",
+    "verify": "登録したメールを確認してアカウントを認証してください",
+    "policy": "プライバシーポリシー",
+    "google": "GOOGLE で続行"
+  },
+  "post": {
+    "edit": "編集",
+    "report": "報告"
+  },
+  "notification": {
+    "title": "通知",
+    "like": "があなたの投稿を「いいね！」しました",
+    "follow": "があなたをフォローし始めました",
+    "system": "システム通知"
+  },
+  "title_model": {
+    "remove_account": "アカウントを削除しますか？",
+    "cancel": "キャンセル",
+    "ok": "OK",
+    "content_remove_account": "削除されたアカウントは復元できません",
+    "post_success": "あなたの体験がシェアされました",
+    "post_faile": "あなたの体験はシェアされませんでした",
+    "success": "成功",
+    "error": "エラー",
+    "content_error": "内容を入力してください",
+    "image_error": "画像を選択してください",
+    "address_error": "住所を選択してください"
+  },
+  "profile": {
+    "postting": "投稿",
+    "followers": "フォロワー",
+    "following": "フォロー中",
+    "edit_profile": "プロフィールを編集",
+    "about_me": "私について",
+    "social_media": "ソーシャルメディア"
+  },
+  "create_post": {
+    "title": "投稿を作成",
+    "post": "投稿",
+    "content_hint": "美味しいものについて書いてください...",
+    "hashtag_hint": "他の人があなたを見つけやすいように#ハッシュタグを追加してください。",
+    "location_hint": "場所を追加することを忘れないでください。"
+  },
+  "add_location": {
+    "title": "場所を追加",
+    "choose": "選択"
+  },
+  "loading": {
+    "content": "今日は何を食べよう..."
+  },
+  "setting": {
+    "setting": "設定",
+    "language": "言語",
+    "Community_standards": "コミュニティ基準",
+    "delete_the_account": "アカウントを削除",
+    "log_out": "ログアウト"
   }
-  
+}

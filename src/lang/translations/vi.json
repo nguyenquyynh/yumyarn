@@ -24,7 +24,14 @@
         "next": "Tiếp theo ",
         "thousand": "N",
         "milion" : "Tr",
-        "bilion" : "T"
+        "bilion" : "T",
+        "day": "ngày",
+        "month": "tháng",
+        "year": "năm",
+        "second": "giây",
+        "minute": "phút",
+        "hour": "giờ",
+        "ago":"trước"
     },
     "wellcome": {
         "greeting": "Chào mừng bạn đến với",

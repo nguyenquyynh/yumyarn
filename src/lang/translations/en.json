@@ -24,7 +24,14 @@
       "next": "Next",
       "thousand": "T",
       "milion": "M",
-      "bilion": "B"
+      "bilion": "B",
+      "day": "day",
+      "month": "month",
+      "year": "year",
+      "second": "second",
+      "minute": "minute",
+      "hour": "hour",
+      "ago":"ago"
     },
     "welcome": {
       "greeting": "Welcome to",
