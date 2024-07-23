@@ -6,4 +6,4 @@ import './spacing';
 import './shadow';
 import './typography';
 import './theme';
-
+import './format'

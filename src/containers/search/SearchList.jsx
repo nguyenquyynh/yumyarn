@@ -20,7 +20,7 @@ const SearchList = ({
   };
 
   return (
-    <View flex bg-white paddingH-xx>
+    <View flex bg-white paddingH-v>
       <Toptab.Navigator screenOptions={{
         tabBarIndicatorStyle: tabBarIndicatorStyle,
         tabBarStyle: styles.tabbar,

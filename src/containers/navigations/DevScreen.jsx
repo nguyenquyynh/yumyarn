@@ -34,6 +34,9 @@ const DevScreen = () => {
             <TouchableOpacity center padding-xx bg-orange onPress={() => { gotoScreen("Search") }}>
                 <Text color={Colors.white}>Search</Text>
             </TouchableOpacity>
+            <TouchableOpacity center padding-xx bg-orange onPress={() => { gotoScreen("PostDetail") }}>
+                <Text color={Colors.white}>PostDetail</Text>
+            </TouchableOpacity>
             <View row spread paddingV-x>
                 <TouchableOpacity center padding-xx bg-orange onPress={() => { dishpatch(setting_changelanguage('en')) }}>
                     <Text>English</Text>
@@ -51,6 +54,7 @@ const DevScreen = () => {
                     <Text>Pháp</Text>
                 </TouchableOpacity>
             </View>
+            <Text>{auth._id}</Text>
         </Wapper>
     )
 }

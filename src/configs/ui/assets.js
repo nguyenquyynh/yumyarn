@@ -54,4 +54,6 @@ Assets.loadAssetsGroup('icons', {
     starving: require('assets/gif/starving.gif'),
     history: require('assets/icon/history.png'),
     core: require('assets/icon/core.png'),
+    pause_button: require('assets/icon/pause_button.png'),
+    check_follow: require('assets/icon/check_follow.png'),
 })

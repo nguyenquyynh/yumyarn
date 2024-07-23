@@ -5,9 +5,9 @@ import { StyleSheet } from 'react-native'
 import { Avatar, Image, Text, View } from 'react-native-ui-lib'
 import ReadMore from 'react-native-read-more-text';
 import Swiper from 'react-native-swiper';
-import NumberApp from 'components/commons/NumberApp';
 import Video from 'react-native-video';
 import ChangeTimeApp from 'components/commons/ChangeTimeApp';
+import numberFormat from 'configs/ui/format';
 
 const RenderPost = ({ item }) => {
     const content = item?.content
@@ -99,12 +99,12 @@ const RenderPost = ({ item }) => {
             <View row>
                 <View row marginR-15>
                     <IconApp assetName={"english"} size={27} props={{ marginRight: 10 }} />
-                    <NumberApp number={countFire} />
+                    <Text text80BO>{numberFormat(countFire)}</Text>
                 </View>
 
                 <View row>
                     <IconApp assetName={"comment"} size={27} props={{ marginRight: 10 }} />
-                    <NumberApp number={countComment} />
+                    <Text text80BO>{numberFormat(countComment)}</Text>
                 </View>
             </View>
         </View>

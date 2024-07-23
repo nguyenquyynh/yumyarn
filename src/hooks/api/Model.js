@@ -38,3 +38,8 @@ export const FOLLOW = {
     UNFOLLOW: 'unfollow',
     FOLLOW: 'follow'
 }
+
+export const FIRE = {
+    CREATE: 'create',
+    DELETE: 'delete',
+}
