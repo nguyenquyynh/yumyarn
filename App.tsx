@@ -6,40 +6,37 @@ import { store, persistor } from 'src/store/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { I18nProvider } from 'lang'
 import MainNavigation from 'containers/navigations/MainNavigation'
-import LoadingApp from 'components/commons/LoadingApp'
-import SearchMain from 'containers/search/SearchMain'
 import { addEventListener } from "@react-native-community/netinfo";
-import ListPost from 'containers/post/ListPost'
+import Screen1 from 'src/testcomponent/Screen1'
 const App = () => {
-  useEffect(() => {
-    const unsubscribe = addEventListener(state => {
+//   useEffect(() => {
+//     const unsubscribe = addEventListener(state => {
+//       // Kiểm tra xem có kết nối không
+//       if (!state.isConnected) {
+//         Alert.alert('Warning', 'WiFi connection is lost!');
+//       }
+//       // Kiểm tra chi tiết kết nối và chất lượng kết nối WiFi
+//       else if (state?.details?.isConnectionExpensive) {
+//         Alert.alert('Warning', 'WiFi connection is weak!');
+//       }
+//       // Kết nối WiFi ổn định
+//       else if (state.isConnected) {
+//         console.log('WiFi connected')
+//       }
+//   });
 
-      // Kiểm tra xem có kết nối không
-      if (!state.isConnected) {
-        Alert.alert('Warning', 'WiFi connection is lost!');
-      }
-      // Kiểm tra chi tiết kết nối và chất lượng kết nối WiFi
-      else if (state?.details?.isConnectionExpensive) {
-        Alert.alert('Warning', 'WiFi connection is weak!');
-      }
-      // Kết nối WiFi ổn định
-      else if (state.isConnected) {
-        console.log('WiFi connected')
-      }
-  });
-
-  return () => {
-    unsubscribe();
-  };
-}, []);
+//   return () => {
+//     unsubscribe();
+//   };
+// }, []);
 return (
   <Provider store={store}>
     <I18nProvider>
       <PersistGate loading={null} persistor={persistor}>
         <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-        {/* <DevNavigation /> */}
+        <DevNavigation />
         {/* <MainNavigation /> */}
-        <ListPost/>
+        {/* <Screen1/> */}
       </PersistGate>
     </I18nProvider>
   </Provider>

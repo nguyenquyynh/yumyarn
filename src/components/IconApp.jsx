@@ -1,9 +1,10 @@
 import React from 'react'
-import { Image, View } from 'react-native-ui-lib'
+import { Colors, Image, View } from 'react-native-ui-lib'
 
 const IconApp = ({
     assetName,
     size = 22,
+    color = Colors.black,
     props,
 }) => {
     return (

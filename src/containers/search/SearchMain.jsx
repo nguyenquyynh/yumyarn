@@ -8,13 +8,14 @@ import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
 import HistoryList from './HistoryList'
 import SearchList from './SearchList'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { history_addsearch } from 'reducers/search'
 import { add_search, search_post, search_user } from 'src/hooks/api/search'
 
 const SearchMain = () => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
+    const user = useSelector(state => state.auth)
     const [keyword, setKeyword] = useState('')
     const [data_search, setData_search] = useState()
     var windowWidth = Dimensions.get('window').width;
@@ -27,7 +28,7 @@ const SearchMain = () => {
             dispatch(history_addsearch(keyword))
             await add_search(keyword)
             const resault_post = await search_post(keyword, 1)
-            const resault_user = await search_user(keyword, 1, "66864113e67776aad635649b")
+            const resault_user = await search_user(keyword, 1, user._id)
             setData_search({
                 posts: resault_post,
                 user: resault_user
@@ -43,15 +44,15 @@ const SearchMain = () => {
                 <View absF bottom paddingB-xi>
                     <View centerV row paddingH-xvi>
                         <Pressable onPress={() => { navigation.goBack() }}>
-                            <IconApp assetName={"back"} size={windowWidth / 22} />
+                            <IconApp assetName={"back"} size={22} />
                         </Pressable>
                         <View bg-white row flex br20 marginL-xvi centerV paddingL-x style={styles.searchinput}>
-                            <View flex>
+                            <View flex-14>
                                 <TextInput placeholder={t("app.search")} value={keyword}
                                     onFocus={handlerFocus}
                                     onChangeText={value => setKeyword(value)} />
                             </View>
-                            <View paddingH-x>
+                            <View padding-x flex-1>
                                 <Pressable onPress={hanlderSearch}>
                                     <IconApp assetName={"search"} size={20} />
                                 </Pressable>
@@ -65,7 +66,7 @@ const SearchMain = () => {
     return (
         <Wapper gadient customheader={customerHeader}>
             {
-                data_search ? <SearchList data={data_search} keyword={keyword}/> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
+                data_search ? <SearchList data={data_search} keyword={keyword} /> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
             }
         </Wapper>
     )

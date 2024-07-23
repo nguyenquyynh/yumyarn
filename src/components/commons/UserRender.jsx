@@ -4,14 +4,16 @@ import { Avatar, Colors, Text, TouchableOpacity, View } from 'react-native-ui-li
 import { t } from 'lang';
 import ButtonApp from 'components/ButtonApp';
 import { BOLD } from 'configs/fonts';
+import { createFollow } from 'src/hooks/api/follow';
 import { useSelector } from 'react-redux';
-import { checkFollow } from 'src/hooks/api/follow';
 
 const UserRender = ({ item }) => {
-    console.log(item);
-    const [isfollow, setIsfollow] = useState(item?.isfollow)
-    const handlerfollow = () => {
-
+    const user = useSelector(state => state.auth)
+    const [isfollow, setIsfollow] = useState(item?.isFollow)
+    const handlerfollow = async () => {
+        const followresponse = await createFollow(user._id, item?._id)
+        console.log(followresponse);
+        setIsfollow(!isfollow)
     }
     return (
         <View bg-white row padding-viii marginT-x centerV spread>

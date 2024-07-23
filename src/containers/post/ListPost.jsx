@@ -3,11 +3,13 @@ import React, { useEffect, useMemo, useState } from 'react'
 import RenderPost from 'components/commons/RenderPost'
 import { getPost } from 'src/hooks/api/post';
 import { View } from 'react-native-ui-lib';
+import { useSelector } from 'react-redux';
 
 const ListPost = () => {
     const [dataPost, setDataPost] = useState([]);
+    const user = useSelector(state => state.auth)
     const [page, setPage] = useState(1);
-    const idUser = '665c11ebfc13ae2944c633f0';
+    const idUser = user._id;
     const [isLoading, setIsLoading] = useState(false);
     const getPostData = async (idUser, page) => {
         try {
@@ -35,7 +37,7 @@ const ListPost = () => {
     const handleLoadMore = async () => {
         console.log("here");
         if (dataPost.length % 5 == 0 && !isLoading) {
-           await getPostData(idUser, page + 1);
+            await getPostData(idUser, page + 1);
             console.log('đã tải');
         }
     }
@@ -47,7 +49,7 @@ const ListPost = () => {
                 renderItem={({ item }) => <RenderPost item={item} />}
                 onEndReached={handleLoadMore} // Gọi hàm khi kéo tới cuối danh sách
                 onEndReachedThreshold={0.2}
-                ListFooterComponent={() => isLoading && <ActivityIndicator size="large" color="#0000ff" />} 
+                ListFooterComponent={() => isLoading && <ActivityIndicator size="large" color="#0000ff" />}
             />
         </View>
     )
