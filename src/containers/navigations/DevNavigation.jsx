@@ -9,6 +9,8 @@ import DevScreen from './DevScreen'
 import Welcome  from 'containers/auth/Welcome'
 import Login from 'containers/auth/Login'
 import SearchMain from 'containers/search/SearchMain'
+import Personal from 'containers/personal/Personal'
+
 import PostDetail from 'containers/post/PostDetail'
 
 const DevNavigation = () => {
@@ -22,6 +24,7 @@ const DevNavigation = () => {
                 <Stack.Screen name='Setting' component={Setting} />
                 <Stack.Screen name='Welcome' component={Welcome} />
                 <Stack.Screen name='Search' component={SearchMain} />
+                <Stack.Screen name='Personal' component={Personal} />
                 <Stack.Screen name='PostDetail' component={PostDetail} />
             </Stack.Navigator>
         </NavigationContainer>

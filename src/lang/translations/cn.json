@@ -77,7 +77,8 @@
     "following": "关注",
     "edit_profile": "编辑资料",
     "about_me": "关于我",
-    "social_media": "社交媒体"
+    "social_media": "社交媒体",
+    "post" : "你在想什么"
   },
   "create_post": {
     "title": "创建帖子",

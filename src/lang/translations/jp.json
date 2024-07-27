@@ -77,7 +77,8 @@
     "following": "フォロー中",
     "edit_profile": "プロフィールを編集",
     "about_me": "私について",
-    "social_media": "ソーシャルメディア"
+    "social_media": "ソーシャルメディア",
+    "post" : "何を考えていますか"
   },
   "create_post": {
     "title": "投稿を作成",

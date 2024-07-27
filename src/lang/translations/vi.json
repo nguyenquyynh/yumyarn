@@ -77,7 +77,8 @@
         "following" : "Đang theo dõi",
         "edit_profile": "Chỉnh sửa thông tin cá nhân",
         "about_me": "Giới thiệu về bạn",
-        "social_media": "Mạng xã hội"
+        "social_media": "Mạng xã hội",
+        "post" : "Bạn đang nghĩ gì"
     },
     "create_post": {
         "title": "Tạo bài viết",

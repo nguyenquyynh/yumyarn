@@ -16,7 +16,7 @@ export const USERS = {
     VERIFY: "verify",
     SEARCH: "search",
 }
-export const USERS_AUTHEN= {
+export const USERS_AUTHEN = {
     REGISTER: "REGISTER",
     LOGIN: "LOGIN",
     VERIFY: "VERIFY",
@@ -31,6 +31,16 @@ export const POST = {
 export const SUGGEST = {
     ADD: 'add',
     SUGGEST: 'suggest'
+}
+export const PROFILE = {
+    CHECKFOLLOWER: "checkfollowerprofile",
+    COUNTFOLLOWER: "countfollower",
+    FINDUSER: "finduser",
+    FOLLOWER: "follow",
+    UNFOLLOW: "unfollow",
+    POST: "getidpost",
+    AVATAR: "avatar",
+    COVERPHOTO: "coverphoto",
 }
 
 export const FOLLOW = {

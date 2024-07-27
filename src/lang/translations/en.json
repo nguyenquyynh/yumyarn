@@ -77,7 +77,8 @@
       "following": "Following",
       "edit_profile": "Edit Profile",
       "about_me": "About Me",
-      "social_media": "Social Media"
+      "social_media": "Social Media",
+      "post" : "what are you thinking"
     },
     "create_post": {
       "title": "Create Post",
