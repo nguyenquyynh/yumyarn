@@ -8,27 +8,10 @@ import { I18nProvider } from 'lang'
 import MainNavigation from 'containers/navigations/MainNavigation'
 import LoadingApp from 'components/commons/LoadingApp'
 import SearchMain from 'containers/search/SearchMain'
-import LoadingApp from 'components/commons/LoadingApp'
-import SearchMain from 'containers/search/SearchMain'
 import { addEventListener } from "@react-native-community/netinfo";
 import ListPost from 'containers/post/ListPost'
 const App = () => {
-  useEffect(() => {
-    const unsubscribe = addEventListener(state => {
-
-      // Kiểm tra xem có kết nối không
-      if (!state.isConnected) {
-        Alert.alert('Warning', 'WiFi connection is lost!');
-      }
-      // Kiểm tra chi tiết kết nối và chất lượng kết nối WiFi
-      else if (state?.details?.isConnectionExpensive) {
-        Alert.alert('Warning', 'WiFi connection is weak!');
-      }
-      // Kết nối WiFi ổn định
-      else if (state.isConnected) {
-        console.log('WiFi connected')
-      }
-  });
+ 
   useEffect(() => {
     const unsubscribe = addEventListener(state => {
 

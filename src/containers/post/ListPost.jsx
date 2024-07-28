@@ -1,10 +1,10 @@
 import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import RenderPost from 'components/commons/RenderPost'
 import { getPost } from 'src/hooks/api/post';
 import { View } from 'react-native-ui-lib';
 import ShowComments from 'containers/comment/ShowComments';
 import { useSelector } from 'react-redux';
+import RenderPost from 'components/homes/RenderPost';
 
 const ListPost = () => {
     const [dataPost, setDataPost] = useState([]);
