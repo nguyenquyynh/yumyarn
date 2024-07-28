@@ -86,23 +86,29 @@ const RenderPost = (props) => {
             </ReadMore>
 
             <View marginB-8 marginT-12 style={Style.borderRadiusSwiper} >
-                <Swiper>
-                    {listImage.map((item, index) => (
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    horizontal
+                    pagingEnabled={true}
+                    snapToAlignment='center'
+                    data={listImage}
+                    renderItem={data =>
                         <View key={index}  >
                             {
-                                item.endsWith(".mp4") ?
+                                data.item.endsWith(".mp4") ?
                                     <Video
-                                        source={{ uri: item }}
+                                        source={{ uri: data.item }}
                                         style={Style.styleImage}
                                         resizeMode='cover'
                                         paused
                                         controls
                                     /> :
-                                    <Image source={{ uri: item }} style={Style.styleImage} />
+                                    <Image source={{ uri: data.item }} style={Style.styleImage} />
                             }
-                        </View>
-                    ))}
-                </Swiper>
+                        </View>}
+                    key={item => item.id}
+                />
             </View>
 
             <View row>

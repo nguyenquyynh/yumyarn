@@ -15,7 +15,7 @@ const FooterDetailPost = ({
     return (
         <View flex>
             <View row>
-                <ScrollView horizontal>{hashtags.map(hag => <Text text80BO color={Colors.orange} key={hag}> {hag} </Text>)}</ScrollView>
+                <ScrollView horizontal>{hashtags?.map(hag => <Text text80BO color={Colors.orange} key={hag}> {hag} </Text>)}</ScrollView>
             </View>
             <Text onPress={handlerShowFullContent} color='white' text90BO numberOfLines={!showfullcontent ? 3 : 10000} ellipsizeMode="tail">
                 {content}

@@ -8,8 +8,8 @@ import IconApp from 'components/IconApp';
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
 import Modals from 'components/BottomSheetApp';
 import CameraApp from 'containers/camera/CameraApp';
-import RenderPost from 'components/commons/RenderPost';
 import { changeCoverPhoto, changeAvatar, getPost, checkFollowerProfile, getIdUser, countFollower, follower, unFollower } from 'src/hooks/api/profile'
+import RenderPost from 'components/homes/RenderPost';
 
 const screenheight = Dimensions.get('window').height
 const screenwidth = Dimensions.get('window').width

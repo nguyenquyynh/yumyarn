@@ -33,7 +33,8 @@ export const USERS_AUTHEN= {
 export const POST = {
     CREATEPOST: "create",
     SEARCH: "search",
-    FEED:"feed"
+    FEED:"feed",
+    WATCH: "watch",
 }
 
 export const SUGGEST = {
