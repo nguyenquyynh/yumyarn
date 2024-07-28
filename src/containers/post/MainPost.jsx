@@ -127,7 +127,7 @@ const MainPost = ({ route }) => {
           longitudeDelta: 0.005,
           latitudeDelta: 0.005
         },
-        create_by: "665c11ebfc13ae2944c633f0",
+        create_by: "665c11ebfc13ae2944c633f9",
         hashtags: extractHashtags(hashtag),
         content: content,
       }

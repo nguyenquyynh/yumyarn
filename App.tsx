@@ -6,29 +6,32 @@ import { store, persistor } from 'src/store/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { I18nProvider } from 'lang'
 import MainNavigation from 'containers/navigations/MainNavigation'
+import LoadingApp from 'components/commons/LoadingApp'
+import SearchMain from 'containers/search/SearchMain'
 import { addEventListener } from "@react-native-community/netinfo";
-import Screen1 from 'src/testcomponent/Screen1'
+import ListPost from 'containers/post/ListPost'
 const App = () => {
-//   useEffect(() => {
-//     const unsubscribe = addEventListener(state => {
-//       // Kiểm tra xem có kết nối không
-//       if (!state.isConnected) {
-//         Alert.alert('Warning', 'WiFi connection is lost!');
-//       }
-//       // Kiểm tra chi tiết kết nối và chất lượng kết nối WiFi
-//       else if (state?.details?.isConnectionExpensive) {
-//         Alert.alert('Warning', 'WiFi connection is weak!');
-//       }
-//       // Kết nối WiFi ổn định
-//       else if (state.isConnected) {
-//         console.log('WiFi connected')
-//       }
-//   });
+  useEffect(() => {
+    const unsubscribe = addEventListener(state => {
 
-//   return () => {
-//     unsubscribe();
-//   };
-// }, []);
+      // Kiểm tra xem có kết nối không
+      if (!state.isConnected) {
+        Alert.alert('Warning', 'WiFi connection is lost!');
+      }
+      // Kiểm tra chi tiết kết nối và chất lượng kết nối WiFi
+      else if (state?.details?.isConnectionExpensive) {
+        Alert.alert('Warning', 'WiFi connection is weak!');
+      }
+      // Kết nối WiFi ổn định
+      else if (state.isConnected) {
+        console.log('WiFi connected')
+      }
+  });
+
+  return () => {
+    unsubscribe();
+  };
+}, []);
 return (
   <Provider store={store}>
     <I18nProvider>
@@ -36,7 +39,7 @@ return (
         <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
         <DevNavigation />
         {/* <MainNavigation /> */}
-        {/* <Screen1/> */}
+        {/* <ListPost/> */}
       </PersistGate>
     </I18nProvider>
   </Provider>
