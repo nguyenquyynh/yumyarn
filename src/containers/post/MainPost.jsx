@@ -156,7 +156,7 @@ const MainPost = ({ route }) => {
   const renderItem = ({ item }) => (
     <View style={styles.imageWrapper}>
       {item.uri?.endsWith('.mp4') ?
-        <Video source={{ uri: item.uri }} style={styles.imageitem} paused controls /> :
+        <Video source={{ uri: item.uri }} style={styles.imageitem} paused controls/> :
         <Image source={{ uri: item.uri }} style={styles.imageitem} />
       }
       <TouchableOpacity

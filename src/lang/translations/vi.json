@@ -32,7 +32,14 @@
         "second": "giây",
         "minute": "phút",
         "hour": "giờ",
-        "ago":"trước"
+        "ago":"trước",
+        "feedback": "Phản hồi",
+        "responded": "Đã phản hồi",
+        "writeComment": "Viết phản hồi",
+        "see": "Xem",
+        "answering": "Đang trả lời",
+        "cancel":"Hủy",
+        "firstComment": "Hãy là người đầu tiên bình luận"
     },
     "wellcome": {
         "greeting": "Chào mừng bạn đến với",

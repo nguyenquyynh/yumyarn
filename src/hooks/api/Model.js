@@ -1,7 +1,7 @@
 export const Model = {
     USERS: "users",
     ADMINS: "admins",
-    COMMENTS: "comments",
+    COMMENTS: "comment",
     FIRES: "fires",
     FOLLOWS: "follows",
     HASHTAGS: "hashtags",
@@ -16,7 +16,14 @@ export const USERS = {
     VERIFY: "verify",
     SEARCH: "search",
 }
-export const USERS_AUTHEN = {
+
+export const COMMENT = {
+    CREATE: "create",
+    GET:"get",
+    GET_RECOMMENT:"get_recomment",
+}
+
+export const USERS_AUTHEN= {
     REGISTER: "REGISTER",
     LOGIN: "LOGIN",
     VERIFY: "VERIFY",
@@ -26,6 +33,7 @@ export const USERS_AUTHEN = {
 export const POST = {
     CREATEPOST: "create",
     SEARCH: "search",
+    FEED:"feed"
 }
 
 export const SUGGEST = {

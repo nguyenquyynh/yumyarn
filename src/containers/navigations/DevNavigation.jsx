@@ -4,11 +4,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import MainPost from 'containers/post/MainPost'
 import AddAdrressScreen from 'containers/post/AddAdrressScreen'
 import Setting from 'containers/setting/Setting'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, StackActions } from '@react-navigation/native'
 import DevScreen from './DevScreen'
 import Welcome  from 'containers/auth/Welcome'
 import Login from 'containers/auth/Login'
 import SearchMain from 'containers/search/SearchMain'
+import ListPost from 'containers/post/ListPost'
 import Personal from 'containers/personal/Personal'
 
 import PostDetail from 'containers/post/PostDetail'
@@ -24,6 +25,7 @@ const DevNavigation = () => {
                 <Stack.Screen name='Setting' component={Setting} />
                 <Stack.Screen name='Welcome' component={Welcome} />
                 <Stack.Screen name='Search' component={SearchMain} />
+                <Stack.Screen name='ListPost' component={ListPost}/>
                 <Stack.Screen name='Personal' component={Personal} />
                 <Stack.Screen name='PostDetail' component={PostDetail} />
             </Stack.Navigator>
