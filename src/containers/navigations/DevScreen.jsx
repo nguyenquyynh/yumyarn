@@ -34,6 +34,9 @@ const DevScreen = () => {
             <TouchableOpacity center padding-xx bg-orange onPress={() => { gotoScreen("Search") }}>
                 <Text color={Colors.white}>Search</Text>
             </TouchableOpacity>
+            <TouchableOpacity center padding-xx bg-orange onPress={() => { gotoScreen("ListPost") }}>
+                <Text color={Colors.white}>List post</Text>
+            </TouchableOpacity>
             <TouchableOpacity center padding-xx bg-orange onPress={() => { gotoScreen("Personal") }}>
                 <Text color={Colors.white}>Personal</Text>
             </TouchableOpacity>

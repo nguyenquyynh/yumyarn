@@ -32,7 +32,14 @@
     "second": "秒",
     "minute": "分",
     "hour": "時",
-    "ago": "前"
+    "ago": "前",
+    "feedback": "フィードバック",
+    "responded": "返信済み",
+    "writeComment": "コメントを書く",
+    "see": "見る",
+    "answering": "回答中",
+    "cancel": "キャンセル",
+    "firstComment": "最初のコメントを投稿してください"
   },
   "welcome": {
     "greeting": "ようこそ",

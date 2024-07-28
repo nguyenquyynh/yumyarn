@@ -32,7 +32,14 @@
     "second": "秒",
     "minute": "分",
     "hour": "小时",
-    "ago": "前"
+    "ago": "前",
+    "feedback": "反馈",
+    "responded": "已回复",
+    "writeComment": "写评论",
+    "see": "查看",
+    "answering": "正在回答",
+    "cancel": "取消",
+    "firstComment": "成为第一个评论的人"
   },
   "welcome": {
     "greeting": "欢迎来到",

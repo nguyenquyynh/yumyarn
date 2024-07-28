@@ -21,7 +21,7 @@ export async function createpost(data) {
 
 export async function getPost(dataRequest) {
     try {
-        const resault = await AxiosInstance().get(`${Model.POSTS}?create_by=${dataRequest.id}&page=${dataRequest.page}`)
+        const resault = await AxiosInstance().get(`${Model.POSTS}/${POST.FEED}?create_by=${dataRequest.id}&page=${dataRequest.page}`)
 
         if (resault.status) {
             return { status: true, data : resault.data }
