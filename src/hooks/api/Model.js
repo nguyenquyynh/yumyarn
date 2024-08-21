@@ -15,6 +15,7 @@ export const USERS = {
     AUTHEN: "authen",
     VERIFY: "verify",
     SEARCH: "search",
+    CHECKAUTHEN: "checkauthen",
 }
 
 export const COMMENT = {

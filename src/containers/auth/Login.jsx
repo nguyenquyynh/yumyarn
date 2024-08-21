@@ -25,7 +25,11 @@ const Login = () => {
         if (policy) {
             const reponse = await userLogin()
             if (reponse.status) {
-                await dishpatch(auth_login(reponse.data))
+                await dishpatch(auth_login({
+                    user: reponse.data.data,
+                    token: reponse.data.token,
+                    isLogin: true,
+                }))
             } else {
                 setShowNotifi(true)
                 setNotifycontent(reponse.data)
@@ -64,7 +68,7 @@ const Login = () => {
     return (
         <View flex>
             <View flex>
-                <View centerH flex  paddingT-xx>
+                <View centerH flex paddingT-xx>
                     <Text margin-xl text20BO color={Colors.orange} center>{t("app.name_app")}</Text>
                     <IconApp assetName={"logoapp"} size={200} />
                 </View>
@@ -100,7 +104,7 @@ const Login = () => {
                     />
                 </View>
             </Modals>
-            <NotificationModalApp asseticon={"warning"} modalVisible={showNotifi} modalhiden={setShowNotifi} content={notifycontent} title={"Warning"}/>
+            <NotificationModalApp asseticon={"warning"} modalVisible={showNotifi} modalhiden={setShowNotifi} content={notifycontent} title={"Warning"} />
         </View>
 
     )
