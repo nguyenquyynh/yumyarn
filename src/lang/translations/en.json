@@ -50,6 +50,7 @@
   },
   "login": {
     "i_read": "I have read",
+    "expired": "Login session has expired, please log in again!",
     "register": "Your account has been registered! Log in now",
     "verify": "Check your registered email for account verification",
     "policy": "Privacy Policy",

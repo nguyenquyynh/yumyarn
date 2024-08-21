@@ -3,7 +3,8 @@ import { signOutGoogle } from 'services/Google'
 
 const INITIAL_STATE = {
     user: {},
-    isLogin: false,
+    token: null,
+    isLogin: false
 }
 
 export const auth = createSlice({
@@ -15,11 +16,14 @@ export const auth = createSlice({
             return INITIAL_STATE
         },
         auth_login: (state, action) => {
-            return {...state, ...action.payload, isLogin: true}
+            return {...state, ...action.payload}
+        },
+        auth_check: (state, action) => {
+            return {...state, ...action.payload}
         }
     },
 })
 
-export const { auth_logout, auth_login } = auth.actions
+export const { auth_logout, auth_login, auth_check } = auth.actions
 
 export default auth.reducer

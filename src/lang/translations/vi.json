@@ -50,6 +50,7 @@
     },
     "login": {
         "i_read":"Tôi đã đọc",
+        "expired": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
         "register": "Tài khoảng của bạn đã được đăng kí! Đăng nhập ngay",
         "verify" : "Kiếm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
         "policy": "Chính sách bảo mật",

@@ -38,8 +38,8 @@ return (
     <I18nProvider>
       <PersistGate loading={null} persistor={persistor}>
         <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-        <DevNavigation />
-        {/* <MainNavigation /> */}
+        {/* <DevNavigation /> */}
+        <MainNavigation />
         {/* <ListPost/> */}
       </PersistGate>
     </I18nProvider>
