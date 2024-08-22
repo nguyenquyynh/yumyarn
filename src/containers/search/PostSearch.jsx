@@ -17,7 +17,7 @@ const PostSearch = ({ route }) => {
     setDatalist([...datalist, ...resault_post.data])
   }
   return (
-    <View flex bg-white>
+    <View flex bg-white paddingH-v>
       <FlatList
         onEndReached={onScrollPosts}
         onEndReachedThreshold={0.5}

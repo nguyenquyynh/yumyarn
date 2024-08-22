@@ -1,47 +1,43 @@
-import { AppRegistry, StyleSheet, Text, View} from 'react-native'
-import React, { Component } from 'react'
-import Swiper from 'react-native-swiper'
+import React, { useState } from 'react';
+import { View, Text, Dimensions } from 'react-native';
+import { TabView, SceneMap } from 'react-native-tab-view';
 
-const Spiwertext = () => {
+const FirstRoute = () => (
+  <View style={{   
+ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text>Posts!</Text>
+  </View>
+);
+
+const SecondRoute = () => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text>People!</Text>
+  </View>
+);
+
+const initialLayout = { width: Dimensions.get('window').width };
+
+const MyTabs = () => {
+  const [index, setIndex] = useState(0);
+  const [routes] = useState([
+    { key: 'first', title: 'Posts' },
+    { key: 'second', title: 'People' },
+  ]);
+
+  const renderScene = SceneMap({
+    first: FirstRoute,
+    second: SecondRoute,
+  });
+
   return (
-    <Swiper style={styles.wrapper} showsButtons={true}>
-        <View style={styles.slide1}>
-          <Text style={styles.text}>Hello Swiper</Text>
-        </View>
-        <View style={styles.slide2}>
-          <Text style={styles.text}>Beautiful</Text>
-        </View>
-        <View style={styles.slide3}>
-          <Text style={styles.text}>And simple</Text>
-        </View>
-      </Swiper>
-  )
-}
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={initialLayout}   
 
-export default Spiwertext
+    />
+  );
+};
 
-const styles = StyleSheet.create({
-    slide1: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#9DD6EB'
-      },
-      slide2: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#97CAE5'
-      },
-      slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#92BBD9'
-      },
-      text: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold'
-      },
-})
+export default MyTabs;

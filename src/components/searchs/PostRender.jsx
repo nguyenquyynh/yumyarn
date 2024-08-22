@@ -1,9 +1,9 @@
 import { Dimensions, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { Avatar, Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
-import LinearGradient from 'react-native-linear-gradient';
 import Video from 'react-native-video';
 import numberFormat from 'configs/ui/format';
+import { millisecondsToDate } from 'configs/ui/time';
 
 const PostRender = ({ item }) => {
     const screenwith = Dimensions.get('window').width < Dimensions.get('window').height ? Dimensions.get('window').width : Dimensions.get('window').height;
@@ -14,15 +14,16 @@ const PostRender = ({ item }) => {
     }
     const renderMedia = (item) => {
         const first = item?.media[0]
-        if (first.endsWith('.jpg')) {
+        if (first.endsWith('.jpg' || '.png' || '.jpeg' || '.gif' || '.svg')) {
             return (
                 <Image source={{ uri: first }} style={styles.media} />
             )
         } else if (first.endsWith('.mp4')) {
             return (
-                <Video 
+                <Video
                     source={{ uri: first }}
                     style={styles.media} paused resizeMode='cover' />
+
             )
         }
     }
@@ -30,31 +31,31 @@ const PostRender = ({ item }) => {
 
     }
     const hendlerClickMedia = () => {
-
+        
     }
     return (
-        <View bg-white marginT-x style={itemstyle} bottom>
-            <TouchableOpacity flex onPress={hendlerClickMedia}>
-                {renderMedia(item)}
-            </TouchableOpacity>
-            <View absF bottom>
-                <LinearGradient
-                    start={{ x: 1, y: 1 }} end={{ x: 1, y: 0 }}
-                    locations={[-1, 1]}
-                    colors={[Colors.black, Colors.transparent]}
-                    style={{ height: '20%', width: '100%' }}
-                >
-                    <View flex row centerV spread paddingH-x>
-                        <TouchableOpacity row centerV onPress={handlerClickUser} flex-7>
-                            <Avatar source={{ uri: item?.create_by?.avatar }} size={25} />
-                            <Text flex numberOfLines={1} marginL-x color={Colors.white} text90BO>{item?.create_by?.name}</Text>
-                        </TouchableOpacity>
-                        <View row centerV flex-2>
-                            <Icon assetName='fire' size={18} />
-                            <Text text80BO color='white'>{numberFormat(item?.fire)}</Text>
+        <View bg-white marginT-x style={itemstyle}>
+            <View flex-5 style={styles.videoBorder}>
+                <TouchableOpacity flex onPress={hendlerClickMedia}>
+                    {renderMedia(item)}
+                </TouchableOpacity>
+                <View absB style={{ width: '100%', height: '20%' }} row padding-v spread>
+                    <View row>
+                        <Avatar onPress={handlerClickUser} size={35} source={{ uri: item.create_by.avatar }} />
+                        <View marginL-v>
+                            <Text numberOfLines={1} color={Colors.white} text80BO >@{item.create_by.tagName}</Text>
+                            <Text numberOfLines={1} color={Colors.white} text90L >{millisecondsToDate(item.create_at)}</Text>
                         </View>
                     </View>
-                </LinearGradient>
+                    <View row centerV paddingR-v>
+                        <Icon assetName='fire' size={25} />
+                        <Text color={Colors.white} text70BO>{numberFormat(item.fire)}</Text>
+                    </View>
+                </View>
+            </View>
+            <View flex-1>
+                <Text numberOfLines={1} text80BO>{item.content}</Text>
+                <Text numberOfLines={1} text80BO>{item.hashtags.map(el => `#${el} `)}</Text>
             </View>
         </View>
     )
@@ -63,5 +64,9 @@ const PostRender = ({ item }) => {
 export default PostRender
 
 const styles = StyleSheet.create({
-    media: { flex: 1 }
+    media: { flex: 1 },
+    videoBorder: {
+        overflow: 'hidden',
+        borderRadius: 15,
+    }
 })

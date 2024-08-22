@@ -11,7 +11,7 @@ import SearchMain from 'containers/search/SearchMain'
 import { addEventListener } from "@react-native-community/netinfo";
 import ListPost from 'containers/post/ListPost'
 const App = () => {
- 
+
   useEffect(() => {
     const unsubscribe = addEventListener(state => {
 
@@ -27,24 +27,24 @@ const App = () => {
       else if (state.isConnected) {
         console.log('WiFi connected')
       }
-  });
+    });
 
-  return () => {
-    unsubscribe();
-  };
-}, []);
-return (
-  <Provider store={store}>
-    <I18nProvider>
-      <PersistGate loading={null} persistor={persistor}>
-        <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-        {/* <DevNavigation /> */}
-        <MainNavigation />
-        {/* <ListPost/> */}
-      </PersistGate>
-    </I18nProvider>
-  </Provider>
-)
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const role = '__DEV'
+  return (
+    <Provider store={store}>
+      <I18nProvider>
+        <PersistGate loading={null} persistor={persistor}>
+          <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
+          {role == '__DEV' ? <DevNavigation /> : <MainNavigation />}
+        </PersistGate>
+      </I18nProvider>
+    </Provider>
+  )
 }
 
 export default App

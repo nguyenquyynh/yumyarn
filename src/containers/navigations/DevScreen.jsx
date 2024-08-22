@@ -60,7 +60,7 @@ const DevScreen = () => {
                     <Text>Pháp</Text>
                 </TouchableOpacity>
             </View>
-            <Text>{auth._id}</Text>
+            <Text>{"JWT: " + auth.user._id || "Bạn chưa đăng nhập"}</Text>
         </Wapper>
     )
 }
