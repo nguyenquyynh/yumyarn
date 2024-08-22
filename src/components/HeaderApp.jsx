@@ -26,13 +26,13 @@ const HeaderApp = ({
 
     return (
         <View flex>
-            {gadient &&
+            {/* {gadient &&
                 <LinearGradient
                     start={{ x: 1, y: 0 }} end={{ x: 1, y: 1 }}
                     locations={[0, 1]}
                     colors={[Colors.yellow, Colors.white]}
                     style={{ height: '100%' }}
-                />}
+                />} */}
             {customheader ?
                 <View absF>
                     {customheader()}

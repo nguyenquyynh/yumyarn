@@ -25,14 +25,13 @@ const HistoryList = ({
         }
     }, [keyword])
     const handlerRemoveHistory = (item) => {
-        setHistory(data_history.filter(el => el != item))
+        setHistory(history.filter(el => el != item))
         dispatch(history_remaove(item))
     }
     const keywordSearchChange = useCallback((keyword) => {
         clearTimeout(timeoutref.current)
         timeoutref.current = setTimeout(async () => {
             const resault = await get_suggest(keyword)
-            console.log(resault);
             if (resault?.status) {
                 setSuggest(resault?.data)
             }
@@ -69,6 +68,12 @@ const HistoryList = ({
         <View flex paddingH-x bg-white>
             {history && (
                 <ScrollView showsVerticalScrollIndicator={false}>
+                    <FlatList
+                        scrollEnabled={false}
+                        data={history}
+                        keyExtractor={() => Math.random() * 100}
+                        renderItem={({ item }) => renderItemHistory(item)}
+                    />
                     {suggest.length > 0 &&
                         <FlatList
                             scrollEnabled={false}
@@ -77,12 +82,6 @@ const HistoryList = ({
                             renderItem={({ item }) => renderItemSuggest(item)}
                         />
                     }
-                    <FlatList
-                        scrollEnabled={false}
-                        data={history}
-                        keyExtractor={() => Math.random() * 100}
-                        renderItem={({ item }) => renderItemHistory(item)}
-                    />
                 </ScrollView>
             )}
         </View>
