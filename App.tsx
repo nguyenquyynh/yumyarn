@@ -1,15 +1,12 @@
 import { Alert, StatusBar, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import DevNavigation from 'containers/navigations/DevNavigation'
+import React, { useEffect } from 'react'
 import { Provider } from 'react-redux'
 import { store, persistor } from 'src/store/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { I18nProvider } from 'lang'
 import MainNavigation from 'containers/navigations/MainNavigation'
-import LoadingApp from 'components/commons/LoadingApp'
-import SearchMain from 'containers/search/SearchMain'
 import { addEventListener } from "@react-native-community/netinfo";
-import ListPost from 'containers/post/ListPost'
+
 const App = () => {
 
   useEffect(() => {
@@ -34,13 +31,12 @@ const App = () => {
     };
   }, []);
 
-  const role = '__DEV'
   return (
     <Provider store={store}>
       <I18nProvider>
         <PersistGate loading={null} persistor={persistor}>
           <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
-          {role == '__DEV' ? <DevNavigation /> : <MainNavigation />}
+          <MainNavigation />
         </PersistGate>
       </I18nProvider>
     </Provider>

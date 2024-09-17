@@ -12,4 +12,5 @@ Colors.loadColors({
     light_green: "#4FB018",
     tr_black: "rgba(0,0,0,0.5)",
     light_grey: "#F0F0F0",
+    opacity: "rgba(255, 255, 255, 0.3)"
 })

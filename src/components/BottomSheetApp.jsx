@@ -51,7 +51,7 @@ const Modals = ({
 
 
   return (
-    <View flex absF>{modalVisible &&
+    <View flex absF >{modalVisible &&
       <View flex bg-tr_black >
         <Modal
           animationType="slide"
