@@ -4,7 +4,6 @@ ThemeManager.setComponentTheme('Text', (props, context) => {
    return {
     fontSize: props.fontSize ? props.fontSize : 12,
     color: props.color ? props.color : 'black',
-    fontFamily: props.fontFamily ? props.fontFamily : 'Inter-Regular',
    }
 });
 

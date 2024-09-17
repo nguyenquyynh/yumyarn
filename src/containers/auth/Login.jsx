@@ -1,6 +1,6 @@
-import { Alert, FlatList, ImageBackground, Pressable, StyleSheet } from 'react-native'
+import { Alert, FlatList, ImageBackground, Pressable, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useState } from 'react'
-import { Text, View, Colors, Image, Button, Icon, Checkbox, RadioGroup, RadioButton } from 'react-native-ui-lib'
+import { Text, View, Colors, Image, Button, Icon, Checkbox, RadioGroup, RadioButton, TouchableOpacity } from 'react-native-ui-lib'
 import { t } from 'lang'
 import IconApp from 'components/IconApp'
 import { userLogin } from 'src/hooks/api/auth'
@@ -10,6 +10,7 @@ import Modals from 'components/BottomSheetApp'
 import { setting_changelanguage } from 'reducers/setting'
 import TextApp from 'components/commons/TextApp'
 import NotificationModalApp from 'components/commons/NotificationModalApp'
+import Animated from 'react-native-reanimated'
 
 const Login = () => {
     const dishpatch = useDispatch()
@@ -25,6 +26,7 @@ const Login = () => {
         if (policy) {
             const reponse = await userLogin()
             if (reponse.status) {
+                ToastAndroid.show("Login success", ToastAndroid.SHORT)
                 await dishpatch(auth_login({
                     user: reponse.data.data,
                     token: reponse.data.token,
@@ -65,32 +67,38 @@ const Login = () => {
             </View>
         </View>)
     }
+
     return (
         <View flex>
             <View flex>
-                <View centerH flex paddingT-xx>
-                    <Text margin-xl text20BO color={Colors.orange} center>{t("app.name_app")}</Text>
-                    <IconApp assetName={"logoapp"} size={200} />
-                </View>
-                <View flex>
+                <Image source={{ uri: 'https://images.pexels.com/photos/744780/pexels-photo-744780.jpeg' }} style={styles.bg_image} />
+                <View absB spread centerH padding-xx bg-white style={styles.bg_content}>
+                    <View center>
+                        <Icon assetName='logoapp' size={100} />
+                        <Text text40BO color={Colors.yellow} style={styles.shadown}>{t('wellcome.greeting')}</Text>
+                        <Text text40BO color={Colors.yellow} style={styles.shadown}>{t('app.name_app')}</Text>
+                        <Text text60L marginT-xx>{t("login.slogan")}</Text>
+                    </View>
+                   
                     <Pressable onPress={() => { setIsShowModal(true) }} >
                         <View center row>
                             <Text text70BO>{lang}</Text>
-                            <IconApp assetName={"arrow_down"} size={23} />
+                            <IconApp assetName={"right_arrow"} size={12} />
                         </View>
                     </Pressable>
-
-                    <Button style={styles.button} onPress={handlerAuthenSignin}>
-                        <View marginR-xx>
-                            <IconApp assetName={"google"} />
-                        </View>
-                        <TextApp text={"login.google"} />
-                    </Button>
-                    <View style={styles.viewpolicy} center row padding-xl>
+                    <Animated.View sharedTransitionTag='btn_auth' style={{ width: 350, alignSelf: 'center' }}>
+                        <TouchableOpacity bg-yellow paddingV-xiii paddingH-xx row br30 centerV spread style={styles.shadown} onPress={handlerAuthenSignin}>
+                            <Icon assetName='google' size={28} />
+                            <View flex center>
+                                <TextApp text={"login.google"} />
+                            </View>
+                        </TouchableOpacity>
+                    </Animated.View>
+                    <View style={styles.viewpolicy} center row >
                         <TextApp text={"login.i_read"} />
-                        <TextApp text={"login.policy"} color={Colors.white} />
+                        <TextApp text={"login.policy"} color={Colors.yellow} />
                         <View marginL-x>
-                            <Checkbox color='black' value={policy} onValueChange={() => { setPolicy(!policy) }} />
+                            <Checkbox color={Colors.yellow} value={policy} onValueChange={() => { setPolicy(!policy) }} />
                         </View>
                     </View>
                 </View>
@@ -113,13 +121,12 @@ const Login = () => {
 export default Login
 
 const styles = StyleSheet.create({
-    button: {
-        paddingHorizontal: 35,
-        paddingVertical: 15,
-        justifyContent: 'space-evenly',
-        backgroundColor: '#FFFFFF',
-        alignSelf: 'center',
-        marginTop: 43,
-        borderRadius: 20
+    bg_image: { with: '100%', height: '50%' },
+    bg_content: { width: '100%', height: '60%', borderTopLeftRadius: 20, borderTopRightRadius: 20, },
+    shadown: {
+        elevation: 5,
+        textShadowColor: 'lightgray',
+        textShadowOffset: { width: 4, height: 4 },
+        textShadowRadius: 10,
     }
 })

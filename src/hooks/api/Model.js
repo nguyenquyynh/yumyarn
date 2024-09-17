@@ -36,6 +36,7 @@ export const POST = {
     SEARCH: "search",
     FEED:"feed",
     WATCH: "watch",
+    TIMELINE: "timeline",
 }
 
 export const SUGGEST = {

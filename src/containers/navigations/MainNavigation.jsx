@@ -9,6 +9,7 @@ import { auth_check } from 'reducers/auth'
 import { Toast } from 'react-native-ui-lib'
 import { ToastAndroid } from 'react-native'
 import { t } from 'lang'
+import OpenApp from 'components/commons/OpenApp'
 
 const MainNavigation = () => {
   const auth = useSelector(state => state.auth)
@@ -20,18 +21,18 @@ const MainNavigation = () => {
       const authen = await checkAuthen(auth.token)
       setTimeout(() => {
         setLoading(false)
-      }, 1000);
-      if (!authen) {
-        ToastAndroid.show(t("login.expired"), ToastAndroid.SHORT);
-      }
-      await dispatch(auth_check({isLogin : authen}))
+        if (!authen) {
+          ToastAndroid.show(t("login.expired"), ToastAndroid.SHORT);
+        }
+      }, 1500);
+      await dispatch(auth_check({ isLogin: authen }))
     }
     Check()
   }, [])
 
   return (
     <NavigationContainer>
-      {loading ? <LoadingApp /> : auth.isLogin ? <MainApp /> : <Authen />}
+      {loading ? <OpenApp /> : auth.isLogin ? <MainApp /> : <Authen />}
     </NavigationContainer>
   )
 }

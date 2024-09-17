@@ -47,7 +47,7 @@ Typography.loadTypographies(
       },
       xiiitext: {
         fontSize: 13,
-        lineHeight: 20
+        lineHeight: 16
       },
       xiitext: {
         fontSize: 12,
@@ -61,6 +61,10 @@ Typography.loadTypographies(
         fontSize: 40,
         lineHeight: 46
       },
+      ixtext:{
+        fontSize: 10,
+        lineHeight: 12
+      }
     },
     ['fontSize', 'lineHeight']
   )
