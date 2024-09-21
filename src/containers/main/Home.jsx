@@ -52,10 +52,10 @@ const Home = () => {
           <TouchableOpacity onPress={handlerSearch}>
             <Icon assetName="search" size={20} />
           </TouchableOpacity>
-          <TouchableOpacity marginH-xvi onPress={handlerNotify}>
+          <TouchableOpacity marginH-xvi onPress={() => {navigation.navigate('MainNotifications')}}>
             <Icon assetName="notifycation" size={20} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handlerChat}>
+          <TouchableOpacity onPress={() => {navigation.navigate('MainChat')}}>
             <Icon assetName="chat" size={20} />
           </TouchableOpacity>
         </View>
