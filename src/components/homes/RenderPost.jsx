@@ -1,15 +1,17 @@
 import IconApp from 'components/IconApp';
-import React, {memo, useState} from 'react';
-import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
-import {Avatar, Image, Text, View} from 'react-native-ui-lib';
+import React, { memo } from 'react';
+import { Dimensions, FlatList, Pressable, StyleSheet } from 'react-native';
+import { Avatar, Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import ReadMore from 'react-native-read-more-text';
 import Video from 'react-native-video';
 import ChangeTimeApp from 'components/commons/ChangeTimeApp';
-import InteractPost from './InteractPost';
-import {createFollow} from 'src/hooks/api/follow';
-const {width: MAX_WIDTH} = Dimensions.get('window');
+import InteractPost from 'components/commons/InteractPost';
+import { EBI, ELI } from 'configs/fonts';
+import { t } from 'i18next';
+
+const { width: MAX_WIDTH } = Dimensions.get('window');
 const RenderPost = props => {
-  const {item, handleOpenComment, idUser, handleFollow} = props;
+  const { item, handleOpenComment, idUser, handleFollow } = props;
   const content = item?.content;
   const listImage = item?.media || [];
   const countFire = item?.fire;
@@ -27,31 +29,27 @@ const RenderPost = props => {
   const renderRevealedFooter = handlePress => {
     return (
       <View>
-        <View row>
-          <IconApp
-            assetName={'location'}
-            size={15}
-            props={{alignSelf: 'center'}}
-          />
-          <Text text text70BO marginL-2>
+        <Text onPress={handlePress}>{t("app.hiden")}</Text>
+        <View row centerV>
+          <Icon assetName='location' size={20} marginR-v/>
+          <Text text text80BO marginL-2>
             {address}
           </Text>
         </View>
-        <Text onPress={handlePress}>Ẩn bớt</Text>
       </View>
     );
   };
   const renderTruncatedFooter = handlePress => {
-    return <Text onPress={handlePress}>Xem thêm</Text>;
+    return <Text onPress={handlePress}>{t("app.more")}</Text>;
   };
 
   return (
-    <View paddingH-12 marginB-20 bg-white style={Style.sizeContainer}>
-      <View row spread marginB-28 paddingH-11 paddingT-10>
+    <View paddingH-x marginB-25 bg-white style={Style.sizeContainer}>
+      <View row marginB-xv paddingT-10>
         <View row center flex>
-          <Avatar source={{uri: item?.create_by?.avatar}} size={40} />
+          <Avatar source={{ uri: item?.create_by?.avatar }} size={35} />
           <View marginL-15 flex>
-            <Text xviText text60BO numberOfLines={1}>
+            <Text text70BO numberOfLines={1}>
               {item?.create_by?.name}
             </Text>
             <ChangeTimeApp second={differenceInSeconds} />
@@ -59,19 +57,9 @@ const RenderPost = props => {
         </View>
 
         <View row center>
-          {followStatus !== 'you' && (
-            <Pressable
-              style={Style.outline}
-              onPress={() => handleFollow(userCreatePost)}>
-              <Text text text70BO>
-                {followStatus ? 'Đang theo dõi' : 'Theo dõi'}
-              </Text>
-            </Pressable>
-          )}
-          <IconApp assetName={'dots'} size={24} />
+          <IconApp assetName={'dots'} size={20} />
         </View>
       </View>
-
       <ReadMore
         numberOfLines={3}
         renderTruncatedFooter={renderTruncatedFooter}
@@ -80,8 +68,10 @@ const RenderPost = props => {
           {content}
         </Text>
       </ReadMore>
-
-      <View marginB-22 marginT-15 style={Style.borderRadiusSwiper}>
+      {item?.hashtags.length != 0 &&
+        <Text style={{ fontFamily: EBI }} numberOfLines={1} color={Colors.yellow}>{item?.hashtags.map((el) => `#${el} `)}</Text>
+      }
+      <TouchableOpacity marginB-22 marginT-15 style={Style.borderRadiusSwiper}>
         <FlatList
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -90,18 +80,18 @@ const RenderPost = props => {
           snapToAlignment="center"
           data={listImage}
           renderItem={data => (
-            <View flex style={{overflow: 'hidden', borderRadius: 20}}>
+            <View flex style={{ overflow: 'hidden', borderRadius: 20 }}>
               {data.item.endsWith('.mp4') ? (
                 <Video
-                  source={{uri: data.item}}
+                  source={{ uri: data.item }}
                   style={Style.styleImage}
                   resizeMode="cover"
                   paused
-                  controls
+                  controls={false}
                 />
               ) : (
                 <Image
-                  source={{uri: data.item}}
+                  source={{ uri: data.item }}
                   style={Style.styleImage}
                   resizeMode="cover"
                 />
@@ -110,7 +100,7 @@ const RenderPost = props => {
           )}
           key={item => item.id}
         />
-      </View>
+      </TouchableOpacity>
 
       <InteractPost
         id={id}
