@@ -128,7 +128,7 @@ const CommentSection = ({
                 <View style={{ width: '100%', alignItems: 'center' }}>
                     <Text>{t("app.firstComment")}</Text>
                 </View>}
-            ListFooterComponent={() => isLoading && dataComment?.length % 10 == 0 && <ActivityIndicator size="large" color="#0000ff" />}
+            ListFooterComponent={() => isLoading &&  <ActivityIndicator size="large" color="#0000ff" />}
             scrollEventThrottle={16}
         />
     )

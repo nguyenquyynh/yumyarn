@@ -64,4 +64,6 @@ Assets.loadAssetsGroup('icons', {
     empty: require('assets/icon/empty.png'),
     share: require('assets/icon/share.png'),
     bookmark: require('assets/icon/bookmark.png'),
+    send_white: require('assets/icon/send_white.png'),
+    retweet: require('assets/icon/retweet.png'),
 })

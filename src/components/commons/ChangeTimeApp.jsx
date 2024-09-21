@@ -2,6 +2,7 @@
 import React from 'react'
 import { Text } from 'react-native-ui-lib'
 import { t } from 'lang'
+import { StyleSheet } from 'react-native'
 const ChangeTimeApp = ({ second, }) => {
     const changeTime = (time) => {
         if (time >= 60 * 60 * 24 * 365) { 
@@ -21,8 +22,13 @@ const ChangeTimeApp = ({ second, }) => {
 
 
   return (
-    <Text xiitext>{changeTime(second)}</Text>
+    <Text xiitext style={styles.colorText}>{changeTime(second)}</Text>
   )
 }
 
+const styles =StyleSheet.create({
+    colorText:{
+        color:'#BEBEBE'
+    }
+}) 
 export default ChangeTimeApp
