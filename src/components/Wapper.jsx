@@ -8,7 +8,6 @@ const Wapper = ({
   loading = false,
   header = true,
   customheader,
-  gadient,
   iconleft,
   iconright,
   renderleft = false,
@@ -31,7 +30,6 @@ const Wapper = ({
         <View style={styles.header}>
           {header && <HeaderApp
             titlesize={titlesize}
-            gadient={gadient}
             title={title}
             iconleft={!iconleft ? 'back' : iconleft}
             iconright={!iconright ? 'settings' : iconright}

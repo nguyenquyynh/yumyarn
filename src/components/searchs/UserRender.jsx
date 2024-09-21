@@ -1,13 +1,12 @@
-import { Dimensions, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Avatar, Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang';
-import ButtonApp from 'components/ButtonApp';
-import { BOLD } from 'configs/fonts';
 import { createFollow } from 'src/hooks/api/follow';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const UserRender = ({ item }) => {
+    const navigation = useNavigation()
     const user = useSelector(state => state.auth.user)
     const [isfollow, setIsfollow] = useState(item?.isFollow)
 
@@ -22,25 +21,21 @@ const UserRender = ({ item }) => {
         alignItems: 'center'
     }
     const handlerfollow = async () => {
-        const followresponse = await createFollow(user._id, item?._id)
-        console.log(followresponse);
+        await createFollow(user._id, item?._id)
         setIsfollow(!isfollow)
-    }
-    const handlerClickAvatar = () => {
-
     }
     return (
         <View bg-white padding-viii marginT-x centerV center spread>
             <View row>
-                <View row flex-3>
-                    <Avatar source={{ uri: item?.avatar }} size={44} onPress={handlerClickAvatar} />
+                <TouchableOpacity row flex-3 onPress={() => navigation.navigate('OtherProfile', { name: item.name })} >
+                    <Avatar source={{ uri: item?.avatar }} size={44} />
                     <View paddingH-x flex>
                         <Text text70BO numberOfLines={1} ellipsizeMode="tail">{item?.name}</Text>
                         <Text text80L numberOfLines={1} ellipsizeMode="tail" color={Colors.black}>@{item?.tagName}</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <View>
-                    <TouchableOpacity onclick={handlerfollow} style={styleButtonFollow}>
+                    <TouchableOpacity onPress={handlerfollow} style={styleButtonFollow}>
                         <Text color={isfollow ? Colors.white : Colors.yellow}>{isfollow ? t("app.following") : t("app.follow")}</Text>
                     </TouchableOpacity>
                 </View>

@@ -9,7 +9,7 @@ const MediaPost = ({
     var widthscreen = Dimensions.get('window').width
     var heightscreen = Dimensions.get('window').height
 
-    const [pausevideo, setPausevideo] = useState(false)
+    const [pausevideo, setPausevideo] = useState(true)
     const [scale, setScale] = useState('100%')
 
     const handlerPauseVideo = () => {

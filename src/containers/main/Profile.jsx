@@ -9,7 +9,7 @@ import numberFormat from 'configs/ui/format'
 import ListMediaProfile from 'components/profile/ListMediaProfile'
 import { getTimeline } from 'src/hooks/api/profile'
 import Modals from 'components/BottomSheetApp'
-import { BI } from 'configs/fonts'
+import { B, BI, SB, SBI } from 'configs/fonts'
 
 const Profile = () => {
   const navigation = useNavigation()
@@ -17,37 +17,31 @@ const Profile = () => {
   const [data, setdata] = useState([])
   const [showmodal, setShowmodal] = useState(false)
 
-  async function loadTimeline() {
-    const resault = await getTimeline({
-      user: auth._id,
-      page: Math.ceil(data.length / 10) + 1
-    })
-    if (resault.status) {
-      setdata([...data, ...resault.data])
+  async function loadTimeline(option) {
+    switch (option) {
+      case 'refress':
+        const refress = await getTimeline({
+          user: auth._id,
+          page: 1
+        })
+        if (refress.status) {
+          setdata([...refress.data])
+        }
+        break;
+
+      default:
+        const resault = await getTimeline({
+          user: auth._id,
+          page: Math.ceil(data.length / 10) + 1
+        })
+        if (resault.status) {
+          setdata([...data, ...resault.data])
+        }
+        break;
     }
-  }
-  async function refressTimeline() {
-    const resault = await getTimeline({
-      user: auth._id,
-      page: 1
-    })
-    if (resault.status) {
-      setdata([...resault.data])
-    }
-  }
-
-  function handlerPressFollowers() {
 
   }
-  function handlerPressFollowing() {
 
-  }
-  function handlerMore() {
-    setShowmodal(!showmodal)
-  }
-  function handlerEdit() {
-
-  }
   useEffect(() => {
     loadTimeline()
   }, [])
@@ -64,7 +58,7 @@ const Profile = () => {
                   <View marginB-x>
                     <View row spread>
                       <Text text style={styles.name}>{auth.name}</Text>
-                      <TouchableOpacity onPress={handlerMore}>
+                      <TouchableOpacity onPress={() => setShowmodal(!showmodal)}>
                         <Icon assetName='dots' size={20} />
                       </TouchableOpacity>
                     </View>
@@ -76,25 +70,28 @@ const Profile = () => {
               </View>
               <View flex-2 row padding-x>
                 <View flex-3 center style={styles.bordercard} >
-                  <Text style={styles.numbercard}>{numberFormat(1209)}</Text>
+                  <Text style={styles.numbercard}>{numberFormat(auth.posts)}</Text>
                   <Text ixtext style={styles.numbercard}>{t("profile.postting")}</Text>
                 </View>
-                <TouchableOpacity flex-4 center onPress={handlerPressFollowers} >
-                  <Text style={styles.numbercard}>{numberFormat(854463)}</Text>
+                <TouchableOpacity flex-4 center onPress={() => navigation.navigate('FollowerList')} >
+                  <Text style={styles.numbercard}>{numberFormat(auth.follower)}</Text>
                   <Text ixtext style={styles.numbercard}>{t("profile.followers")}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity flex-4 center style={styles.bordercard} onPress={handlerPressFollowing}>
-                  <Text style={styles.numbercard}>{numberFormat(1)}</Text>
+                <TouchableOpacity flex-4 center style={styles.bordercard} onPress={() => navigation.navigate('FollowingList')}>
+                  <Text style={styles.numbercard}>{numberFormat(auth.following)}</Text>
                   <Text ixtext style={styles.numbercard}>{t("profile.following")}</Text>
                 </TouchableOpacity>
               </View>
             </LinearGradient>
           </View>
         </ImageBackground>
-        <ListMediaProfile data={data} loadTimeline={loadTimeline} navigation={navigation} refressTimeline={refressTimeline} />
+        <ListMediaProfile data={data} loadTimeline={loadTimeline} navigation={navigation} refressTimeline={() => { loadTimeline('refress') }} />
       </View>
       <Modals modalhiden={setShowmodal} modalVisible={showmodal}>
-        <TouchableOpacity row paddingV-x centerV onPress={handlerEdit}>
+        <TouchableOpacity row paddingV-x centerV onPress={() => {
+          setShowmodal(false)
+          navigation.navigate('EditProfile')
+        }}>
           <Icon assetName='edit' size={33} tintColor={Colors.yellow} marginH-x />
           <View>
             <Text style={{ fontFamily: BI }} >{t("profile.edit")}</Text>
@@ -119,18 +116,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   name: {
-    fontFamily: 'Inter-BoldItalic'
+    fontFamily: BI
   },
   tagname: {
-    fontFamily: 'Inter-Bold'
+    fontFamily: B
   },
   story: {
-    fontFamily: 'Inter-SemiBold'
+    fontFamily: SB
   },
   bordercard: {
     borderLeftWidth: 1, borderRightWidth: 1
   },
   numbercard: {
-    fontFamily: 'Inter-SemiBoldItalic'
+    fontFamily: SBI,
+    color: 'white'
   },
 })

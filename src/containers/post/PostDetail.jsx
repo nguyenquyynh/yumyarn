@@ -1,6 +1,6 @@
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
-import { Avatar, Colors, Icon, LoaderScreen, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Avatar, Colors, Icon, LoaderScreen, Text, View } from 'react-native-ui-lib'
 import { useNavigation } from '@react-navigation/native'
 import MediaPost from 'components/posts/MediaPost'
 import HearDetailPost from 'components/posts/HearDetailPost'
@@ -30,7 +30,6 @@ const PostDetail = ({ route }) => {
         if (reponse.status) {
             setPost(reponse.data[0])
         }
-        console.log(reponse.data[0]);
     }
     useEffect(() => {
         getPost({
@@ -44,19 +43,11 @@ const PostDetail = ({ route }) => {
 
 
     const handlerPressFire = async () => {
-        const fire = await firePost(user, id)
+        const fire = await firePost(user._id, id)
         if (fire?.status) {
-            setIsfire(!isfire)
+            setIsfire(fire?.data)
+            setPost({ ...post, isfire: fire?.data, fires: fire?.data ? post?.fires + 1 : post?.fires - 1 })
         }
-    }
-    const handlerPressComment = () => {
-        setiscomment(!iscomment)
-    }
-    const handlerPressMore = () => {
-        setIsmore(!ismore)
-    }
-    const handlerPressDots = () => {
-        setDots(!dots)
     }
     const handlerPressReport = () => {
 
@@ -68,70 +59,66 @@ const PostDetail = ({ route }) => {
 
     }
     const handlerClickAvatar = () => {
-
+        navigation.navigate('OtherProfile', { name: post?.create_by?.name })
     }
 
 
-    if (post == null) {
-
-    }
-    else
-        return (
-            <View flex right>
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    horizontal
-                    pagingEnabled={true}
-                    snapToAlignment='center'
-                    data={post.media}
-                    renderItem={item => <MediaPost data={item} />}
-                    key={item => item.id}
-                />
-                <HearDetailPost back={() => navigation.goBack()} dot={handlerPressDots} />
-                <View flex absB padding-x style={{ maxHeight: heightscreen / 2 }}>
-                    <View flex row marginB-x>
-                        <Avatar source={{ uri: post?.create_by?.avatar }} size={40} onPress={handlerClickAvatar} />
-                        <View flex marginL-v >
-                            <Text style={{ fontFamily: EB }} color='white'>{post?.create_by?.name}</Text>
-                            <Text style={{ fontFamily: ELI }} text80L numberOfLines={1} color='white'>@{post?.create_by?.tagName}</Text>
-                        </View>
-                    </View>
-                    <Text style={{ fontFamily: EBI }} color={Colors.yellow}>{post?.hashtags.map((el) => `#${el} `)}</Text>
-                    <ScrollView>
-                        <Text text90L style={{ fontFamily: M }} color={Colors.white} numberOfLines={ismore ? 10000 : 2}
-                            onPress={handlerPressMore}>{post?.content}...{!ismore ? t("app.more") : t("app.hiden")}</Text>
-                    </ScrollView>
-                    <View marginT-x width={'100%'} spread row paddingH-xx>
-                        <View row centerV>
-                            <Pressable onPress={handlerPressFire}>
-                                <Icon tintColor={!isfire && 'white'} assetName={isfire ? 'fire' : 'fire_black'} size={20} />
-                            </Pressable>
-                            <Text marginL-v text80BO color={'white'}>{numberFormat(!isfire ? post?.fires : (post?.fires + 1))}</Text>
-                        </View>
-                        <View row centerV>
-                            <Pressable onPress={handlerPressComment}>
-                                <Icon tintColor='white' assetName='comment' size={20} />
-                            </Pressable>
-                            <Text marginL-v text80BO color={'white'}>{numberFormat(post?.comments)}</Text>
-                        </View>
-                        <Pressable onPress={handlerPressReport}>
-                            <Icon tintColor='white' assetName={'share'} size={20} />
-                        </Pressable>
-                        <Pressable onPress={handlerPressFlag}>
-                            <Icon tintColor='white' assetName='flag' size={20} />
-                        </Pressable>
-                        <Pressable onPress={handlerPressSaved}>
-                            <Icon assetName='bookmark' tintColor={issaved ? Colors.yellow : 'white'} size={20} />
-                        </Pressable>
+    return (
+        <View flex right>
+            {post && <FlatList
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                pagingEnabled={true}
+                snapToAlignment='center'
+                data={post.media}
+                renderItem={item => <MediaPost data={item} />}
+                key={item => item.id}
+            />}
+            <HearDetailPost back={() => navigation.goBack()} dot={() => { setDots(!dots) }} />
+            <View flex absB padding-x style={{ maxHeight: heightscreen / 2 }}>
+                <View flex row marginB-x>
+                    <Avatar source={{ uri: post ? post?.create_by?.avatar : "https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_1280.png" }} size={40} onPress={handlerClickAvatar} />
+                    <View flex marginL-v >
+                        <Text style={{ fontFamily: EB }} color='white'>{post?.create_by?.name}</Text>
+                        <Text style={{ fontFamily: ELI }} text80L numberOfLines={1} color='white'>@{post?.create_by?.tagName}</Text>
                     </View>
                 </View>
-                <ShowComments idPost={post?._id} setOpen={setiscomment} open={iscomment} create_by={post?.create_by} dataPost={[]} setDataPost={() => { }} setIdPost={() => { }} />
-                <Modals modalVisible={dots} modalhiden={handlerPressDots}>
-                    
-                </Modals>
+                <Text style={{ fontFamily: EBI }} color={Colors.yellow}>{post?.hashtags.map((el) => `#${el} `)}</Text>
+                <ScrollView>
+                    <Text text90L style={{ fontFamily: M }} color={Colors.white} numberOfLines={ismore ? 10000 : 2}
+                        onPress={() => { setIsmore(!ismore) }}>{post?.content}</Text>
+                </ScrollView>
+                <View marginT-x width={'100%'} spread row paddingH-xx>
+                    <View row centerV>
+                        <Pressable onPress={handlerPressFire}>
+                            <Icon tintColor={!isfire && 'white'} assetName={isfire ? 'fire' : 'fire_black'} size={20} />
+                        </Pressable>
+                        <Text marginL-v text80BO color={'white'}>{numberFormat(post?.fires)}</Text>
+                    </View>
+                    <View row centerV>
+                        <Pressable onPress={() => { setiscomment(!iscomment) }}>
+                            <Icon tintColor='white' assetName='comment' size={20} />
+                        </Pressable>
+                        <Text marginL-v text80BO color={'white'}>{numberFormat(post?.comments)}</Text>
+                    </View>
+                    <Pressable onPress={handlerPressReport}>
+                        <Icon tintColor='white' assetName={'share'} size={20} />
+                    </Pressable>
+                    <Pressable onPress={handlerPressFlag}>
+                        <Icon tintColor='white' assetName='flag' size={20} />
+                    </Pressable>
+                    <Pressable onPress={handlerPressSaved}>
+                        <Icon assetName='bookmark' tintColor={issaved ? Colors.yellow : 'white'} size={20} />
+                    </Pressable>
+                </View>
             </View>
-        )
+            <ShowComments idPost={post?._id} setOpen={setiscomment} open={iscomment} create_by={post?.create_by} dataPost={[]} setDataPost={() => { }} setIdPost={() => { }} />
+            <Modals modalVisible={dots} modalhiden={() => { setDots(!dots) }}>
+
+            </Modals>
+        </View>
+    )
 }
 
 export default memo(PostDetail)

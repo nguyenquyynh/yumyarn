@@ -43,7 +43,7 @@ const HistoryList = ({
                 <TouchableOpacity row centerV flex-9 onPress={() => { setKeyword(item) }}>
                     <IconApp assetName={"history"} />
                     <View marginL-x>
-                        <Text numberOfLines={1} text70BO>{item.length > 30 ? item.substring(0, 30) + '...' : item}</Text>
+                        <Text numberOfLines={1} text70BO>{item}</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity flex-1 center onPress={() => { handlerRemoveHistory(item) }}>
@@ -58,7 +58,7 @@ const HistoryList = ({
                 <TouchableOpacity row centerV flex-9 onPress={() => { setKeyword(item.content) }}>
                     <IconApp assetName={"fire"} />
                     <View marginL-x>
-                        <Text numberOfLines={1} text70BO>{item.content > 30 ? item.content.substring(0, 30) + '...' : item.content}</Text>
+                        <Text numberOfLines={1} text70BO>{item.content}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
