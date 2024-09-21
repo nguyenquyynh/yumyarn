@@ -1,7 +1,7 @@
 import {Colors} from 'react-native-ui-lib'
 
 Colors.loadColors({
-    yellow: "#FFB400",
+    yellow: "#F8C630",
     white: "#FFFFFF",
     orange: "#FE5200",
     hashtag: "#A50917",
@@ -12,4 +12,5 @@ Colors.loadColors({
     light_green: "#4FB018",
     tr_black: "rgba(0,0,0,0.5)",
     light_grey: "#F0F0F0",
+    opacity: "rgba(255, 255, 255, 0.3)"
 })

@@ -19,7 +19,7 @@
     "add": "Add",
     "video": "Video",
     "post": "Post",
-    "user": "User",
+    "user": "People",
     "restaurant": "Restaurant",
     "get_started": "Get Started",
     "next": "Next",
@@ -43,13 +43,14 @@
   },
   "welcome": {
     "greeting": "Welcome to",
-    "diversity": "Diversity",
-    "reality": "Reality",
+    "diversity": "Dicover",
+    "reality": "Share",
     "help_one": "Help you choose delicious and convenient restaurants.",
     "help_two": "Rated from real experiences."
   },
   "login": {
     "i_read": "I have read",
+    "expired": "Login session has expired, please log in again!",
     "register": "Your account has been registered! Log in now",
     "verify": "Check your registered email for account verification",
     "policy": "Privacy Policy",

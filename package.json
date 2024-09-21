@@ -15,6 +15,7 @@
     "@react-native-community/geolocation": "^3.2.1",
     "@react-native-community/netinfo": "^11.3.2",
     "@react-native-google-signin/google-signin": "^11.0.1",
+    "@react-native-seoul/masonry-list": "^1.4.2",
     "@react-navigation/material-top-tabs": "^6.6.13",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",

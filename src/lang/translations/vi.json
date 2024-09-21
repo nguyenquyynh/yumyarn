@@ -6,6 +6,7 @@
         "following": "Đang theo dõi",
         "follow": "Theo dõi",
         "more": "xem thêm",
+        "hiden": "ẩn bớt",
         "collapse": "thu gọn",
         "search": "Tìm kiếm",
         "yumyarn_id": "YumYarn ID",
@@ -21,7 +22,7 @@
         "post": "Bài viết",
         "user": "Người dùng",
         "restaurant": "Nhà hàng",
-        "get_started": "Bắt đầu",
+        "get_started": "Đăng nhập ngay",
         "next": "Tiếp theo ",
         "thousand": "N",
         "milion" : "Tr",
@@ -42,18 +43,20 @@
         "firstComment": "Hãy là người đầu tiên bình luận"
     },
     "wellcome": {
-        "greeting": "Chào mừng bạn đến với",
-        "diversity": "Đa dạng",
-        "reality": "Thực tế",
-        "help_one": "Giúp bạn chọn những quán ăn ngon và tiện lợi.",
-        "help_two": " Được đánh giá từ những trải nghiệm thực tế."
+        "greeting": "Chào mừng đến với",
+        "diversity": "TÌM KIẾM",
+        "reality": "CHIA SẺ",
+        "help_one": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+        "help_two": " It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
     },
     "login": {
-        "i_read":"Tôi đã đọc",
+        "slogan" : "Kết nối bạn bè, thỏa mãn đam mê",
+        "i_read":"Tôi chấp nhập",
+        "expired": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
         "register": "Tài khoảng của bạn đã được đăng kí! Đăng nhập ngay",
         "verify" : "Kiếm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
-        "policy": "Chính sách bảo mật",
-        "google": "TIẾP TỤC VỚI GOOGLE"
+        "policy": "chính sách bảo mật",
+        "google": "Đăng nhập với Google"
     },
     "post": {
         "edit": "Chỉnh sửa",
@@ -85,7 +88,9 @@
         "edit_profile": "Chỉnh sửa thông tin cá nhân",
         "about_me": "Giới thiệu về bạn",
         "social_media": "Mạng xã hội",
-        "post" : "Bạn đang nghĩ gì"
+        "post" : "Bạn đang nghĩ gì",
+        "edit" : "Chỉnh sửa",
+        "edit_description" : "Thay đổi thông tin cá nhân được hiển thị."
     },
     "create_post": {
         "title": "Tạo bài viết",
@@ -107,5 +112,8 @@
         "Community_standards":"Tiêu chuẩn cộng đồng",
         "delete_the_account":"xóa tài khoản",
         "log_out":"Đăng xuất"
+    },
+    "home":{
+        "welcome": "Xin chào,"
     }
 }

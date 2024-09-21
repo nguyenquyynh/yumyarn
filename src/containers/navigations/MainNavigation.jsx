@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Authen from './Authen'
 import { NavigationContainer } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import MainApp from './MainApp'
+import LoadingApp from 'components/commons/LoadingApp'
+import { checkAuthen } from 'src/hooks/api/auth'
+import { auth_check } from 'reducers/auth'
+import { Toast } from 'react-native-ui-lib'
+import { ToastAndroid } from 'react-native'
+import { t } from 'lang'
+import OpenApp from 'components/commons/OpenApp'
 
 const MainNavigation = () => {
   const auth = useSelector(state => state.auth)
   const dispatch = useDispatch()
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const Check = async () => {
@@ -20,12 +27,12 @@ const MainNavigation = () => {
       }, 1500);
       await dispatch(auth_check({ isLogin: authen }))
     }
-    // Check()
+    Check()
   }, [])
 
   return (
     <NavigationContainer>
-      {auth.isLogin ? <MainApp /> : <Authen />}
+      {loading ? <OpenApp /> : auth.isLogin ? <MainApp /> : <Authen />}
     </NavigationContainer>
   )
 }

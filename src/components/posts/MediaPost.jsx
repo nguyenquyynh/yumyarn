@@ -18,7 +18,6 @@ const MediaPost = ({
 
     const renderMedia = (data) => {
         const first = data
-
         if (first.endsWith('.jpg') || first.endsWith('.png') || first.endsWith('.jpeg')) {
             Image.getSize(data, (width, height) => {
                 const heightPercentage = (100 / (heightscreen / widthscreen) * (height / width)).toFixed(0) + '%';
@@ -44,7 +43,7 @@ const MediaPost = ({
                             repeat
                             playInBackground={false} />
                         <View center flex absF>
-                            {pausevideo && <Icon assetName='play_button' size={50} tintColor='lightgray'/>}
+                            {pausevideo && <Icon assetName='play_button' size={50} tintColor='lightgray' />}
                         </View>
                     </Pressable>
                 </View>
@@ -52,8 +51,8 @@ const MediaPost = ({
         }
     }
     return (
-        <View flex center key={data} bg-black>
-            {renderMedia(data)}
+        <View style={{ width: widthscreen }} center key={data.index} bg-black>
+            {renderMedia(data.item)}
         </View>
     )
 }

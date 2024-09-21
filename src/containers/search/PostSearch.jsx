@@ -1,8 +1,8 @@
 import { FlatList, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Text, View } from 'react-native-ui-lib'
-import PostRender from 'components/commons/PostRender';
 import { search_post } from 'src/hooks/api/search';
+import PostRender from 'components/searchs/PostRender';
 
 const PostSearch = ({ route }) => {
   const { data, keyword } = route.params;
@@ -17,7 +17,7 @@ const PostSearch = ({ route }) => {
     setDatalist([...datalist, ...resault_post.data])
   }
   return (
-    <View flex bg-white>
+    <View flex bg-white paddingH-v>
       <FlatList
         onEndReached={onScrollPosts}
         onEndReachedThreshold={0.5}

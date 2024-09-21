@@ -15,6 +15,7 @@ export const USERS = {
     AUTHEN: "authen",
     VERIFY: "verify",
     SEARCH: "search",
+    CHECKAUTHEN: "checkauthen",
 }
 
 export const COMMENT = {
@@ -33,7 +34,9 @@ export const USERS_AUTHEN= {
 export const POST = {
     CREATEPOST: "create",
     SEARCH: "search",
-    FEED:"feed"
+    FEED:"feed",
+    WATCH: "watch",
+    TIMELINE: "timeline",
 }
 
 export const SUGGEST = {

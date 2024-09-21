@@ -17,5 +17,5 @@ Bước 3: mở folder react native vision camera
          rồi sau đó folder frameprocessos
          rồi mở file VisinCameraProxy.kt
 Bước 4: thêm dòng này ngay đầu file 
-      @file:OptIn(FrameworkAPI::class)
+      
          

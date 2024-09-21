@@ -15,7 +15,7 @@ import { add_search, search_post, search_user } from 'src/hooks/api/search'
 const SearchMain = () => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
-    const user = useSelector(state => state.auth)
+    const user = useSelector(state => state.auth.user)
     const [keyword, setKeyword] = useState('')
     const [data_search, setData_search] = useState()
     var windowWidth = Dimensions.get('window').width;
@@ -40,23 +40,23 @@ const SearchMain = () => {
     }
     const customerHeader = () => {
         return (
-            <View flex>
+            <View flex bg-white>
                 <View absF bottom paddingB-xi>
                     <View centerV row paddingH-xvi>
                         <Pressable onPress={() => { navigation.goBack() }}>
-                            <IconApp assetName={"back"} size={22} />
+                            <View bg-yellow padding-x br40>
+                                <IconApp assetName={"arrow_back"} size={22} />
+                            </View>
                         </Pressable>
-                        <View bg-white row flex br20 marginL-xvi centerV paddingL-x style={styles.searchinput}>
-                            <View flex-14>
-                                <TextInput placeholder={t("app.search")} value={keyword}
-                                    onFocus={handlerFocus}
-                                    onChangeText={value => setKeyword(value)} />
-                            </View>
-                            <View padding-x flex-1>
-                                <Pressable onPress={hanlderSearch}>
-                                    <IconApp assetName={"search"} size={20} />
-                                </Pressable>
-                            </View>
+                        <View bg-white row flex-14 br100 marginL-xvi centerV paddingL-x style={styles.searchinput}>
+                            <TextInput placeholder={t("app.search")} value={keyword}
+                                onFocus={handlerFocus}
+                                onChangeText={value => setKeyword(value)} />
+                        </View>
+                        <View padding-x flex-1>
+                            <Pressable onPress={hanlderSearch}>
+                                <IconApp assetName={"search"} size={30} />
+                            </Pressable>
                         </View>
                     </View>
                 </View>
@@ -65,6 +65,8 @@ const SearchMain = () => {
     }
     return (
         <Wapper gadient customheader={customerHeader}>
+            <View  marginH-xv style={styles.content}>
+            </View>
             {
                 data_search ? <SearchList data={data_search} keyword={keyword} /> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
             }
@@ -76,10 +78,12 @@ export default SearchMain
 
 const styles = StyleSheet.create({
     searchinput: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.3,
-        shadowRadius: 5,
-        elevation: 5, // for Android
+        height: 45,
+        borderWidth: 2,
+        borderColor: '#F8C630'
+    },
+    content: {
+        borderTopWidth: 1,
+        borderColor: Colors.gray,
     }
 })

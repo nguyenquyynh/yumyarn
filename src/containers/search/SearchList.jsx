@@ -3,7 +3,7 @@ import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import PostSearch from './PostSearch'
 import UserSearch from './UserSearch'
-import { Colors, View } from 'react-native-ui-lib'
+import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang'
 import { BOLD } from 'configs/fonts'
 
@@ -11,24 +11,55 @@ const SearchList = ({
   keyword,
   data
 }) => {
-  var windowWidth = Dimensions.get('window').width;
   const Toptab = createMaterialTopTabNavigator()
-  const tabBarIndicatorStyle = {
-    width: (windowWidth - 40) / 3,
-    marginLeft: (windowWidth - 40) / 12,
-    ...styles.tabbarindicator
+
+  const CustomTabBar = ({ state, descriptors, navigation
+  }) => {
+    return (
+      <View row marginL-v>
+        {state.routes.map((route) => {
+          const { options } = descriptors[route.key];
+          const label = options.tabBarLabel !== undefined ? options.tabBarLabel : options.title;
+
+          const isFocused = state.index === state.routes.indexOf(route);
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: 'tabPress',
+              target: route.key,
+
+            });
+
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
+
+          return (
+            <TouchableOpacity
+              onPress={onPress}
+              style={{
+                marginRight: 15, height: 50,
+                paddingHorizontal: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderColor: Colors.yellow,
+                borderBottomWidth: isFocused ? 2.5 : 0
+              }}
+            >
+              <Text text70BO color={Colors.black} style={{ fontWeight: isFocused ? 'bold' : '' }}>
+                {route.name}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
   };
 
   return (
     <View flex bg-white paddingH-v>
-      <Toptab.Navigator screenOptions={{
-        tabBarIndicatorStyle: tabBarIndicatorStyle,
-        tabBarStyle: styles.tabbar,
-        tabBarLabelStyle: styles.tabbarlabel,
-        tabBarActiveTintColor: Colors.black,
-        tabBarInactiveTintColor: 'gray',
-        tabBarPressColor: Colors.transparent
-      }}>
+      <Toptab.Navigator tabBar={props => <CustomTabBar {...props} />}>
         <Toptab.Screen name={t("app.post")} component={PostSearch} initialParams={{ data, keyword }} />
         <Toptab.Screen name={t("app.user")} component={UserSearch} initialParams={{ data, keyword }} />
       </Toptab.Navigator>
@@ -38,18 +69,3 @@ const SearchList = ({
 }
 
 export default SearchList
-
-const styles = StyleSheet.create({
-  tabbarindicator: {
-    height: 2,
-    backgroundColor: Colors.black,
-    marginBottom: 1
-  },
-  tabbar: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-  },
-  tabbarlabel: {
-    fontWeight: 'bold',
-  }
-})

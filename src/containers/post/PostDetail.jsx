@@ -1,126 +1,139 @@
-import { Pressable, ScrollView, StyleSheet } from 'react-native'
-import React, { memo, useState } from 'react'
-import { Colors, Icon, Text, View } from 'react-native-ui-lib'
+import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet } from 'react-native'
+import React, { memo, useEffect, useState } from 'react'
+import { Avatar, Colors, Icon, LoaderScreen, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { useNavigation } from '@react-navigation/native'
 import MediaPost from 'components/posts/MediaPost'
-import Swiper from 'react-native-swiper'
 import HearDetailPost from 'components/posts/HearDetailPost'
-import FooterDetailPost from 'components/posts/FooterDetailPost'
 import numberFormat from 'configs/ui/format'
 import { firePost } from 'src/hooks/api/fire'
 import { useSelector } from 'react-redux'
+import { watchPost } from 'src/hooks/api/post'
+import { EB, EBI, ELI, M } from 'configs/fonts'
+import { t } from 'lang'
+import ShowComments from 'containers/comment/ShowComments'
+import Modals from 'components/BottomSheetApp'
 
-const PostDetail = ({
-    post = {
-        "_id": "6692270cc5ca6be5dc29c1cb",
-        "content": "Trải nghiệm tuyệt vời tại #Rỏeples #quan2 Bếp trưởng Sam Aisbett sáng tạo ra những món ăn không biên giới, Trải nghiệm tuyệt vời tại #Rỏeples #quan2 Bếp trưởng Sam Aisbett sáng tạo ra những món ăn không biên giới, lấy cảm hứng từ chất liệu văn hoá Việt và nguyên liệu hảo hạng từ quốc tế. Cho ra một trại nghiệm mới lạ lại vô c lấy cảm hứng từ chất liệu văn hoá Việt và nguyên liệu hảo hạng từ quốc tế. Cho ra một trại nghiệm mới lạ lại vô cTrải nghiệm tuyệt vời tại #Rỏeples #quan2 Bếp trưởng Sam Aisbett sáng tạo ra những món ăn không biên giới, Trải nghiệm tuyệt vời tại #Rỏeples #quan2 Bếp trưởng Sam Aisbett sáng tạo ra những món ăn không biên giới, lấy cảm hứng từ chất liệu văn hoá Việt và nguyên liệu hảo hạng từ quốc tế. Cho ra một trại nghiệm mới lạ lại vô c lấy cảm hứng từ chất liệu văn hoá Việt và nguyên liệu hảo hạng từ quốc tế. Cho ra một trại nghiệm mới lạ lại vô c",
-        "hashtags": [
-            "#Bien", "#Cat", "#Dulich"
-        ],
-        "media": [
-            "https://cdn.pixabay.com/video/2024/07/19/221962_tiny.mp4",
-            "https://cdn.pixabay.com/video/2024/02/28/202246-917718587_tiny.mp4",
-            "https://cdn.pixabay.com/photo/2017/03/13/13/39/pancakes-2139844_640.jpg",
-            "https://cdn.pixabay.com/photo/2016/05/31/06/08/fresh-1426257_640.jpg",
-            "https://cdn.pixabay.com/photo/2014/08/14/14/21/shish-kebab-417994_1280.jpg"
-        ],
-        "fire": 1900000,
-        "comments": 2375,
-        "address": {
-            "detail": "164/6 Đường Thới Tam Thôn 17, Xã Thới Tam Thôn, Huyện Hóc Môn, Hồ Chí Minh, Việt Nam",
-            "longitude": 106.61824,
-            "latitude": 10.87523,
-            "longitudeDelta": 0.005,
-            "latitudeDelta": 0.005
-        },
-        "exist": true,
-        "create_by": {
-            "_id": "665c11ebfc13ae2944c633f0",
-            "name": "Ngọc Linh",
-            "avatar": "https://cdn.pixabay.com/photo/2020/05/05/11/01/girl-5132631_1280.jpg"
-        },
-        "create_at": "1720854074279",
-        "isfollow": false,
-        "isfire": true,
-    }
-}) => {
+const PostDetail = ({ route }) => {
+    const { id } = route.params
+    const heightscreen = Dimensions.get('window').height
     const navigation = useNavigation()
-    const user = useSelector(state => state.auth)
-
-    const [isfire, setIsfire] = useState(post?.isfire)
+    const user = useSelector(state => state.auth.user)
+    const [post, setPost] = useState(null)
+    const [isfire, setIsfire] = useState(false)
     const [iscomment, setiscomment] = useState(false)
     const [ismore, setIsmore] = useState(false)
+    const [dots, setDots] = useState(false)
+    const [issaved, setissaved] = useState(false)
+
+    const getPost = async (query) => {
+        const reponse = await watchPost(query)
+        if (reponse.status) {
+            setPost(reponse.data[0])
+        }
+        console.log(reponse.data[0]);
+    }
+    useEffect(() => {
+        getPost({
+            u: user._id,
+            p: id
+        })
+    }, [])
+    useEffect(() => {
+        setIsfire(post?.isfire)
+    }, [post])
+
 
     const handlerPressFire = async () => {
-        const fire = await firePost(user._id, post?._id)
+        const fire = await firePost(user, id)
         if (fire?.status) {
             setIsfire(!isfire)
         }
-
     }
-    const handlerPressComment = () => { }
+    const handlerPressComment = () => {
+        setiscomment(!iscomment)
+    }
     const handlerPressMore = () => {
         setIsmore(!ismore)
     }
-    const handlerPressReport = () => { }
+    const handlerPressDots = () => {
+        setDots(!dots)
+    }
+    const handlerPressReport = () => {
 
-    const optionPost = () => {
+    }
+    const handlerPressSaved = () => {
+        setissaved(!issaved)
+    }
+    const handlerPressFlag = () => {
+
+    }
+    const handlerClickAvatar = () => {
+
+    }
+
+
+    if (post == null) {
+
+    }
+    else
         return (
-            <View style={styles.options} center>
-                <View center marginB-xx>
-                    <Pressable onPress={handlerPressFire}>
-                        <Icon tintColor={!isfire && 'white'} assetName={isfire ? 'fire' : 'fire_black'} size={40} />
-                    </Pressable>
-                    <Text text80BO color={'white'}>{numberFormat(!isfire ? post?.fire : (post?.fire + 1))}</Text>
+            <View flex right>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    horizontal
+                    pagingEnabled={true}
+                    snapToAlignment='center'
+                    data={post.media}
+                    renderItem={item => <MediaPost data={item} />}
+                    key={item => item.id}
+                />
+                <HearDetailPost back={() => navigation.goBack()} dot={handlerPressDots} />
+                <View flex absB padding-x style={{ maxHeight: heightscreen / 2 }}>
+                    <View flex row marginB-x>
+                        <Avatar source={{ uri: post?.create_by?.avatar }} size={40} onPress={handlerClickAvatar} />
+                        <View flex marginL-v >
+                            <Text style={{ fontFamily: EB }} color='white'>{post?.create_by?.name}</Text>
+                            <Text style={{ fontFamily: ELI }} text80L numberOfLines={1} color='white'>@{post?.create_by?.tagName}</Text>
+                        </View>
+                    </View>
+                    <Text style={{ fontFamily: EBI }} color={Colors.yellow}>{post?.hashtags.map((el) => `#${el} `)}</Text>
+                    <ScrollView>
+                        <Text text90L style={{ fontFamily: M }} color={Colors.white} numberOfLines={ismore ? 10000 : 2}
+                            onPress={handlerPressMore}>{post?.content}...{!ismore ? t("app.more") : t("app.hiden")}</Text>
+                    </ScrollView>
+                    <View marginT-x width={'100%'} spread row paddingH-xx>
+                        <View row centerV>
+                            <Pressable onPress={handlerPressFire}>
+                                <Icon tintColor={!isfire && 'white'} assetName={isfire ? 'fire' : 'fire_black'} size={20} />
+                            </Pressable>
+                            <Text marginL-v text80BO color={'white'}>{numberFormat(!isfire ? post?.fires : (post?.fires + 1))}</Text>
+                        </View>
+                        <View row centerV>
+                            <Pressable onPress={handlerPressComment}>
+                                <Icon tintColor='white' assetName='comment' size={20} />
+                            </Pressable>
+                            <Text marginL-v text80BO color={'white'}>{numberFormat(post?.comments)}</Text>
+                        </View>
+                        <Pressable onPress={handlerPressReport}>
+                            <Icon tintColor='white' assetName={'share'} size={20} />
+                        </Pressable>
+                        <Pressable onPress={handlerPressFlag}>
+                            <Icon tintColor='white' assetName='flag' size={20} />
+                        </Pressable>
+                        <Pressable onPress={handlerPressSaved}>
+                            <Icon assetName='bookmark' tintColor={issaved ? Colors.yellow : 'white'} size={20} />
+                        </Pressable>
+                    </View>
                 </View>
-                <View center marginB-xxx>
-                    <Pressable onPress={handlerPressComment}>
-                        <Icon tintColor='white' assetName='comment' size={40} />
-                    </Pressable>
-                    <Text text80BO color={'white'}>{numberFormat(post?.comments)}</Text>
-                </View>
-                {ismore && <View center marginB-xx>
-                    <Pressable onPress={handlerPressReport}>
-                        <Icon tintColor='white' assetName={'flag'} size={35} />
-                    </Pressable>
-                </View>}
-                <View center marginB-x>
-                    <Pressable onPress={handlerPressMore}>
-                        <Icon tintColor='white' assetName='more' size={30} />
-                    </Pressable>
-                </View>
+                <ShowComments idPost={post?._id} setOpen={setiscomment} open={iscomment} create_by={post?.create_by} dataPost={[]} setDataPost={() => { }} setIdPost={() => { }} />
+                <Modals modalVisible={dots} modalhiden={handlerPressDots}>
+                    
+                </Modals>
             </View>
         )
-    }
-    return (
-        <View flex right>
-            <Swiper showsPagination={false}>
-                {
-                    post.media.map((media, index) => <MediaPost data={media} key={index} />)
-                }
-            </Swiper>
-            <HearDetailPost _id={post?._id} name={post?.create_by?.name} follow={post?.isfollow} back={() => navigation.goBack()} avatar={post?.create_by?.avatar} />
-            <View style={styles.scroll} paddingR-lx>
-                <ScrollView showsVerticalScrollIndicator={false} >
-                    <FooterDetailPost content={post?.content} hashtags={post?.hashtags} />
-                </ScrollView>
-            </View>
-            <View absB >
-                {optionPost()}
-            </View>
-        </View>
-    )
 }
 
 export default memo(PostDetail)
 const styles = StyleSheet.create({
-    options: {
-        width: 60,
-    },
-    bottom: {
-        width: '100%',
-        alignItems: 'flex-end',
-        right: 0,
-    },
-    scroll: { position: 'absolute', bottom: 0, maxHeight: '55%' }
 })
