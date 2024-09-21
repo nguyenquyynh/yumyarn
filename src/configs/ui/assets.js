@@ -56,4 +56,11 @@ Assets.loadAssetsGroup('icons', {
     core: require('assets/icon/core.png'),
     pause_button: require('assets/icon/pause_button.png'),
     check_follow: require('assets/icon/check_follow.png'),
+    check: require('assets/icon/check-mark.png'),
+    intermittent: require('assets/gif/intermittent.gif'),
+    empty: require('assets/icon/empty.png'),
+    share: require('assets/icon/share.png'),
+    bookmark: require('assets/icon/bookmark.png'),
+    send_white: require('assets/icon/send_white.png'),
+    retweet: require('assets/icon/retweet.png'),
 })
