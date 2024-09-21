@@ -9,7 +9,8 @@ import { BOLD } from 'configs/fonts'
 
 const SearchList = ({
   keyword,
-  data
+  data,
+  navigation
 }) => {
   const Toptab = createMaterialTopTabNavigator()
 

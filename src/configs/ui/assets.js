@@ -52,8 +52,6 @@ Assets.loadAssetsGroup('icons', {
     china: require('assets/icon/china.png'),
     japan: require('assets/icon/japan.png'),
     logoapp: require('assets/icon/logo.png'),
-    logoapp2: require('assets/icon/logoapp2.png'),
-    logoapp3: require('assets/icon/logoapp3.png'),
     starving: require('assets/gif/starving.gif'),
     history: require('assets/icon/history.png'),
     core: require('assets/icon/core.png'),
@@ -64,6 +62,4 @@ Assets.loadAssetsGroup('icons', {
     empty: require('assets/icon/empty.png'),
     share: require('assets/icon/share.png'),
     bookmark: require('assets/icon/bookmark.png'),
-    send_white: require('assets/icon/send_white.png'),
-    retweet: require('assets/icon/retweet.png'),
 })

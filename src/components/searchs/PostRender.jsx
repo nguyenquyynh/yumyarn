@@ -4,8 +4,10 @@ import { Avatar, Colors, Icon, Text, TouchableOpacity, View } from 'react-native
 import Video from 'react-native-video';
 import numberFormat from 'configs/ui/format';
 import { millisecondsToDate } from 'configs/ui/time';
+import { useNavigation } from '@react-navigation/native';
 
 const PostRender = ({ item }) => {
+    const navigation = useNavigation()
     const screenwith = Dimensions.get('window').width < Dimensions.get('window').height ? Dimensions.get('window').width : Dimensions.get('window').height;
     itemstyle = {
         width: '49%',
@@ -23,31 +25,24 @@ const PostRender = ({ item }) => {
                 <Video
                     source={{ uri: first }}
                     style={styles.media} paused resizeMode='cover' />
-
             )
         }
-    }
-    const handlerClickUser = () => {
-
-    }
-    const hendlerClickMedia = () => {
-        
     }
     return (
         <View bg-white marginT-x style={itemstyle}>
             <View flex-5 style={styles.videoBorder}>
-                <TouchableOpacity flex onPress={hendlerClickMedia}>
+                <TouchableOpacity flex onPress={() => navigation.navigate('PostDetail', { id: item._id })}>
                     {renderMedia(item)}
                 </TouchableOpacity>
                 <View absB style={{ width: '100%', height: '20%' }} row padding-v spread>
-                    <View row>
-                        <Avatar onPress={handlerClickUser} size={35} source={{ uri: item.create_by.avatar }} />
+                    <View row bottom>
+                        <Avatar size={30} source={{ uri: item.create_by.avatar }} />
                         <View marginL-v>
-                            <Text numberOfLines={1} color={Colors.white} text80BO >@{item.create_by.tagName}</Text>
-                            <Text numberOfLines={1} color={Colors.white} text90L >{millisecondsToDate(item.create_at)}</Text>
+                            <Text numberOfLines={1} color={Colors.white} text90BO >@{item.create_by.tagName}</Text>
+                            <Text numberOfLines={1} color={Colors.white} text100L >{millisecondsToDate(item.create_at)}</Text>
                         </View>
                     </View>
-                    <View row centerV paddingR-v>
+                    <View row bottom paddingR-v>
                         <Icon assetName='fire' size={25} />
                         <Text color={Colors.white} text70BO>{numberFormat(item.fire)}</Text>
                     </View>

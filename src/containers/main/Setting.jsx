@@ -64,7 +64,7 @@ const Setting = () => {
           />
         </View>}
       </View>
-      <OptionSetting />
+      <OptionSetting navigation={navigation} />
     </View>
   )
 }
@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontFamily: 'Inter-Bold',
     marginLeft: 10,
   }
 })

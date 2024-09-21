@@ -57,24 +57,24 @@ const Modals = ({
           animationType="slide"
           transparent={true}
           visible={modalVisible}>
-
           <GestureHandlerRootView style={styles.container}>
             <GestureDetector gesture={pan} >
               <Animated.View style={[styles.containerCotent, animatedStyles]}>
-                <Pressable style={styles.conttainerOutside} onPress={() => { runOnJS(modalhiden)(false) }}>
-                </Pressable>
-                <View flex bottom marginT-c onLayout={onLayout}>
+                <View flex bottom onLayout={onLayout}>
+                  <Pressable style={styles.conttainerOutside} onPress={() => {
+                    runOnJS(modalhiden)(false)
+                  }}>
+                  </Pressable>
                   <View paddingT-x bg-white style={styles.viewModal}>
                     <View flex center>
                       <Image assetName='line' tintColor='gray' width={60} height={10} />
                     </View>
-
                     <View padding-x>
                       {children}
                     </View>
-
                   </View>
                 </View>
+
               </Animated.View>
             </GestureDetector>
           </GestureHandlerRootView>
@@ -97,11 +97,9 @@ const styles = StyleSheet.create({
     flex: 1
   },
   containerCotent: {
-   flex: 1
+    flex: 1
   },
   conttainerOutside: {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
+    flex: 1
   }
 });

@@ -1,23 +1,17 @@
-import fonts, { BLACK } from 'configs/fonts'
+import { SB } from 'configs/fonts'
 import React from 'react'
 import { StyleSheet } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient'
-import { Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import IconApp from './IconApp';
-import TextApp from './commons/TextApp';
 
 const HeaderApp = ({
-    gadient = false,
     customheader,
     colortitle,
     renderleft,
-    iconleft,
     customleft,
     renderright,
-    titlesize,
     iconright,
     customright,
-    sizeiconleft = 25,
     sizeiconright = 25,
     funtleft,
     funtright,
@@ -25,14 +19,7 @@ const HeaderApp = ({
 }) => {
 
     return (
-        <View flex>
-            {/* {gadient &&
-                <LinearGradient
-                    start={{ x: 1, y: 0 }} end={{ x: 1, y: 1 }}
-                    locations={[0, 1]}
-                    colors={[Colors.yellow, Colors.white]}
-                    style={{ height: '100%' }}
-                />} */}
+        <View flex bg-white>
             {customheader ?
                 <View absF>
                     {customheader()}
@@ -40,15 +27,13 @@ const HeaderApp = ({
                 <View flex row centerV padding-xx absF>
                     <View flex left paddingT-xx>
                         {renderleft ?
-                            <TouchableOpacity onPress={funtleft}>
-                                <IconApp
-                                    assetName={iconleft}
-                                    size={sizeiconleft} />
+                            <TouchableOpacity br40 bg-yellow padding-x onPress={funtleft}>
+                                <Icon assetName='arrow_back' size={15} tintColor='white' />
                             </TouchableOpacity> : customleft && customleft?.()}
                     </View>
                     {title &&
                         <View flex absH paddingT-xx center>
-                            <TextApp size={titlesize} color={colortitle || Colors.black} style={styles.title} text={title ? title : ""} />
+                            <Text color={colortitle || 'black'} style={styles.title}>{title}</Text>
                         </View>}
                     <View flex right paddingT-xx>
                         {renderright ?
@@ -68,6 +53,7 @@ export default HeaderApp
 
 const styles = StyleSheet.create({
     title: {
-        fontFamily: fonts.BOLD
+        fontFamily: SB,
+        fontSize: 16
     }
 })

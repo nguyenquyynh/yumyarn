@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import UserRender from 'components/searchs/UserRender';
 
 const UserSearch = ({ route }) => {
-  const { data, setdata, keyword } = route.params;
+  const { data, navigation, keyword } = route.params;
   const [datalist, setDatalist] = useState(data.user.data)
   const user = useSelector(state => state.auth.user)
 

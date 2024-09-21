@@ -10,10 +10,10 @@ const HearDetailPost = ({
     <View style={styles.top}>
       <View spread bottom flex paddingT-xxx padding-x centerV row>
         <TouchableOpacity br40 bg-opacity padding-x onPress={() => { back() }}>
-          <Icon assetName='arrow_back' size={20} tintColor='white' />
+          <Icon assetName='arrow_back' size={15} tintColor='white' />
         </TouchableOpacity>
         <TouchableOpacity padding-x onPress={dot}>
-          <Icon assetName='dots' size={25} tintColor='white' />
+          <Icon assetName='dots' size={20} tintColor='white' />
         </TouchableOpacity>
       </View>
     </View>

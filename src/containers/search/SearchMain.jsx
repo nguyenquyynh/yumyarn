@@ -1,9 +1,8 @@
-import { Dimensions, Pressable, StyleSheet, TextInput } from 'react-native'
+import { Pressable, StyleSheet, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import Wapper from 'components/Wapper'
-import { Colors, View } from 'react-native-ui-lib'
+import { Colors, Icon, TouchableOpacity, View } from 'react-native-ui-lib'
 import IconApp from 'components/IconApp'
-import LinearGradient from 'react-native-linear-gradient'
 import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
 import HistoryList from './HistoryList'
@@ -18,15 +17,10 @@ const SearchMain = () => {
     const user = useSelector(state => state.auth.user)
     const [keyword, setKeyword] = useState('')
     const [data_search, setData_search] = useState()
-    var windowWidth = Dimensions.get('window').width;
 
-    const gotoScreen = (srceen, props) => {
-        navigation.navigate(srceen, props)
-    }
     const hanlderSearch = async () => {
         if (keyword.trim().length > 0) {
             dispatch(history_addsearch(keyword))
-            await add_search(keyword)
             const resault_post = await search_post(keyword, 1)
             const resault_user = await search_user(keyword, 1, user._id)
             setData_search({
@@ -43,21 +37,20 @@ const SearchMain = () => {
             <View flex bg-white>
                 <View absF bottom paddingB-xi>
                     <View centerV row paddingH-xvi>
-                        <Pressable onPress={() => { navigation.goBack() }}>
-                            <View bg-yellow padding-x br40>
-                                <IconApp assetName={"arrow_back"} size={22} />
-                            </View>
-                        </Pressable>
-                        <View bg-white row flex-14 br100 marginL-xvi centerV paddingL-x style={styles.searchinput}>
-                            <TextInput placeholder={t("app.search")} value={keyword}
+                        <TouchableOpacity br40 bg-yellow padding-x onPress={() => navigation.goBack()}>
+                            <Icon assetName='arrow_back' size={15} tintColor='white' />
+                        </TouchableOpacity>
+                        <View bg-white row spread flex-1 br50 marginH-x centerV paddingH-x style={styles.searchinput}>
+                            <TextInput style={{flex: 1}} placeholder={t("app.search")} value={keyword}
                                 onFocus={handlerFocus}
                                 onChangeText={value => setKeyword(value)} />
-                        </View>
-                        <View padding-x flex-1>
                             <Pressable onPress={hanlderSearch}>
-                                <IconApp assetName={"search"} size={30} />
+                                <IconApp assetName={"search"} size={25} />
                             </Pressable>
                         </View>
+                        <Pressable onPress={() => navigation.navigate('SearchMap')}>
+                            <IconApp assetName={"gps"} size={26} />
+                        </Pressable>
                     </View>
                 </View>
             </View>
@@ -65,7 +58,7 @@ const SearchMain = () => {
     }
     return (
         <Wapper gadient customheader={customerHeader}>
-            <View  marginH-xv style={styles.content}>
+            <View marginH-xv style={styles.content}>
             </View>
             {
                 data_search ? <SearchList data={data_search} keyword={keyword} /> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
@@ -78,7 +71,7 @@ export default SearchMain
 
 const styles = StyleSheet.create({
     searchinput: {
-        height: 45,
+        height: 40,
         borderWidth: 2,
         borderColor: '#F8C630'
     },

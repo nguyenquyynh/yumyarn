@@ -40,7 +40,8 @@
         "see": "Xem",
         "answering": "Đang trả lời",
         "cancel":"Hủy",
-        "firstComment": "Hãy là người đầu tiên bình luận"
+        "firstComment": "Hãy là người đầu tiên bình luận",
+        "done": "Xong"
     },
     "wellcome": {
         "greeting": "Chào mừng đến với",
@@ -85,7 +86,7 @@
         "postting": "Bài viết",
         "followers": "Người theo dõi",
         "following" : "Đang theo dõi",
-        "edit_profile": "Chỉnh sửa thông tin cá nhân",
+        "edit_profile": "Chỉnh sửa thông tin",
         "about_me": "Giới thiệu về bạn",
         "social_media": "Mạng xã hội",
         "post" : "Bạn đang nghĩ gì",
@@ -104,16 +105,28 @@
         "choose": "Chọn"
     },
     "loading": {
-        "content": "Hôm nay sẽ ăn gì đây...."
+        "content": "Hôm nay ăn gì ? ? ?"
     },
     "setting":{
         "setting":"Cài đặt",
         "language":"Ngôn ngữ",
-        "Community_standards":"Tiêu chuẩn cộng đồng",
         "delete_the_account":"xóa tài khoản",
-        "log_out":"Đăng xuất"
+        "log_out":"Đăng xuất",
+        "saved": "Bài viết đã lưu",
+        "advertisement": "Quảng bá bài viết",
+        "payment": "Lịch sử giao dịch",
+        "help": "Trợ giúp",
+        "about_us": "Về chúng tôi",
+        "terms_of_use": "Điều khoản sử dụng",
+        "privacy_policy": "Chính sách bảo mật",
+        "setting_message": "Cài đặt tin nhắn",
+        "link": "Liên kết hồ sơ"
     },
     "home":{
         "welcome": "Xin chào,"
+    },
+    "chat": {
+        "title": "Nhắn tin"
     }
+
 }

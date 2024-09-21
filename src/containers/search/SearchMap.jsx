@@ -1,17 +1,14 @@
 import { Dimensions, Keyboard, StyleSheet, TextInput } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
-import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang'
 import ButtonApp from 'components/ButtonApp'
 import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
 import { useNavigation } from '@react-navigation/native'
 
-const WIDTH_DIMENSION = Dimensions.get('window').width;
-const HEIGHT_DIMENSION = Dimensions.get('window').height;
-
-const AddAdrressScreen = ({ route }) => {
+const SearchMap = ({ route }) => {
     const { defaultlocation } = route.params || {
         defaultlocation: {
             latitude: 10.8728926,
@@ -35,10 +32,7 @@ const AddAdrressScreen = ({ route }) => {
     const [address, setAddress] = useState({})
     const [search, setSearch] = useState('')
     const [searchData, setSearchData] = useState([])
-    //Hàm chuyển component
-    const gotoScreen = (screen) => {
-        navigation.navigate(screen)
-    }
+
     //Lấy vị trí nguời dùng
     const getGeolocation = () => {
         Geolocation.getCurrentPosition(location => {
@@ -106,6 +100,8 @@ const AddAdrressScreen = ({ route }) => {
             const locationsearch = `${loaction.latitude, loaction.longitude}&radius=2000`
             const url = `${process.env.URL_SEARCH}?query=${keysearch}&location=${locationsearch}&key=${process.env.SEARCHAPI_KEY}`
             try {
+                console.log(url);
+                
                 const response = await fetch(url)
                 const data = await response.json()
                 if (data && data.results) {
@@ -141,25 +137,6 @@ const AddAdrressScreen = ({ route }) => {
         latitudeDelta: marker.latitudeDelta,
         longitudeDelta: marker.longitudeDelta
     })
-    //Giao diện nút chọn góc phải
-    const renderButtonRight = () => {
-        return (
-            <ButtonApp iconleft={"search"}
-                iconright={"notifycation"}
-                color={Colors.white}
-                padding={'padding-10'}
-                title={t("add_location.choose")}
-                sizeText={13}
-                onclick={() => {
-                    navigation.navigate("Post", {
-                        locationname: address?.name,
-                        location_lat: address?.latitude,
-                        loaction_lng: address?.longitude
-                    })
-                }}
-            />
-        )
-    }
     //Thay đổi vùng chọn bản đồ
     const religionZoneChange = (religion) => {
         if (
@@ -194,6 +171,7 @@ const AddAdrressScreen = ({ route }) => {
                         latitudeDelta: loaction.latitudeDelta,
                         longitudeDelta: loaction.longitudeDelta,
                     }}
+                    showsMyLocationButton={false}
                     onRegionChangeComplete={religionZoneChange}
                     moveOnMarkerPress
                     showsUserLocation={true}
@@ -224,23 +202,33 @@ const AddAdrressScreen = ({ route }) => {
                         >{pointLocation()}</MarkerAnimated>)
                     }) : null}
                 </MapView>
-                <View absF padding-10 >
-                    <View centerV row bg-white br50 paddingL-xx style={styles.shadow}>
-                        <View flex-7>
-                            <TextInput
-                                placeholder={t("app.search")}
-                                value={search}
-                                onChangeText={setSearch} />
+                {/* Top */}
+                <View absH padding-x marginT-xxx right>
+                    <View row flex>
+                        <View bottom margin-v>
+                            <TouchableOpacity br40 bg-yellow padding-x onPress={() => { navigation.goBack() }}>
+                                <Icon assetName='arrow_back' size={20} tintColor='white' />
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity flex-1 center onPress={handlerSearch}>
-                            <IconApp size={22} assetName={'search'} />
-                        </TouchableOpacity>
+                        <View centerV flex row bg-white br50 paddingL-x style={styles.shadow}>
+                            <View flex>
+                                <TextInput
+                                    style={{}}
+                                    placeholder={t("app.search")}
+                                    value={search}
+                                    onChangeText={setSearch} />
+                            </View>
+                            <TouchableOpacity margin-x center onPress={handlerSearch}>
+                                <IconApp size={25} assetName={'search'} />
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-                <View flex absB right padding-xx row centerV>
-                    <TouchableOpacity bg-white padding-x br20 onPress={getGeolocation}>
-                        <IconApp size={22} assetName={"gps"} />
+                    <TouchableOpacity style={{ width: 42 }} center marginT-x bg-white padding-x br20 onPress={getGeolocation}>
+                        <Icon size={22} assetName={"gps"} tintColor={Colors.yellow} />
                     </TouchableOpacity>
+                </View>
+                {/* Bottom */}
+                <View flex absB right padding-xx row centerV>
                     {address && <View flex bg-white marginL-x br20 paddingH-v>
                         <Text vText >{address?.name}</Text>
                     </View>}
@@ -250,11 +238,10 @@ const AddAdrressScreen = ({ route }) => {
     )
 }
 
-export default AddAdrressScreen
+export default SearchMap
 
 const styles = StyleSheet.create({
-    mapSize:
-    {
+    mapSize: {
         flex: 1
     },
     shadow: {
