@@ -14,7 +14,7 @@ const Main = () => {
     const CustomTabBar = ({ state, descriptors, navigation
     }) => {
         return (
-            <View row centerV style={styles.header}>
+            <View row centerV paddingH-iii style={styles.header}>
                 <Text style={styles.text} >{t("app.name_app")}</Text>
                 <View right row>
                     {state.routes.map((route) => {
@@ -38,12 +38,12 @@ const Main = () => {
                                     backgroundColor={isFocused ? 'black' : 'white'}
                                     br100
                                     paddingH-v
-                                    paddingV-iv
+                                    paddingV-ii
                                     spread
                                     center
                                     onPress={onPress}>
                                     <Icon assetName={route.name} size={15} tintColor={!isFocused ? 'black' : 'white'} marginR-v/>
-                                    <TextApp text={route.name} color={!isFocused ? 'black' : 'white'} size={14} style={styles.font}/>
+                                    <TextApp text={route.name} color={!isFocused ? 'black' : 'white'} size={13} style={styles.font}/>
                                 </TouchableOpacity>
                             </Animated.View>
                         );
@@ -54,7 +54,10 @@ const Main = () => {
     };
     return (
         <View flex paddingT-xxx bg-white>
-            <Toptab.Navigator tabBar={props => <CustomTabBar {...props} />}>
+            <Toptab.Navigator screenOptions={{
+                swipeEnabled: false
+            }}
+            tabBar={props => <CustomTabBar {...props} />}>
                 <Toptab.Screen name='Home' component={Home} />
                 <Toptab.Screen name='Profile' component={Profile} />
                 <Toptab.Screen name='Settings' component={Setting} />

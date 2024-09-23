@@ -70,4 +70,6 @@ Assets.loadAssetsGroup('icons', {
     insurance: require('assets/icon/insurance.png'),
     question: require('assets/icon/question.png'),
     info: require('assets/icon/info.png'),
+    follow: require('assets/icon/follow.png'),
+    remove: require('assets/icon/remove.png'),
 })

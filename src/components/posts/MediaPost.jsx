@@ -62,11 +62,12 @@ export default memo(MediaPost)
 const styles = StyleSheet.create({
     media: {
         width: '100%',
-        borderRadius: 10
+        borderRadius: 10,
+        overflow: 'hidden',
     },
     container: {
         width: '100%',
         height: '100%', justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     }
 })
