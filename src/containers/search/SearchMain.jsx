@@ -11,11 +11,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { history_addsearch } from 'reducers/search'
 import { add_search, search_post, search_user } from 'src/hooks/api/search'
 
-const SearchMain = () => {
+const SearchMain = ({ route }) => {
+    const inputkey = route.params?.inputkey
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const user = useSelector(state => state.auth.user)
-    const [keyword, setKeyword] = useState('')
+    const [keyword, setKeyword] = useState(inputkey || '')
     const [data_search, setData_search] = useState()
 
     const hanlderSearch = async () => {
@@ -41,7 +42,7 @@ const SearchMain = () => {
                             <Icon assetName='arrow_back' size={15} tintColor='white' />
                         </TouchableOpacity>
                         <View bg-white row spread flex-1 br50 marginH-x centerV paddingH-x style={styles.searchinput}>
-                            <TextInput style={{flex: 1}} placeholder={t("app.search")} value={keyword}
+                            <TextInput style={{ flex: 1 }} placeholder={t("app.search")} value={keyword}
                                 onFocus={handlerFocus}
                                 onChangeText={value => setKeyword(value)} />
                             <Pressable onPress={hanlderSearch}>

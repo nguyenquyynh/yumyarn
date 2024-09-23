@@ -1,12 +1,13 @@
-import { Dimensions, Keyboard, StyleSheet, TextInput } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { Keyboard, StyleSheet, TextInput } from 'react-native'
+import React, { useRef, useState } from 'react'
 import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang'
-import ButtonApp from 'components/ButtonApp'
 import IconApp from 'components/IconApp'
+import MapViewDirections from 'react-native-maps-directions'
 import Geolocation from "@react-native-community/geolocation";
 import { useNavigation } from '@react-navigation/native'
+import { reverLocation, searchLocation } from 'services/MapService'
 
 const SearchMap = ({ route }) => {
     const { defaultlocation } = route.params || {
@@ -29,8 +30,8 @@ const SearchMap = ({ route }) => {
     const navigation = useNavigation()
     const [loaction, setloaction] = useState(defaultlocation);
     const [marker, setMarker] = useState(defaultlocation)
-    const [address, setAddress] = useState({})
-    const [search, setSearch] = useState('')
+    const [address, setAddress] = useState(defaultlocation)
+    const [search, setSearch] = useState(defaultlocation?.detail)
     const [searchData, setSearchData] = useState([])
 
     //Lấy vị trí nguời dùng
@@ -39,26 +40,16 @@ const SearchMap = ({ route }) => {
             setloaction(new innitLocation(location.coords.latitude, location.coords.longitude, 0.005, 0.005))
         })
     }
-    useEffect(() => {
-        getGeolocation()
-    }, [])
     // chuyển về địa chỉ dạng chữ từ location
     const revversLoacation = async (loaction) => {
-        await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${loaction?.latitude},${loaction?.longitude}&lang=vi-VN&apiKey=${process.env.MAPAPI_KEY}`, {
-            method: 'GET',
-        }).then(async (response) => {
-            const a = await response.json()
-            if (a.items?.[0]) {
-                setAddress({
-                    name: a.items[0]?.address?.label,
-                    latitude: a.items?.[0].access?.[0].lat,
-                    longitude: a.items?.[0].access?.[0].lng,
-                });
-            }
-
-
+        const data = await reverLocation(loaction)
+        if (data.items?.[0]) {
+            setAddress({
+                name: data.items[0]?.address?.label,
+                latitude: data.items?.[0].access?.[0].lat,
+                longitude: data.items?.[0].access?.[0].lng,
+            });
         }
-        ).catch(err => console.log(err));
     }
     //chọn địa điểm marker trên bản đồ
     const handlePoiLocation = (el) => {
@@ -98,12 +89,8 @@ const SearchMap = ({ route }) => {
         if (search.trim().length > 0) {
             var keysearch = search.trim()
             const locationsearch = `${loaction.latitude, loaction.longitude}&radius=2000`
-            const url = `${process.env.URL_SEARCH}?query=${keysearch}&location=${locationsearch}&key=${process.env.SEARCHAPI_KEY}`
             try {
-                console.log(url);
-                
-                const response = await fetch(url)
-                const data = await response.json()
+                const data = await searchLocation(keysearch, locationsearch)
                 if (data && data.results) {
                     const array = []
                     for (const item of data.results) {
@@ -155,7 +142,8 @@ const SearchMap = ({ route }) => {
     }
     // render địa điểm tìm kiếm
     const pointLocation = () => {
-        return (<TouchableOpacity>
+        return (<TouchableOpacity center style={{ width: 150 }}>
+            <Text text100BO numberOfLines={2}>{address?.name}</Text>
             <IconApp assetName={"location"} size={25} />
         </TouchableOpacity>)
     }
@@ -165,12 +153,7 @@ const SearchMap = ({ route }) => {
                 <MapView
                     ref={map}
                     style={[styles.mapSize, StyleSheet.absoluteFillObject]}
-                    region={{
-                        latitude: loaction.latitude,
-                        longitude: loaction.longitude,
-                        latitudeDelta: loaction.latitudeDelta,
-                        longitudeDelta: loaction.longitudeDelta,
-                    }}
+                    region={loaction}
                     showsMyLocationButton={false}
                     onRegionChangeComplete={religionZoneChange}
                     moveOnMarkerPress
@@ -201,6 +184,11 @@ const SearchMap = ({ route }) => {
                             }}
                         >{pointLocation()}</MarkerAnimated>)
                     }) : null}
+                    <MapViewDirections
+                        origin={loaction}
+                        destination={marker}
+                        apikey={process.env.MAPAPI_KEY}
+                    />
                 </MapView>
                 {/* Top */}
                 <View absH padding-x marginT-xxx right>
@@ -226,12 +214,6 @@ const SearchMap = ({ route }) => {
                     <TouchableOpacity style={{ width: 42 }} center marginT-x bg-white padding-x br20 onPress={getGeolocation}>
                         <Icon size={22} assetName={"gps"} tintColor={Colors.yellow} />
                     </TouchableOpacity>
-                </View>
-                {/* Bottom */}
-                <View flex absB right padding-xx row centerV>
-                    {address && <View flex bg-white marginL-x br20 paddingH-v>
-                        <Text vText >{address?.name}</Text>
-                    </View>}
                 </View>
             </View>
         </View>

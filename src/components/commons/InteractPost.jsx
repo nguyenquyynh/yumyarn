@@ -1,10 +1,12 @@
-import {Pressable, StyleSheet} from 'react-native';
-import React, {useState} from 'react';
-import {Icon, Text, View} from 'react-native-ui-lib';
-import {firePost} from 'src/hooks/api/fire';
+import { StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { firePost } from 'src/hooks/api/fire';
+import numberFormat from 'configs/ui/format';
+import { B } from 'configs/fonts';
 
 const InteractPost = props => {
-  const {id, handleOpenComment, countFire, countComment, isFire, idUser} =
+  const { id, handleOpenComment, countFire, countComment, isFire, idUser } =
     props;
   const [fireStatus, setFireStatus] = useState(isFire);
   const [countFireStatus, setCountFireStatus] = useState(countFire);
@@ -27,24 +29,24 @@ const InteractPost = props => {
 
   return (
     <View bg-white row spread centerV paddingH-9 style={styles.container}>
-      <Pressable style={styles.containerClick} onPress={toggleFire}>
+      <TouchableOpacity style={styles.containerClick} onPress={toggleFire}>
         <Icon assetName={fireStatus ? 'fire' : 'fire_black'} size={19} />
-        <Text text80BO>{countFireStatus}</Text>
-      </Pressable>
-      <Pressable
+        <Text style={styles.text}>{numberFormat(countFireStatus)}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         style={styles.containerClick}
         onPress={() => handleOpenComment(id)}>
         <Icon assetName="comment" size={18} />
-        <Text text80BO>{countComment}</Text>
-      </Pressable>
-      <Pressable style={styles.containerClick}>
+        <Text style={styles.text}>{numberFormat(countComment)}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.containerClick}>
         <Icon assetName="retweet" size={20} />
-        <Text text80BO>Đăng lại</Text>
-      </Pressable>
-      <Pressable style={styles.containerClick}>
+        <Text style={styles.text}>Đăng lại</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.containerClick}>
         <Icon assetName="send_white" size={20} />
-        <Text text80BO>Chia sẻ</Text>
-      </Pressable>
+        <Text style={styles.text}>Chia sẻ</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -52,6 +54,10 @@ const InteractPost = props => {
 export default InteractPost;
 
 const styles = StyleSheet.create({
+  text: {
+    fontFamily: B,
+    fontSize: 12,
+  },
   container: {
     height: 44,
     borderRadius: 30,
@@ -70,6 +76,7 @@ const styles = StyleSheet.create({
   },
   containerClick: {
     flexDirection: 'row',
-    gap: 5,
+    justifyContent: 'center',
+    gap: 10,
   },
 });

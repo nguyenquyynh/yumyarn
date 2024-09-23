@@ -1,17 +1,20 @@
 import IconApp from 'components/IconApp';
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import { Dimensions, FlatList, Pressable, StyleSheet } from 'react-native';
-import { Avatar, Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
-import ReadMore from 'react-native-read-more-text';
+import { Avatar, Colors, Icon, Image, Text, View } from 'react-native-ui-lib';
 import Video from 'react-native-video';
 import ChangeTimeApp from 'components/commons/ChangeTimeApp';
 import InteractPost from 'components/commons/InteractPost';
 import { EBI, ELI } from 'configs/fonts';
 import { t } from 'i18next';
+import { useNavigation } from '@react-navigation/native';
 
 const { width: MAX_WIDTH } = Dimensions.get('window');
 const RenderPost = props => {
   const { item, handleOpenComment, idUser, handleFollow } = props;
+  const navigation = useNavigation()
+  const [readmore, setReadmore] = useState(false)
+
   const content = item?.content;
   const listImage = item?.media || [];
   const countFire = item?.fire;
@@ -23,55 +26,38 @@ const RenderPost = props => {
   const differenceInMilliseconds = dateNow - datePast;
   const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
   const isFire = item.isFire;
-  const userCreatePost = item.create_by._id;
-  const followStatus = item?.follow;
-
-  const renderRevealedFooter = handlePress => {
-    return (
-      <View>
-        <Text onPress={handlePress}>{t("app.hiden")}</Text>
-        <View row centerV>
-          <Icon assetName='location' size={20} marginR-v/>
-          <Text text text80BO marginL-2>
-            {address}
-          </Text>
-        </View>
-      </View>
-    );
-  };
-  const renderTruncatedFooter = handlePress => {
-    return <Text onPress={handlePress}>{t("app.more")}</Text>;
-  };
 
   return (
     <View paddingH-x marginB-25 bg-white style={Style.sizeContainer}>
       <View row marginB-xv paddingT-10>
-        <View row center flex>
-          <Avatar source={{ uri: item?.create_by?.avatar }} size={35} />
-          <View marginL-15 flex>
-            <Text text70BO numberOfLines={1}>
+        <View row left flex>
+          <Avatar source={{ uri: item?.create_by?.avatar }} size={35} onPress={() => { navigation.navigate('OtherProfile', { name: item?.create_by?.name }) }} />
+          <View marginL-15>
+            <Text text70BO numberOfLines={1} onPress={() => { navigation.navigate('OtherProfile', { name: item?.create_by?.name }) }}>
               {item?.create_by?.name}
             </Text>
             <ChangeTimeApp second={differenceInSeconds} />
           </View>
         </View>
-
         <View row center>
           <IconApp assetName={'dots'} size={20} />
         </View>
       </View>
-      <ReadMore
-        numberOfLines={3}
-        renderTruncatedFooter={renderTruncatedFooter}
-        renderRevealedFooter={renderRevealedFooter}>
-        <Text text text85BO>
-          {content}
-        </Text>
-      </ReadMore>
+      <Text text text85BO numberOfLines={!readmore ? 3 : 10000} onPress={() => { setReadmore(!readmore) }} >{content}</Text>
       {item?.hashtags.length != 0 &&
-        <Text style={{ fontFamily: EBI }} numberOfLines={1} color={Colors.yellow}>{item?.hashtags.map((el) => `#${el} `)}</Text>
+        <View row>
+          {item?.hashtags.map((el) => (<Text key={el} onPress={() => { navigation.navigate('Search', { inputkey: el }) }} style={{ fontFamily: EBI }} color={Colors.yellow}>#{el} </Text>))}
+        </View>
+
       }
-      <TouchableOpacity marginB-22 marginT-15 style={Style.borderRadiusSwiper}>
+      <View row top centerV>
+        <Icon assetName='location' size={12} marginR-v />
+        <Text onPress={() => { navigation.navigate('SearchMap', { defaultlocation: item?.address }) }} text text90BO marginL-2>
+          {address}
+        </Text>
+      </View>
+
+      <View marginB-22 marginT-15 style={Style.borderRadiusSwiper}>
         <FlatList
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -80,7 +66,7 @@ const RenderPost = props => {
           snapToAlignment="center"
           data={listImage}
           renderItem={data => (
-            <View flex style={{ overflow: 'hidden', borderRadius: 20 }}>
+            <Pressable onPress={() => { navigation.navigate('PostDetail', { id: id }) }} style={{ overflow: 'hidden', borderRadius: 15, marginRight: 5 }}>
               {data.item.endsWith('.mp4') ? (
                 <Video
                   source={{ uri: data.item }}
@@ -96,11 +82,11 @@ const RenderPost = props => {
                   resizeMode="cover"
                 />
               )}
-            </View>
+            </Pressable>
           )}
           key={item => item.id}
         />
-      </TouchableOpacity>
+      </View>
 
       <InteractPost
         id={id}
@@ -125,7 +111,6 @@ const Style = StyleSheet.create({
     marginRight: 10,
   },
   borderRadiusSwiper: {
-    borderRadius: 20,
     width: '100%',
     height: 210,
   },

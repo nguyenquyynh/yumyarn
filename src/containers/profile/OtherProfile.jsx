@@ -5,7 +5,7 @@ import Wapper from 'components/Wapper'
 import { useNavigation } from '@react-navigation/native'
 
 const OtherProfile = ({ route }) => {
-    const name = route.params.name
+    const { name } = route.params
     const navigation = useNavigation()
 
     return (
