@@ -1,19 +1,18 @@
 import IconApp from 'components/IconApp';
-import React, { memo, useState } from 'react';
-import { Dimensions, FlatList, Pressable, StyleSheet } from 'react-native';
-import { Avatar, Colors, Icon, Image, Text, View } from 'react-native-ui-lib';
+import React, {memo, useState} from 'react';
+import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
+import {Avatar, Colors, Icon, Image, Text, View} from 'react-native-ui-lib';
 import Video from 'react-native-video';
 import ChangeTimeApp from 'components/commons/ChangeTimeApp';
 import InteractPost from 'components/commons/InteractPost';
-import { EBI, ELI } from 'configs/fonts';
-import { t } from 'i18next';
-import { useNavigation } from '@react-navigation/native';
+import {EBI} from 'configs/fonts';
+import {useNavigation} from '@react-navigation/native';
 
-const { width: MAX_WIDTH } = Dimensions.get('window');
+const {width: MAX_WIDTH} = Dimensions.get('window');
 const RenderPost = props => {
-  const { item, handleOpenComment, idUser, handleFollow } = props;
-  const navigation = useNavigation()
-  const [readmore, setReadmore] = useState(false)
+  const {item, handleOpenComment, idUser, handleFollow} = props;
+  const navigation = useNavigation();
+  const [readmore, setReadmore] = useState(false);
 
   const content = item?.content;
   const listImage = item?.media || [];
@@ -29,11 +28,26 @@ const RenderPost = props => {
 
   return (
     <View paddingH-x marginB-25 bg-white style={Style.sizeContainer}>
-      <View row marginB-xv paddingT-10>
+      <View row marginB-v paddingT-10>
         <View row left flex>
-          <Avatar source={{ uri: item?.create_by?.avatar }} size={35} onPress={() => { navigation.navigate('OtherProfile', { name: item?.create_by?.name }) }} />
+          <Avatar
+            source={{uri: item?.create_by?.avatar}}
+            size={35}
+            onPress={() => {
+              navigation.navigate('OtherProfile', {
+                name: item?.create_by?.name,
+              });
+            }}
+          />
           <View marginL-15>
-            <Text text70BO numberOfLines={1} onPress={() => { navigation.navigate('OtherProfile', { name: item?.create_by?.name }) }}>
+            <Text
+              text70BO
+              numberOfLines={1}
+              onPress={() => {
+                navigation.navigate('OtherProfile', {
+                  name: item?.create_by?.name,
+                });
+              }}>
               {item?.create_by?.name}
             </Text>
             <ChangeTimeApp second={differenceInSeconds} />
@@ -43,16 +57,39 @@ const RenderPost = props => {
           <IconApp assetName={'dots'} size={20} />
         </View>
       </View>
-      <Text text text85BO numberOfLines={!readmore ? 3 : 10000} onPress={() => { setReadmore(!readmore) }} >{content}</Text>
-      {item?.hashtags.length != 0 &&
+      <Text
+        text
+        text85BO
+        numberOfLines={!readmore ? 3 : 10000}
+        onPress={() => {
+          setReadmore(!readmore);
+        }}>
+        {content}
+      </Text>
+      {item?.hashtags.length != 0 && (
         <View row>
-          {item?.hashtags.map((el) => (<Text key={el} onPress={() => { navigation.navigate('Search', { inputkey: el }) }} style={{ fontFamily: EBI }} color={Colors.yellow}>#{el} </Text>))}
+          {item?.hashtags.map(el => (
+            <Text
+              key={el}
+              onPress={() => {
+                navigation.navigate('Search', {inputkey: el});
+              }}
+              style={{fontFamily: EBI}}
+              color={Colors.yellow}>
+              #{el}{' '}
+            </Text>
+          ))}
         </View>
-
-      }
+      )}
       <View row top centerV>
-        <Icon assetName='location' size={12} marginR-v />
-        <Text onPress={() => { navigation.navigate('SearchMap', { defaultlocation: item?.address }) }} text text90BO marginL-2>
+        <Icon assetName="location" size={12} marginR-v />
+        <Text
+          onPress={() => {
+            navigation.navigate('SearchMap', {defaultlocation: item?.address});
+          }}
+          text
+          text90BO
+          marginL-2>
           {address}
         </Text>
       </View>
@@ -66,10 +103,14 @@ const RenderPost = props => {
           snapToAlignment="center"
           data={listImage}
           renderItem={data => (
-            <Pressable onPress={() => { navigation.navigate('PostDetail', { id: id }) }} style={{ overflow: 'hidden', borderRadius: 15, marginRight: 5 }}>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('PostDetail', {id: id});
+              }}
+              style={{overflow: 'hidden', borderRadius: 15}}>
               {data.item.endsWith('.mp4') ? (
                 <Video
-                  source={{ uri: data.item }}
+                  source={{uri: data.item}}
                   style={Style.styleImage}
                   resizeMode="cover"
                   paused
@@ -77,7 +118,7 @@ const RenderPost = props => {
                 />
               ) : (
                 <Image
-                  source={{ uri: data.item }}
+                  source={{uri: data.item}}
                   style={Style.styleImage}
                   resizeMode="cover"
                 />
@@ -115,7 +156,8 @@ const Style = StyleSheet.create({
     height: 210,
   },
   styleImage: {
-    width: MAX_WIDTH - 24,
+    width: MAX_WIDTH-20,
+    maxWidth: 480,
     height: '100%',
   },
   sizeContainer: {

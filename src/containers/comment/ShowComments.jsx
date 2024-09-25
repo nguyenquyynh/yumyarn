@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   containerInput: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: 15,
+    // marginBottom: 15,
   },
   outLineInput: {
     flex: 1,

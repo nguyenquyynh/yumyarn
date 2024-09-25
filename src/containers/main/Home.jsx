@@ -71,9 +71,6 @@ const Home = () => {
     getPostData(idUser, 1);
   }, []);
 
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
   return (
     <View flex bg-white>
       <Animated.View
@@ -106,31 +103,15 @@ const Home = () => {
           </TouchableOpacity>
         </View>
       </Animated.View>
-      <Animated.ScrollView
-        style={styles.scrollview}
-        scrollToOverflowEnabled={false}
-        showsVerticalScrollIndicator={false}
-        onScroll={state => {
-          scrollY.setValue(state.nativeEvent.contentOffset.y);
-          console.log(state.nativeEvent.contentSize);
-          console.log(state.nativeEvent.contentOffset.y);
-        }}
-        // onEndReachedThreshold={0.5}
-        // initialNumToRender={2}
-        // maxToRenderPerBatch={2}
-        onEndReached={() => {
-          handleLoadMore(page + 1);
-          console.log('aaaa');
-        }} // Gọi hàm khi kéo tới cuối danh sách
-        ListFooterComponent={() =>
-          isLoading && <ActivityIndicator size="large" color="#0000ff" />
-        }>
-        <ListPost
-          idUser={idUser}
-          setDataPost={setDataPost}
-          dataPost={dataPost}
-        />
-      </Animated.ScrollView>
+      <ListPost
+        idUser={idUser}
+        setDataPost={setDataPost}
+        dataPost={dataPost}
+        scrollY={scrollY}
+        handleLoadMore={handleLoadMore}
+        page={page}
+        isLoading={isLoading}
+      />
     </View>
   );
 };
@@ -142,7 +123,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBoldItalic',
     fontSize: 16,
   },
-  scrollview: {paddingTop: 50},
   header: {
     backgroundColor: 'white',
     position: 'absolute',

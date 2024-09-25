@@ -107,5 +107,10 @@
     "Community_standards": "Community Standards",
     "delete_the_account": "Delete Account",
     "log_out": "Log Out"
+  },
+  "home": {
+    "welcome": "Hello,",
+    "share": "Share",
+    "repost": "Repost"
   }
 }

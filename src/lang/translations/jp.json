@@ -85,7 +85,7 @@
     "edit_profile": "プロフィールを編集",
     "about_me": "私について",
     "social_media": "ソーシャルメディア",
-    "post" : "何を考えていますか"
+    "post": "何を考えていますか"
   },
   "create_post": {
     "title": "投稿を作成",
@@ -107,5 +107,10 @@
     "Community_standards": "コミュニティ基準",
     "delete_the_account": "アカウントを削除",
     "log_out": "ログアウト"
+  },
+  "home": {
+    "welcome": "こんにちは、",
+    "share": "共有",
+    "repost": "リポスト"
   }
 }
