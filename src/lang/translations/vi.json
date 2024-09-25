@@ -41,7 +41,9 @@
         "answering": "Đang trả lời",
         "cancel": "Hủy",
         "firstComment": "Hãy là người đầu tiên bình luận",
-        "done": "Xong"
+        "done": "Xong",
+        "choose" : "Chọn",
+        "buy": "Thanh toán"
     },
     "wellcome": {
         "greeting": "Chào mừng đến với",
@@ -138,5 +140,8 @@
     },
     "chat": {
         "title": "Nhắn tin"
+    },
+    "advertisement" : {
+        "title": "Đăng kí gói quảng bá"
     }
 }

@@ -20,6 +20,7 @@ import PostSaved from 'containers/setting/PostSaved'
 import SearchMap from 'containers/search/SearchMap'
 import MainChat from 'containers/chat/MainChat'
 import MainNotifications from 'containers/notification/MainNotifications'
+import BuyAdvertisement from 'containers/advertisement/BuyAdvertisement'
 
 const MainApp = () => {
     const Stack = createNativeStackNavigator()
@@ -48,6 +49,7 @@ const MainApp = () => {
             <Stack.Screen name='OtherProfile' component={OtherProfile} />
             <Stack.Screen name='MainChat' component={MainChat} />
             <Stack.Screen name='MainNotifications' component={MainNotifications} />
+            <Stack.Screen name='BuyAdvertisement' component={BuyAdvertisement} />
         </Stack.Navigator>
     )
 }

@@ -3,6 +3,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native';
 import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import IconApp from './IconApp';
+import { useNavigation } from '@react-navigation/native';
 
 const HeaderApp = ({
     customheader,
@@ -17,7 +18,7 @@ const HeaderApp = ({
     funtright,
     title,
 }) => {
-
+    const navigation = useNavigation()
     return (
         <View flex bg-white>
             {customheader ?
