@@ -11,7 +11,6 @@ export async function userLogin() {
             email: token.user.email,
             avatar: token.user.photo
         }
-        // console.log(body)
         const resault = await AxiosInstance().post(`${Model.USERS}/${USERS.AUTHEN}`, body)
         if (resault.status) {
             if (resault.data.value === USERS_AUTHEN.REGISTER) {
@@ -42,5 +41,15 @@ export async function checkAuthen(token) {
     } catch (error) {
         return false
     }
+
+}
+
+export function isTokenExpired(statuscode) {
+    if (statuscode !== 401) {
+        console.log("Token còn hạn");
+        return true
+    } else
+        console.log("Token đã hết hạn vui lòng đăng nhập lại");
+    return false
 
 }

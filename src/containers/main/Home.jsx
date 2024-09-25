@@ -1,15 +1,9 @@
-import {Animated, FlatList, ScrollView, StyleSheet} from 'react-native';
-import React, {useRef} from 'react';
+import {Animated, StyleSheet} from 'react-native';
+import React from 'react';
 import {Avatar, Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import {useSelector} from 'react-redux';
-import {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
 import {t} from 'lang';
 import {useNavigation} from '@react-navigation/native';
-import {opacity} from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 import ListPost from 'containers/post/ListPost';
 
 const Home = () => {

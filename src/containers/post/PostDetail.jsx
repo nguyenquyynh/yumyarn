@@ -115,7 +115,7 @@ const PostDetail = ({ route }) => {
                 </View>
             </View>
             <ShowComments idPost={post?._id} setOpen={setiscomment} open={iscomment} create_by={post?.create_by} dataPost={[]} setDataPost={() => { }} setIdPost={() => { }} />
-            <ShowMoreDetailPost disable={dots} setDisable={setDots} create_post={post?.create_by?._id} />
+            <ShowMoreDetailPost disable={dots} setDisable={setDots} create_post={post?.create_by?._id} id_post={post?._id}/>
             <ShowShareDetailPost disable={isshare} setDisable={setIsshare} post_id={post?._id} />
         </View>
     )

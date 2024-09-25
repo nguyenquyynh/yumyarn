@@ -72,4 +72,5 @@ Assets.loadAssetsGroup('icons', {
     info: require('assets/icon/info.png'),
     follow: require('assets/icon/follow.png'),
     remove: require('assets/icon/remove.png'),
+    dot: require('assets/icon/dot.png'),
 })

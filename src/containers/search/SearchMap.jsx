@@ -4,10 +4,9 @@ import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang'
 import IconApp from 'components/IconApp'
-import MapViewDirections from 'react-native-maps-directions'
 import Geolocation from "@react-native-community/geolocation";
 import { useNavigation } from '@react-navigation/native'
-import { reverLocation, searchLocation } from 'services/MapService'
+import { autoComplete, reverLocation, searchLocation } from 'services/MapService'
 
 const SearchMap = ({ route }) => {
     const { defaultlocation } = route.params || {
@@ -30,7 +29,6 @@ const SearchMap = ({ route }) => {
     const navigation = useNavigation()
     const [loaction, setloaction] = useState(defaultlocation);
     const [marker, setMarker] = useState(defaultlocation)
-    const [address, setAddress] = useState(defaultlocation)
     const [search, setSearch] = useState(defaultlocation?.detail)
     const [searchData, setSearchData] = useState([])
 
@@ -44,15 +42,12 @@ const SearchMap = ({ route }) => {
     const revversLoacation = async (loaction) => {
         const data = await reverLocation(loaction)
         if (data.items?.[0]) {
-            setAddress({
-                name: data.items[0]?.address?.label,
-                latitude: data.items?.[0].access?.[0].lat,
-                longitude: data.items?.[0].access?.[0].lng,
-            });
+            setMarker({ ...marker, name: data.items[0]?.address?.label })
         }
     }
     //chọn địa điểm marker trên bản đồ
     const handlePoiLocation = (el) => {
+        setSearchData([])
         const point = el.nativeEvent
         if (point?.coordinate) {
             const duration = 500
@@ -86,35 +81,36 @@ const SearchMap = ({ route }) => {
     }
     //Tìm kiếm địa điểm theo địa chỉ
     const handlerSearch = async () => {
-        if (search.trim().length > 0) {
-            var keysearch = search.trim()
-            const locationsearch = `${loaction.latitude, loaction.longitude}&radius=2000`
-            try {
-                const data = await searchLocation(keysearch, locationsearch)
-                if (data && data.results) {
-                    const array = []
-                    for (const item of data.results) {
-                        array.push({
-                            name: item.name,
-                            address: item.formatted_address,
-                            latitude: item.geometry.location.lat,
-                            longitude: item.geometry.location.lng,
-                        })
-                    }
-                    setSearchData(array)
-                    if (array.length > 0) {
-                        map.current?.fitToCoordinates(array, {
-                            edgePadding: {
-                                top: 50, left: 50, bottom: 50, right: 50
-                            },
-                            animated: true
-                        })
-                        Keyboard.dismiss()
-                    }
+        if (!search) {
+            return
+        }
+        var keysearch = search.trim()
+        const locationsearch = `@${loaction.latitude},${loaction.longitude},16z`
+        try {
+            const data = await searchLocation(keysearch, locationsearch)
+            if (data.length > 0) {
+                const array = []
+                for (const item of data) {
+                    array.push({
+                        name: item.title,
+                        address: item.address,
+                        latitude: item.gpsCoordinates.latitude,
+                        longitude: item.gpsCoordinates.longitude,
+                    })
                 }
-            } catch (error) {
-                console.log(error);
+                setSearchData(array)
+                if (array.length > 0) {
+                    map.current?.fitToCoordinates(array, {
+                        edgePadding: {
+                            top: 50, left: 50, bottom: 50, right: 50
+                        },
+                        animated: true
+                    })
+                    Keyboard.dismiss()
+                }
             }
+        } catch (error) {
+            console.log(error);
         }
     }
     //Tạo đánh dấu địa điểm đã chọn
@@ -141,12 +137,13 @@ const SearchMap = ({ route }) => {
         }
     }
     // render địa điểm tìm kiếm
-    const pointLocation = () => {
+    const pointLocation = (item) => {
         return (<TouchableOpacity center style={{ width: 150 }}>
-            <Text text100BO numberOfLines={2}>{address?.name}</Text>
+            <Text text100BO numberOfLines={2}>{item?.name || item?.detail}</Text>
             <IconApp assetName={"location"} size={25} />
         </TouchableOpacity>)
     }
+
     return (
         <View flex>
             <View flex style={StyleSheet.absoluteFillObject}>
@@ -164,7 +161,7 @@ const SearchMap = ({ route }) => {
                     {marker && <MarkerAnimated
                         ref={marker => { this.marker = marker }}
                         coordinate={coordinate}
-                    >{pointLocation()}
+                    >{pointLocation(marker)}
                     </MarkerAnimated>}
                     {searchData.length ? searchData.map(element => {
                         const crood = {
@@ -176,19 +173,10 @@ const SearchMap = ({ route }) => {
                             ref={marker => { this.marker = marker }}
                             coordinate={crood}
                             onPress={() => {
-                                setAddress({
-                                    name: `${element.name} ${element.address}`,
-                                    longitude: element.longitude,
-                                    latitude: element.latitude
-                                })
+
                             }}
-                        >{pointLocation()}</MarkerAnimated>)
+                        >{pointLocation(element)}</MarkerAnimated>)
                     }) : null}
-                    <MapViewDirections
-                        origin={loaction}
-                        destination={marker}
-                        apikey={process.env.MAPAPI_KEY}
-                    />
                 </MapView>
                 {/* Top */}
                 <View absH padding-x marginT-xxx right>
