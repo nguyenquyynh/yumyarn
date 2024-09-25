@@ -116,7 +116,6 @@ const ShowComments = props => {
       setMorePage(true);
       setWriteComment('');
       setIdPost('');
-      console.log('đã xóa');
     }
   }, [open]);
   return (

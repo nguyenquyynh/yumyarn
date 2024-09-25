@@ -14,7 +14,7 @@ import OpenApp from 'components/commons/OpenApp'
 const MainNavigation = () => {
   const auth = useSelector(state => state.auth)
   const dispatch = useDispatch()
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const Check = async () => {
@@ -27,7 +27,7 @@ const MainNavigation = () => {
       }, 1500);
       await dispatch(auth_check({ isLogin: authen }))
     }
-    Check()
+    // Check()
   }, [])
 
   return (

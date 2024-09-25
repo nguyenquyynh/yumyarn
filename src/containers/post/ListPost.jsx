@@ -6,37 +6,16 @@ import {useSelector} from 'react-redux';
 import RenderPost from 'components/homes/RenderPost';
 import {createFollow} from 'src/hooks/api/follow';
 
-const ListPost = () => {
-  const [dataPost, setDataPost] = useState([]);
-  const user = useSelector(state => state.auth.user);
-  const [page, setPage] = useState(0);
+const ListPost = (props) => {
+  const {idUser, setDataPost, dataPost} = props;
   const [open, setOpen] = useState(false);
   const [idPost, setIdPost] = useState('');
-  const idUser = user._id;
-  const [isLoading, setIsLoading] = useState(false);
-  const getPostData = async (idUser, page) => {
-    try {
-      const dataRequest = {
-        id: idUser,
-        page: page,
-      };
-      const response = await getPost(dataRequest);
-      if (response.status) {
-        setDataPost(prev => [...prev, ...response.data]);
-        setPage(page);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleFollow = async userCreatePost => {
     try {
       const followUpdate = dataPost?.map(ele => {
         if (ele.create_by._id == userCreatePost) {
-          console.log(ele.follow)
+          console.log(ele.follow);
           return {...ele, follow: !ele.follow};
         }
 
@@ -53,21 +32,6 @@ const ListPost = () => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    getPostData(idUser, 1);
-  }, []);
-
-  const handleLoadMore = useCallback(
-    async page => {
-      if (!isLoading) {
-        setIsLoading(true);
-        // await getPostData(idUser, page);
-        console.log('đã tải');
-      }
-    },
-    [page, isLoading],
-  );
 
   const handleOpenComment = id => {
     setIdPost(id);
@@ -87,13 +51,6 @@ const ListPost = () => {
             handleFollow={handleFollow}
           />
         )}
-        onEndReached={() => handleLoadMore(page + 1)} // Gọi hàm khi kéo tới cuối danh sách
-        onEndReachedThreshold={0.5}
-        initialNumToRender={2}
-        maxToRenderPerBatch={2}
-        ListFooterComponent={() =>
-          isLoading && <ActivityIndicator size="large" color="#0000ff" />
-        }
       />
 
       {idPost && (
