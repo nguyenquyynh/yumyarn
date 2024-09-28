@@ -9,7 +9,8 @@ export const Model = {
     POSTS: "posts",
     REQUESTS: "requests",
     SUGGEST: 'searchsuggest',
-    ADVERTISEMENT: 'advertisement'
+    ADVERTISEMENT: 'advs',
+    COSTADVERTISEMENT: 'costadvs'
 }
 
 export const USERS = {
