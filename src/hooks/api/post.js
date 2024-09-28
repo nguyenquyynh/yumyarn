@@ -82,8 +82,9 @@ export async function getAllAdvertisement(dataRequest) {
 
 export async function buyAdvertisement(dataRequest) {
     try {
-        const resault = await AxiosInstance(dataRequest.token).post(`/costadvs`)
+        const resault = await AxiosInstance(dataRequest.token).post(`/${Model.ADVERTISEMENT}/buyadv`, dataRequest.body)
         await isTokenExpired(resault.statuscode)
+        console.log(resault);
         if (resault.status) {
             return { status: true, data: resault.data }
         } else {

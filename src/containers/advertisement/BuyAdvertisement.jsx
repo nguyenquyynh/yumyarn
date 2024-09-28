@@ -1,13 +1,13 @@
-import { FlatList, ScrollView, StyleSheet } from 'react-native'
+import { FlatList, ScrollView, StyleSheet, ToastAndroid } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import { B, EB, I } from 'configs/fonts'
 import { useSelector } from 'react-redux'
-import { getAllAdvertisement, getTimeOutAdvertisement } from 'src/hooks/api/post'
+import { buyAdvertisement, getAllAdvertisement, getTimeOutAdvertisement } from 'src/hooks/api/post'
 import { useNavigation } from '@react-navigation/native'
-import { millisecondsToDate, millisecondsToDay } from 'configs/ui/time'
+import { millisecondsToDate } from 'configs/ui/time'
 
 const BuyAdvertisement = ({ route }) => {
     const { post } = route.params
@@ -46,7 +46,7 @@ const BuyAdvertisement = ({ route }) => {
                     <Icon assetName='recomment' size={33} tintColor={Colors.yellow} />
                 </View>
                 <View marginL-x flex>
-                    <Text xviText marginB-v style={styles.fontEB}>{millisecondsToDay(item.time) + " " + t("app.day")}</Text>
+                    <Text xviText marginB-v style={styles.fontEB}>{item.time + " " + t("app.day")}</Text>
                     <Text color='red' xiitext style={styles.fontI}>{item.cost} $</Text>
                 </View>
                 <View>
@@ -78,7 +78,20 @@ const BuyAdvertisement = ({ route }) => {
                     <View flex centerV>
                         <Text text60BO>{AdvSelect?.cost} $</Text>
                     </View>
-                    <TouchableOpacity center paddingH-xx br20 marginV-xxx bg-yellow onPress={() => { }}>
+                    <TouchableOpacity center paddingH-xx br20 marginV-xxx bg-yellow onPress={() => {
+                        if (AdvSelect) {
+                            buyAdvertisement({
+                                token: auth.token,
+                                body: {
+                                    post : post,
+                                    cost: AdvSelect
+                                }
+                            })
+                            // navigation.navigate("BuyAdvertisementDetail", { adv: AdvSelect })
+                        } else {
+                           ToastAndroid.show("Chọn gói thời gian bạn muốn !" , ToastAndroid.SHORT)
+                        }
+                     }}>
                         <Text style={styles.TextB} color={Colors.white}>{AdvSelect == null ? t("app.choose") : t("app.buy")}</Text>
                     </TouchableOpacity>
                 </View>
