@@ -7,7 +7,7 @@ import { B, EB, I } from 'configs/fonts'
 import { useSelector } from 'react-redux'
 import { getAllAdvertisement, getTimeOutAdvertisement } from 'src/hooks/api/post'
 import { useNavigation } from '@react-navigation/native'
-import { millisecondsToDay } from 'configs/ui/time'
+import { millisecondsToDate, millisecondsToDay } from 'configs/ui/time'
 
 const BuyAdvertisement = ({ route }) => {
     const { post } = route.params
@@ -16,6 +16,7 @@ const BuyAdvertisement = ({ route }) => {
     const [AdvSelect, setAdvSelect] = useState()
     const [viptime, setviptime] = useState("")
     const [listAdvertisement, setListAdvertisement] = useState([])
+
     useEffect(() => {
         async function getTimeAdvertisement() {
             const timeoutAdvertisement = await getTimeOutAdvertisement({
@@ -23,7 +24,7 @@ const BuyAdvertisement = ({ route }) => {
                 post: post
             })
             if (timeoutAdvertisement.status) {
-                setviptime(`${timeoutAdvertisement.data.start_vip},${timeoutAdvertisement.data.end_vip}`)
+                setviptime(`${millisecondsToDate(timeoutAdvertisement.data.start_vip)} -> ${millisecondsToDate(timeoutAdvertisement.data.end_vip)}`)
             } else setviptime("Bạn chưa quảng bá bài viết này")
         }
         async function getListAdvertisement() {
@@ -58,8 +59,8 @@ const BuyAdvertisement = ({ route }) => {
         <Wapper title={t("advertisement.title")} renderleft funtleft={() => { navigation.goBack() }}>
             <View flex bg-gray >
                 <ScrollView>
-                    <View flex bg-white paddingB-xx>
-                        <Text marginL-x xviText marginB-xxx style={{ fontFamily: I }}>{viptime}</Text>
+                    <View flex bg-white paddingB-xx >
+                        <Text flex marginL-xx xviText marginB-xxx style={{ fontFamily: I }}>{viptime}</Text>
                         <FlatList
                             scrollEnabled={false}
                             data={listAdvertisement}
