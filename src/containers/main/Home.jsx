@@ -18,9 +18,6 @@ const Home = () => {
   const auth = useSelector(state => state.auth.user);
   const name = auth.name.split(' ')[0];
   const idUser = auth._id;
-  const [isLoading, setIsLoading] = useState(false);
-  const [dataPost, setDataPost] = useState([]);
-  const [page, setPage] = useState(0);
   //Animated header
   const scrollY = new Animated.Value(0);
   const diffclamp = Animated.diffClamp(scrollY, 0, 50);
@@ -40,36 +37,6 @@ const Home = () => {
   function handlerChat() {
     navigation.navigate('Post');
   }
-
-  const getPostData = async (idUser, page) => {
-    try {
-      const dataRequest = {
-        id: idUser,
-        page: page,
-      };
-      const response = await getPost(dataRequest);
-      if (response.status) {
-        setDataPost(prev => [...prev, ...response.data]);
-        setPage(page);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleLoadMore = async page => {
-    if (!isLoading) {
-      setIsLoading(true);
-      await getPostData(idUser, page);
-      console.log('đã tải');
-    }
-  };
-
-  useEffect(() => {
-    getPostData(idUser, 1);
-  }, []);
 
   return (
     <View flex bg-white>
@@ -103,15 +70,7 @@ const Home = () => {
           </TouchableOpacity>
         </View>
       </Animated.View>
-      <ListPost
-        idUser={idUser}
-        setDataPost={setDataPost}
-        dataPost={dataPost}
-        scrollY={scrollY}
-        handleLoadMore={handleLoadMore}
-        page={page}
-        isLoading={isLoading}
-      />
+      <ListPost idUser={idUser} scrollY={scrollY} />
     </View>
   );
 };

@@ -1,23 +1,47 @@
-import {ActivityIndicator, Animated, FlatList, StyleSheet} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {ActivityIndicator, Animated, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {getPost} from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
-import {useSelector} from 'react-redux';
 import RenderPost from 'components/homes/RenderPost';
 import {createFollow} from 'src/hooks/api/follow';
 
 const ListPost = props => {
-  const {
-    idUser,
-    setDataPost,
-    dataPost,
-    handleLoadMore,
-    page,
-    scrollY,
-    isLoading,
-  } = props;
+  const {idUser, scrollY} = props;
   const [open, setOpen] = useState(false);
   const [idPost, setIdPost] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [dataPost, setDataPost] = useState([]);
+  const [page, setPage] = useState(0);
+
+  const getPostData = async (idUser, page) => {
+    try {
+      const dataRequest = {
+        id: idUser,
+        page: page,
+      };
+      const response = await getPost(dataRequest);
+      if (response.status) {
+        setDataPost(prev => [...prev, ...response.data]);
+        setPage(page);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleLoadMore = async page => {
+    if (!isLoading) {
+      setIsLoading(true);
+      await getPostData(idUser, page);
+      console.log('đã tải');
+    }
+  };
+
+  useEffect(() => {
+    getPostData(idUser, 1);
+  }, []);
 
   const handleFollow = async userCreatePost => {
     try {
@@ -53,7 +77,9 @@ const ListPost = props => {
         scrollEnabled
         data={dataPost}
         onScroll={state => {
-          scrollY.setValue(state.nativeEvent.contentOffset.y);
+          if (scrollY) {
+            scrollY.setValue(state.nativeEvent.contentOffset.y);
+          }
         }}
         keyExtractor={item => item._id}
         onEndReached={() => {
@@ -71,7 +97,13 @@ const ListPost = props => {
           />
         )}
         ListFooterComponent={() =>
-          isLoading && <ActivityIndicator size="large" color="#0000ff" />
+          isLoading && (
+            <ActivityIndicator
+              style={{marginBottom: 50}}
+              size="large"
+              color="#0000ff"
+            />
+          )
         }
       />
 
@@ -93,5 +125,5 @@ const ListPost = props => {
 export default ListPost;
 
 const styles = StyleSheet.create({
-  scrollview: {paddingTop: 50},
+  scrollview: {paddingTop: 50, paddingBottom: 50},
 });

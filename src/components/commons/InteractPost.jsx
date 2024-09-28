@@ -1,20 +1,22 @@
-import { StyleSheet } from 'react-native';
-import React, { useState } from 'react';
-import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
-import { firePost } from 'src/hooks/api/fire';
+import {StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
+import {firePost} from 'src/hooks/api/fire';
 import numberFormat from 'configs/ui/format';
-import { B } from 'configs/fonts';
-import { t } from 'lang';
+import {B} from 'configs/fonts';
+import {t} from 'lang';
 
 const InteractPost = props => {
-  const { id, handleOpenComment, countFire, countComment, isFire, idUser } =
+  const {id, handleOpenComment, countFire, countComment, isFire, idUser} =
     props;
   const [fireStatus, setFireStatus] = useState(isFire);
   const [countFireStatus, setCountFireStatus] = useState(countFire);
   const toggleFire = async () => {
     try {
       setFireStatus(!fireStatus);
-      setCountFireStatus(fireStatus ? countFireStatus - 1 : countFireStatus + 1);
+      setCountFireStatus(
+        fireStatus ? countFireStatus - 1 : countFireStatus + 1,
+      );
       const response = await firePost(idUser, id);
       if (!response.status) {
         setFireStatus(fireStatus);
@@ -42,11 +44,11 @@ const InteractPost = props => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.containerClick}>
         <Icon assetName="retweet" size={20} />
-        <Text style={styles.text}>{t("home.repost")}</Text>
+        <Text style={styles.text}>{t('home.repost')}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.containerClick}>
         <Icon assetName="send_white" size={20} />
-        <Text style={styles.text}>{t("home.share")}</Text>
+        <Text style={styles.text}>{t('home.share')}</Text>
       </TouchableOpacity>
     </View>
   );
