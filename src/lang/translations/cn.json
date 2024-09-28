@@ -85,7 +85,7 @@
     "edit_profile": "编辑资料",
     "about_me": "关于我",
     "social_media": "社交媒体",
-    "post" : "你在想什么"
+    "post": "你在想什么"
   },
   "create_post": {
     "title": "创建帖子",
@@ -107,5 +107,10 @@
     "Community_standards": "社区标准",
     "delete_the_account": "删除账户",
     "log_out": "登出"
+  },
+  "home": {
+    "welcome": "你好，",
+    "share": "分享",
+    "repost": "转发"
   }
 }

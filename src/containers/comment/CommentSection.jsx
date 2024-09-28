@@ -97,8 +97,8 @@ const CommentSection = ({
 
     const heightFlatlist = {
         height: parent ?
-            MAX_HEIGHT > MAX_WIDTH ? "85%" : "56%" :
-            MAX_HEIGHT > MAX_WIDTH ? "90%" : "70%",
+            MAX_HEIGHT > MAX_WIDTH ? MAX_HEIGHT*0.6: MAX_HEIGHT*0.35 :
+            MAX_HEIGHT > MAX_WIDTH ? MAX_HEIGHT*0.6 : MAX_HEIGHT*0.4,
     }
 
 

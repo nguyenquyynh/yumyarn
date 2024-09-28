@@ -1,15 +1,23 @@
-import {Animated, StyleSheet} from 'react-native';
-import React from 'react';
+import {
+  ActivityIndicator,
+  Animated,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import {Avatar, Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import {useSelector} from 'react-redux';
 import {t} from 'lang';
 import {useNavigation} from '@react-navigation/native';
 import ListPost from 'containers/post/ListPost';
+import {getPost} from 'src/hooks/api/post';
 
 const Home = () => {
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth.user);
   const name = auth.name.split(' ')[0];
+  const idUser = auth._id;
   //Animated header
   const scrollY = new Animated.Value(0);
   const diffclamp = Animated.diffClamp(scrollY, 0, 50);
@@ -29,6 +37,7 @@ const Home = () => {
   function handlerChat() {
     navigation.navigate('Post');
   }
+
   return (
     <View flex bg-white>
       <Animated.View
@@ -46,21 +55,22 @@ const Home = () => {
           <TouchableOpacity onPress={handlerSearch}>
             <Icon assetName="search" size={20} />
           </TouchableOpacity>
-          <TouchableOpacity marginH-xvi onPress={() => {navigation.navigate('MainNotifications')}}>
+          <TouchableOpacity
+            marginH-xvi
+            onPress={() => {
+              navigation.navigate('MainNotifications');
+            }}>
             <Icon assetName="notifycation" size={20} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {navigation.navigate('MainChat')}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('MainChat');
+            }}>
             <Icon assetName="chat" size={20} />
           </TouchableOpacity>
         </View>
       </Animated.View>
-      <Animated.ScrollView
-        style={styles.scrollview}
-        scrollToOverflowEnabled={false}
-        showsVerticalScrollIndicator={false}
-        onScroll={state => scrollY.setValue(state.nativeEvent.contentOffset.y)}>
-        <ListPost />
-      </Animated.ScrollView>
+      <ListPost idUser={idUser} scrollY={scrollY} />
     </View>
   );
 };
@@ -72,7 +82,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter-SemiBoldItalic',
     fontSize: 16,
   },
-  scrollview: {paddingTop: 50},
   header: {
     backgroundColor: 'white',
     position: 'absolute',

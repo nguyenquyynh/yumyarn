@@ -1,19 +1,18 @@
-import {ActivityIndicator, FlatList, StyleSheet} from 'react-native';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import {ActivityIndicator, Animated, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {getPost} from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
-import {useSelector} from 'react-redux';
 import RenderPost from 'components/homes/RenderPost';
 import {createFollow} from 'src/hooks/api/follow';
 
-const ListPost = () => {
-  const [dataPost, setDataPost] = useState([]);
-  const user = useSelector(state => state.auth.user);
-  const [page, setPage] = useState(0);
+const ListPost = props => {
+  const {idUser, scrollY} = props;
   const [open, setOpen] = useState(false);
   const [idPost, setIdPost] = useState('');
-  const idUser = user._id;
   const [isLoading, setIsLoading] = useState(false);
+  const [dataPost, setDataPost] = useState([]);
+  const [page, setPage] = useState(0);
+
   const getPostData = async (idUser, page) => {
     try {
       const dataRequest = {
@@ -32,11 +31,23 @@ const ListPost = () => {
     }
   };
 
+  const handleLoadMore = async page => {
+    if (!isLoading) {
+      setIsLoading(true);
+      await getPostData(idUser, page);
+      console.log('đã tải');
+    }
+  };
+
+  useEffect(() => {
+    getPostData(idUser, 1);
+  }, []);
+
   const handleFollow = async userCreatePost => {
     try {
       const followUpdate = dataPost?.map(ele => {
         if (ele.create_by._id == userCreatePost) {
-          console.log(ele.follow)
+          console.log(ele.follow);
           return {...ele, follow: !ele.follow};
         }
 
@@ -54,31 +65,29 @@ const ListPost = () => {
     }
   };
 
-  useEffect(() => {
-    getPostData(idUser, 1);
-  }, []);
-
-  const handleLoadMore = useCallback(
-    async page => {
-      if (!isLoading) {
-        setIsLoading(true);
-        // await getPostData(idUser, page);
-        console.log('đã tải');
-      }
-    },
-    [page, isLoading],
-  );
-
   const handleOpenComment = id => {
     setIdPost(id);
     setOpen(true);
   };
   return (
     <>
-      <FlatList
-        scrollEnabled={false}
+      <Animated.FlatList
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollview}
+        scrollEnabled
         data={dataPost}
+        onScroll={state => {
+          if (scrollY) {
+            scrollY.setValue(state.nativeEvent.contentOffset.y);
+          }
+        }}
         keyExtractor={item => item._id}
+        onEndReached={() => {
+          handleLoadMore(page + 1);
+        }}
+        onEndReachedThreshold={0.6}
+        initialNumToRender={2}
+        maxToRenderPerBatch={2}
         renderItem={({item}) => (
           <RenderPost
             item={item}
@@ -87,12 +96,14 @@ const ListPost = () => {
             handleFollow={handleFollow}
           />
         )}
-        onEndReached={() => handleLoadMore(page + 1)} // Gọi hàm khi kéo tới cuối danh sách
-        onEndReachedThreshold={0.5}
-        initialNumToRender={2}
-        maxToRenderPerBatch={2}
         ListFooterComponent={() =>
-          isLoading && <ActivityIndicator size="large" color="#0000ff" />
+          isLoading && (
+            <ActivityIndicator
+              style={{marginBottom: 50}}
+              size="large"
+              color="#0000ff"
+            />
+          )
         }
       />
 
@@ -102,7 +113,7 @@ const ListPost = () => {
           setOpen={setOpen}
           idPost={idPost}
           setIdPost={setIdPost}
-          create_by={user}
+          create_by={idUser}
           dataPost={dataPost}
           setDataPost={setDataPost}
         />
@@ -113,4 +124,6 @@ const ListPost = () => {
 
 export default ListPost;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  scrollview: {paddingTop: 50, paddingBottom: 50},
+});
