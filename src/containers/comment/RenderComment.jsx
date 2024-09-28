@@ -10,18 +10,17 @@ const RenderComment = (props) => {
   const nameUser = item?.create_by?.name;
   const content = item?.content;
   const reComment = item?.countReComment;
-
   const paddingRecomment = {
     paddingLeft: isCommentMain ? 30 : 0
   }
-
+  console.log(item)
   return (
     <View >
       <View flex marginT-8 row spread>
         <Avatar source={{ uri: avatar }} size={isCommentMain ? 35 : 30} />
         <View flex paddingR-15>
           <View marginL-15 style={Style.backgroundComment}>
-            <Text text70BO>
+            <Text text80BO numberOfLines={1}>
               {nameUser} {!isCommentMain && <Text text100M>{t("app.responded")} {nameUser}</Text>}
             </Text>
             <Text marginT-5 text>

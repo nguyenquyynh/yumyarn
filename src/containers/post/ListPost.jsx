@@ -12,7 +12,6 @@ const ListPost = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [dataPost, setDataPost] = useState([]);
   const [page, setPage] = useState(0);
-
   const getPostData = async (idUser, page) => {
     try {
       const dataRequest = {
