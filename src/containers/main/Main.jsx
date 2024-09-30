@@ -15,7 +15,7 @@ const Main = () => {
     }) => {
         return (
             <View row centerV paddingH-iii style={styles.header}>
-                <Text style={styles.text} >{t("app.name_app")}</Text>
+                <Text color={Colors.yellow} style={styles.text} >{t("app.name_app")}</Text>
                 <View right row>
                     {state.routes.map((route) => {
                         const isFocused = state.index === state.routes.indexOf(route);
@@ -57,6 +57,7 @@ const Main = () => {
             <Toptab.Navigator screenOptions={{
                 swipeEnabled: false
             }}
+            initialRouteName='Home'
             tabBar={props => <CustomTabBar {...props} />}>
                 <Toptab.Screen name='Home' component={Home} />
                 <Toptab.Screen name='Profile' component={Profile} />

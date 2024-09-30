@@ -1,4 +1,4 @@
-import { Alert, FlatList, ImageBackground, StyleSheet, } from 'react-native'
+import { Alert, FlatList, ImageBackground, ScrollView, StyleSheet, } from 'react-native'
 import React, { useState } from 'react'
 import { Avatar, Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang'
@@ -53,7 +53,7 @@ const Setting = () => {
           </View>
           <View row center>
             <Text marginH-x style={styles.title}>{languageFormat(setting.language)}</Text>
-            <Icon assetName='arrow_down' size={15} />
+            <Icon assetName={!showlanguage ? 'arrow_down' : 'tickCamera'} size={15} />
           </View>
         </TouchableOpacity>
         {showlanguage && <View>
@@ -80,12 +80,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     overflow: 'hidden',
+    elevation: 10,
   },
   language: {
     marginTop: 20,
     borderRadius: 5,
     overflow: 'hidden',
-    borderWidth: 1,
+    backgroundColor: 'white',
+    elevation: 2,
   },
   title: {
     fontSize: 16,

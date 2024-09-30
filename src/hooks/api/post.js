@@ -75,14 +75,14 @@ export async function getAllAdvertisement(dataRequest) {
             return { status: false, data: resault.data }
         }
     } catch (error) {
-        console.log(error + "Lỗi")
+        console.log(error + "Lỗi getAllAdvertisement")
         return { status: false, data: "" }
     }
 }
 
-export async function buyAdvertisement(dataRequest) {
+export async function checkoutAdv(dataRequest) {
     try {
-        const resault = await AxiosInstance(dataRequest.token).post(`/${Model.ADVERTISEMENT}/buyadv`, dataRequest.body)
+        const resault = await AxiosInstance(dataRequest.token).post(`/${Model.ADVERTISEMENT}/checkout`, dataRequest.body)
         await isTokenExpired(resault.statuscode)
         console.log(resault);
         if (resault.status) {
@@ -91,7 +91,7 @@ export async function buyAdvertisement(dataRequest) {
             return { status: false, data: resault.data }
         }
     } catch (error) {
-        console.log(error + "Lỗi")
+        console.log(error + "Lỗi checkoutAdv")
         return { status: false, data: "" }
     }
 }
