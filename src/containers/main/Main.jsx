@@ -57,7 +57,7 @@ const Main = () => {
             <Toptab.Navigator screenOptions={{
                 swipeEnabled: false
             }}
-            initialRouteName='Profile'
+            initialRouteName='Home'
             tabBar={props => <CustomTabBar {...props} />}>
                 <Toptab.Screen name='Home' component={Home} />
                 <Toptab.Screen name='Profile' component={Profile} />

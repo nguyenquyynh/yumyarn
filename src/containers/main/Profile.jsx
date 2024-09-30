@@ -14,6 +14,8 @@ import Animated from 'react-native-reanimated'
 const Profile = () => {
   const navigation = useNavigation()
   const auth = useSelector(state => state.auth.user)
+  console.log(auth);
+  
   const [data, setdata] = useState([])
   const [showmodal, setShowmodal] = useState(false)
   const [refreshing, setRefreshing] = useState(false);
@@ -92,7 +94,7 @@ const Profile = () => {
               </TouchableOpacity>
               <View flex />
               <TouchableOpacity flex center onPress={() => navigation.navigate('FollowerList')} >
-                <Text text70BO style={styles.numbercard}>{numberFormat(auth.follower)}</Text>
+                <Text text70BO style={styles.numbercard}>{numberFormat(auth.following)}</Text>
                 <Text ixtext style={styles.numbercard}>{t("profile.following")}</Text>
               </TouchableOpacity>
             </View>
