@@ -5,7 +5,7 @@ import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import { B, EB, I } from 'configs/fonts'
 import { useSelector } from 'react-redux'
-import { buyAdvertisement, getAllAdvertisement, getTimeOutAdvertisement } from 'src/hooks/api/post'
+import { checkoutAdv, getAllAdvertisement, getTimeOutAdvertisement } from 'src/hooks/api/post'
 import { useNavigation } from '@react-navigation/native'
 import { millisecondsToDate } from 'configs/ui/time'
 
@@ -17,6 +17,18 @@ const BuyAdvertisement = ({ route }) => {
     const [viptime, setviptime] = useState("")
     const [listAdvertisement, setListAdvertisement] = useState([])
 
+    const handlerCheckout = async () => {
+        const resault = await checkoutAdv({
+            token: auth.token,
+            body: {
+                post: post,
+                cost: AdvSelect
+            }
+        })
+        if (resault.status) {
+            navigation.navigate('ZaloWebView', { url: resault.data.order_url })
+        }
+    }
     useEffect(() => {
         async function getTimeAdvertisement() {
             const timeoutAdvertisement = await getTimeOutAdvertisement({
@@ -80,18 +92,11 @@ const BuyAdvertisement = ({ route }) => {
                     </View>
                     <TouchableOpacity center paddingH-xx br20 marginV-xxx bg-yellow onPress={() => {
                         if (AdvSelect) {
-                            buyAdvertisement({
-                                token: auth.token,
-                                body: {
-                                    post : post,
-                                    cost: AdvSelect
-                                }
-                            })
-                            // navigation.navigate("BuyAdvertisementDetail", { adv: AdvSelect })
+                            handlerCheckout()
                         } else {
-                           ToastAndroid.show("Chọn gói thời gian bạn muốn !" , ToastAndroid.SHORT)
+                            ToastAndroid.show("Chọn gói thời gian bạn muốn !", ToastAndroid.SHORT)
                         }
-                     }}>
+                    }}>
                         <Text style={styles.TextB} color={Colors.white}>{AdvSelect == null ? t("app.choose") : t("app.buy")}</Text>
                     </TouchableOpacity>
                 </View>
