@@ -1,11 +1,11 @@
-import { FlatList, StyleSheet } from 'react-native'
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import RenderMedia from 'components/commons/RenderMedia';
 import MasonryList from '@react-native-seoul/masonry-list';
 import EmptyScreen from 'components/commons/EmptyScreen';
 
-const ListMediaProfile = ({ data, loadTimeline, navigation, refressTimeline }) => {
+const ListMediaProfile = ({ data, loadTimeline, navigation, refressTimeline, load }) => {
     const medias = []
     data.filter(item => {
         item.media.filter(el => {
@@ -14,24 +14,28 @@ const ListMediaProfile = ({ data, loadTimeline, navigation, refressTimeline }) =
     })
 
     return (
-        <View flex >
+        <View flex br40 style={{ overflow: 'hidden' }}>
             {!data ? <EmptyScreen /> :
-                <MasonryList
-                    onRefresh={refressTimeline}
-                    showsVerticalScrollIndicator={false}
-                    onEndReached={loadTimeline}
-                    numColumns={2}
-                    data={medias}
-                    key={({ index }) => index}
-                    renderItem={({ i, item }) => (
-                        <TouchableOpacity style={styles.media} onPress={() => {
-                            navigation.navigate('PostDetail', { id: item._id })
-                        }}>
-                            <RenderMedia item={item.media} i={i} />
-                        </TouchableOpacity>
-                    )
-                    }
-                />
+                <View>
+                    <MasonryList
+                        onRefresh={refressTimeline}
+                        showsVerticalScrollIndicator={false}
+                        onEndReached={loadTimeline}
+                        numColumns={2}
+                        data={medias}
+                        key={({ index }) => index}
+                        renderItem={({ i, item }) => (
+                            <TouchableOpacity style={styles.media} onPress={() => {
+                                navigation.navigate('PostDetail', { id: item._id })
+                            }}>
+                                <RenderMedia item={item.media} i={i} />
+                            </TouchableOpacity>
+                        )
+                        }
+                    />
+                   {load &&  <ActivityIndicator style={{paddingTop: 40}} size={'large'} />}
+                </View>
+
             }
         </View>
     )

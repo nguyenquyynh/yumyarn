@@ -9,7 +9,7 @@ import HistoryList from './HistoryList'
 import SearchList from './SearchList'
 import { useDispatch, useSelector } from 'react-redux'
 import { history_addsearch } from 'reducers/search'
-import { add_search, search_post, search_user } from 'src/hooks/api/search'
+import { search_post, search_user } from 'src/hooks/api/search'
 
 const SearchMain = ({ route }) => {
     const inputkey = route.params?.inputkey
@@ -41,17 +41,17 @@ const SearchMain = ({ route }) => {
                         <TouchableOpacity br40 bg-yellow padding-x onPress={() => navigation.goBack()}>
                             <Icon assetName='arrow_back' size={15} tintColor='white' />
                         </TouchableOpacity>
-                        <View bg-white row spread flex-1 br50 marginH-x centerV paddingH-x style={styles.searchinput}>
+                        <View row spread flex-1 br100 marginH-x centerV paddingH-x style={styles.searchinput}>
+                            <Pressable onPress={hanlderSearch}>
+                                <IconApp assetName={"search"} size={20} />
+                            </Pressable>
                             <TextInput style={{ flex: 1 }} placeholder={t("app.search")} value={keyword}
                                 onFocus={handlerFocus}
                                 onChangeText={value => setKeyword(value)} />
-                            <Pressable onPress={hanlderSearch}>
-                                <IconApp assetName={"search"} size={25} />
+                            <Pressable onPress={() => { setKeyword('') }}>
+                                <IconApp assetName={"cancel"} size={20} />
                             </Pressable>
                         </View>
-                        <Pressable onPress={() => navigation.navigate('SearchMap')}>
-                            <IconApp assetName={"gps"} size={26} />
-                        </Pressable>
                     </View>
                 </View>
             </View>
@@ -59,8 +59,6 @@ const SearchMain = ({ route }) => {
     }
     return (
         <Wapper gadient customheader={customerHeader}>
-            <View marginH-xv style={styles.content}>
-            </View>
             {
                 data_search ? <SearchList data={data_search} keyword={keyword} /> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
             }
@@ -73,8 +71,11 @@ export default SearchMain
 const styles = StyleSheet.create({
     searchinput: {
         height: 40,
-        borderWidth: 2,
-        borderColor: '#F8C630'
+        borderBottomWidth: 1,
+        borderWidth: 1,
+        backgroundColor: "white",
+        borderColor: 'black',
+        elevation: 10,
     },
     content: {
         borderTopWidth: 1,
