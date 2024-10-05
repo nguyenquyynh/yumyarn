@@ -57,6 +57,7 @@ Assets.loadAssetsGroup('icons', {
     core: require('assets/icon/core.png'),
     pause_button: require('assets/icon/pause_button.png'),
     check_follow: require('assets/icon/check_follow.png'),
+    cancle_follow:require('assets/icon/cancle_follow.png'),
     check: require('assets/icon/check-mark.png'),
     intermittent: require('assets/gif/intermittent.gif'),
     empty: require('assets/icon/empty.png'),

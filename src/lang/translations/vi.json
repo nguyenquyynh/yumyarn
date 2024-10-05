@@ -74,7 +74,11 @@
     "copylink_d": "Sao chép đường liên kết của bài viết.",
     "retweet_d": "Đăng lại vào dòng thời gian của bạn.",
     "edit_d": "Chỉnh sửa lại nội dung của bài.",
-    "report": "Báo cáo"
+    "report": "Báo cáo",
+    "save":"Lưu",
+    "save_des":"Lưu bài viết bạn yêu thích",
+    "follow_des":"Theo dõi người bạn thích",
+    "unFollow_des":"Gỡ theo dõi người bạn không thích"
   },
   "notification": {
     "title": "Thông báo",

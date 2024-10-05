@@ -1,29 +1,33 @@
 import IconApp from 'components/IconApp';
 import React, {memo, useState} from 'react';
 import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
-import {Avatar, Colors, Icon, Image, Text, View} from 'react-native-ui-lib';
+import {
+  Avatar,
+  Colors,
+  Icon,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native-ui-lib';
 import Video from 'react-native-video';
-import ChangeTimeApp from 'components/commons/ChangeTimeApp';
 import InteractPost from 'components/commons/InteractPost';
 import {EBI} from 'configs/fonts';
 import {useNavigation} from '@react-navigation/native';
+import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 
 const {width: MAX_WIDTH} = Dimensions.get('window');
 const RenderPost = props => {
-  const {item, handleOpenComment, idUser, handleFollow} = props;
+  const {item, handleOpenComment, idUser, openModalFollow} = props;
   const navigation = useNavigation();
   const [readmore, setReadmore] = useState(false);
-
   const content = item?.content;
   const listImage = item?.media || [];
   const countFire = item?.fire;
   const countComment = item?.comments;
   const address = item?.address?.detail;
   const id = item?._id;
-  const dateNow = new Date();
-  const datePast = new Date(parseInt(item?.update_at));
-  const differenceInMilliseconds = dateNow - datePast;
-  const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000);
+  const differenceInSeconds = transDate(item?.update_at);
   const isFire = item.isFire;
 
   return (
@@ -50,12 +54,19 @@ const RenderPost = props => {
               }}>
               {item?.create_by?.name}
             </Text>
-            <ChangeTimeApp second={differenceInSeconds} />
+            <Text xiitext style={{color: '#BEBEBE'}}>
+              {changeTime(differenceInSeconds)}
+            </Text>
           </View>
         </View>
-        <View row center>
+        <TouchableOpacity
+          onPress={() =>
+            openModalFollow(item?.create_by?._id, item?.follow, id)
+          }
+          row
+          center>
           <IconApp assetName={'dots'} size={20} />
-        </View>
+        </TouchableOpacity>
       </View>
       <Text
         text
@@ -156,7 +167,7 @@ const Style = StyleSheet.create({
     height: 210,
   },
   styleImage: {
-    width: MAX_WIDTH-20,
+    width: MAX_WIDTH - 20,
     maxWidth: 480,
     height: '100%',
   },

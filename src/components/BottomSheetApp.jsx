@@ -74,7 +74,7 @@ const Modals = ({
                           height={10}
                         />
                       </View>
-                      <View padding-x>{children}</View>
+                      <View paddingT-x>{children}</View>
                     </View>
                   </View>
                 </Animated.View>
