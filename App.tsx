@@ -1,17 +1,20 @@
-import { Alert, StatusBar, StyleSheet } from 'react-native'
-import React, { useEffect } from 'react'
-import { Provider } from 'react-redux'
-import { store, persistor } from 'src/store/store'
-import { PersistGate } from 'redux-persist/integration/react'
-import { I18nProvider } from 'lang'
-import MainNavigation from 'containers/navigations/MainNavigation'
-import { addEventListener } from "@react-native-community/netinfo";
-
+import {
+  Alert,
+  PermissionsAndroid,
+  Platform,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import {Provider} from 'react-redux';
+import {store, persistor} from 'src/store/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import {I18nProvider} from 'lang';
+import MainNavigation from 'containers/navigations/MainNavigation';
+import {addEventListener} from '@react-native-community/netinfo';
 const App = () => {
-
   useEffect(() => {
     const unsubscribe = addEventListener(state => {
-
       // Kiểm tra xem có kết nối không
       if (!state.isConnected) {
         Alert.alert('Warning', 'WiFi connection is lost!');
@@ -22,7 +25,7 @@ const App = () => {
       }
       // Kết nối WiFi ổn định
       else if (state.isConnected) {
-        console.log('WiFi connected')
+        console.log('WiFi connected');
       }
     });
 
@@ -40,9 +43,9 @@ const App = () => {
         </PersistGate>
       </I18nProvider>
     </Provider>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

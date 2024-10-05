@@ -15,6 +15,7 @@ import Animated from 'react-native-reanimated'
 const Login = () => {
     const dishpatch = useDispatch()
     const setting = useSelector(state => state.setting)
+    const fcm = useSelector(state => state.fcm);
 
     const [showNotifi, setShowNotifi] = useState(false)
     const [notifycontent, setNotifycontent] = useState('')
@@ -24,7 +25,7 @@ const Login = () => {
 
     const handlerAuthenSignin = async () => {
         if (policy) {
-            const reponse = await userLogin()
+            const reponse = await userLogin(fcm.fcmtoken)
             if (reponse.status) {
                 ToastAndroid.show("Login success", ToastAndroid.SHORT)
                 await dishpatch(auth_login({

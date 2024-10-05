@@ -3,13 +3,14 @@ import { loginGoogle, signOutGoogle } from 'services/Google'
 import { Model, USERS, USERS_AUTHEN } from './Model'
 import { t } from 'lang'
 
-export async function userLogin() {
+export async function userLogin(fcmtoken) {
     try {
         const token = await loginGoogle()
         const body = {
             name: token.user.name,
             email: token.user.email,
-            avatar: token.user.photo
+            avatar: token.user.photo,
+            fcm_token: fcmtoken
         }
         const resault = await AxiosInstance().post(`${Model.USERS}/${USERS.AUTHEN}`, body)
         if (resault.status) {
