@@ -304,7 +304,7 @@ const MainPost = ({ route }) => {
             </View>
           </ScrollView>
         </View>
-        <TouchableOpacity style={styles.foodter} onPress={() => { gotoScreen("Addadress") }}>
+        <TouchableOpacity style={styles.foodter} onPress={() => { gotoScreen("Adddrressscreen") }}>
           <View style={styles.contentlocation}>
             <IconApp assetName={"location"} size={34} />
             <Text numberOfLines={1} style={styles.textloctation}>

@@ -18,6 +18,14 @@ export const USERS = {
     VERIFY: "verify",
     SEARCH: "search",
     CHECKAUTHEN: "checkauthen",
+    COUNTFOLLOWER: "countfollower",
+    FINDUSER: "finduser",
+    FOLLOWER: "follow",
+    POST: "getidpost",
+    AVATAR: "avatar",
+    COVERPHOTO: "coverphoto",
+    UPDATE_INFOR:"updateInfor",
+    FIND_USER:"finduser"
 }
 
 export const COMMENT = {
@@ -45,21 +53,12 @@ export const SUGGEST = {
     ADD: 'add',
     SUGGEST: 'suggest'
 }
-export const PROFILE = {
-    CHECKFOLLOWER: "checkfollowerprofile",
-    COUNTFOLLOWER: "countfollower",
-    FINDUSER: "finduser",
-    FOLLOWER: "follow",
-    UNFOLLOW: "unfollow",
-    POST: "getidpost",
-    AVATAR: "avatar",
-    COVERPHOTO: "coverphoto",
-}
 
 export const FOLLOW = {
     CHECK: 'check',
     UNFOLLOW: 'unfollow',
-    FOLLOW: 'follow'
+    FOLLOW: 'follow',
+    CHECKFOLLOWER: "checkfollowerprofile",
 }
 
 export const FIRE = {

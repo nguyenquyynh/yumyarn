@@ -101,7 +101,7 @@ const Profile = () => {
             <View paddingH-l centerH >
               <Text xviiiText style={styles.name}>{auth.name}</Text>
               <Text marginB-xv style={styles.name}>@{auth.tagName}</Text>
-              <Text xivtext style={styles.story}>{auth.story}</Text>
+              <Text xivtext style={styles.story}>{auth.story.length == 0 ? "Tạo ghi chú mới" : auth.story}</Text>
             </View>
             <View marginT-xx br50 style={{ width: '100%', height: '100%' }} bg-white padding-x>
               <ListMediaProfile data={data} loadTimeline={loadTimeline} load={load} navigation={navigation}
