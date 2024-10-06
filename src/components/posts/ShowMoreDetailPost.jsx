@@ -4,8 +4,8 @@ import Modals from 'components/BottomSheetApp'
 import { FlatList } from 'react-native-gesture-handler'
 import RenderOptionModal from './common/RenderOptionModal'
 import { useSelector } from 'react-redux'
-import { follower } from 'src/hooks/api/profile'
 import { useNavigation } from '@react-navigation/native'
+import { createFollow } from 'src/hooks/api/follow'
 
 const ShowMoreDetailPost = props => {
     const { disable, setDisable, create_post, id_post } = props
@@ -14,7 +14,7 @@ const ShowMoreDetailPost = props => {
     const role = auth._id === create_post ? 'ME' : 'OTHER'
 
     const handlerFollow = async () => {
-        const follow = await follower({ user: auth._id, follower: create_post })
+        const follow = await createFollow(auth._id, create_post)
         if (follow.status) {
             setDisable(false)
             ToastAndroid.show(follow.data, ToastAndroid.SHORT)
@@ -24,7 +24,8 @@ const ShowMoreDetailPost = props => {
     }
     const option = [
         { id: 1, role: "OTHER", img: "follow", title: "post.follow", disription: "post.follow_d", funt: handlerFollow },
-        { id: 2, role: "ME", img: "recomment", title: "post.advertisement", disription: "post.advertisement_d", funt: () => {
+        {
+            id: 2, role: "ME", img: "recomment", title: "post.advertisement", disription: "post.advertisement_d", funt: () => {
                 setDisable(false)
                 navigation.navigate('BuyAdvertisement', { post: id_post })
             }

@@ -12,11 +12,12 @@ import { EB, EBI, ELI, M } from 'configs/fonts'
 import ShowComments from 'containers/comment/ShowComments'
 import ShowMoreDetailPost from 'components/posts/ShowMoreDetailPost'
 import ShowShareDetailPost from 'components/posts/ShowShareDetailPost'
+import { auth } from 'reducers/auth'
 
 const PostDetail = ({ route }) => {
     const { id } = route.params
     const heightscreen = Dimensions.get('window').height
-    const navigation = useNavigation()    
+    const navigation = useNavigation()
     const user = useSelector(state => state.auth.user)
     const [post, setPost] = useState(null)
     const [isfire, setIsfire] = useState(false)
@@ -54,7 +55,7 @@ const PostDetail = ({ route }) => {
         setissaved(!issaved)
     }
     const handlerClickAvatar = () => {
-        navigation.navigate('OtherProfile', { name: post?.create_by?.name })
+        navigation.navigate('OtherProfile', { name: post?.create_by?.name, _id: user._id })
     }
 
 
@@ -106,7 +107,7 @@ const PostDetail = ({ route }) => {
                     <Pressable onPress={() => { setIsshare(!isshare) }}>
                         <Icon tintColor='white' assetName={'share'} size={20} />
                     </Pressable>
-                    { post?.create_by?._id !== user?._id &&
+                    {post?.create_by?._id !== user?._id &&
                         <Pressable onPress={() => { }}>
                             <Icon tintColor='white' assetName='flag' size={20} />
                         </Pressable>

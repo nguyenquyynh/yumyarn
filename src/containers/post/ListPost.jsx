@@ -5,19 +5,19 @@ import {
   RefreshControl,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {getPost} from 'src/hooks/api/post';
+import React, { useEffect, useState } from 'react';
+import { getPost } from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';
-import {createFollow} from 'src/hooks/api/follow';
+import { createFollow } from 'src/hooks/api/follow';
 import Modals from 'components/BottomSheetApp';
-import {Colors, Icon, TouchableOpacity, Text, View} from 'react-native-ui-lib';
-import {useNavigation} from '@react-navigation/native';
-import {BI} from 'configs/fonts';
-import {t} from 'lang';
+import { Colors, Icon, TouchableOpacity, Text, View } from 'react-native-ui-lib';
+import { useNavigation } from '@react-navigation/native';
+import { BI } from 'configs/fonts';
+import { t } from 'lang';
 
 const ListPost = props => {
-  const {idUser, scrollY} = props;
+  const { idUser, scrollY } = props;
   const [open, setOpen] = useState(false);
   const [idPost, setIdPost] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ const ListPost = props => {
         page: page,
       };
       const response = await getPost(dataRequest);
-      if (response.status) {
+      if (response.status && response.data.length > 0) {
         if (page == 1) {
           setDataPost(response.data);
           setPage(page);
@@ -81,7 +81,7 @@ const ListPost = props => {
         const followUpdate = dataPost?.map(ele => {
           if (ele.create_by._id == userIdPost) {
             console.log(ele.follow);
-            return {...ele, follow: !ele.follow};
+            return { ...ele, follow: !ele.follow };
           }
 
           return ele;
@@ -134,7 +134,7 @@ const ListPost = props => {
         onEndReachedThreshold={0.6}
         initialNumToRender={2}
         maxToRenderPerBatch={2}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <RenderPost
             item={item}
             handleOpenComment={handleOpenComment}
@@ -145,7 +145,7 @@ const ListPost = props => {
         ListFooterComponent={() =>
           isLoading && (
             <ActivityIndicator
-              style={{marginBottom: 50}}
+              style={{ marginBottom: 50 }}
               size="large"
               color="#0000ff"
             />
@@ -181,7 +181,7 @@ const ListPost = props => {
               marginH-x
             />
             <View>
-              <Text style={{fontFamily: BI}}>{t('profile.edit')}</Text>
+              <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
               <Text color={Colors.gray}>{t('profile.edit_description')}</Text>
             </View>
           </TouchableOpacity>
@@ -202,7 +202,7 @@ const ListPost = props => {
             marginH-x
           />
           <View>
-            <Text style={{fontFamily: BI}}>
+            <Text style={{ fontFamily: BI }}>
               {isFollow ? t('app.following') : t('app.follow')}
             </Text>
             <Text color={Colors.gray}>
@@ -227,7 +227,7 @@ const ListPost = props => {
             marginH-x
           />
           <View>
-            <Text style={{fontFamily: BI}}>{t('post.save')}</Text>
+            <Text style={{ fontFamily: BI }}>{t('post.save')}</Text>
             <Text color={Colors.gray}>{t('post.save_des')}</Text>
           </View>
         </TouchableOpacity>
@@ -239,5 +239,5 @@ const ListPost = props => {
 export default ListPost;
 
 const styles = StyleSheet.create({
-  scrollview: {paddingTop: 50, paddingBottom: 50},
+  scrollview: { paddingTop: 50, paddingBottom: 50 },
 });
