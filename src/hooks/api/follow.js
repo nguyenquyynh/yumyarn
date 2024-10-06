@@ -3,7 +3,6 @@ import { FOLLOW, Model } from "./Model"
 
 
 const createFollow = async (u, f) => {
-    console.log("aaaaaaaa");
     try {
         const body = {
             user: u,
