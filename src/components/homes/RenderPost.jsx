@@ -29,7 +29,7 @@ const RenderPost = props => {
   const id = item?._id;
   const differenceInSeconds = transDate(item?.update_at);
   const isFire = item.isFire;
-
+  
   return (
     <View paddingH-x marginB-25 bg-white style={Style.sizeContainer}>
       <View row marginB-v paddingT-10>
@@ -40,16 +40,18 @@ const RenderPost = props => {
             onPress={() => {
               navigation.navigate('OtherProfile', {
                 name: item?.create_by?.name,
+                _id : item?.create_by?._id
               });
             }}
           />
-          <View marginL-15>
+          <View marginL-15 >
             <Text
               text70BO
               numberOfLines={1}
               onPress={() => {
                 navigation.navigate('OtherProfile', {
                   name: item?.create_by?.name,
+                  _id : item?.create_by?._id
                 });
               }}>
               {item?.create_by?.name}

@@ -1,57 +1,59 @@
 import AxiosInstance from "services/AxiosInstance"
-import { Model, POST, SUGGEST, USERS, PROFILE } from "./Model"
+import { Model, POST, SUGGEST, USERS, FOLLOW } from "./Model"
 
-const checkFollowerProfile = async (body) => {
+
+const changeAvatar = async (body) => {
     try {
-        const result = await AxiosInstance().post(`${Model.FOLLOWS}/${PROFILE.CHECKFOLLOWER}`, body)
-        if (result.status) {
-            return { status: true, data: result.data }
-        } else {
-            return { status: false, data: result.data }
-        }
-    } catch (error) {
-        console.log(error + "Lỗi")
-        return Promise.reject(error)
-    }
-}
-const countFollower = async (_id) => {
-    try {
-        const result = await AxiosInstance().post(`${Model.USERS}/${PROFILE.COUNTFOLLOWER}?_id=${_id}`,)
-        if (result.status) {
-            return { status: true, data: result.data }
-        } else {
-            return { status: false, data: result.data }
-        }
-    } catch (error) {
-        console.log(error + "Lỗi")
-        return Promise.reject(error)
-    }
-}
-const follower = async (body) => {
-    try {
-        const result = await AxiosInstance().post(`${Model.FOLLOWS}/${PROFILE.FOLLOWER}`, body)
-        if (result.status) {
-            return { status: true, data: result.data }
-        } else {
-            return { status: false, data: result.data }
-        }
-    } catch (error) {
-        console.log(error + "Lỗi")
-        return Promise.reject(error)
-    }
-}
-const unFollower = async (body) => {
-    try {
-        const result = await AxiosInstance().delete(`${Model.FOLLOWS}/${PROFILE.UNFOLLOW}`, {
-            data: body
-        });
+        const result = await AxiosInstance().post(`${Model.USERS}/${USERS.AVATAR}`, body)
         if (result.status) {
             return { status: true, data: result.data };
         } else {
             return { status: false, data: result.data };
         }
     } catch (error) {
-        console.log(error + "Lỗi unFollower")
+        console.log(error + "Lỗi getPost")
+        return Promise.reject(error)
+    }
+}
+const changeCoverPhoto = async (body) => {
+    try {
+        const result = await AxiosInstance().post(`${Model.USERS}/${USERS.COVERPHOTO}`, body)
+        if (result.status) {
+            return { status: true, data: result.data };
+        } else {
+            return { status: false, data: result.data };
+        }
+    } catch (error) {
+        console.log(error + "Lỗi getPost")
+        return Promise.reject(error)
+    }
+}
+
+const updateInfor = async (body) => {
+    try {
+        const result = await AxiosInstance().post(`${Model.USERS}/${USERS.UPDATE_INFOR}`, body)
+        if (result.status) {
+            return { status: true, data: result.data };
+        } else {
+            return { status: false, data: result.data };
+        }
+    } catch (error) {
+        console.log(error + "Lỗi updateInfor")
+        return Promise.reject(error)
+    }
+}
+
+
+const countFollower = async (_id) => {
+    try {
+        const result = await AxiosInstance().post(`${Model.USERS}/${USERS.COUNTFOLLOWER}?_id=${_id}`,)
+        if (result.status) {
+            return { status: true, data: result.data }
+        } else {
+            return { status: false, data: result.data }
+        }
+    } catch (error) {
+        console.log(error + "Lỗi")
         return Promise.reject(error)
     }
 }
@@ -69,4 +71,19 @@ const getTimeline = async (body) => {
     }
 }
 
-export { checkFollowerProfile, countFollower, follower, unFollower, getTimeline }
+const finduser = async (query) => {
+    try {
+        const result = await AxiosInstance().post(`${Model.USERS}/${USERS.FIND_USER}?_id=${query._id}`)
+        if (result.status) {
+            return { status: true, data: result.data };
+        } else {
+            return { status: false, data: result.data };
+        }
+    } catch (error) {
+        console.log(error + "Lỗi getPost")
+        return Promise.reject(error)
+    }
+}
+
+
+export { finduser, updateInfor, changeAvatar, changeCoverPhoto, countFollower, getTimeline, }

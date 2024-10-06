@@ -17,4 +17,35 @@ const createFollow = async (u, f) => {
     }
 }
 
-export { createFollow }
+const checkFollowerProfile = async (body) => {
+    try {
+        const result = await AxiosInstance().post(`${Model.FOLLOWS}/${FOLLOW.CHECKFOLLOWER}`, body)
+        if (result.status) {
+            return { status: true, data: result.data }
+        } else {
+            return { status: false, data: result.data }
+        }
+    } catch (error) {
+        console.log(error + "Lỗi")
+        return Promise.reject(error)
+    }
+}
+
+const unFollow = async (body) => {
+    try {
+        const result = await AxiosInstance().delete(`${Model.FOLLOWS}/${FOLLOW.UNFOLLOW}`, {
+            data: body
+        });
+        if (result.status) {
+            return { status: true, data: result.data };
+        } else {
+            return { status: false, data: result.data };
+        }
+    } catch (error) {
+        console.log(error + "Lỗi unFollower")
+        return Promise.reject(error)
+    }
+}
+
+
+export { createFollow, checkFollowerProfile, unFollow }

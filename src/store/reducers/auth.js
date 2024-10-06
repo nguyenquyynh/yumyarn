@@ -16,14 +16,34 @@ export const auth = createSlice({
             return INITIAL_STATE
         },
         auth_login: (state, action) => {
-            return {...state, ...action.payload}
+            return { ...state, ...action.payload }
         },
         auth_check: (state, action) => {
-            return {...state, ...action.payload}
+            return { ...state, ...action.payload }
+        },
+        changeAvatarRedux: (state, action) => {
+            state.user.avatar = action.payload //avatar
+        },
+        changeCoverPhotoRedux: (state, action) => {
+            state.user.coverPhoto = action.payload //CoverPhoto
+        },
+        deleteStory: (state) => {
+            return { ...state, user: { ...state.user, story: '' } }
+        },
+        updateInforRedux: (state, action) => {
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    tagName: action.payload.tagName,
+                    name: action.payload.name,
+                    story: action.payload.story,
+                }
+            }
         }
     },
 })
 
-export const { auth_logout, auth_login, auth_check } = auth.actions
+export const { updateInforRedux,deleteStory, auth_logout, auth_login, auth_check, changeAvatarRedux, changeCoverPhotoRedux } = auth.actions
 
 export default auth.reducer
