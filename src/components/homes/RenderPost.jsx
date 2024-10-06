@@ -1,24 +1,16 @@
 import IconApp from 'components/IconApp';
-import React, {memo, useState} from 'react';
-import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
-import {
-  Avatar,
-  Colors,
-  Icon,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native-ui-lib';
-import Video from 'react-native-video';
+import React, { memo, useState } from 'react';
+import { Dimensions, FlatList, Pressable, StyleSheet } from 'react-native';
+import { Avatar, Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import InteractPost from 'components/commons/InteractPost';
-import {EBI} from 'configs/fonts';
-import {useNavigation} from '@react-navigation/native';
-import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
+import { EBI } from 'configs/fonts';
+import { useNavigation } from '@react-navigation/native';
+import RenderVideo from './RenderVideo';
+import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate';
 
-const {width: MAX_WIDTH} = Dimensions.get('window');
+const { width: MAX_WIDTH } = Dimensions.get('window');
 const RenderPost = props => {
-  const {item, handleOpenComment, idUser, openModalFollow} = props;
+  const { item, handleOpenComment, idUser, openModalFollow } = props;
   const navigation = useNavigation();
   const [readmore, setReadmore] = useState(false);
   const content = item?.content;
@@ -35,7 +27,7 @@ const RenderPost = props => {
       <View row marginB-v paddingT-10>
         <View row left flex>
           <Avatar
-            source={{uri: item?.create_by?.avatar}}
+            source={{ uri: item?.create_by?.avatar }}
             size={35}
             onPress={() => {
               navigation.navigate('OtherProfile', {
@@ -56,7 +48,7 @@ const RenderPost = props => {
               }}>
               {item?.create_by?.name}
             </Text>
-            <Text xiitext style={{color: '#BEBEBE'}}>
+            <Text xiitext style={{ color: '#BEBEBE' }}>
               {changeTime(differenceInSeconds)}
             </Text>
           </View>
@@ -85,9 +77,9 @@ const RenderPost = props => {
             <Text
               key={el}
               onPress={() => {
-                navigation.navigate('Search', {inputkey: el});
+                navigation.navigate('Search', { inputkey: el });
               }}
-              style={{fontFamily: EBI}}
+              style={{ fontFamily: EBI }}
               color={Colors.yellow}>
               #{el}{' '}
             </Text>
@@ -98,11 +90,11 @@ const RenderPost = props => {
         <Icon assetName="location" size={12} marginR-v />
         <Text
           onPress={() => {
-            navigation.navigate('SearchMap', {defaultlocation: item?.address});
+            navigation.navigate('SearchMap', { defaultlocation: item?.address });
           }}
           text
           text90BO
-          marginL-2>
+          marginR-7>
           {address}
         </Text>
       </View>
@@ -118,20 +110,12 @@ const RenderPost = props => {
           renderItem={data => (
             <Pressable
               onPress={() => {
-                navigation.navigate('PostDetail', {id: id});
+                navigation.navigate('PostDetail', { id: id });
               }}
-              style={{overflow: 'hidden', borderRadius: 15}}>
-              {data.item.endsWith('.mp4') ? (
-                <Video
-                  source={{uri: data.item}}
-                  style={Style.styleImage}
-                  resizeMode="cover"
-                  paused
-                  controls={false}
-                />
-              ) : (
+              style={{ overflow: 'hidden', borderRadius: 15 }}>
+              {data.item.endsWith('.mp4') ? <RenderVideo urlvideo={data.item} /> : (
                 <Image
-                  source={{uri: data.item}}
+                  source={{ uri: data.item }}
                   style={Style.styleImage}
                   resizeMode="cover"
                 />
@@ -169,6 +153,7 @@ const Style = StyleSheet.create({
     height: 210,
   },
   styleImage: {
+    width: MAX_WIDTH - 20,
     width: MAX_WIDTH - 20,
     maxWidth: 480,
     height: '100%',

@@ -1,40 +1,63 @@
-import { StyleSheet } from 'react-native'
-import React from 'react'
+import { StyleSheet } from 'react-native';
+import React, { memo, useEffect, useState } from 'react';
 import { Image, View } from 'react-native-ui-lib';
-import Video from 'react-native-video';
+import { createThumbnail } from 'react-native-create-thumbnail';
 
 const RenderMedia = ({ i, item }) => {
-    const renderMedia = (item) => {
-        if (item.endsWith('.jpg' || '.png' || '.jpeg' || '.gif' || '.svg')) {
+    const [thumbnailUrl, setThumbnailUrl] = useState(null);
+
+    useEffect(() => {
+        const fetchThumbnail = async () => {
+            try {
+                const response = await createThumbnail({
+                    url: item,
+                    timeStamp: 10,
+                });
+                setThumbnailUrl(response.path);
+            } catch (err) {
+                console.log(err);
+                setThumbnailUrl('https://i.imgur.com/eZLxXda.png');
+            }
+        };
+
+        if (item.endsWith('.mp4')) {
+            fetchThumbnail();
+        }
+    }, [item]);
+
+    const renderMedia = () => {
+        if (item.endsWith('.jpg') || item.endsWith('.png') || item.endsWith('.jpeg') || item.endsWith('.gif') || item.endsWith('.svg')) {
             return (
-                <Image source={{ uri: item }} style={{
-                    width: '100%', height: i % 2 == 0 ? 250 : 150
-                }} />
-            )
+                <Image
+                    source={{ uri: item }}
+                    style={{ width: '100%', height: i % 2 === 0 ? 250 : 150 }}
+                />
+            );
         } else if (item.endsWith('.mp4')) {
             return (
-                <Video
-                    source={{ uri: item }}
-                    style={{
-                        width: '100%', height: i % 2 == 0 ? 200 : 250
-                    }} paused resizeMode='cover' />
-
-            )
+                <Image
+                    source={{ uri: thumbnailUrl || 'https://i.imgur.com/eZLxXda.png' }}
+                    style={{ width: '100%', height: i % 2 === 0 ? 200 : 250 }}
+                    resizeMode='cover'
+                />
+            );
         }
-    }
+        return null;
+    };
+
     return (
         <View>
-            {renderMedia(item)}
+            {renderMedia()}
         </View>
-    )
-}
+    );
+};
 
-export default RenderMedia
+export default memo(RenderMedia);
 
 const styles = StyleSheet.create({
     media: { flex: 1 },
     videoBorder: {
         overflow: 'hidden',
         borderRadius: 15,
-    }
-})
+    },
+});

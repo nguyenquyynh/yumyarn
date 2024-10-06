@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { Text, View } from 'react-native-ui-lib'
 import { search_post } from 'src/hooks/api/search';
 import PostRender from 'components/searchs/PostRender';
@@ -24,13 +24,13 @@ const PostSearch = ({ route }) => {
         showsVerticalScrollIndicator={false}
         numColumns={2}
         data={datalist}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => <PostRender item={item} />}
+        key={(item) => item._id}
+        renderItem={({ item }) => <PostRender key={item?._id} item={item} />}
       />
     </View>
   )
 }
 
-export default PostSearch
+export default memo(PostSearch)
 
 const styles = StyleSheet.create({})

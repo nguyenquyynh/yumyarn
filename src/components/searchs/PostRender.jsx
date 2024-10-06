@@ -1,19 +1,40 @@
 import { Dimensions, StyleSheet, Image } from 'react-native'
-import React from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { Avatar, Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Video from 'react-native-video';
 import numberFormat from 'configs/ui/format';
 import { millisecondsToDate } from 'configs/ui/time';
 import { useNavigation } from '@react-navigation/native';
+import { createThumbnail } from 'react-native-create-thumbnail';
 
 const PostRender = ({ item }) => {
     const navigation = useNavigation()
+    const [urlThumbnail, setUrlThumbnail] = useState('')
     const screenwith = Dimensions.get('window').width < Dimensions.get('window').height ? Dimensions.get('window').width : Dimensions.get('window').height;
     itemstyle = {
         width: '49%',
         height: screenwith / 1.3,
         marginRight: '2%'
     }
+
+    useEffect(() => {
+        const fetchThumbnail = async (urlvideo) => {
+            try {
+                const response = await createThumbnail({
+                    url: urlvideo,
+                    timeStamp: 10,
+                });
+                setUrlThumbnail(response.path);
+            } catch (err) {
+                console.log(err);
+                setUrlThumbnail('https://i.imgur.com/eZLxXda.png');
+            }
+        };
+        if (item?.media[0].endsWith('.mp4')) {
+            fetchThumbnail(item?.media[0]);
+        }
+    }, [item])
+
     const renderMedia = (item) => {
         const first = item?.media[0]
         if (first.endsWith('.jpg' || '.png' || '.jpeg' || '.gif' || '.svg')) {
@@ -22,9 +43,7 @@ const PostRender = ({ item }) => {
             )
         } else if (first.endsWith('.mp4')) {
             return (
-                <Video
-                    source={{ uri: first }}
-                    style={styles.media} paused resizeMode='cover' />
+                <Image source={{ uri: urlThumbnail || 'https://i.imgur.com/eZLxXda.png' }} style={styles.media} />
             )
         }
     }
@@ -56,7 +75,7 @@ const PostRender = ({ item }) => {
     )
 }
 
-export default PostRender
+export default memo(PostRender)
 
 const styles = StyleSheet.create({
     media: { flex: 1 },

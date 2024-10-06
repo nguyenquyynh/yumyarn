@@ -239,5 +239,5 @@ const ListPost = props => {
 export default ListPost;
 
 const styles = StyleSheet.create({
-  scrollview: {marginTop: 50, paddingBottom: 50},
+  scrollview: {paddingTop: 50, paddingBottom: 50},
 });

@@ -5,7 +5,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 import {Avatar, Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import {useSelector} from 'react-redux';
 import {t} from 'lang';
@@ -75,7 +75,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default memo(Home);
 
 const styles = StyleSheet.create({
   name: {
@@ -96,5 +96,3 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 });
-
-var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
