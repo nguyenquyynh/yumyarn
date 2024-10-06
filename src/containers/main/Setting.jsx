@@ -1,5 +1,5 @@
 import { Alert, FlatList, ImageBackground, ScrollView, StyleSheet, } from 'react-native'
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { Avatar, Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
@@ -29,14 +29,14 @@ const Setting = () => {
     }
     return (
       <TouchableOpacity left padding-v row centerV onPress={() => handlerChangeLanguage(item.key)}>
-        <Text style={styles.title} marginR-xx>{item.name}</Text>
+        <Text margin-v style={styles.title} marginR-xx>{item.name}</Text>
         {item.key == setting.language && <Icon assetName='check' tintColor={Colors.yellow} size={18} />}
       </TouchableOpacity>
     )
   }
 
   return (
-    <View flex bg-white padding-x>
+    <View flex bg-puper padding-x>
       <ImageBackground source={{ uri: auth.avatar }} resizeMode='cover' style={styles.card_logout}>
         <View br100 marginL-x style={{ borderWidth: 2, borderColor: 'white' }}>
           <Avatar source={{ uri: auth.avatar }} />
@@ -69,7 +69,7 @@ const Setting = () => {
   )
 }
 
-export default Setting
+export default memo(Setting)
 
 const styles = StyleSheet.create({
   card_logout: {

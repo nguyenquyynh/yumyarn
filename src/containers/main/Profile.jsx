@@ -14,8 +14,6 @@ import Animated from 'react-native-reanimated'
 const Profile = () => {
   const navigation = useNavigation()
   const auth = useSelector(state => state.auth.user)
-  console.log(auth);
-  
   const [data, setdata] = useState([])
   const [showmodal, setShowmodal] = useState(false)
   const [refreshing, setRefreshing] = useState(false);

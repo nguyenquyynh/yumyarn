@@ -38,7 +38,7 @@ const App = () => {
     <Provider store={store}>
       <I18nProvider>
         <PersistGate loading={null} persistor={persistor}>
-          <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'} />
+          <StatusBar translucent barStyle='dark-content' backgroundColor={'rgba(0,0,0,0)'} />
           <MainNavigation />
         </PersistGate>
       </I18nProvider>

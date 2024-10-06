@@ -16,7 +16,7 @@ import ShowShareDetailPost from 'components/posts/ShowShareDetailPost'
 const PostDetail = ({ route }) => {
     const { id } = route.params
     const heightscreen = Dimensions.get('window').height
-    const navigation = useNavigation()
+    const navigation = useNavigation()    
     const user = useSelector(state => state.auth.user)
     const [post, setPost] = useState(null)
     const [isfire, setIsfire] = useState(false)
@@ -106,16 +106,18 @@ const PostDetail = ({ route }) => {
                     <Pressable onPress={() => { setIsshare(!isshare) }}>
                         <Icon tintColor='white' assetName={'share'} size={20} />
                     </Pressable>
-                    <Pressable onPress={() => { }}>
-                        <Icon tintColor='white' assetName='flag' size={20} />
-                    </Pressable>
+                    { post?.create_by?._id !== user?._id &&
+                        <Pressable onPress={() => { }}>
+                            <Icon tintColor='white' assetName='flag' size={20} />
+                        </Pressable>
+                    }
                     <Pressable onPress={handlerPressSaved}>
                         <Icon assetName='bookmark' tintColor={issaved ? Colors.yellow : 'white'} size={20} />
                     </Pressable>
                 </View>
             </View>
             <ShowComments idPost={post?._id} setOpen={setiscomment} open={iscomment} create_by={post?.create_by} dataPost={[]} setDataPost={() => { }} setIdPost={() => { }} />
-            <ShowMoreDetailPost disable={dots} setDisable={setDots} create_post={post?.create_by?._id} id_post={post?._id}/>
+            <ShowMoreDetailPost disable={dots} setDisable={setDots} create_post={post?.create_by?._id} id_post={post?._id} />
             <ShowShareDetailPost disable={isshare} setDisable={setIsshare} post_id={post?._id} />
         </View>
     )
