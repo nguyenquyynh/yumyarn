@@ -6,6 +6,8 @@ import { t } from 'lang'
 export async function userLogin() {
     try {
         const token = await loginGoogle()
+        console.log(token);
+        
         const body = {
             name: token.user.name,
             email: token.user.email,
