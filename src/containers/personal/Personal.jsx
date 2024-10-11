@@ -30,9 +30,9 @@ const Personal = () => {
     const [loadingEffect, setloadingEffect] = useState(false)
 
     //ví dụ user lấy id từ localstorage
-    const idLocalstorage = "66d586bdfcc184b2a9d7865b"
+    const idLocalstorage = "665c11ebfc13ae2944c633f9"
     //ví dụ gửi id của người dùng khi chuyển trang 
-    const idProps = "66d586bdfcc184b2a9d7865b"
+    const idProps = "665c11ebfc13ae2944c633f9"
 
     const checkMyAccount = async () => {
         if (idLocalstorage == idProps) {
@@ -161,7 +161,7 @@ const Personal = () => {
             const newData = await response.json();
             return newData.url
         } catch (error) {
-            console.log("onUploadMedia : ",error);
+            console.log(error);
             return null;
         }
     }
