@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 const AxiosInstance = (token = '', contentType = 'application/json') => {
     const axiosInstance = axios.create({
-        baseURL: 'https://yumyarn.api.phqmarket.online/'
+        baseURL: 'http://192.168.1.24:3001/'
     });
 
     axiosInstance.interceptors.request.use(
