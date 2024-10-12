@@ -1,9 +1,12 @@
 import { StyleSheet, ScrollView } from 'react-native'
+import { StyleSheet, ScrollView } from 'react-native'
 import React from 'react'
 import { Icon, Image, Text, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
+import { red } from 'react-native-reanimated/lib/typescript/reanimated2/Colors'
+
 
 const HelpSupport = () => {
   const navigation = useNavigation()
