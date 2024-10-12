@@ -27,17 +27,19 @@ const NotificationModalApp = ({
                     <View flex center absF padding-x>
                         <View padding-xx bg-white style={styles.viewModal} br20>
                             {children || (
-                                <View style={props}>
-                                    <View row centerV style={styles.title}>
-                                        <IconApp props={{ marginRight: 20 }} assetName={asseticon} size={30} />
-                                        <Text xviText style={styles.title}>{title}</Text>
+                                <View centerH>
+                                    <IconApp assetName={asseticon} size={70} />
+                                    <Text xviText style={styles.title}>{title}</Text>
+                                    <View padding-xx centerH>
+                                        <Text styles={{ textAlign: 'center' }}>{content}</Text>
                                     </View>
-                                    <View padding-xx>
-                                        <Text>{content}</Text>
-                                    </View>
-                                    <View row>
-                                        {funt && <ButtonApp props={styles.button_model} title={t("title_model.ok")} onclick={funt}/>}
-                                        <ButtonApp onclick={() => {modalhiden(false)}} props={styles.button_model} outline={1} color={Colors.black} background={Colors.white} title={funt ? t("title_model.cancel") : t("title_model.ok")}/>
+                                    <View centerH row>
+                                        <TouchableOpacity flex-1 marginV-5 center br10 bg-white style={styles.button_model} onPress={() => { modalhiden(false) }} >
+                                            <Text text70BO color={Colors.yellow}>{funt ? t("title_model.cancel") : t("title_model.ok")}</Text>
+                                        </TouchableOpacity>
+                                        {funt && <TouchableOpacity flex-1 marginV-5 center br10 bg-yellow style={styles.button_model} onPress={funt}>
+                                            <Text text70BO color='white'>{t("title_model.ok")}</Text>
+                                        </TouchableOpacity>}
                                     </View>
                                 </View>
                             )}
@@ -55,9 +57,10 @@ export default NotificationModalApp
 const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
+        textAlign: 'center'
     },
-    button_model:{
-        flex: 1,
-        margin: 5
+    button_model: {
+        padding: 10,
+        elevation: 5,
     }
 })

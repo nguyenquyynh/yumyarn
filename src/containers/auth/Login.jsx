@@ -38,7 +38,7 @@ const Login = () => {
                 setNotifycontent(reponse.data)
             }
         } else {
-            setNotifycontent("Please agree to the policy and privacy")
+            setNotifycontent(t("login.agree"))
             setShowNotifi(true)
         }
     }
@@ -80,7 +80,7 @@ const Login = () => {
                         <Text text40BO color={Colors.yellow} style={styles.shadown}>{t('app.name_app')}</Text>
                         <Text text60L marginT-xx>{t("login.slogan")}</Text>
                     </View>
-                   
+
                     <Pressable onPress={() => { setIsShowModal(true) }} >
                         <View center row>
                             <Text text70BO>{lang}</Text>
@@ -91,7 +91,7 @@ const Login = () => {
                         <TouchableOpacity bg-yellow paddingV-xiii paddingH-xx row br30 centerV spread style={styles.shadown} onPress={handlerAuthenSignin}>
                             <Icon assetName='google' size={28} />
                             <View flex center>
-                                <TextApp text={"login.google"} />
+                                <Text color='white' text65BO>{t("login.google")}</Text>
                             </View>
                         </TouchableOpacity>
                     </Animated.View>
@@ -113,7 +113,7 @@ const Login = () => {
                     />
                 </View>
             </Modals>
-            <NotificationModalApp asseticon={"warning"} modalVisible={showNotifi} modalhiden={setShowNotifi} content={notifycontent} title={"Warning"} />
+            <NotificationModalApp asseticon={"dont"} modalVisible={showNotifi} modalhiden={setShowNotifi} content={notifycontent} title={t("app.warning")} />
         </View>
 
     )

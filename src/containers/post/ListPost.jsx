@@ -4,9 +4,10 @@ import {
   Animated,
   RefreshControl,
   StyleSheet,
+  ToastAndroid,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { getPost } from 'src/hooks/api/post';
+import { createSaved, dePost, getPost } from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';
 import { createFollow } from 'src/hooks/api/follow';
@@ -19,6 +20,7 @@ import { t } from 'lang';
 const ListPost = props => {
   const { idUser, scrollY } = props;
   const [open, setOpen] = useState(false);
+  const [post, setPost] = useState({})
   const [idPost, setIdPost] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [dataPost, setDataPost] = useState([]);
@@ -108,6 +110,31 @@ const ListPost = props => {
     setShowmodal(true);
   };
 
+  const handlerRemove = async () => {
+    const body = {
+      u: idUser,
+      p: post?._id
+    }
+    console.log(body);
+
+    const resault = await dePost(body)
+    if (resault.status) {
+      ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+    } else {
+      ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+    }
+  }
+  const handlerSave = async () => {
+    const resault = await createSaved({
+      _id: idUser,
+      post: post?._id
+    })
+    if (resault.status) {
+      ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+    } else {
+      ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+    }
+  }
   const handleOpenComment = id => {
     setIdPost(id);
     setOpen(true);
@@ -140,6 +167,7 @@ const ListPost = props => {
             handleOpenComment={handleOpenComment}
             idUser={idUser}
             openModalFollow={openModalFollow}
+            setPost={setPost}
           />
         )}
         ListFooterComponent={() =>
@@ -165,14 +193,15 @@ const ListPost = props => {
       )}
 
       <Modals modalhiden={setShowmodal} modalVisible={showmodal}>
-        {idUser !== userIdPost && (
+        {idUser === userIdPost && (
           <TouchableOpacity
             row
             paddingV-x
             centerV
             onPress={() => {
+              console.log(idPost);
+              navigation.navigate('EditPost', { post: post })
               setShowmodal(false);
-              navigation.navigate('EditProfile');
             }}>
             <Icon
               assetName="edit"
@@ -182,43 +211,43 @@ const ListPost = props => {
             />
             <View>
               <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
-              <Text color={Colors.gray}>{t('profile.edit_description')}</Text>
+              <Text color={Colors.gray}>{t('post.edit_d')}</Text>
             </View>
           </TouchableOpacity>
         )}
-
+        {idUser !== userIdPost && (
+          <TouchableOpacity
+            row
+            paddingV-x
+            centerV
+            onPress={() => {
+              setShowmodal(false);
+              handleFollow();
+            }}>
+            <Icon
+              assetName={isFollow ? 'cancle_follow' : 'check_follow'}
+              size={33}
+              // tintColor={Colors.yellow}
+              marginH-x
+            />
+            <View>
+              <Text style={{ fontFamily: BI }}>
+                {isFollow ? t('app.following') : t('app.follow')}
+              </Text>
+              <Text color={Colors.gray}>
+                {' '}
+                {isFollow ? t('post.unFollow_des') : t('post.follow_des')}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
         <TouchableOpacity
           row
           paddingV-x
           centerV
           onPress={() => {
             setShowmodal(false);
-            handleFollow();
-          }}>
-          <Icon
-            assetName={isFollow ? 'cancle_follow' : 'check_follow'}
-            size={33}
-            // tintColor={Colors.yellow}
-            marginH-x
-          />
-          <View>
-            <Text style={{ fontFamily: BI }}>
-              {isFollow ? t('app.following') : t('app.follow')}
-            </Text>
-            <Text color={Colors.gray}>
-              {' '}
-              {isFollow ? t('post.unFollow_des') : t('post.follow_des')}
-            </Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          row
-          paddingV-x
-          centerV
-          onPress={() => {
-            setShowmodal(false);
-            Alert.alert('đã lưu thành công nhưung chưa có api');
+            handlerSave()
           }}>
           <Icon
             assetName="bookmark"
@@ -231,6 +260,29 @@ const ListPost = props => {
             <Text color={Colors.gray}>{t('post.save_des')}</Text>
           </View>
         </TouchableOpacity>
+        {idUser === userIdPost && (
+          <TouchableOpacity
+            row
+            paddingV-x
+            centerV
+            onPress={() => {
+              setShowmodal(false);
+              handlerRemove();
+            }}>
+            <Icon
+              assetName='remove'
+              size={33}
+              tintColor={Colors.yellow}
+              marginH-x
+            />
+            <View>
+              <Text style={{ fontFamily: BI }}>{t('post.remove')}</Text>
+              <Text color={Colors.gray}>
+                {t('post.remove_d')}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
       </Modals>
     </>
   );

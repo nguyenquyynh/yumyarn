@@ -64,7 +64,7 @@ const ShowComments = props => {
           content: writeComment,
           id_post: idPost,
           create_by: create_by._id,
-          parent: parent._id,
+          parent: parent?._id || null,
         };
         console.log(parent);
         const result = await createComment(body);

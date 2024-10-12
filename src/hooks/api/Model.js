@@ -10,7 +10,8 @@ export const Model = {
     REQUESTS: "requests",
     SUGGEST: 'searchsuggest',
     ADVERTISEMENT: 'advs',
-    COSTADVERTISEMENT: 'costadvs'
+    COSTADVERTISEMENT: 'costadvs',
+    SAVED: 's'
 }
 
 export const USERS = {
@@ -24,17 +25,17 @@ export const USERS = {
     POST: "getidpost",
     AVATAR: "avatar",
     COVERPHOTO: "coverphoto",
-    UPDATE_INFOR:"updateInfor",
-    FIND_USER:"finduser"
+    UPDATE_INFOR: "updateInfor",
+    FIND_USER: "finduser"
 }
 
 export const COMMENT = {
     CREATE: "create",
-    GET:"get",
-    GET_RECOMMENT:"get_recomment",
+    GET: "get",
+    GET_RECOMMENT: "get_recomment",
 }
 
-export const USERS_AUTHEN= {
+export const USERS_AUTHEN = {
     REGISTER: "REGISTER",
     LOGIN: "LOGIN",
     VERIFY: "VERIFY",
@@ -44,9 +45,12 @@ export const USERS_AUTHEN= {
 export const POST = {
     CREATEPOST: "create",
     SEARCH: "search",
-    FEED:"feed",
+    FEED: "feed",
     WATCH: "watch",
     TIMELINE: "timeline",
+    EDIT: "edit",
+    REPOST: "re",
+    REMOVE: "de"
 }
 
 export const SUGGEST = {
@@ -63,5 +67,10 @@ export const FOLLOW = {
 
 export const FIRE = {
     CREATE: 'create',
+    DELETE: 'delete',
+}
+
+export const SAVED = {
+    CREATE: 'new',
     DELETE: 'delete',
 }

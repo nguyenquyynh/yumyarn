@@ -43,7 +43,9 @@
     "firstComment": "Hãy là người đầu tiên bình luận",
     "done": "Xong",
     "choose": "Chọn",
-    "buy": "Thanh toán"
+    "buy": "Thanh toán",
+    "warning": "Ôi có lỗi xảy ra rồi !!!",
+    "success": "Mọi thứ thật hoàn hảo !!!"
   },
   "wellcome": {
     "greeting": "Chào mừng đến với",
@@ -59,12 +61,14 @@
     "register": "Tài khoảng của bạn đã được đăng kí! Đăng nhập ngay",
     "verify": "Kiếm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
     "policy": "chính sách bảo mật",
-    "google": "Đăng nhập với Google"
+    "google": "Đăng nhập với Google",
+    "agree" : "Bạn phải đồng ý với chính sách của chúng tôi để tiếp tục truy cập !"
   },
   "post": {
     "edit": "Chỉnh sửa",
     "retweet": "Đăng lại",
     "copylink": "Sao chép liên kết",
+    "share": "Đã sao chép liên kết bài viết vào bộ nhớ tạm.",
     "follow": "Theo dõi / Hủy theo dõi",
     "advertisement": "Quảng bá bài viết",
     "remove": "Xóa bài",
@@ -114,8 +118,9 @@
     "title": "Tạo bài viết",
     "post": "Đăng",
     "content_hint": "Viết về thứ gì đó thật ngon...",
-    "hashtag_hint": "Thêm #hashtag để người khác dễ tìm thấy bạn.",
-    "loacation_hint": "Đừng quên thêm vị trí để mọi người dễ tìm thấy."
+    "hashtag_hint": "Thêm #hashtag để người khác dễ tìm thấy chủ đề của bạn.",
+    "loacation_hint": "Thêm vị trí để mọi người dễ tìm thấy.",
+    "image_hint": "Thêm hình ảnh về trải nghiệm."
   },
   "add_location": {
     "title": "Thêm vị trí",
@@ -137,7 +142,10 @@
     "terms_of_use": "Điều khoản sử dụng",
     "privacy_policy": "Chính sách bảo mật",
     "setting_message": "Cài đặt tin nhắn",
-    "link": "Liên kết hồ sơ"
+    "link": "Liên kết hồ sơ",
+    "exepctmes": "Cho phép nhận tin nhắn",
+    "mesOptions": "Nhận tin nhắn",
+    "whosend": "Ai có thể gửi tin nhắn cho bạn"
   },
   "home": {
     "welcome": "Xin chào,",
@@ -149,5 +157,46 @@
   },
   "advertisement": {
     "title": "Đăng kí gói quảng bá"
+  },
+  "helping": {
+    "Introduce": "Hoạt động chính trị, tôn giáo và tội phạm :",
+    "Introduce1": "Cấm hoạt động chính trị, bầu cử và tôn giáo trên mạng xã hội Yumyarn.",
+    "Introduce2": "Cấm đăng tải nội dung nhằm mục đích phạm tội hoặc cổ vũ cho hành vi phạm tội.",
+    "Prohibited_Actions": "Nội dung không phù hợp :",
+    "Prohibited_Actions1": "Cấm các bài đăng chứa ngôn từ tục tĩu, phân biệt đối xử, bài đăng có vấn đề về quan điểm đạo đức",
+    "Prohibited_Actions2": "Cấm các bài đăng gây đau khổ hoặc ảnh hưởng tiêu cực đến người dùng khác",
+    "Inappropriate_content": "Hành vi giả mạo và vi phạm quyền riêng tư :",
+    "Inappropriate_content1": "Cấm các hành vi giả mạo danh tính",
+    "Inappropriate_content2": "Cấm công khai thông tin cá nhân mà không có sự đồng ý của cá nhân liên quan",
+    "Identity_and_Privacy": "Thông tin sai lệch và vu khống :",
+    "Identity_and_Privacy1": "Cấm các bài đăng chứa thông tin sai lệch hoặc gây hiểu lầm.",
+    "Identity_and_Privacy2": "Cấm đăng nội dung vu khống cá nhân, công ty, quốc gia hoặc khu vực cụ thể.",
+    "Slanderous_content": "Hành vi mạo danh và quảng cáo trái phép :",
+    "Slanderous_content1": "Cấm mạo danh cá nhân, tổ chức hoặc Yumyarn.",
+    "Slanderous_content2": "Cấm quảng cáo sản phẩm, cửa hàng, công ty của chính mình hoặc các nội dung thương mại khác.",
+    "Violation_of_law_and_ethics": "Vi phạm bản quyền và quyền khác :",
+    "Violation_of_law_and_ethics1": "Cấm các hành vi vi phạm bản quyền, quyền nhãn hiệu, quyền chân dung, quyền riêng tư của người dùng, bên thứ ba hoặc Yumyarn.",
+    "Advertising_and_commerce": "Gửi thư rác và phần mềm độc hại :",
+    "Advertising_and_commerce1": "Các bài đăng giới thiệu sản phẩm, cửa hàng hoặc công ty của chính mình, có chứa nội dung quảng cáo hoặc thương mại khác",
+    "Spam_and_Malware": "Can thiệp vào quản lý mạng xã hội :",
+    "Spam_and_Malware1": "Cấm các hành động gây cản trở hoặc can thiệp vào việc quản lý mạng xã hội Yumyarn.",
+    "Intervention_and_management": "Các hành động khác không phù hợp :",
+    "Intervention_and_management1": "Cấm các hành động khác mà Yumyarn hoặc Ajinomoto Co., Inc. đánh giá là không phù hợp."
+  },
+  "about": {
+    "Profile": " App về mạng xã hội nơi hội tụ của những tín đồ ẩm thực. Chia sẻ hình ảnh món ăn, địa điểm món ăn, tìm kiếm nhà hàng ngon hay đơn giản là trò chuyện về niềm đam mê ăn uống, tất cả đều có thể thực hiện dễ dàng trên nền tảng này.",
+    "manage": "Người chịu trách nhiệm quản lý ứng dụng :",
+    "hotline": "Liên hệ số điện thoại :"
+  },
+  "messenge" :{
+    "people": "Mọi người",
+    "friend": "Bạn bè",
+    "nobody": "Không ai cả",
+    "people_d" : "Mọi người đều có thẻ gửi tin nhắn cho bạn",
+    "friend_d" : "Những follower mà bạn đã follow lại ",
+    "nobody_d" : "Không ai có thể gửi tin nhắn cho bạn",
+    "status": "Trạng thái hoạt động",
+    "seen": "Trạng thái đọc",
+    "seen_d": "Mọi người có thể biết khi nào bạn đọc tin nhắn của họ, nhưng chỉ biết khi cả bạn và họ đều bật tính năng này"
   }
 }

@@ -1,13 +1,12 @@
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AxiosInstance = (token = '', contentType = 'application/json') => {
     const axiosInstance = axios.create({
-        baseURL: 'https://yumyarn.web.phqmarket.online/'
+        baseURL: 'http://192.168.1.9:3001/'
     });
 
-    axiosInstance.interceptors.request.use( 
+    axiosInstance.interceptors.request.use(
         async (config) => {
             config.headers = {
                 'Authorization': `${token}`,

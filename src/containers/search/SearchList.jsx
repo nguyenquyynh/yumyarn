@@ -38,6 +38,7 @@ const SearchList = ({
 
           return (
             <TouchableOpacity
+              key={route.key}
               onPress={onPress}
               style={{
                 marginRight: 15, height: 50,

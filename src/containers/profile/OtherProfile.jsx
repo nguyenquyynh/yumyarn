@@ -115,10 +115,10 @@ const OtherProfile = ({ route }) => {
         }
     }
 
-    const handleCheckPersonFollow = async(statusFollow) => {
-        if(statusFollow){
+    const handleCheckPersonFollow = async (statusFollow) => {
+        if (statusFollow) {
             await handleUnFollow();
-        }else{
+        } else {
             await handleFollow();
         }
     }
@@ -165,7 +165,7 @@ const OtherProfile = ({ route }) => {
                     :
                     (
                         <View flex bg-white>
-                            <ImageBackground style={{ height: 210 }} source={{ uri: dataUser?.coverPhoto || 'https://cdn.pixabay.com/photo/2020/01/07/16/41/vietnam-4748105_1280.jpg' }} />
+                            <ImageBackground style={{ width: '100%', height: 210 }} source={{ uri: dataUser?.coverPhoto || 'https://cdn.pixabay.com/photo/2024/09/25/15/53/japan-9074037_1280.jpg' }} />
                             <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}
                                 refreshControl={
                                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -201,7 +201,7 @@ const OtherProfile = ({ route }) => {
                                             _id !== auth._id && (
                                                 <View row spread style={styles.view_opaticy}>
                                                     <TouchableOpacity activeOpacity={0.6} style={[styles.opacity, styles.shadowStyle]} backgroundColor={'#5790DF'} padding-10 center br100
-                                                        onPress={()=>handleCheckPersonFollow(statusFollow)}>
+                                                        onPress={() => handleCheckPersonFollow(statusFollow)}>
                                                         <Text text80H color={Colors.white}>{!statusFollow ? t("app.follow") : t("profile.following")}</Text>
                                                     </TouchableOpacity>
                                                     <TouchableOpacity activeOpacity={0.6} style={[styles.opacity, styles.shadowStyle]} backgroundColor={Colors.white} padding-10 center br100>

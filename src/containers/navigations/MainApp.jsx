@@ -22,6 +22,8 @@ import MainChat from 'containers/chat/MainChat'
 import MainNotifications from 'containers/notification/MainNotifications'
 import BuyAdvertisement from 'containers/advertisement/BuyAdvertisement'
 import ZaloWebView from 'containers/advertisement/ZaloWebView'
+import Policy from 'containers/setting/Policy'
+import EditPost from 'containers/post/EditPost'
 
 const MainApp = () => {
     const Stack = createNativeStackNavigator()
@@ -52,6 +54,8 @@ const MainApp = () => {
             <Stack.Screen name='MainNotifications' component={MainNotifications} />
             <Stack.Screen name='BuyAdvertisement' component={BuyAdvertisement} />
             <Stack.Screen name='ZaloWebView' component={ZaloWebView} />
+            <Stack.Screen name='Policy' component={Policy} />
+            <Stack.Screen name='EditPost' component={EditPost} />
         </Stack.Navigator>
     )
 }

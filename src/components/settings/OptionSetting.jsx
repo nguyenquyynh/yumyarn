@@ -17,7 +17,7 @@ const OptionSetting = ({ navigation }) => {
         { id: 4, title: "setting.link", icon: "link", funt: handlerClipboard},
     ]
     const optionssetting = [
-        { id: 5, title: "setting.privacy_policy", icon: "insurance", funt: () => { } },
+        { id: 5, title: "setting.privacy_policy", icon: "insurance", funt: () => { navigation.navigate('Policy') } },
         { id: 6, title: "setting.help", icon: "question", funt: () => { navigation.navigate('HelpSupport') } },
         { id: 7, title: "setting.setting_message", icon: "un_flash", funt: () => { navigation.navigate('MessageSetting') } },
         { id: 8, title: "setting.about_us", icon: "info", funt: () => { navigation.navigate('About') } },

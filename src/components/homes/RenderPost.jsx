@@ -7,10 +7,11 @@ import { EBI } from 'configs/fonts';
 import { useNavigation } from '@react-navigation/native';
 import RenderVideo from './RenderVideo';
 import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate';
+import { t } from 'lang';
 
 const { width: MAX_WIDTH } = Dimensions.get('window');
 const RenderPost = props => {
-  const { item, handleOpenComment, idUser, openModalFollow } = props;
+  const { item, handleOpenComment, idUser, openModalFollow, setPost } = props;
   const navigation = useNavigation();
   const [readmore, setReadmore] = useState(false);
   const content = item?.content;
@@ -21,9 +22,9 @@ const RenderPost = props => {
   const id = item?._id;
   const differenceInSeconds = transDate(item?.update_at);
   const isFire = item.isFire;
-  
+
   return (
-    <View paddingH-x marginB-25 bg-white style={Style.sizeContainer}>
+    <View paddingH-x marginB-20 bg-white style={Style.sizeContainer}>
       <View row marginB-v paddingT-10>
         <View row left flex>
           <Avatar
@@ -32,30 +33,40 @@ const RenderPost = props => {
             onPress={() => {
               navigation.navigate('OtherProfile', {
                 name: item?.create_by?.name,
-                _id : item?.create_by?._id
+                _id: item?.create_by?._id
               });
             }}
           />
-          <View marginL-15 >
-            <Text
-              text70BO
-              numberOfLines={1}
-              onPress={() => {
-                navigation.navigate('OtherProfile', {
-                  name: item?.create_by?.name,
-                  _id : item?.create_by?._id
-                });
-              }}>
-              {item?.create_by?.name}
-            </Text>
+          <View marginL-15>
+            <View row centerV>
+              <Text
+                text70BO
+                numberOfLines={1}
+                onPress={() => {
+                  navigation.navigate('OtherProfile', {
+                    name: item?.create_by?.name,
+                    _id: item?.create_by?._id
+                  });
+                }}>
+                {item?.create_by?.name}
+              </Text>
+              {item?.repost_by &&
+                <View row centerV>
+                  <Icon marginH-10 assetName='retweet' size={10} />
+                  <Text text80BO>@{item?.repost_by?.tagName}</Text>
+                </View>
+              }
+            </View>
             <Text xiitext style={{ color: '#BEBEBE' }}>
               {changeTime(differenceInSeconds)}
             </Text>
           </View>
         </View>
         <TouchableOpacity
-          onPress={() =>
+          onPress={() => {
             openModalFollow(item?.create_by?._id, item?.follow, id)
+            setPost?.(item)
+          }
           }
           row
           center>

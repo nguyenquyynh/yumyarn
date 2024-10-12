@@ -1,8 +1,8 @@
-import { Alert, FlatList, Modal, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, FlatList, Modal, ScrollView, StatusBar, StyleSheet, TextInput } from 'react-native';
 import React, { useState } from 'react';
 import Wapper from 'components/Wapper';
 import { t } from 'lang';
-import { Colors, Image, TouchableOpacity } from 'react-native-ui-lib';
+import { Avatar, Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
@@ -12,10 +12,13 @@ import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
 import { createpost } from 'src/hooks/api/post';
 import CameraApp from 'containers/camera/CameraApp';
 import NotificationModalApp from 'components/commons/NotificationModalApp';
+import { useSelector } from 'react-redux';
+import { B } from 'configs/fonts';
 
 const MainPost = ({ route }) => {
   const navigation = useNavigation()
-  const { locationname, location_lat, loaction_lng } = route.params || { locationvalue: null, locationlatitude: null, locationlongitude: null };
+  const user = useSelector(state => state.auth.user)
+  const { address } = route.params || {}
   const [modelshow, setModelshow] = useState(false);
   const [open_camera, setopen_camera] = useState(false);
   const [open_library, setopen_library] = useState(false)
@@ -26,6 +29,7 @@ const MainPost = ({ route }) => {
   const [is_loading, setis_loading] = useState(false);
   const [content, setcontent] = useState("")
   const [hashtag, sethashtag] = useState("")
+  const [statusRequest, setStatusRequest] = useState(false)
   // Hàm xóa ảnh
   const handleRemoveImage = (id) => {
     setImages(images.filter(image => image.id !== id));
@@ -55,28 +59,30 @@ const MainPost = ({ route }) => {
   };
 
   const onUploadMedia = async (file) => {
-    const { uri, type, name } = file
+    const { uri, type, name } = file;
     try {
       const data = new FormData();
       data.append('file', { uri, type, name });
-      data.append('upload_preset', 'ml_default');
-      data.append('cloud_name', 'dnodsjqql');
+      data.append('upload_preset', 'x1r3euwt');
 
-      const response = await fetch('https://api.cloudinary.com/v1_1/dnodsjqql/upload', {
+      const response = await fetch(`https://api.cloudinary.com/v1_1/ddgmnqwtk/upload`, {
         method: "POST",
         headers: {
           "Accept": "application/json",
         },
-        body: data
+        body: data,
       });
 
       const newData = await response.json();
-      return newData.url
+      console.log(newData);
+
+      return newData.secure_url; // Use secure_url to get the HTTPS URL
     } catch (error) {
       console.log(error);
       return null;
     }
   }
+
 
   const checkCreatePost = async () => {
     if (content.trim() === '') {
@@ -88,7 +94,7 @@ const MainPost = ({ route }) => {
       setNotifytitle(t("title_model.image_error"))
       setNotifycontent(t("title_model.post_faile"))
       setIsnotifiy(true)
-    } else if (locationname == null || loaction_lng == null || location_lat == null) {
+    } else if (!address) {
       setNotifytitle(t("title_model.address_error"))
       setNotifycontent(t("title_model.post_faile"))
       setIsnotifiy(true)
@@ -103,11 +109,9 @@ const MainPost = ({ route }) => {
     const result = [];
     for (let ele of words) {
       if (ele.startsWith('#')) {
-        // Loại bỏ dấu # và thêm dấu cách ở cuối
-        result.push(ele.substring(1) + ' ');
+        result.push(ele.substring(1));
       }
     }
-
     return result;
   }
 
@@ -121,19 +125,17 @@ const MainPost = ({ route }) => {
       const body = {
         media: validUrls,
         address: {
-          detail: locationname,
-          longitude: loaction_lng,
-          latitude: location_lat,
-          longitudeDelta: 0.005,
-          latitudeDelta: 0.005
+          ...address, detail: address.name
         },
-        create_by: "665c11ebfc13ae2944c633f9",
+        create_by: user?._id,
         hashtags: extractHashtags(hashtag),
         content: content,
       }
+      console.log(body);
+
       const response = await createpost(body)
+      setStatusRequest(response.status)
       if (response.status) {
-        console.log(response.data)
         setImages([])
         sethashtag("")
         setcontent("")
@@ -152,22 +154,21 @@ const MainPost = ({ route }) => {
       setis_loading(false)
     }
   }
-
+  // Render item media
   const renderItem = ({ item }) => (
     <View style={styles.imageWrapper}>
       {item.uri?.endsWith('.mp4') ?
-        <Video source={{ uri: item.uri }} style={styles.imageitem} paused controls/> :
+        <Video source={{ uri: item.uri }} style={styles.imageitem} paused controls /> :
         <Image source={{ uri: item.uri }} style={styles.imageitem} />
       }
       <TouchableOpacity
         style={styles.removeIcon}
         onPress={() => handleRemoveImage(item.id)}
       >
-        <IconApp assetName={"cancel"} size={32} color={"red"} />
+        <IconApp assetName={"cancel"} size={20} color={"red"} />
       </TouchableOpacity>
     </View>
   );
-
   //Modal pick Media
   const renderModalPickImage = () => {
     return (<Modals modalhiden={setModelshow} modalVisible={modelshow}>
@@ -245,7 +246,7 @@ const MainPost = ({ route }) => {
       modalhiden={setIsnotifiy}
       modalVisible={isnotifiy}
       title={notifytitle}
-      asseticon={"logoapp"}
+      asseticon={statusRequest ? "done" : 'dont'}
       content={notifycontent} />)
   }
   if (is_loading) {
@@ -255,7 +256,12 @@ const MainPost = ({ route }) => {
       </View>
     )
   }
+  const onHashtagPress = (e) => {
+    if (e.nativeEvent.key == ' ') {
+      sethashtag(hashtag + '#')
+    }
 
+  }
   return (
     <Wapper
       gadient
@@ -268,6 +274,13 @@ const MainPost = ({ route }) => {
       <View style={styles.container} >
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
+            <View row>
+              <Avatar source={{ uri: user?.avatar }} size={40} />
+              <View marginL-x>
+                <Text text70BO>{user?.name}</Text>
+                <Text text80T>@{user?.tagName}</Text>
+              </View>
+            </View>
             <TextInput
               style={styles.input}
               value={content}
@@ -282,6 +295,8 @@ const MainPost = ({ route }) => {
               style={styles.hashtagHint}
               placeholder={t("create_post.hashtag_hint")}
               placeholderTextColor="black"
+              onFocus={() => { sethashtag('#') }}
+              onKeyPress={onHashtagPress}
               multiline
             />
             <FlatList
@@ -292,26 +307,29 @@ const MainPost = ({ route }) => {
               renderItem={renderItem}
               keyExtractor={(item) => item.id}
             />
-            <View style={styles.contentImage}>
-              <TouchableOpacity
-                onPress={handlerAddImage}
-                style={styles.image}
-              >
-                <View style={styles.imagePlaceholder}>
-                  <IconApp assetName={"plus"} size={45} />
-                </View>
-              </TouchableOpacity>
-            </View>
           </ScrollView>
         </View>
-        <TouchableOpacity style={styles.foodter} onPress={() => { gotoScreen("Adddrressscreen") }}>
-          <View style={styles.contentlocation}>
-            <IconApp assetName={"location"} size={34} />
-            <Text numberOfLines={1} style={styles.textloctation}>
-              {locationname || t("create_post.loacation_hint")}
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <View bg-white style={styles.footer}>
+          <TouchableOpacity style={{ width: '100%' }} onPress={handlerAddImage}>
+            <View style={styles.contentlocation}>
+              <IconApp assetName={"diaphragm"} size={25} />
+              <Text numberOfLines={1} style={styles.textloctation}>
+                {address?.title || t("create_post.image_hint")}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ width: '100%' }} onPress={() => { navigation.navigate("Adddrressscreen", { back: "Post" }) }}>
+            <View style={styles.contentlocation}>
+              <IconApp assetName={"location"} size={25} />
+              <View flex>
+                <Text numberOfLines={1} style={styles.textloctation}>
+                  {address?.name || t("create_post.loacation_hint")}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+
       </View>
       {renderModalPickImage()}
       {rendermodalCamera()}
@@ -330,14 +348,13 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 2,
-    borderWidth: 1,
     borderColor: "black",
-    borderRadius: 10,
     margin: 10
   },
-  foodter: {
-    alignItems: 'center',
+  footer: {
+    alignItems: 'flex-start',
     justifyContent: 'center',
+    paddingBottom: 5,
   },
   modals: {
     width: '100%',
@@ -357,15 +374,13 @@ const styles = StyleSheet.create({
   },
   contentlocation: {
     width: '100%',
-    borderWidth: 1,
+    borderTopWidth: 0.5,
     borderTopColor: 'black',
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
     flexDirection: 'row',
     padding: 10,
     paddingHorizontal: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   },
   textloctation: {
     color: 'black',
@@ -374,41 +389,39 @@ const styles = StyleSheet.create({
     marginLeft: 10
   },
   imageListContainer: {
-    padding: 10,
+
   },
   imageWrapper: {
     position: 'relative',
     marginRight: 10,
   },
   imageitem: {
-    marginTop: 16,
     height: 200,
     borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 10,
     backgroundColor: '#D9D9D9',
+    marginBottom: 10
   },
   removeIcon: {
     position: 'absolute',
-    top: 26,
-    right: 10,
-    backgroundColor: 'white',
+    top: 10, right: 10,
+    backgroundColor: 'red',
     borderRadius: 30,
-    padding: 2,
   },
   input: {
-    minHeight: 100,  // Giữ chiều cao tối thiểu
+    minHeight: 50,
     borderColor: '#ccc',
     paddingHorizontal: 8,
-    paddingTop: 8,
+    marginTop: 15,
+    fontSize: 16,
     textAlignVertical: 'top',
     color: 'black',
   },
   hashtagHint: {
-    minHeight: 30,  // Giữ chiều cao tối thiểu
+    fontFamily: B,
+    minHeight: 30,
     paddingHorizontal: 8,
     textAlignVertical: 'top',
-    color: 'black',
+    color: Colors.orange,
   },
   contentImage: {
     padding: 10
