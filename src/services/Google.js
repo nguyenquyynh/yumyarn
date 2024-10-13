@@ -19,7 +19,7 @@ export const signOutGoogle = async () => {
 
 export const loginGoogle = async () => {
   try {
-    const isSignedIn = await GoogleSignin.isSignedIn();
+    const isSignedIn = await GoogleSignin.hasPreviousSignIn();
     if (isSignedIn) {
       await signOutGoogle();
     }
@@ -29,7 +29,7 @@ export const loginGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices()
       const userInfo = await GoogleSignin.signIn()
-      return userInfo
+      return userInfo.data
     } catch (error) {
       console.log(error)
     }

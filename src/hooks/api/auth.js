@@ -6,8 +6,8 @@ import { t } from 'lang'
 export async function userLogin(fcmtoken) {
     try {
         const token = await loginGoogle()
-        console.log(token);
-        
+        console.log("userLogin" , token);
+
         const body = {
             name: token.user.name,
             email: token.user.email,
