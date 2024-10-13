@@ -20,7 +20,7 @@ const RenderPost = props => {
   const countComment = item?.comments;
   const address = item?.address?.detail;
   const id = item?._id;
-  const differenceInSeconds = transDate(item?.update_at);
+  const differenceInSeconds = transDate(item?.create_at);
   const isFire = item.isFire;
 
   return (

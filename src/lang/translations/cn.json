@@ -72,6 +72,7 @@
       "follow": "关注/取消关注",
       "advertisement": "推广帖子",
       "remove": "删除帖子",
+      "have_remove": "该帖子已被删除",
       "remove_d": "从您的时间线中删除帖子。",
       "advertisement_d": "付费将帖子推广给所有人。",
       "follow_d": "关注或取消关注此用户。",

@@ -12,7 +12,6 @@ export async function createpost(data) {
         } else {
             return { status: false, data: resault.data }
         }
-
     } catch (error) {
         console.log(error + "Lỗi")
         return Promise.reject(error)

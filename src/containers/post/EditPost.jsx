@@ -258,21 +258,19 @@ const EditPost = ({ route }) => {
             modalhiden={setIsnotifiy}
             modalVisible={isnotifiy}
             title={notifytitle}
-            asseticon={statusAction}
+            asseticon={statusAction ? "done" : "dont"}
             content={notifycontent} />)
-    }
-    if (is_loading) {
-        return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: "Black" }}>Đang tải ảnh và video lên cloud</Text>
-            </View>
-        )
     }
     const onHashtagPress = (e) => {
         if (e.nativeEvent.key == ' ') {
             sethashtag(hashtag + '#')
         }
 
+    }
+    if (is_loading) {
+        return (
+            <LoadingApp />
+        )
     }
     return (
         <Wapper

@@ -72,6 +72,7 @@
     "follow": "Follow / Unfollow",
     "advertisement": "Promote post",
     "remove": "Delete post",
+    "have_remove": "This post has been deleted",
     "remove_d": "Remove the post from your timeline.",
     "advertisement_d": "Pay to promote the post to everyone.",
     "follow_d": "Follow or unfollow this user.",
