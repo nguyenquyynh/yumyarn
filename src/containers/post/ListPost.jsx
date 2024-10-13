@@ -155,6 +155,7 @@ const ListPost = props => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         keyExtractor={item => item._id}
+        key={item => item?._id}
         onEndReached={() => {
           handleLoadMore(page + 1);
         }}
@@ -260,7 +261,7 @@ const ListPost = props => {
             <Text color={Colors.gray}>{t('post.save_des')}</Text>
           </View>
         </TouchableOpacity>
-        {idUser === userIdPost && (
+        {idUser === userIdPost || post?.repost_by?._id === idUser ? (
           <TouchableOpacity
             row
             paddingV-x
@@ -282,7 +283,7 @@ const ListPost = props => {
               </Text>
             </View>
           </TouchableOpacity>
-        )}
+        ) : <></>}
       </Modals>
     </>
   );

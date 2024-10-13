@@ -14,6 +14,7 @@ import CameraApp from 'containers/camera/CameraApp';
 import NotificationModalApp from 'components/commons/NotificationModalApp';
 import { useSelector } from 'react-redux';
 import { B } from 'configs/fonts';
+import LoadingApp from 'components/commons/LoadingApp';
 
 const MainPost = ({ route }) => {
   const navigation = useNavigation()
@@ -131,8 +132,6 @@ const MainPost = ({ route }) => {
         hashtags: extractHashtags(hashtag),
         content: content,
       }
-      console.log(body);
-
       const response = await createpost(body)
       setStatusRequest(response.status)
       if (response.status) {
@@ -246,14 +245,12 @@ const MainPost = ({ route }) => {
       modalhiden={setIsnotifiy}
       modalVisible={isnotifiy}
       title={notifytitle}
-      asseticon={statusRequest ? "done" : 'dont'}
+      asseticon={statusRequest ? "done" : "dont"}
       content={notifycontent} />)
   }
   if (is_loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: "Black" }}>Đang tải ảnh và video lên cloud</Text>
-      </View>
+      <LoadingApp />
     )
   }
   const onHashtagPress = (e) => {
@@ -293,6 +290,7 @@ const MainPost = ({ route }) => {
               value={hashtag}
               onChangeText={sethashtag}
               style={styles.hashtagHint}
+              color={Colors.orange}
               placeholder={t("create_post.hashtag_hint")}
               placeholderTextColor="black"
               onFocus={() => { sethashtag('#') }}
@@ -421,7 +419,6 @@ const styles = StyleSheet.create({
     minHeight: 30,
     paddingHorizontal: 8,
     textAlignVertical: 'top',
-    color: Colors.orange,
   },
   contentImage: {
     padding: 10

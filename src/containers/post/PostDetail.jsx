@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet } from 'react-native'
+import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, ToastAndroid } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
 import { Avatar, Colors, Icon, LoaderScreen, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { useNavigation } from '@react-navigation/native'
@@ -7,12 +7,13 @@ import HearDetailPost from 'components/posts/HearDetailPost'
 import numberFormat from 'configs/ui/format'
 import { firePost } from 'src/hooks/api/fire'
 import { useSelector } from 'react-redux'
-import { watchPost } from 'src/hooks/api/post'
+import { createSaved, watchPost } from 'src/hooks/api/post'
 import { EB, EBI, ELI, M } from 'configs/fonts'
 import ShowComments from 'containers/comment/ShowComments'
 import ShowMoreDetailPost from 'components/posts/ShowMoreDetailPost'
 import ShowShareDetailPost from 'components/posts/ShowShareDetailPost'
 import { auth } from 'reducers/auth'
+import { t } from 'lang'
 
 const PostDetail = ({ route }) => {
     const { id } = route.params
@@ -31,6 +32,11 @@ const PostDetail = ({ route }) => {
         const reponse = await watchPost(query)
         if (reponse.status) {
             setPost(reponse.data[0])
+            setissaved(reponse.data[0]?.isSaved)
+        }
+        if (reponse.data.length === 0) {
+            ToastAndroid.show(t("post.have_remove"), ToastAndroid.SHORT)
+            navigation.goBack()
         }
     }
     useEffect(() => {
@@ -51,17 +57,25 @@ const PostDetail = ({ route }) => {
             setPost({ ...post, isfire: fire?.data, fires: fire?.data ? post?.fires + 1 : post?.fires - 1 })
         }
     }
-    const handlerPressSaved = () => {
+    const handlerPressSaved = async () => {
         setissaved(!issaved)
+        const resault = await createSaved({
+            _id: user?._id,
+            post: post?._id
+        })
+        if (resault.status) {
+            ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+        } else {
+            ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+        }
     }
     const handlerClickAvatar = () => {
-        navigation.navigate('OtherProfile', { name: post?.create_by?.name, _id: user._id })
+        navigation.navigate('OtherProfile', { name: post?.create_by?.name, _id: post?.create_by?._id })
     }
-
 
     return (
         <View flex right>
-            {post && <FlatList
+            {post ? <FlatList
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 horizontal
@@ -70,14 +84,27 @@ const PostDetail = ({ route }) => {
                 data={post.media}
                 renderItem={item => <MediaPost data={item} />}
                 key={item => item.id}
-            />}
+            /> : <View flex bg-black>
+
+            </View>}
             <HearDetailPost back={() => navigation.goBack()} dot={() => { setDots(!dots) }} />
             <View flex absB padding-x style={{ maxHeight: heightscreen / 2 }}>
                 <View flex row marginB-x>
                     <Avatar source={{ uri: post ? post?.create_by?.avatar : "https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_1280.png" }}
                         size={40} onPress={handlerClickAvatar} />
+
                     <TouchableOpacity onPress={handlerClickAvatar} flex marginL-v >
-                        <Text style={{ fontFamily: EB }} color='white'>{post?.create_by?.name}</Text>
+                        <View row centerV>
+                            <Text style={{ fontFamily: EB }} color='white'>{post?.create_by?.name}</Text>
+                            {post?.repost_by &&
+                                <View row centerV>
+                                    <Icon marginH-10 assetName='retweet' tintColor='white' size={10} />
+                                    <Text onPress={() => {
+                                        navigation.navigate('OtherProfile', { name: post?.repost_by?.name, _id: post?.repost_by?._id })
+                                    }} color='white'>@{post?.repost_by?.tagName}</Text>
+                                </View>
+                            }
+                        </View>
                         <Text style={{ fontFamily: ELI }} text80L numberOfLines={1} color='white'>@{post?.create_by?.tagName}</Text>
                     </TouchableOpacity>
                 </View>
@@ -118,7 +145,7 @@ const PostDetail = ({ route }) => {
                 </View>
             </View>
             <ShowComments idPost={post?._id} setOpen={setiscomment} open={iscomment} create_by={post?.create_by} dataPost={[]} setDataPost={() => { }} setIdPost={() => { }} />
-            <ShowMoreDetailPost disable={dots} setDisable={setDots} create_post={post?.create_by?._id} id_post={post?._id} />
+            <ShowMoreDetailPost disable={dots} setDisable={setDots} create_post={post?.create_by?._id} id_post={post?._id} post={post}/>
             <ShowShareDetailPost disable={isshare} setDisable={setIsshare} post_id={post?._id} />
         </View>
     )
