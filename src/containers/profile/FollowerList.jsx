@@ -32,7 +32,9 @@ const followersData = [
   // Thêm nhiều người dùng nếu cần
 ]
 
-const FollowerList = () => {
+const FollowerList = ({ route }) => {
+  // lấy danh sách theo user truyền vào còn kiểm tra có follow hay không theo view 
+  const { user, view } = route?.params || ""
   const navigation = useNavigation()
 
   return (

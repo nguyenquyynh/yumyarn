@@ -6,53 +6,46 @@ import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
 import UserRender from 'components/searchs/UserRender'
 
-const data1 = [
+const followersData = [
   {
-    "status": true,
-    "data": [
-      {
-        "_id": "670299985244f74aa31194d5",
-        "create_at": "1728223386557",
-        "post": {
-          "_id": "667f9fbbfc13ae1fdb234928",
-          "content": "Banh u",
-          "hashtags": [
-            "Quận 1"
-          ],
-          "media": [
-            "https://videos.pexels.com/video-files/4057920/4057920-sd_506_960_25fps.mp4"
-          ],
-          "address": {
-            "detail": "Quận 12",
-            "longitude": 123.123,
-            "latitude": 123.123,
-            "longitudeDelta": 123.123,
-            "latitudeDelta": 123.123
-          },
-          "exist": true,
-          "create_by": {
-            "_id": "669225710e3001246d117608",
-            "name": "Nguyen Xuan Quynh",
-            "tagName": "quynh_64"
-          },
-          "create_at": "1720854074279",
-          "update_at": "1720854074285",
-          "fire": 1,
-          "comments": 3,
-          "isFire": true
-        }
-      }
-    ]
+    _id: '1',
+    name: 'John Doe',
+    tagName: 'johndoe',
+    avatar: 'https://via.placeholder.com/150',
+    isFollow: true,
+  },
+  {
+    _id: '2',
+    name: 'Jane Smith',
+    tagName: 'janesmith',
+    avatar: 'https://via.placeholder.com/150',
+    isFollow: false,
+  },
+  {
+    _id: '3',
+    name: 'David Brown',
+    tagName: 'davidbrown',
+    avatar: 'https://via.placeholder.com/150',
+    isFollow: true,
   }
+  // Thêm nhiều người dùng nếu cần
 ]
 
-const FollowingList = () => {
+const FollowingList = ({ route }) => {
+  // lấy danh sách theo user truyền vào còn kiểm tra có follow hay không theo view 
+  const { user, view } = route?.params || ""
   const navigation = useNavigation()
 
   return (
     <Wapper renderleft funtleft={() => navigation.goBack()} title={t("profile.following")}>
       <View flex bg-white>
-        <UserRender />
+        {/* Sử dụng FlatList để hiển thị danh sách followers */}
+        <FlatList
+          data={followersData}
+          keyExtractor={(item) => item._id}  // Mỗi item cần có key duy nhất
+          renderItem={({ item }) => <UserRender item={item} />}  // Hiển thị từng user
+          contentContainerStyle={{ paddingVertical: 10 }}  // Đặt padding cho FlatList
+        />
 
       </View>
     </Wapper>

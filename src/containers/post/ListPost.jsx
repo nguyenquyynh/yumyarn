@@ -82,20 +82,18 @@ const ListPost = props => {
       if (userIdPost) {
         const followUpdate = dataPost?.map(ele => {
           if (ele.create_by._id == userIdPost) {
-            console.log(ele.follow);
             return { ...ele, follow: !ele.follow };
           }
-
           return ele;
         });
         setDataPost(followUpdate);
         const response = await createFollow(idUser, userIdPost);
         if (!response.status) {
           setDataPost(dataPost);
-          console.log(response.data);
+          ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+        } else {
+          ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
         }
-      } else {
-        Alert.alert('Thông báo', 'Không tìm thấy');
       }
     } catch (error) {
       setDataPost(dataPost);

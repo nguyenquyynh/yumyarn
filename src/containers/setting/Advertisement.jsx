@@ -42,6 +42,7 @@ const sampleData = [
           "exist": true,
           "create_by": {
             "_id": "669225710e3001246d117608",
+            "avatar": "http://res.cloudinary.com/dyqb9wx4r/image/upload/v1728787253/1000001680_jzekcd.jpg",
             "name": "Nguyen Xuan Quynh",
             "tagName": "quynh_64"
           },

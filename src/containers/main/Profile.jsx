@@ -91,7 +91,7 @@ const Profile = () => {
                 <Text ixtext style={styles.numbercard}>{t("profile.followers")}</Text>
               </TouchableOpacity>
               <View flex />
-              <TouchableOpacity flex center onPress={() => navigation.navigate('FollowerList')} >
+              <TouchableOpacity flex center onPress={() => navigation.navigate('FollowingList')} >
                 <Text text70BO style={styles.numbercard}>{numberFormat(auth.following)}</Text>
                 <Text ixtext style={styles.numbercard}>{t("profile.following")}</Text>
               </TouchableOpacity>
