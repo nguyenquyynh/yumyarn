@@ -1,26 +1,26 @@
 import { Linking } from "react-native";
 import messaging from '@react-native-firebase/messaging';
 
-const NAVIGATION_IDS = ['home',  'MainChat'];
+const NAVIGATION_IDS = ['Main',  'MainChat'];
 
 const buildDeepLinkFromNotificationData = (data) => {
   const navigationId = data?.navigationId;
   if (!NAVIGATION_IDS.includes(navigationId)) {
     console.log('Unverified navigationId', navigationId)
-    return null;
+    return 'yumyarn://Main';
   }
-  if (navigationId === 'MainChat') {
-    return 'yumyarn://MainChat';
+  if (navigationId === 'Main') {
+    return 'yumyarn://Main';
   }
 
-  return null
+  return 'yumyarn://Main';
 }
 
 const linking = {
     prefixes: ['yumyarn://'],
     config: {
       screens: {
-        Home: 'home',
+        Main: 'Main',
         MainChat: 'MainChat'
       }
     },

@@ -17,6 +17,7 @@ import { B } from 'configs/fonts';
 
 const EditPost = ({ route }) => {
     const navigation = useNavigation()
+    console.log(route.params)
     const user = useSelector(state => state.auth.user)
     const [post, setpost] = useState(route.params.post)
     const address = route.params?.address || route.params.post?.address

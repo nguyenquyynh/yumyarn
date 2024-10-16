@@ -6,21 +6,20 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { createSaved, dePost, getPost } from 'src/hooks/api/post';
+import React, {useEffect, useState} from 'react';
+import {createSaved, dePost, getPost} from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';
-import { createFollow } from 'src/hooks/api/follow';
+import {createFollow} from 'src/hooks/api/follow';
 import Modals from 'components/BottomSheetApp';
-import { Colors, Icon, TouchableOpacity, Text, View } from 'react-native-ui-lib';
-import { useNavigation } from '@react-navigation/native';
-import { BI } from 'configs/fonts';
-import { t } from 'lang';
+import {Colors, Icon, TouchableOpacity, Text, View} from 'react-native-ui-lib';
+import {useNavigation} from '@react-navigation/native';
+import {BI} from 'configs/fonts';
+import {t} from 'lang';
 
 const ListPost = props => {
-  const { idUser, scrollY } = props;
+  const {idUser, scrollY} = props;
   const [open, setOpen] = useState(false);
-  const [post, setPost] = useState({})
   const [idPost, setIdPost] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [dataPost, setDataPost] = useState([]);
@@ -82,7 +81,7 @@ const ListPost = props => {
       if (userIdPost) {
         const followUpdate = dataPost?.map(ele => {
           if (ele.create_by._id == userIdPost) {
-            return { ...ele, follow: !ele.follow };
+            return {...ele, follow: !ele.follow};
           }
           return ele;
         });
@@ -90,9 +89,9 @@ const ListPost = props => {
         const response = await createFollow(idUser, userIdPost);
         if (!response.status) {
           setDataPost(dataPost);
-          ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+          ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
         } else {
-          ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+          ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
         }
       }
     } catch (error) {
@@ -101,8 +100,8 @@ const ListPost = props => {
     }
   };
 
-  const openModalFollow = (idUserCreatePost, followIs, idPost) => {
-    setIdPost(idPost);
+  const openModalFollow = (idUserCreatePost, followIs, id) => {
+    setIdPost(id);
     setIsFollow(followIs);
     setUserIdPost(idUserCreatePost);
     setShowmodal(true);
@@ -111,28 +110,27 @@ const ListPost = props => {
   const handlerRemove = async () => {
     const body = {
       u: idUser,
-      p: post?._id
-    }
-    console.log(body);
+      p: post?._id,
+    };
 
-    const resault = await dePost(body)
+    const resault = await dePost(body);
     if (resault.status) {
-      ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+      ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+      ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
     }
-  }
+  };
   const handlerSave = async () => {
     const resault = await createSaved({
       _id: idUser,
-      post: post?._id
-    })
+      post: idPost,
+    });
     if (resault.status) {
-      ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+      ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
     } else {
-      ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+      ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
     }
-  }
+  };
   const handleOpenComment = id => {
     setIdPost(id);
     setOpen(true);
@@ -152,27 +150,25 @@ const ListPost = props => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        keyExtractor={item => item._id}
-        key={item => item?._id}
+        keyExtractor={(item, index) => index}
         onEndReached={() => {
           handleLoadMore(page + 1);
         }}
         onEndReachedThreshold={0.6}
         initialNumToRender={2}
         maxToRenderPerBatch={2}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <RenderPost
             item={item}
             handleOpenComment={handleOpenComment}
             idUser={idUser}
             openModalFollow={openModalFollow}
-            setPost={setPost}
           />
         )}
         ListFooterComponent={() =>
           isLoading && (
             <ActivityIndicator
-              style={{ marginBottom: 50 }}
+              style={{marginBottom: 50}}
               size="large"
               color="#0000ff"
             />
@@ -198,8 +194,7 @@ const ListPost = props => {
             paddingV-x
             centerV
             onPress={() => {
-              console.log(idPost);
-              navigation.navigate('EditPost', { post: post })
+              navigation.navigate('EditPost', {idPost: idPost});
               setShowmodal(false);
             }}>
             <Icon
@@ -209,7 +204,7 @@ const ListPost = props => {
               marginH-x
             />
             <View>
-              <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
+              <Text style={{fontFamily: BI}}>{t('profile.edit')}</Text>
               <Text color={Colors.gray}>{t('post.edit_d')}</Text>
             </View>
           </TouchableOpacity>
@@ -230,7 +225,7 @@ const ListPost = props => {
               marginH-x
             />
             <View>
-              <Text style={{ fontFamily: BI }}>
+              <Text style={{fontFamily: BI}}>
                 {isFollow ? t('app.following') : t('app.follow')}
               </Text>
               <Text color={Colors.gray}>
@@ -246,7 +241,7 @@ const ListPost = props => {
           centerV
           onPress={() => {
             setShowmodal(false);
-            handlerSave()
+            handlerSave();
           }}>
           <Icon
             assetName="bookmark"
@@ -255,11 +250,11 @@ const ListPost = props => {
             marginH-x
           />
           <View>
-            <Text style={{ fontFamily: BI }}>{t('post.save')}</Text>
+            <Text style={{fontFamily: BI}}>{t('post.save')}</Text>
             <Text color={Colors.gray}>{t('post.save_des')}</Text>
           </View>
         </TouchableOpacity>
-        {idUser === userIdPost || post?.repost_by?._id === idUser ? (
+        {idUser === userIdPost ? (
           <TouchableOpacity
             row
             paddingV-x
@@ -269,19 +264,19 @@ const ListPost = props => {
               handlerRemove();
             }}>
             <Icon
-              assetName='remove'
+              assetName="remove"
               size={33}
               tintColor={Colors.yellow}
               marginH-x
             />
             <View>
-              <Text style={{ fontFamily: BI }}>{t('post.remove')}</Text>
-              <Text color={Colors.gray}>
-                {t('post.remove_d')}
-              </Text>
+              <Text style={{fontFamily: BI}}>{t('post.remove')}</Text>
+              <Text color={Colors.gray}>{t('post.remove_d')}</Text>
             </View>
           </TouchableOpacity>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </Modals>
     </>
   );
@@ -290,5 +285,5 @@ const ListPost = props => {
 export default ListPost;
 
 const styles = StyleSheet.create({
-  scrollview: { paddingTop: 50, paddingBottom: 50 },
+  scrollview: {paddingTop: 50, paddingBottom: 50},
 });

@@ -1,17 +1,25 @@
 import IconApp from 'components/IconApp';
-import React, { memo, useState } from 'react';
-import { Dimensions, FlatList, Pressable, StyleSheet } from 'react-native';
-import { Avatar, Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import React, {memo, useState} from 'react';
+import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
+import {
+  Avatar,
+  Colors,
+  Icon,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native-ui-lib';
 import InteractPost from 'components/commons/InteractPost';
-import { EBI } from 'configs/fonts';
-import { useNavigation } from '@react-navigation/native';
+import {EBI} from 'configs/fonts';
+import {useNavigation} from '@react-navigation/native';
 import RenderVideo from './RenderVideo';
-import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate';
-import { t } from 'lang';
+import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
+import {t} from 'lang';
 
-const { width: MAX_WIDTH } = Dimensions.get('window');
+const {width: MAX_WIDTH} = Dimensions.get('window');
 const RenderPost = props => {
-  const { item, handleOpenComment, idUser, openModalFollow, setPost } = props;
+  const {item, handleOpenComment, idUser, openModalFollow} = props;
   const navigation = useNavigation();
   const [readmore, setReadmore] = useState(false);
   const content = item?.content;
@@ -22,18 +30,17 @@ const RenderPost = props => {
   const id = item?._id;
   const differenceInSeconds = transDate(item?.create_at);
   const isFire = item.isFire;
-
   return (
     <View paddingH-x marginB-20 bg-white style={Style.sizeContainer}>
       <View row marginB-v paddingT-10>
         <View row left flex>
           <Avatar
-            source={{ uri: item?.create_by?.avatar }}
+            source={{uri: item?.create_by?.avatar}}
             size={35}
             onPress={() => {
               navigation.navigate('OtherProfile', {
                 name: item?.create_by?.name,
-                _id: item?.create_by?._id
+                _id: item?.create_by?._id,
               });
             }}
           />
@@ -45,29 +52,31 @@ const RenderPost = props => {
                 onPress={() => {
                   navigation.navigate('OtherProfile', {
                     name: item?.create_by?.name,
-                    _id: item?.create_by?._id
+                    _id: item?.create_by?._id,
                   });
                 }}>
                 {item?.create_by?.name}
               </Text>
-              {item?.repost_by &&
+              {item?.repost_by && (
                 <View row centerV>
-                  <Icon marginH-10 assetName='retweet' size={10} />
+                  <Icon marginH-10 assetName="retweet" size={10} />
                   <Text text80BO>@{item?.repost_by?.tagName}</Text>
                 </View>
-              }
+              )}
             </View>
-            <Text xiitext style={{ color: '#BEBEBE' }}>
+            <Text xiitext style={{color: '#BEBEBE'}}>
               {changeTime(differenceInSeconds)}
             </Text>
           </View>
         </View>
         <TouchableOpacity
           onPress={() => {
-            openModalFollow(item?.create_by?._id, item?.follow, id)
-            setPost?.(item)
-          }
-          }
+            openModalFollow(
+              item?.repost_by?._id ? item?.repost_by._id : item?.create_by?._id,
+              item?.follow,
+              id,
+            );
+          }}
           row
           center>
           <IconApp assetName={'dots'} size={20} />
@@ -88,9 +97,9 @@ const RenderPost = props => {
             <Text
               key={el}
               onPress={() => {
-                navigation.navigate('Search', { inputkey: el });
+                navigation.navigate('Search', {inputkey: el});
               }}
-              style={{ fontFamily: EBI }}
+              style={{fontFamily: EBI}}
               color={Colors.yellow}>
               #{el}{' '}
             </Text>
@@ -101,7 +110,7 @@ const RenderPost = props => {
         <Icon assetName="location" size={12} marginR-v />
         <Text
           onPress={() => {
-            navigation.navigate('SearchMap', { defaultlocation: item?.address });
+            navigation.navigate('SearchMap', {defaultlocation: item?.address});
           }}
           text
           text90BO
@@ -121,12 +130,14 @@ const RenderPost = props => {
           renderItem={data => (
             <Pressable
               onPress={() => {
-                navigation.navigate('PostDetail', { id: id });
+                navigation.navigate('PostDetail', {id: id});
               }}
-              style={{ overflow: 'hidden', borderRadius: 15 }}>
-              {data.item.endsWith('.mp4') ? <RenderVideo urlvideo={data.item} /> : (
+              style={{overflow: 'hidden', borderRadius: 15}}>
+              {data.item.endsWith('.mp4') ? (
+                <RenderVideo urlvideo={data.item} />
+              ) : (
                 <Image
-                  source={{ uri: data.item }}
+                  source={{uri: data.item}}
                   style={Style.styleImage}
                   resizeMode="cover"
                 />

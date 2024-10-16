@@ -10,14 +10,14 @@ import {Toast} from 'react-native-ui-lib';
 import {PermissionsAndroid, ToastAndroid} from 'react-native';
 import {t} from 'lang';
 import OpenApp from 'components/commons/OpenApp';
-import {io, Socket} from 'socket.io-client';
+import {io} from 'socket.io-client';
 import {initAppStateManager} from 'services/SocketAppStatus';
 import messaging from '@react-native-firebase/messaging';
 import {addfcmtoken, addSocket} from 'reducers/fcm';
 
 const MainNavigation = () => {
   const auth = useSelector(state => state.auth);
-  const fcm = useSelector(state => state.fcm);
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -44,14 +44,8 @@ const MainNavigation = () => {
   };
 
   useEffect(() => {
-    if (fcm?.socket && auth?.user) {
-      fcm.socket.emit('newOnlUser', {id: auth.user._id});
-    }
-  }, [fcm]);
-
-  useEffect(() => {
     requestUserPermission();
-    const newSocket = io('https://api.phqmarket.online');
+    const newSocket = io(process.env.BASEAPI_URL);
     dispatch(addSocket(newSocket));
     const cleanup = initAppStateManager(newSocket);
     return () => {
