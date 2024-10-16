@@ -20,7 +20,6 @@ import { t } from 'lang';
 const ListPost = props => {
   const { idUser, scrollY } = props;
   const [open, setOpen] = useState(false);
-  const [post, setPost] = useState({})
   const [idPost, setIdPost] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [dataPost, setDataPost] = useState([]);
@@ -101,8 +100,8 @@ const ListPost = props => {
     }
   };
 
-  const openModalFollow = (idUserCreatePost, followIs, idPost) => {
-    setIdPost(idPost);
+  const openModalFollow = (idUserCreatePost, followIs, id) => {
+    setIdPost(id);
     setIsFollow(followIs);
     setUserIdPost(idUserCreatePost);
     setShowmodal(true);
@@ -113,7 +112,6 @@ const ListPost = props => {
       u: idUser,
       p: post?._id
     }
-    console.log(body);
 
     const resault = await dePost(body)
     if (resault.status) {
@@ -125,7 +123,7 @@ const ListPost = props => {
   const handlerSave = async () => {
     const resault = await createSaved({
       _id: idUser,
-      post: post?._id
+      post: idPost
     })
     if (resault.status) {
       ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
@@ -152,8 +150,7 @@ const ListPost = props => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        keyExtractor={item => item._id}
-        key={item => item?._id}
+        keyExtractor={(item, index) => index}
         onEndReached={() => {
           handleLoadMore(page + 1);
         }}
@@ -166,7 +163,6 @@ const ListPost = props => {
             handleOpenComment={handleOpenComment}
             idUser={idUser}
             openModalFollow={openModalFollow}
-            setPost={setPost}
           />
         )}
         ListFooterComponent={() =>
@@ -198,8 +194,7 @@ const ListPost = props => {
             paddingV-x
             centerV
             onPress={() => {
-              console.log(idPost);
-              navigation.navigate('EditPost', { post: post })
+              navigation.navigate('EditPost', { idPost: idPost });
               setShowmodal(false);
             }}>
             <Icon

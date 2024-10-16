@@ -23,7 +23,7 @@ const viewNotify = async (remoteMessage) => {
             android: {
                 channelId: channelId,
                 pressAction: {
-                    id: remoteMessage.data?.navigationId || "home",
+                    id: remoteMessage.data?.navigationId || "Main",
                 },
                 style: {
                     type: AndroidStyle.MESSAGING,
@@ -49,12 +49,12 @@ const viewNotify = async (remoteMessage) => {
 }
 
 const notifyApp = async (gotoLink) => {
-    // notifee.onBackgroundEvent(async ({ type, detail }) => {
-    //     if (type === EventType.PRESS && NAVIGATION_IDS.includes(detail.pressAction.id)) {
-    //         console.log("go to link: "+ detail.pressAction.id)
-    //         gotoLink(detail.pressAction.id);
-    //     }
-    // });
+    notifee.onBackgroundEvent(async ({ type, detail }) => {
+        if (type === EventType.PRESS && NAVIGATION_IDS.includes(detail.pressAction.id)) {
+            console.log("go to link: "+ detail.pressAction.id)
+            gotoLink("Main");
+        }
+    });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
         console.log('Message hanlde background', remoteMessage)

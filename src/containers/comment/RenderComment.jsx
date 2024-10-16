@@ -100,9 +100,7 @@ const RenderComment = props => {
                       toggleReplies(item._id, returnPage, dataReComment);
                     }
                   }}>
-                  <Text>
-                    {t('app.see')} {reComment} {t('app.feedback')}
-                  </Text>
+                  <Text>{t('app.more')}</Text>
                 </TouchableOpacity>
               )}
             </View>

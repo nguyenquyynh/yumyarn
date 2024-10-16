@@ -14,6 +14,7 @@ import {io, Socket} from 'socket.io-client';
 import {initAppStateManager} from 'services/SocketAppStatus';
 import messaging from '@react-native-firebase/messaging';
 import {addfcmtoken, addSocket} from 'reducers/fcm';
+import { linking } from 'services/Linking';
 
 const MainNavigation = () => {
   const auth = useSelector(state => state.auth);
@@ -51,7 +52,7 @@ const MainNavigation = () => {
 
   useEffect(() => {
     requestUserPermission();
-    const newSocket = io('https://api.phqmarket.online');
+    const newSocket = io('https://yumyarn.api.phqmarket.online');
     dispatch(addSocket(newSocket));
     const cleanup = initAppStateManager(newSocket);
     return () => {
@@ -75,7 +76,7 @@ const MainNavigation = () => {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       {loading ? <OpenApp /> : auth.isLogin ? <MainApp /> : <Authen />}
     </NavigationContainer>
   );
