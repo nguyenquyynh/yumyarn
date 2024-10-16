@@ -71,7 +71,11 @@ const RenderPost = props => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            openModalFollow(item?.create_by?._id, item?.follow, id);
+            openModalFollow(
+              item?.repost_by?._id ? item?.repost_by._id : item?.create_by?._id,
+              item?.follow,
+              id,
+            );
           }}
           row
           center>

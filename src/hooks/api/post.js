@@ -10,18 +10,15 @@ export async function createpost(data) {
     );
 
     // Kiểm tra lỗi trong then của Promise
-    resault
-      .then(response => {
-        if (response.status) {
-          return {status: true, data: response.data};
-        } else {
-          return {status: false, data: response.data};
-        }
-    } catch (error) {
-        console.log(error + "Lỗi")
-        return Promise.reject(error)
+    if (resault.status) {
+      return {status: true, data: response.data};
+    } else {
+      return {status: false, data: response.data};
     }
-
+  } catch (error) {
+    console.log(error + 'Lỗi');
+    return Promise.reject(error);
+  }
 }
 export async function editmypost(data) {
   try {
