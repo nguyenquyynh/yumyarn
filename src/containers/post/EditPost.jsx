@@ -17,7 +17,6 @@ import { B } from 'configs/fonts';
 
 const EditPost = ({ route }) => {
     const navigation = useNavigation()
-    console.log(route.params)
     const user = useSelector(state => state.auth.user)
     const [post, setpost] = useState(route.params.post)
     const address = route.params?.address || route.params.post?.address
@@ -313,7 +312,7 @@ const EditPost = ({ route }) => {
                             onKeyPress={onHashtagPress}
                             multiline
                         />
-                        {images.length > 0 && <FlatList
+                        {images?.length > 0 && <FlatList
                             scrollEnabled={false}
                             style={styles.imageListContainer}
                             data={images}

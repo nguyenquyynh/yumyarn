@@ -24,6 +24,7 @@ import languageFormat from 'configs/ui/languages';
 import {setting_changelanguage} from 'reducers/setting';
 import TextApp from 'components/commons/TextApp';
 import OptionSetting from 'components/settings/OptionSetting';
+import { logout } from 'src/hooks/api/profile';
 
 const Setting = () => {
   const auth = useSelector(state => state.auth.user);
@@ -34,8 +35,9 @@ const Setting = () => {
   const [showlanguage, setshowlanguage] = useState(false);
 
   const handlerSignout = async () => {
-    await dispatch(auth_logout());
+    await logout(auth?._id)
     socket.emit('logout', {id: auth?._id});
+    await dispatch(auth_logout());
   };
 
   const renderLanguage = item => {

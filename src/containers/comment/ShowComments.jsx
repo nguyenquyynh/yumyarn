@@ -1,15 +1,15 @@
-import { Alert, ScrollView, StyleSheet, TextInput } from 'react-native';
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import {Alert, StyleSheet, TextInput} from 'react-native';
+import React, {memo, useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
-import { createComment, getListComment } from 'src/hooks/api/comment';
+import {createComment, getListComment} from 'src/hooks/api/comment';
 import CommentSection from './CommentSection';
-import { t } from 'lang';
-import { useSelector } from 'react-redux';
+import {t} from 'lang';
+import {useSelector} from 'react-redux';
 
 const ShowComments = props => {
-  const { idPost, setOpen, open, dataPost, setDataPost, setIdPost } = props;
+  const {idPost, setOpen, open, dataPost, setDataPost, setPost} = props;
   const create_by = useSelector(state => state.auth.user);
   const [dataComment, setDataComment] = useState([]);
   const [writeComment, setWriteComment] = useState('');
@@ -47,7 +47,7 @@ const ShowComments = props => {
     if (
       !isLoading &&
       dataComment?.length % 10 == 0 &&
-      idPost !== '' &&
+      idPost &&
       MorePage
     ) {
       setIsLoading(true);
@@ -66,13 +66,13 @@ const ShowComments = props => {
           create_by: create_by._id,
           parent: parent?._id || null,
         };
-    
+
         const result = await createComment(body);
         if (result.status) {
           setWriteComment('');
           const commentUpdate = dataPost?.map(ele => {
             if (ele._id == idPost) {
-              return { ...ele, comments: ele.comments + 1 };
+              return {...ele, comments: ele.comments + 1};
             }
 
             return ele;
@@ -85,7 +85,7 @@ const ShowComments = props => {
                 return prev;
               }
 
-              return { ...prev, [result.data.parent]: !prev[result.data.parent] };
+              return {...prev, [result.data.parent]: !prev[result.data.parent]};
             });
             //hiển thị comment con
             setDataReComment(prev => ({
@@ -93,15 +93,15 @@ const ShowComments = props => {
               [result.data.parent]: [
                 {
                   ...result.data,
-                  create_by: { ...create_by },
-                  parent: { _id: parent._id, create_by: { name: parent.name } },
+                  create_by: {...create_by},
+                  parent: {_id: parent._id, create_by: {name: parent.name}},
                 },
                 ...(prev[result.data.parent] || []),
               ],
             }));
           } else {
             setDataComment([
-              { ...result.data, create_by: { ...create_by } },
+              {...result.data, create_by: {...create_by}},
               ...dataComment,
             ]);
           }
@@ -116,17 +116,19 @@ const ShowComments = props => {
     }
   };
 
-  useEffect(() => {
-    if (!open) {
-      setDataComment([]);
-      setParent(null);
-      setMorePage(true);
-      setWriteComment('');
-      setIdPost('');
-    }
-  }, [open]);
   return (
-    <Modals modalVisible={open} modalhiden={setOpen}>
+    <Modals
+      modalVisible={open}
+      modalhiden={value => {       
+        setOpen(value);
+        if (!value) {
+          setDataComment([]);
+          setParent(null);
+          setMorePage(true);
+          setWriteComment('');
+          setPost(null);
+        }
+      }}>
       <View>
         <CommentSection
           dataComment={dataComment}
@@ -143,7 +145,7 @@ const ShowComments = props => {
 
         <View style={styles.reponsiveSendComment}>
           {parent && (
-            <View style={{ flexDirection: 'row', width: '100%' }}>
+            <View style={{flexDirection: 'row', width: '100%'}}>
               <Text marginT-5 text>
                 {t('app.answering')}: {parent?.create_by?.name}{' '}
                 <Text
@@ -175,7 +177,7 @@ const ShowComments = props => {
 export default memo(ShowComments);
 
 const styles = StyleSheet.create({
-  styleSend: { position: 'absolute', top: 7, right: 10, padding: 10 },
+  styleSend: {position: 'absolute', top: 7, right: 10, padding: 10},
   containerInput: {
     width: '100%',
     alignItems: 'center',
@@ -190,7 +192,7 @@ const styles = StyleSheet.create({
     height: 40,
     paddingLeft: 10,
     paddingRight: 25,
-    color: 'black'
+    color: 'black',
   },
   colorTextWaring: {
     color: 'red',

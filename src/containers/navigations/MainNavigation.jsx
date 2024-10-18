@@ -14,6 +14,7 @@ import {io} from 'socket.io-client';
 import {initAppStateManager} from 'services/SocketAppStatus';
 import messaging from '@react-native-firebase/messaging';
 import {addfcmtoken, addSocket} from 'reducers/fcm';
+import { linking } from 'services/Linking';
 
 const MainNavigation = () => {
   const auth = useSelector(state => state.auth);
@@ -35,7 +36,6 @@ const MainNavigation = () => {
 
       if (enabled) {
         const token = await messaging().getToken();
-        console.log('token: ' + token);
         dispatch(addfcmtoken(token));
       }
     } catch (error) {
@@ -69,7 +69,7 @@ const MainNavigation = () => {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       {loading ? <OpenApp /> : auth.isLogin ? <MainApp /> : <Authen />}
     </NavigationContainer>
   );

@@ -3,7 +3,7 @@ import React from 'react';
 import ItemFriendChat from './ItemFriendChat';
 
 const FriendChat = props => {
-  const {listFriend} = props;
+  const {listFriend, loading} = props;
 
   return (
     <FlatList
@@ -12,7 +12,9 @@ const FriendChat = props => {
       style={{maxHeight: 91, marginLeft: 20}}
       keyExtractor={item => item._id}
       renderItem={({item}) => <ItemFriendChat item={item} />}
-      ListEmptyComponent={<ActivityIndicator size="large" color="#0313fc" />}
+      ListEmptyComponent={() => (
+        <>{loading && <ActivityIndicator size="large" color="#0313fc" />}</>
+      )}
     />
   );
 };

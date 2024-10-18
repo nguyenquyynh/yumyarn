@@ -37,6 +37,12 @@ const Chating = ({route}) => {
     }
   };
 
+  const scrollTo = index => {
+    if (refScoll?.current) {
+      refScoll.current?.scrollToIndex({index: index, animated: true});
+    }
+  };
+
   const getMessage = async () => {
     try {
       if (!isLoading) {
@@ -50,6 +56,9 @@ const Chating = ({route}) => {
         if (response.status) {
           const reversedData = [...response?.data].reverse();
           setlistMessage(prev => [...reversedData, ...prev]);
+          if (reversedData.length >= 20 && listMessage.length != 0) {
+            scrollTo(reversedData.length-1);
+          }
         }
       }
     } catch (error) {
@@ -106,14 +115,14 @@ const Chating = ({route}) => {
 
     socket.emit('onChat', {userId: user, friend: friend._id});
     socket.on('CheckIsWritting', data => {
-      if(data.user == friend._id){
+      if (data.user == friend._id) {
         setfriendIsWritting(data.data);
       }
     });
-
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
+        scroll();
         socket.emit('isWritting', {receiveName: friend._id, userId: user});
       },
     );
@@ -124,7 +133,6 @@ const Chating = ({route}) => {
         socket.emit('isNotWritting', {receiveName: friend._id, userId: user});
       },
     );
-
     return () => {
       socket.emit('outChat', {userId: user});
       socket.off('receive_message');
@@ -133,12 +141,6 @@ const Chating = ({route}) => {
       keyboardDidHideListener.remove();
     };
   }, []);
-
-  useEffect(() => {
-    if(listMessage <=20){
-      scroll();
-    }
-  }, [refScoll, listMessage, isLoading]);
 
   return (
     <View style={{position: 'relative', flex: 1}}>
@@ -175,6 +177,10 @@ const Chating = ({route}) => {
             onRefresh={() => getMessage()}
           />
         }
+        onLayout={() => scroll()}
+        onContentSizeChange={() => listMessage?.length <= 20 && scroll()}
+        automaticallyAdjustKeyboardInsets
+        showsVerticalScrollIndicator={false}
       />
 
       <View style={styles.containerChat}>

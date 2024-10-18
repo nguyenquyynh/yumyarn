@@ -11,9 +11,9 @@ export async function createpost(data) {
 
     // Kiểm tra lỗi trong then của Promise
     if (resault.status) {
-      return {status: true, data: response.data};
+      return {status: true, data: resault.data};
     } else {
-      return {status: false, data: response.data};
+      return {status: false, data: resault.data};
     }
   } catch (error) {
     console.log(error + 'Lỗi');

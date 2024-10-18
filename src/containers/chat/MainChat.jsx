@@ -100,7 +100,7 @@ const MainChat = () => {
       funtleft={() => navigation.goBack()}
       title={t('chat.title')}>
       <View flex bg-white gap-8>
-        <FriendChat listFriend={listFriend} />
+        <FriendChat listFriend={listFriend} loading={loading}/>
         <ListChat
           listMessage={listMessage}
           loading={loading}

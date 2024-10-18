@@ -13,16 +13,25 @@ const ListChat = props => {
         keyExtractor={item => item._id}
         renderItem={({item}) => <ItemChat item={item} />}
         onEndReached={() => {
-          if (!loading ) {
-            getListMessage(page +1);
+          if (!loading) {
+            getListMessage(page + 1);
           }
         }}
         refreshControl={
           <RefreshControl
             refreshing={loading}
-            onRefresh={() => getListMessage(page +1)}
+            onRefresh={() => getListMessage(page + 1)}
           />
         }
+        ListEmptyComponent={() => (
+          <>
+            {loading ? (
+              <ActivityIndicator size="large" color="#0313fc" />
+            ) : (
+              <Text>Rất tiếc không tìm thấy bạn của bạn </Text>
+            )}
+          </>
+        )}
       />
     </View>
   );

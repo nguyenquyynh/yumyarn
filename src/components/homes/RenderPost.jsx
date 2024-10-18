@@ -18,7 +18,7 @@ import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import {t} from 'lang';
 
 const {width: MAX_WIDTH} = Dimensions.get('window');
-const RenderPost = props => {
+const RenderPost = memo(props => {
   const {item, handleOpenComment, idUser, openModalFollow} = props;
   const navigation = useNavigation();
   const [readmore, setReadmore] = useState(false);
@@ -74,7 +74,7 @@ const RenderPost = props => {
             openModalFollow(
               item?.repost_by?._id ? item?.repost_by._id : item?.create_by?._id,
               item?.follow,
-              id,
+              item,
             );
           }}
           row
@@ -149,7 +149,7 @@ const RenderPost = props => {
       </View>
 
       <InteractPost
-        id={id}
+        item={item}
         handleOpenComment={handleOpenComment}
         countFire={countFire}
         countComment={countComment}
@@ -158,9 +158,9 @@ const RenderPost = props => {
       />
     </View>
   );
-};
+});
 
-export default memo(RenderPost);
+export default RenderPost;
 
 const Style = StyleSheet.create({
   outline: {
