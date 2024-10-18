@@ -8,20 +8,20 @@ import { t } from 'lang';
 import { rePost } from 'src/hooks/api/post';
 
 const InteractPost = props => {
-  const { id, handleOpenComment, countFire, countComment, isFire, idUser } = props;
+  const { item, handleOpenComment, countFire, countComment, isFire, idUser } = props;
   const [fireStatus, setFireStatus] = useState(isFire);
   const [countFireStatus, setCountFireStatus] = useState(countFire);
   const [isRePost, setIsRePost] = useState(false)
   const toggleFire = async () => {
     try {
+      
       setFireStatus(!fireStatus);
       setCountFireStatus(
         fireStatus ? countFireStatus - 1 : countFireStatus + 1,
       );
-      const response = await firePost(idUser, id);
+      const response = await firePost(idUser, item._id);
       if (!response.status) {
         setFireStatus(fireStatus);
-        console.log(response.data);
         setCountFireStatus(countFireStatus);
       }
     } catch (error) {
@@ -32,7 +32,7 @@ const InteractPost = props => {
   };
   const handlerRePost = async () => {
     const body = {
-      p: id,
+      p: item._id,
       u: idUser
     }
     const resault = await rePost(body)
@@ -53,7 +53,7 @@ const InteractPost = props => {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.containerClick}
-        onPress={() => handleOpenComment(id)}>
+        onPress={() => handleOpenComment(item)}>
         <Icon assetName="comment" size={18} />
         <Text style={styles.text}>{numberFormat(countComment)}</Text>
       </TouchableOpacity>

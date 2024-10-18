@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {createSaved, dePost, getPost} from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';
@@ -20,7 +20,7 @@ import {t} from 'lang';
 const ListPost = props => {
   const {idUser, scrollY} = props;
   const [open, setOpen] = useState(false);
-  const [idPost, setIdPost] = useState('');
+  const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [dataPost, setDataPost] = useState([]);
   const [page, setPage] = useState(0);
@@ -100,8 +100,8 @@ const ListPost = props => {
     }
   };
 
-  const openModalFollow = (idUserCreatePost, followIs, id) => {
-    setIdPost(id);
+  const openModalFollow = (idUserCreatePost, followIs, data) => {
+    setPost(data);
     setIsFollow(followIs);
     setUserIdPost(idUserCreatePost);
     setShowmodal(true);
@@ -110,7 +110,7 @@ const ListPost = props => {
   const handlerRemove = async () => {
     const body = {
       u: idUser,
-      p: post?._id,
+      p: post._id,
     };
 
     const resault = await dePost(body);
@@ -123,7 +123,7 @@ const ListPost = props => {
   const handlerSave = async () => {
     const resault = await createSaved({
       _id: idUser,
-      post: idPost,
+      post: data._id,
     });
     if (resault.status) {
       ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
@@ -131,8 +131,8 @@ const ListPost = props => {
       ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
     }
   };
-  const handleOpenComment = id => {
-    setIdPost(id);
+  const handleOpenComment = data => {
+    setPost(data);
     setOpen(true);
   };
   return (
@@ -142,6 +142,7 @@ const ListPost = props => {
         style={styles.scrollview}
         scrollEnabled
         data={dataPost}
+        extraData={dataPost}
         onScroll={state => {
           if (scrollY) {
             scrollY.setValue(state.nativeEvent.contentOffset.y);
@@ -150,38 +151,42 @@ const ListPost = props => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        keyExtractor={(item, index) => index}
+        keyExtractor={(_, index) =>index.toString()}
         onEndReached={() => {
           handleLoadMore(page + 1);
         }}
         onEndReachedThreshold={0.6}
-        initialNumToRender={2}
-        maxToRenderPerBatch={2}
+        initialNumToRender={4}
         renderItem={({item}) => (
           <RenderPost
-            item={item}
-            handleOpenComment={handleOpenComment}
-            idUser={idUser}
-            openModalFollow={openModalFollow}
-          />
-        )}
-        ListFooterComponent={() =>
-          isLoading && (
-            <ActivityIndicator
-              style={{marginBottom: 50}}
-              size="large"
-              color="#0000ff"
+              item={item}
+              handleOpenComment={handleOpenComment}
+              idUser={idUser}
+              openModalFollow={openModalFollow}
             />
-          )
-        }
+        )}
+        ListFooterComponent={() => {
+          return (
+            <>
+              {isLoading && (
+                <ActivityIndicator
+                  style={{marginBottom: 50}}
+                  size="large"
+                  color="#0000ff"
+                />
+              )}
+              <View height={50} />
+            </>
+          );
+        }}
       />
 
-      {idPost && (
+      {post?._id && (
         <ShowComments
           open={open}
           setOpen={setOpen}
-          idPost={idPost}
-          setIdPost={setIdPost}
+          idPost={post?._id}
+          setPost={setPost}
           dataPost={dataPost}
           setDataPost={setDataPost}
         />
@@ -194,7 +199,7 @@ const ListPost = props => {
             paddingV-x
             centerV
             onPress={() => {
-              navigation.navigate('EditPost', {idPost: idPost});
+              navigation.navigate('EditPost', {post: post});
               setShowmodal(false);
             }}>
             <Icon
@@ -285,5 +290,5 @@ const ListPost = props => {
 export default ListPost;
 
 const styles = StyleSheet.create({
-  scrollview: {paddingTop: 50, paddingBottom: 50},
+  scrollview: {paddingTop: 50},
 });

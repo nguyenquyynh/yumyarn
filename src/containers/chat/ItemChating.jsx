@@ -1,7 +1,7 @@
 import {View, Text, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {memo} from 'react';
 
-const ItemChating = props => {
+const ItemChating = memo(props => {
   const {item, user} = props;
   return (
     <View
@@ -24,7 +24,7 @@ const ItemChating = props => {
       </Text>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

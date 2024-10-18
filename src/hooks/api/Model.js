@@ -28,6 +28,7 @@ export const USERS = {
   COVERPHOTO: 'coverphoto',
   UPDATE_INFOR: 'updateInfor',
   FIND_USER: 'finduser',
+  LOGOUT_USER: 'logout',
 };
 
 export const COMMENT = {
@@ -80,5 +81,5 @@ export const MESSAGE = {
   GETOLDMESSAGE: 'getOldMessage',
   GETFRIEND: 'getFriend',
   GETLISTMESSAGE: 'getListMessages',
-  SEENMESSAGE: 'seenMessage'
+  SEENMESSAGE: 'seenMessage',
 };
