@@ -1,7 +1,7 @@
 import React from 'react';
 import ItemChat from './ItemChat';
 import {Text, View} from 'react-native-ui-lib';
-import {FlatList, RefreshControl} from 'react-native';
+import {ActivityIndicator, FlatList, RefreshControl} from 'react-native';
 
 const ListChat = props => {
   const {listMessage, loading, getListMessage, refeshListMessage, page} = props;
@@ -20,7 +20,7 @@ const ListChat = props => {
         refreshControl={
           <RefreshControl
             refreshing={loading}
-            onRefresh={() => getListMessage(page + 1)}
+            onRefresh={() => refeshListMessage()}
           />
         }
         ListEmptyComponent={() => (
