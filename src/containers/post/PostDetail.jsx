@@ -7,13 +7,14 @@ import HearDetailPost from 'components/posts/HearDetailPost'
 import numberFormat from 'configs/ui/format'
 import { firePost } from 'src/hooks/api/fire'
 import { useSelector } from 'react-redux'
-import { createSaved, watchPost } from 'src/hooks/api/post'
+import { createReport, createSaved, watchPost } from 'src/hooks/api/post'
 import { EB, EBI, ELI, M } from 'configs/fonts'
 import ShowComments from 'containers/comment/ShowComments'
 import ShowMoreDetailPost from 'components/posts/ShowMoreDetailPost'
 import ShowShareDetailPost from 'components/posts/ShowShareDetailPost'
-import { auth } from 'reducers/auth'
 import { t } from 'lang'
+import { Model, ReportModel } from 'src/hooks/api/Model'
+import Modals from 'components/BottomSheetApp'
 
 const PostDetail = ({ route }) => {
     const { id } = route.params
@@ -27,7 +28,7 @@ const PostDetail = ({ route }) => {
     const [dots, setDots] = useState(false)
     const [issaved, setissaved] = useState(false)
     const [isshare, setIsshare] = useState(false)
-
+    const [report, setReport] = useState(false)
     const getPost = async (query) => {
         const reponse = await watchPost(query)
         if (reponse.status) {
@@ -49,7 +50,16 @@ const PostDetail = ({ route }) => {
         setIsfire(post?.isfire)
     }, [post])
 
-
+    const handleReport = async (e) => {
+        const resault = await createReport({
+            id_post: post?._id, content: e.content
+        })
+        if (resault?.status) {
+            ToastAndroid.show(t('error.reporting'), ToastAndroid.SHORT);
+        } else {
+            ToastAndroid.show(t(resault?.data), ToastAndroid.SHORT);
+        }
+    };
     const handlerPressFire = async () => {
         const fire = await firePost(user._id, id)
         if (fire?.status) {
@@ -63,7 +73,7 @@ const PostDetail = ({ route }) => {
             _id: user?._id,
             post: post?._id
         })
-        if (resault.status) {
+        if (resault?.status) {
             ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
         } else {
             ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
@@ -135,7 +145,9 @@ const PostDetail = ({ route }) => {
                         <Icon tintColor='white' assetName={'share'} size={20} />
                     </Pressable>
                     {post?.create_by?._id !== user?._id &&
-                        <Pressable onPress={() => { }}>
+                        <Pressable onPress={() => {
+                            setReport(true)
+                        }}>
                             <Icon tintColor='white' assetName='flag' size={20} />
                         </Pressable>
                     }
@@ -145,8 +157,24 @@ const PostDetail = ({ route }) => {
                 </View>
             </View>
             <ShowComments idPost={post?._id} setOpen={setiscomment} open={iscomment} create_by={post?.create_by} dataPost={[]} setDataPost={() => { }} setIdPost={() => { }} />
-            <ShowMoreDetailPost disable={dots} setDisable={setDots} create_post={post?.create_by?._id} id_post={post?._id} post={post}/>
+            <ShowMoreDetailPost disable={dots} setDisable={setDots} create_post={post?.create_by?._id} id_post={post?._id} post={post} />
             <ShowShareDetailPost disable={isshare} setDisable={setIsshare} post_id={post?._id} />
+            <Modals modalhiden={setReport} modalVisible={report}>
+                <View>
+                    <Text center margin-10 text80BO>{t("post.report_d")}</Text>
+                    <FlatList
+                        scrollEnabled={false}
+                        data={optionReport}
+                        keyExtractor={item => item._id}
+                        renderItem={({ item, index }) => (
+                            <TouchableOpacity onPress={() => { handleReport(item) }} spread row centerV paddingV-15 paddingH-16 >
+                                <Text text80BO>{item?.value}</Text>
+                                <Icon assetName='right_arrow' size={15} />
+                            </TouchableOpacity>
+                        )}
+                    />
+                </View>
+            </Modals>
         </View>
     )
 }
@@ -154,3 +182,11 @@ const PostDetail = ({ route }) => {
 export default memo(PostDetail)
 const styles = StyleSheet.create({
 })
+var optionReport = [
+    { value: "Nội dung kích động bạo lực mạng.", content: ReportModel.WAR },
+    { value: "Nội dung chứ hình ảnh nhạy cảm 18+.", content: ReportModel.NFSW },
+    { value: "Bài viết liên quan đển an toàn trẻ dưới vị thành niên.", content: ReportModel.KID },
+    { value: "Nội dung chia rẽ sắc tộc, tôn giáo.", content: ReportModel.RELIGION },
+    { value: "Bài viết chứa từ ngữ thô tục.", content: ReportModel.SUCK },
+    { value: "Bài viết chứa nội dung không đúng sự thật", content: ReportModel.FAKE },
+]

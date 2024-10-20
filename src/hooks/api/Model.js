@@ -13,6 +13,7 @@ export const Model = {
   COSTADVERTISEMENT: 'costadvs',
   SAVED: 's',
   MESSAGE: 'message',
+  REPORT: 'reports',
 };
 
 export const USERS = {
@@ -86,3 +87,15 @@ export const MESSAGE = {
   GETLISTMESSAGE: 'getListMessages',
   SEENMESSAGE: 'seenMessage',
 };
+
+export const ReportModel = {
+  ALL: 'all',
+  REMOVE: 're',
+  DETAIL: 'detail',
+  WAR: 'Nội dung kích động bạo lực mạng.',
+  NFSW: 'Nội dung chứ hình ảnh nhạy cảm 18+',
+  KID: 'Bài viết liên quan đển an toàn trẻ dưới vị thành niên.',
+  RELIGION: 'Nội dung chia rẽ sắc tộc, tôn giáo.',
+  SUCK: 'Bài viết chứa từ ngữ thô tục.',
+  FAKE: 'Bài viết chứa nội dung không đúng sự thật'
+}

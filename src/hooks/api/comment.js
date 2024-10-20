@@ -10,7 +10,7 @@ export async function getListComment(dataComment) {
             return { status: false, data : resault.data }
         }
     } catch (error) {
-        return Promise.reject(error)
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 
@@ -23,7 +23,7 @@ export async function createComment(body) {
             return { status: false, data : resault.data }
         }
     } catch (error) {
-        return Promise.reject(error)
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 

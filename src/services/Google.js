@@ -4,7 +4,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-  webClientId: process.env.GOOGLE_SIGNINAPI
+  webClientId: '254299987381-28gqrb6m1luci16l176tfpmkbtoue0eq.apps.googleusercontent.com'
 });
 
 export const signOutGoogle = async () => {
@@ -29,6 +29,10 @@ export const loginGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices()
       const userInfo = await GoogleSignin.signIn()
+      // const token = await GoogleSignin.getTokens()
+      // console.log("userInfo: ", userInfo);
+      // console.log("token: ", token);
+
       return userInfo.data
     } catch (error) {
       console.log(error)

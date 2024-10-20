@@ -19,7 +19,6 @@ import {t} from 'lang';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {auth_logout} from 'reducers/auth';
-import Animated from 'react-native-reanimated';
 import languageFormat from 'configs/ui/languages';
 import {setting_changelanguage} from 'reducers/setting';
 import TextApp from 'components/commons/TextApp';

@@ -15,13 +15,14 @@ import IconApp from 'components/IconApp'
 import CameraApp from 'containers/camera/CameraApp'
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary'
 import { changeAvatarRedux, changeCoverPhotoRedux, deleteStory, updateInforRedux } from 'reducers/auth'
+import LoadingApp from 'components/commons/LoadingApp'
 
 
 const EditProfile = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth.user);
-
+  const [loading, setloading] = useState(false)
   const [refreshing, setRefreshing] = useState(false);
   const [modelshow, setModelshow] = useState(false);
   const [checkUpdataImg, setCheckUpdataImg] = useState();
@@ -29,9 +30,9 @@ const EditProfile = () => {
   const [open_library, setopen_library] = useState(false);
   const [open_camera, setopen_camera] = useState(false);
 
-  const [name, setName] = useState('')
-  const [tagName, setTagName] = useState('')
-  const [story, setStory] = useState('')
+  const [name, setName] = useState(auth?.name)
+  const [tagName, setTagName] = useState(auth?.tagName)
+  const [story, setStory] = useState(auth?.story)
   const [statusStory, setStatusStory] = useState(false)
 
   const [statusConfirmDelete, setStatusConfirmDelete] = useState(false)
@@ -55,6 +56,7 @@ const EditProfile = () => {
   };
 
   const onUploadMedia = async (file) => {
+    setloading(true)
     const { uri, type, name } = file
     try {
       const data = new FormData();
@@ -79,6 +81,7 @@ const EditProfile = () => {
   }
 
   const updateAvatar = async (one_media) => {
+    setloading(true)
     try {
       const uploadedUrl = await onUploadMedia(one_media);
       if (uploadedUrl) {
@@ -89,19 +92,21 @@ const EditProfile = () => {
         const result = await changeAvatar(body)
         if (result.status) {
           dispatch(changeAvatarRedux(uploadedUrl))
+
         }
       } else {
         console.log("Upload failed");
       }
-
-
     } catch (error) {
       console.log(`Error updateAvatar: ${error}`);
       return null;
+    } finally {
+      setloading(false)
     }
   }
 
   const updateInforAccount = async (name, tagName, story) => {
+    setloading(true)
     try {
       const body = {
         _id: auth._id,
@@ -126,10 +131,13 @@ const EditProfile = () => {
     } catch (error) {
       console.log(`Error updateInforAccount: ${error}`);
       return null;
+    } finally {
+      setloading(false)
     }
   }
 
   const updateCoverPhoto = async (one_media) => {
+    setloading(true)
     try {
       const uploadedUrl = await onUploadMedia(one_media);
       if (uploadedUrl) {
@@ -147,6 +155,8 @@ const EditProfile = () => {
     } catch (error) {
       console.log(`Error updateCoverPhoto: ${error}`);
       return null;
+    } finally {
+      setloading(false)
     }
   }
 
@@ -219,11 +229,6 @@ const EditProfile = () => {
     </Modal>)
   }
 
-  const statusDeleteStory = () => {
-    setStatusStory(false)
-    setStatusConfirmDelete(true)
-  }
-
   const rightButton = () => {
     return (
       <TouchableOpacity bg-yellow br60 onPress={() => updateInforAccount(name, tagName, story)} paddingH-xv paddingV-v>
@@ -240,14 +245,17 @@ const EditProfile = () => {
     }
   }, [])
 
+  if (loading) {
+    return <LoadingApp />
+  }
   return (
     <Wapper renderleft funtleft={() => navigation.goBack()} title={t("profile.edit_profile")} customright={rightButton}>
       <View flex bg-white>
-        <TouchableOpacity onPress={() => console.log("ddddd")}>
+        <TouchableOpacity>
           <Image style={{ height: 210 }} source={{ uri: auth?.coverPhoto || 'https://cdn.pixabay.com/photo/2020/01/07/16/41/vietnam-4748105_1280.jpg' }} />
         </TouchableOpacity>
 
-        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}
+        <ScrollView scrollEnabled={false} style={styles.scroll} showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -273,7 +281,7 @@ const EditProfile = () => {
                   <Text ixtext style={styles.numbercard}>{t("profile.following")}</Text>
                 </TouchableOpacity>
               </View>
-              <View paddingH-l centerH >
+              <View paddingH-l centerH height={600} >
                 <TextInput
                   value={name}
                   onChangeText={setName}
@@ -282,14 +290,17 @@ const EditProfile = () => {
                   multiline={true}
                   style={styles.name}
                 />
-                <TextInput
-                  value={tagName}
-                  onChangeText={setTagName}
-                  placeholder={'@' + auth.tagName}
-                  placeholderTextColor={'black'}
-                  multiline={true}
-                  style={styles.tagName}
-                />
+                <View row center>
+                  <Text style={styles.tagName}>@</Text>
+                  <TextInput
+                    value={tagName}
+                    onChangeText={setTagName}
+                    placeholder={auth.tagName}
+                    placeholderTextColor={'black'}
+                    multiline={true}
+                    style={styles.tagName}
+                  />
+                </View>
                 <View>
                   <TextInput
                     value={story}
@@ -299,11 +310,6 @@ const EditProfile = () => {
                     textAlignVertical={'center'}
                     placeholder={statusStory ? auth.story : "Tạo ghi chú mới"}
                   />
-                  <TouchableOpacity activeOpacity={0.5} style={{ width: 120, alignSelf: 'center', borderColor: Colors.red10, borderWidth: 1 }}
-                    backgroundColor={Colors.red80} padding-10 centerH br20 borderWidth={3} borderColor={Colors.red10} marginB-20
-                    onPress={statusDeleteStory}>
-                    <Text text80BO color={Colors.red10}>Xóa ghi chú</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
             </View>
@@ -335,10 +341,8 @@ const styles = StyleSheet.create({
   tagName: {
     fontFamily: BI,
     padding: 0,
-    width: 300,
-    fontSize: 15,
+    fontSize: 14,
     color: 'black',
-    textAlign: 'center'
   },
   name: {
     fontFamily: BI,

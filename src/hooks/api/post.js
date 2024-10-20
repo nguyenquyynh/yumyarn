@@ -1,5 +1,5 @@
 import AxiosInstance from 'services/AxiosInstance';
-import { Model, POST, SAVED } from './Model';
+import { Model, POST, ReportModel, SAVED } from './Model';
 import { isTokenExpired } from './auth';
 
 export async function createpost(data) {
@@ -17,10 +17,12 @@ export async function createpost(data) {
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 export async function editmypost(data) {
+  console.log(data);
+
   try {
     const resault = await AxiosInstance().put(
       `${Model.POSTS}/${POST.EDIT}`,
@@ -34,7 +36,7 @@ export async function editmypost(data) {
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 export async function getPost(dataRequest) {
@@ -44,13 +46,13 @@ export async function getPost(dataRequest) {
     );
 
     if (resault.status) {
-      return { status: true, data: resault.data };
+      return { status: true, data: resault.data };-
     } else {
       return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
@@ -66,7 +68,7 @@ export async function watchPost(dataRequest) {
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
@@ -83,7 +85,7 @@ export async function getTimeOutAdvertisement(dataRequest) {
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return { status: false, data: '' };
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
@@ -95,12 +97,13 @@ export async function getAllAdvertisement(dataRequest) {
     await isTokenExpired(resault.statuscode);
     if (resault.status) {
       return { status: true, data: resault.data };
+
     } else {
       return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi getAllAdvertisement');
-    return { status: false, data: '' };
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
@@ -119,7 +122,7 @@ export async function checkoutAdv(dataRequest) {
     }
   } catch (error) {
     console.log(error + 'Lỗi checkoutAdv');
-    return { status: false, data: '' };
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
@@ -136,12 +139,11 @@ export async function rePost(data) {
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
 export async function dePost(data) {
-  console.log(data);
   try {
     const resault = await AxiosInstance().delete(
       `${Model.POSTS}/${POST.REMOVE}`,
@@ -154,11 +156,13 @@ export async function dePost(data) {
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
 export async function createSaved(data) {
+  console.log(data);
+
   try {
     const resault = await AxiosInstance().post(
       `${Model.SAVED}/${SAVED.CREATE}`,
@@ -199,13 +203,47 @@ export async function isCheckPost(data) {
     if (resault.status) {
       return { status: resault.status};
     } else {
+      return { status: false, data: resault.data };
       return { status: resault.status};
     }
   } catch (error) {
+    console.log(error, 'aaaaaaaaaaaaa');
+    return { status: false, data: 'Opps ! Have a problem' };
     console.log(error + 'Lỗi');
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
+export async function createReport(data) {
+  try {
+    const resault = await AxiosInstance().post(
+      `${Model.REPORT}`, data
+    );
+    return resault
+  } catch (error) {
+    console.log(error + ' Lỗi');
+    return { status: false, data: error.data };
+  }
+}
 
+export async function getReport(data) {
+  try {
+    const resault = await AxiosInstance().get(`${Model.REPORT}/${ReportModel.ALL}?page=${data?.page}&limit=${data.limit}`);
+    return resault
+  } catch (error) {
+    console.log(error + ' Lỗi');
+    return { status: false, data: error.data };
+  }
+}
 
+export async function removeReport(data) {
+  console.log(data);
+  
+  try {
+    const resault = await AxiosInstance().delete(`${Model.REPORT}/${ReportModel.REMOVE}`, {data: data});
+    return resault
+  } catch (error) {
+    console.log(error + ' Lỗi');
+    return { status: false, data: error.data };
+  }
+}

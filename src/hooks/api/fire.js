@@ -13,7 +13,7 @@ const firePost = async (user, post) => {
         return response
     } catch (error) {
         console.log(error + " Lỗi")
-        return { status: false }
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 

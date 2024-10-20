@@ -14,7 +14,7 @@ const InteractPost = props => {
   const [isRePost, setIsRePost] = useState(false)
   const toggleFire = async () => {
     try {
-      
+
       setFireStatus(!fireStatus);
       setCountFireStatus(
         fireStatus ? countFireStatus - 1 : countFireStatus + 1,
@@ -38,8 +38,10 @@ const InteractPost = props => {
     const resault = await rePost(body)
     if (resault.status) {
       ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+      setIsRePost(false)
     } else {
       ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+      setIsRePost(false)
     }
   }
   const handlerShare = () => {
