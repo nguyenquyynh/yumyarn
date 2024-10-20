@@ -1,5 +1,5 @@
-import React, {useEffect, useLayoutEffect, useRef} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddAdrressScreen from 'containers/post/AddAdrressScreen';
 import MainPost from 'containers/post/MainPost';
 import Main from 'containers/main/Main';
@@ -24,9 +24,10 @@ import BuyAdvertisement from 'containers/advertisement/BuyAdvertisement';
 import ZaloWebView from 'containers/advertisement/ZaloWebView';
 import Policy from 'containers/setting/Policy';
 import EditPost from 'containers/post/EditPost';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import Chating from 'containers/chat/Chating';
-import {AppState} from 'react-native';
+import { AppState } from 'react-native';
+import Report from 'containers/setting/Report';
 
 const MainApp = () => {
   const Stack = createNativeStackNavigator();
@@ -88,6 +89,7 @@ const MainApp = () => {
       <Stack.Screen name="Policy" component={Policy} />
       <Stack.Screen name="EditPost" component={EditPost} />
       <Stack.Screen name="Chating" component={Chating} />
+      <Stack.Screen name="Report" component={Report} />
     </Stack.Navigator>
   );
 };

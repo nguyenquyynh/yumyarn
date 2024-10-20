@@ -56,6 +56,9 @@ const MainNavigation = () => {
 
   useEffect(() => {
     const Check = async () => {
+      if (!auth?.token) {
+        return
+      }
       const authen = await checkAuthen(auth.token);
       setTimeout(() => {
         setLoading(false);

@@ -2,23 +2,34 @@ import {
   ActivityIndicator,
   Alert,
   Animated,
+  FlatList,
   RefreshControl,
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
-import {createSaved, dePost, getPost} from 'src/hooks/api/post';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { createReport, createSaved, dePost, getPost } from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';
-import {createFollow} from 'src/hooks/api/follow';
+import { createFollow } from 'src/hooks/api/follow';
 import Modals from 'components/BottomSheetApp';
-import {Colors, Icon, TouchableOpacity, Text, View} from 'react-native-ui-lib';
-import {useNavigation} from '@react-navigation/native';
-import {BI} from 'configs/fonts';
-import {t} from 'lang';
+import { Colors, Icon, TouchableOpacity, Text, View } from 'react-native-ui-lib';
+import { useNavigation } from '@react-navigation/native';
+import { BI } from 'configs/fonts';
+import { t } from 'lang';
+import { ReportModel } from 'src/hooks/api/Model';
+
+const optionReport = [
+  { value: "Nội dung kích động bạo lực mạng.", content: ReportModel.WAR },
+  { value: "Nội dung chứ hình ảnh nhạy cảm 18+.", content: ReportModel.NFSW },
+  { value: "Bài viết liên quan đển an toàn trẻ dưới vị thành niên.", content: ReportModel.KID },
+  { value: "Nội dung chia rẽ sắc tộc, tôn giáo.", content: ReportModel.RELIGION },
+  { value: "Bài viết chứa từ ngữ thô tục.", content: ReportModel.SUCK },
+  { value: "Bài viết chứa nội dung không đúng sự thật", content: ReportModel.FAKE },
+]
 
 const ListPost = props => {
-  const {idUser, scrollY} = props;
+  const { idUser, scrollY } = props;
   const [open, setOpen] = useState(false);
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +40,8 @@ const ListPost = props => {
   const navigation = useNavigation();
   const [userIdPost, setUserIdPost] = useState(null);
   const [isFollow, setIsFollow] = useState(false);
+  const [report, setReport] = useState(false)
+
   const getPostData = async (idUser, page) => {
     try {
       const dataRequest = {
@@ -73,6 +86,12 @@ const ListPost = props => {
   };
 
   useEffect(() => {
+    if (!showmodal) {
+      setReport(false)
+    }
+  }, [showmodal])
+
+  useEffect(() => {
     getPostData(idUser, 1);
   }, []);
 
@@ -81,7 +100,7 @@ const ListPost = props => {
       if (userIdPost) {
         const followUpdate = dataPost?.map(ele => {
           if (ele.create_by._id == userIdPost) {
-            return {...ele, follow: !ele.follow};
+            return { ...ele, follow: !ele.follow };
           }
           return ele;
         });
@@ -123,9 +142,10 @@ const ListPost = props => {
   const handlerSave = async () => {
     const resault = await createSaved({
       _id: idUser,
-      post: data._id,
+      post: post._id,
     });
-    if (resault.status) {
+
+    if (resault?.status) {
       ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
     } else {
       ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
@@ -135,9 +155,19 @@ const ListPost = props => {
     setPost(data);
     setOpen(true);
   };
+  const handleReport = async (e) => {
+    const resault = await createReport({
+      id_post: post?._id, content: e.content
+    })
+    if (resault?.status) {
+      ToastAndroid.show(t('error.reporting'), ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show(t(resault?.data), ToastAndroid.SHORT);
+    }
+  };
   return (
     <>
-      <Animated.FlatList
+      <FlatList
         showsVerticalScrollIndicator={false}
         style={styles.scrollview}
         scrollEnabled
@@ -151,26 +181,27 @@ const ListPost = props => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        keyExtractor={(_, index) =>index.toString()}
+        key={({ index }) => index}
         onEndReached={() => {
           handleLoadMore(page + 1);
         }}
         onEndReachedThreshold={0.6}
-        initialNumToRender={4}
-        renderItem={({item}) => (
+        initialNumToRender={10}
+        renderItem={({ item, index }) => (
           <RenderPost
-              item={item}
-              handleOpenComment={handleOpenComment}
-              idUser={idUser}
-              openModalFollow={openModalFollow}
-            />
-        )}
+            item={item}
+            handleOpenComment={handleOpenComment}
+            idUser={idUser}
+            openModalFollow={openModalFollow}
+          />
+        )
+        }
         ListFooterComponent={() => {
           return (
             <>
               {isLoading && (
                 <ActivityIndicator
-                  style={{marginBottom: 50}}
+                  style={{ marginBottom: 50 }}
                   size="large"
                   color="#0000ff"
                 />
@@ -180,7 +211,6 @@ const ListPost = props => {
           );
         }}
       />
-
       {post?._id && (
         <ShowComments
           open={open}
@@ -193,102 +223,139 @@ const ListPost = props => {
       )}
 
       <Modals modalhiden={setShowmodal} modalVisible={showmodal}>
-        {idUser === userIdPost && (
-          <TouchableOpacity
-            row
-            paddingV-x
-            centerV
-            onPress={() => {
-              navigation.navigate('EditPost', {post: post});
-              setShowmodal(false);
-            }}>
-            <Icon
-              assetName="edit"
-              size={33}
-              tintColor={Colors.yellow}
-              marginH-x
+        {
+          report ? <View>
+            <Text center margin-10 text80BO>{t("post.report_d")}</Text>
+            <FlatList
+              scrollEnabled={false}
+              data={optionReport}
+              keyExtractor={item => item._id}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity onPress={() => { handleReport(item) }} spread row centerV paddingV-15 paddingH-16 style={{ borderBottomWidth: 0.5 }}>
+                  <Text text80BO>{item?.value}</Text>
+                  <Icon assetName='right_arrow' size={15} />
+                </TouchableOpacity>
+              )}
             />
-            <View>
-              <Text style={{fontFamily: BI}}>{t('profile.edit')}</Text>
-              <Text color={Colors.gray}>{t('post.edit_d')}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        {idUser !== userIdPost && (
-          <TouchableOpacity
-            row
-            paddingV-x
-            centerV
-            onPress={() => {
-              setShowmodal(false);
-              handleFollow();
-            }}>
-            <Icon
-              assetName={isFollow ? 'cancle_follow' : 'check_follow'}
-              size={33}
-              // tintColor={Colors.yellow}
-              marginH-x
-            />
-            <View>
-              <Text style={{fontFamily: BI}}>
-                {isFollow ? t('app.following') : t('app.follow')}
-              </Text>
-              <Text color={Colors.gray}>
-                {' '}
-                {isFollow ? t('post.unFollow_des') : t('post.follow_des')}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity
-          row
-          paddingV-x
-          centerV
-          onPress={() => {
-            setShowmodal(false);
-            handlerSave();
-          }}>
-          <Icon
-            assetName="bookmark"
-            size={33}
-            tintColor={Colors.yellow}
-            marginH-x
-          />
-          <View>
-            <Text style={{fontFamily: BI}}>{t('post.save')}</Text>
-            <Text color={Colors.gray}>{t('post.save_des')}</Text>
           </View>
-        </TouchableOpacity>
-        {idUser === userIdPost ? (
-          <TouchableOpacity
-            row
-            paddingV-x
-            centerV
-            onPress={() => {
-              setShowmodal(false);
-              handlerRemove();
-            }}>
-            <Icon
-              assetName="remove"
-              size={33}
-              tintColor={Colors.yellow}
-              marginH-x
-            />
+            :
             <View>
-              <Text style={{fontFamily: BI}}>{t('post.remove')}</Text>
-              <Text color={Colors.gray}>{t('post.remove_d')}</Text>
+              {idUser === userIdPost || idUser === post?.repost_by?._id && (
+                <TouchableOpacity
+                  row
+                  paddingV-x
+                  centerV
+                  onPress={() => {
+                    navigation.navigate('EditPost', { post: post });
+                    setShowmodal(false);
+                  }}>
+                  <Icon
+                    assetName="edit"
+                    size={33}
+                    tintColor={Colors.yellow}
+                    marginH-x
+                  />
+                  <View>
+                    <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
+                    <Text color={Colors.gray}>{t('post.edit_d')}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              {idUser !== userIdPost && (
+                <TouchableOpacity
+                  row
+                  paddingV-x
+                  centerV
+                  onPress={() => {
+                    setShowmodal(false);
+                    handleFollow();
+                  }}>
+                  <Icon
+                    assetName={isFollow ? 'cancle_follow' : 'check_follow'}
+                    size={33}
+                    // tintColor={Colors.yellow}
+                    marginH-x
+                  />
+                  <View>
+                    <Text style={{ fontFamily: BI }}>
+                      {isFollow ? t('app.following') : t('app.follow')}
+                    </Text>
+                    <Text color={Colors.gray}>
+                      {' '}
+                      {isFollow ? t('post.unFollow_des') : t('post.follow_des')}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity
+                row
+                paddingV-x
+                centerV
+                onPress={() => {
+                  setShowmodal(false);
+                  handlerSave();
+                }}>
+                <Icon
+                  assetName="bookmark"
+                  size={33}
+                  tintColor={Colors.yellow}
+                  marginH-x
+                />
+                <View>
+                  <Text style={{ fontFamily: BI }}>{t('post.save')}</Text>
+                  <Text color={Colors.gray}>{t('post.save_des')}</Text>
+                </View>
+              </TouchableOpacity>
+              {idUser === userIdPost && (
+                <TouchableOpacity
+                  row
+                  paddingV-x
+                  centerV
+                  onPress={() => {
+                    setShowmodal(false);
+                    handlerRemove();
+                  }}>
+                  <Icon
+                    assetName="remove"
+                    size={33}
+                    tintColor={Colors.yellow}
+                    marginH-x
+                  />
+                  <View>
+                    <Text style={{ fontFamily: BI }}>{t('post.remove')}</Text>
+                    <Text color={Colors.gray}>{t('post.remove_d')}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              {(idUser !== post?.create_by?._id && idUser !== post?.repost_by?._id) && (
+                <TouchableOpacity
+                  row
+                  paddingV-x
+                  centerV
+                  onPress={() => {
+                    setReport(true)
+                  }}>
+                  <Icon
+                    assetName="flag"
+                    size={33}
+                    tintColor={Colors.yellow}
+                    marginH-x
+                  />
+                  <View>
+                    <Text style={{ fontFamily: BI }}>{t('post.report')}</Text>
+                    <Text color={Colors.gray}>{t('post.report_d')}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
-          </TouchableOpacity>
-        ) : (
-          <></>
-        )}
+        }
       </Modals>
     </>
   );
 };
 
-export default ListPost;
+export default memo(ListPost);
 
 const styles = StyleSheet.create({
-  scrollview: {paddingTop: 50},
+  scrollview: { paddingTop: 50 },
 });

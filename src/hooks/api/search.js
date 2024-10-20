@@ -12,7 +12,7 @@ const get_suggest = async (keyword) => {
 
     } catch (error) {
         console.log(error + "Lỗi")
-        return Promise.reject(error)
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 
@@ -27,7 +27,7 @@ const search_post = async (keyword, page) => {
 
     } catch (error) {
         console.log(error + "Lỗi")
-        return Promise.reject(error)
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 
@@ -42,7 +42,7 @@ const search_user = async (keyword, page, user) => {
 
     } catch (error) {
         console.log(error + "Lỗi")
-        return Promise.reject(error)
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 

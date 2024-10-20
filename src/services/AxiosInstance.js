@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {auth_logout} from 'reducers/auth';
-import {store} from 'store/store';
+import { auth_logout } from 'reducers/auth';
+import { store } from 'store/store';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AxiosInstance = (token = '', contentType = 'application/json') => {
@@ -28,7 +28,7 @@ const AxiosInstance = (token = '', contentType = 'application/json') => {
         // redirect to login page
         store.dispatch(auth_logout());
       }
-      return Promise.reject(err);
+      return Promise.reject(err?.response?.data)
     },
   );
   return axiosInstance;

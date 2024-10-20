@@ -58,7 +58,7 @@
     "slogan": "Kết nối bạn bè, thỏa mãn đam mê",
     "i_read": "Tôi chấp nhập",
     "expired": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
-    "register": "Tài khoảng của bạn đã được đăng kí! Đăng nhập ngay",
+    "register": "Tài khoảng của bạn đã được đăng kí! Kiếm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
     "verify": "Kiếm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
     "policy": "chính sách bảo mật",
     "google": "Đăng nhập với Google",
@@ -80,10 +80,11 @@
     "retweet_d": "Đăng lại vào dòng thời gian của bạn.",
     "edit_d": "Chỉnh sửa lại nội dung của bài.",
     "report": "Báo cáo",
+    "report_d": "Báo lại cho chúng tôi vấn đề của bài viết này.",
     "save":"Lưu",
     "save_des":"Lưu bài viết bạn yêu thích",
     "follow_des":"Theo dõi người bạn thích",
-    "unFollow_des":"Gỡ theo dõi người bạn không thích"
+    "unFollow_des":"Gỡ theo dõi người bạn không thích",
   },
   "notification": {
     "title": "Thông báo",
@@ -94,7 +95,7 @@
   "title_model": {
     "remove_account": "Bạn có muốn xóa tài khoản không ?",
     "cancel": "Hủy",
-    "ok": "Đồng ý",
+    "ok": "Tôi hiểu",
     "content_remove_account": "Tài khoản bị xóa sẽ vĩnh viễn không thể khôi phục",
     "post_success": "Trải nghiệm của bạn đã được chia sẻ",
     "post_faile": "Trải nghiệm của bạn chưa được chia sẻ",
@@ -146,7 +147,8 @@
     "link": "Liên kết hồ sơ",
     "exepctmes": "Cho phép nhận tin nhắn",
     "mesOptions": "Nhận tin nhắn",
-    "whosend": "Ai có thể gửi tin nhắn cho bạn"
+    "whosend": "Ai có thể gửi tin nhắn cho bạn",
+    "report": "Danh sách báo cáo"
   },
   "home": {
     "welcome": "Xin chào,",
@@ -199,5 +201,10 @@
     "status": "Trạng thái hoạt động",
     "seen": "Trạng thái đọc",
     "seen_d": "Mọi người có thể biết khi nào bạn đọc tin nhắn của họ, nhưng chỉ biết khi cả bạn và họ đều bật tính năng này"
+  },
+  "error": {
+    "reported" : "Báo cào này của bạn đã gửi trước đó vui lòng đợi",
+    "reporting": "Chúng tôi sẽ xem xét báo cáo của bạn.",
+    "missinput": "Thiếu dữ liệu để xử lý."
   }
 }
