@@ -29,6 +29,7 @@ const ListPost = props => {
   const navigation = useNavigation();
   const [userIdPost, setUserIdPost] = useState(null);
   const [isFollow, setIsFollow] = useState(false);
+  const [statusSavePost, setStatusSavePost] = useState(false);
   const getPostData = async (idUser, page) => {
     try {
       const dataRequest = {
@@ -100,10 +101,11 @@ const ListPost = props => {
     }
   };
 
-  const openModalFollow = (idUserCreatePost, followIs, data) => {
+  const openModalFollow = (idUserCreatePost, followIs, data, statusSavePost) => {
     setPost(data);
     setIsFollow(followIs);
     setUserIdPost(idUserCreatePost);
+    setStatusSavePost(statusSavePost)
     setShowmodal(true);
   };
 
@@ -120,17 +122,20 @@ const ListPost = props => {
       ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
     }
   };
+
   const handlerSave = async () => {
     const resault = await createSaved({
       _id: idUser,
-      post: data._id,
+      post: post._id,
     });
     if (resault.status) {
       ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
     } else {
       ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
     }
+    // setStatusSavePost(!statusSavePost)
   };
+
   const handleOpenComment = data => {
     setPost(data);
     setOpen(true);
@@ -151,7 +156,7 @@ const ListPost = props => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        keyExtractor={(_, index) =>index.toString()}
+        keyExtractor={(_, index) => index.toString()}
         onEndReached={() => {
           handleLoadMore(page + 1);
         }}
@@ -159,11 +164,11 @@ const ListPost = props => {
         initialNumToRender={4}
         renderItem={({item}) => (
           <RenderPost
-              item={item}
-              handleOpenComment={handleOpenComment}
-              idUser={idUser}
-              openModalFollow={openModalFollow}
-            />
+            item={item}
+            handleOpenComment={handleOpenComment}
+            idUser={idUser}
+            openModalFollow={openModalFollow}
+          />
         )}
         ListFooterComponent={() => {
           return (
@@ -171,6 +176,7 @@ const ListPost = props => {
               {isLoading && (
                 <ActivityIndicator
                   style={{marginBottom: 50}}
+                  s
                   size="large"
                   color="#0000ff"
                 />
@@ -255,8 +261,14 @@ const ListPost = props => {
             marginH-x
           />
           <View>
-            <Text style={{fontFamily: BI}}>{t('post.save')}</Text>
-            <Text color={Colors.gray}>{t('post.save_des')}</Text>
+            <Text style={{fontFamily: BI}}>
+              {statusSavePost ? t('post.unsave') : t('post.save')}
+            </Text>
+            {
+              !statusSavePost && (
+                <Text color={Colors.gray}>{t('post.save_des')}</Text>
+              )
+            }
           </View>
         </TouchableOpacity>
         {idUser === userIdPost ? (

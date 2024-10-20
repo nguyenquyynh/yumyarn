@@ -45,6 +45,31 @@ const unFollow = async (body) => {
         return Promise.reject(error)
     }
 }
+const getFollowing = async (user) => {
+    try {
+        const result = await AxiosInstance().get(`${Model.FOLLOWS}/${FOLLOW.GETFOLLOWING}?user=${user}`);
+        if (result.status) {
+            return { status: true, data: result.data };
+        } else {
+            return { status: false, data: result.data };
+        }
+    } catch (error) {
+        console.log(error + "Lỗi getFollowing")
+        return Promise.reject(error)
+    }
+}
+const getFollowers = async (user) => {
+    try {
+        const result = await AxiosInstance().get(`${Model.FOLLOWS}/${FOLLOW.GETFOLLOWERS}?user=${user}`);
+        if (result.status) {
+            return { status: true, data: result.data };
+        } else {
+            return { status: false, data: result.data };
+        }
+    } catch (error) {
+        console.log(error + "Lỗi getFollowers")
+        return Promise.reject(error)
+    }
+}
 
-
-export { createFollow, checkFollowerProfile, unFollow }
+export { createFollow, checkFollowerProfile, unFollow, getFollowing, getFollowers }

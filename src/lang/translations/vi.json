@@ -82,6 +82,8 @@
     "report": "Báo cáo",
     "save":"Lưu",
     "save_des":"Lưu bài viết bạn yêu thích",
+    "unsave":"Bỏ lưu",
+    "unsave_des":"Xóa bài viết khỏi danh sách lưu",
     "follow_des":"Theo dõi người bạn thích",
     "unFollow_des":"Gỡ theo dõi người bạn không thích"
   },
@@ -199,5 +201,10 @@
     "status": "Trạng thái hoạt động",
     "seen": "Trạng thái đọc",
     "seen_d": "Mọi người có thể biết khi nào bạn đọc tin nhắn của họ, nhưng chỉ biết khi cả bạn và họ đều bật tính năng này"
+  },
+  "camera":{
+    "off":"Tắt",
+    "on":"Bật",
+    "second":"giây"
   }
 }

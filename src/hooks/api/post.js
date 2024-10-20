@@ -1,6 +1,6 @@
 import AxiosInstance from 'services/AxiosInstance';
-import {Model, POST, SAVED} from './Model';
-import {isTokenExpired} from './auth';
+import { Model, POST, SAVED } from './Model';
+import { isTokenExpired } from './auth';
 
 export async function createpost(data) {
   try {
@@ -11,9 +11,9 @@ export async function createpost(data) {
 
     // Kiểm tra lỗi trong then của Promise
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
@@ -28,9 +28,9 @@ export async function editmypost(data) {
     );
 
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
@@ -44,9 +44,9 @@ export async function getPost(dataRequest) {
     );
 
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
@@ -60,9 +60,9 @@ export async function watchPost(dataRequest) {
       `${Model.POSTS}/${POST.WATCH}?u=${dataRequest.u}&p=${dataRequest.p}`,
     );
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
@@ -77,13 +77,13 @@ export async function getTimeOutAdvertisement(dataRequest) {
     );
     await isTokenExpired(resault.statuscode);
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return {status: false, data: ''};
+    return { status: false, data: '' };
   }
 }
 
@@ -94,13 +94,13 @@ export async function getAllAdvertisement(dataRequest) {
     );
     await isTokenExpired(resault.statuscode);
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi getAllAdvertisement');
-    return {status: false, data: ''};
+    return { status: false, data: '' };
   }
 }
 
@@ -113,13 +113,13 @@ export async function checkoutAdv(dataRequest) {
     await isTokenExpired(resault.statuscode);
     console.log(resault);
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi checkoutAdv');
-    return {status: false, data: ''};
+    return { status: false, data: '' };
   }
 }
 
@@ -130,9 +130,9 @@ export async function rePost(data) {
       data,
     );
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
@@ -145,12 +145,12 @@ export async function dePost(data) {
   try {
     const resault = await AxiosInstance().delete(
       `${Model.POSTS}/${POST.REMOVE}`,
-      {data: data},
+      { data: data },
     );
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
@@ -159,19 +159,53 @@ export async function dePost(data) {
 }
 
 export async function createSaved(data) {
-  console.log(data);
   try {
     const resault = await AxiosInstance().post(
       `${Model.SAVED}/${SAVED.CREATE}`,
       data,
     );
     if (resault.status) {
-      return {status: true, data: resault.data};
+      return { status: true, data: resault.data };
     } else {
-      return {status: false, data: resault.data};
+      return { status: false, data: resault.data };
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return {status: false, data: 'Opps ! Have a problem'};
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
+
+export async function getPostSaved(data) {
+  console.log(data);
+  try {
+    const resault = await AxiosInstance().get(`${Model.SAVED}?user=${data.id}&page=${data.page}`)
+    if (resault.status) {
+      return { status: true, data: resault.data }
+    } else {
+      return { status: false, data: resault.data }
+    }
+  } catch (error) {
+    console.log(error + "Lỗi")
+    return { status: false, data: "Opps ! Have a problem" }
+  }
+}
+
+export async function isCheckPost(data) {
+  try {
+    const resault = await AxiosInstance().post(
+      `${Model.SAVED}/${SAVED.CHECK_POST}`,
+      data,
+    );
+    if (resault.status) {
+      return { status: resault.status};
+    } else {
+      return { status: resault.status};
+    }
+  } catch (error) {
+    console.log(error + 'Lỗi');
+    return { status: false, data: 'Opps ! Have a problem' };
+  }
+}
+
+
+

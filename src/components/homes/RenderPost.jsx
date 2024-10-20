@@ -1,5 +1,5 @@
 import IconApp from 'components/IconApp';
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
 import {
   Avatar,
@@ -16,12 +16,15 @@ import {useNavigation} from '@react-navigation/native';
 import RenderVideo from './RenderVideo';
 import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import {t} from 'lang';
+import {isCheckPost} from 'src/hooks/api/post';
 
 const {width: MAX_WIDTH} = Dimensions.get('window');
 const RenderPost = memo(props => {
-  const {item, handleOpenComment, idUser, openModalFollow} = props;
+  const {item, handleOpenComment, idUser, openModalFollow} =
+    props;
   const navigation = useNavigation();
   const [readmore, setReadmore] = useState(false);
+  const [statusSavePost, setStatusSavePost] = useState(false);
   const content = item?.content;
   const listImage = item?.media || [];
   const countFire = item?.fire;
@@ -30,6 +33,27 @@ const RenderPost = memo(props => {
   const id = item?._id;
   const differenceInSeconds = transDate(item?.create_at);
   const isFire = item.isFire;
+
+  const checkSavePost = async () => {
+    try {
+      const resault = await isCheckPost({
+        _id: idUser,
+        post: item._id,
+      });
+      if (resault.status) {  
+        setStatusSavePost(true)
+      } else {
+        setStatusSavePost(false)
+      }
+    } catch (error) {
+      console.log('checkSavePost :', error);
+    }
+  };
+
+  useEffect(() => {
+    checkSavePost();
+  }, [item]);
+
   return (
     <View paddingH-x marginB-20 bg-white style={Style.sizeContainer}>
       <View row marginB-v paddingT-10>
@@ -75,6 +99,7 @@ const RenderPost = memo(props => {
               item?.repost_by?._id ? item?.repost_by._id : item?.create_by?._id,
               item?.follow,
               item,
+              statusSavePost
             );
           }}
           row
