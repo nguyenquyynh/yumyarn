@@ -50,6 +50,8 @@ const OtherProfile = ({ route }) => {
   const [loadingScreen, setLoadingScreen] = useState(false);
   const [statusFollow, setStatusFollow] = useState(false);
   const [report, setReport] = useState(false)
+  const [statusView, setstatusView] = useState(false);
+
   async function loadTimeline(option) {
     switch (option) {
       case 'refress':
@@ -128,7 +130,6 @@ const OtherProfile = ({ route }) => {
       };
       const result = await checkFollowerProfile(body);
       if (result.status) {
-        console.log('follow success');
         setStatusFollow(true);
       }
     } catch (error) {
@@ -159,10 +160,10 @@ const OtherProfile = ({ route }) => {
         _id: _id,
       };
       const result = await finduser(query);
-      console.log(result.status);
-
       if (result.status) {
         setDataUser(result.data);
+        console.log(result.data);
+        
       }
     } catch (error) {
       console.log('ERROR getIdUser ', error);
@@ -178,11 +179,11 @@ const OtherProfile = ({ route }) => {
       setLoadingScreen(true);
       await getIdUser();
       await checkFollower();
-      await loadTimeline();
+      await loadTimeline('refress');
       setLoadingScreen(false);
     };
     fetchData();
-  }, []);
+  }, [name, _id]);
 
   return (
     <Wapper renderleft funtleft={() => navigation.goBack()} title={name} customright={customRight}>
@@ -225,7 +226,12 @@ const OtherProfile = ({ route }) => {
                   <TouchableOpacity
                     flex
                     center
-                    onPress={() => navigation.navigate('FollowerList')}>
+                    onPress={() =>
+                      navigation.navigate('FollowerList', {
+                        user: _id,
+                        statusView: false,
+                      })
+                    }>
                     <Text text70BO style={styles.numbercard}>
                       {numberFormat(0)}
                     </Text>
@@ -237,7 +243,12 @@ const OtherProfile = ({ route }) => {
                   <TouchableOpacity
                     flex
                     center
-                    onPress={() => navigation.navigate('FollowerList')}>
+                    onPress={() =>
+                      navigation.navigate('FollowingList', {
+                        user: _id,
+                        statusView: false,
+                      })
+                    }>
                     <Text text70BO style={styles.numbercard}>
                       {numberFormat(0)}
                     </Text>
@@ -334,7 +345,7 @@ export default OtherProfile;
 
 const styles = StyleSheet.create({
   view_opaticy: {
-    paddingHorizontal: screenwidth * 0.15,
+    paddingHorizontal: screenwidth * 0.1,
   },
   opacity: {
     width: 130,

@@ -1,57 +1,57 @@
-import { StyleSheet, FlatList } from 'react-native'
-import React from 'react'
-import { View } from 'react-native-ui-lib'
-import Wapper from 'components/Wapper'
-import { t } from 'lang'
-import { useNavigation } from '@react-navigation/native'
-import UserRender from '../../components/searchs/UserRender'  // Import component hiển thị từng user
+import {StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View} from 'react-native-ui-lib';
+import Wapper from 'components/Wapper';
+import {t} from 'lang';
+import {useNavigation} from '@react-navigation/native';
+import UserRender from '../../components/searchs/UserRender'; // Import component hiển thị từng user
+import {getFollowers, getFollowing} from 'src/hooks/api/follow';
 
-// Dữ liệu giả lập cho danh sách followers
-const followersData = [
-  {
-    _id: '1',
-    name: 'John Doe',
-    tagName: 'johndoe',
-    avatar: 'https://via.placeholder.com/150',
-    isFollow: true,
-  },
-  {
-    _id: '2',
-    name: 'Jane Smith',
-    tagName: 'janesmith',
-    avatar: 'https://via.placeholder.com/150',
-    isFollow: false,
-  },
-  {
-    _id: '3',
-    name: 'David Brown',
-    tagName: 'davidbrown',
-    avatar: 'https://via.placeholder.com/150',
-    isFollow: true,
-  }
-  // Thêm nhiều người dùng nếu cần
-]
+const FollowerList = ({route}) => {
+  // lấy danh sách theo user truyền vào còn kiểm tra có follow hay không theo view
+  const {user, view, statusView} = route?.params || '';
+  const navigation = useNavigation();
+  const [followersData, setFollowersData] = useState([]);  
 
-const FollowerList = ({ route }) => {
-  // lấy danh sách theo user truyền vào còn kiểm tra có follow hay không theo view 
-  const { user, view } = route?.params || ""
-  const navigation = useNavigation()
+  const getDataFollowers = async () => {
+    try {
+      const result = await getFollowers(user);
+      if (result.status) {
+        setFollowersData(result.data);
+      } else {
+        ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log('getDataFollowers :', error);
+    }
+  };
+  useEffect(() => {
+    getDataFollowers();
+  }, []);
 
   return (
-    <Wapper renderleft funtleft={() => navigation.goBack()} title={t("profile.followers")}>
+    <Wapper
+      renderleft
+      funtleft={() => navigation.goBack()}
+      title={t('profile.followers')}>
       <View flex bg-white>
-        {/* Sử dụng FlatList để hiển thị danh sách followers */}
-        <FlatList
-          data={followersData}
-          keyExtractor={(item) => item._id}  // Mỗi item cần có key duy nhất
-          renderItem={({ item }) => <UserRender item={item} />}  // Hiển thị từng user
-          contentContainerStyle={{ paddingVertical: 10 }}  // Đặt padding cho FlatList
-        />
+        {followersData ? (
+          <FlatList
+            data={followersData}
+            keyExtractor={item => item._id} // Mỗi item cần có key duy nhất
+            renderItem={({item}) => <UserRender statusView={statusView} item={item.create_by} />} // Hiển thị từng user
+            contentContainerStyle={{paddingVertical: 10}} // Đặt padding cho FlatList
+          />
+        ) : (
+          <View flex centerH centerV>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )}
       </View>
     </Wapper>
-  )
-}
+  );
+};
 
-export default FollowerList
+export default FollowerList;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
