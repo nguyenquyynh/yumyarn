@@ -12,7 +12,7 @@ const createFollow = async (u, f) => {
         return resault
     } catch (error) {
         console.log(error + "Lỗi")
-        return { status: false }
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 
@@ -26,7 +26,7 @@ const checkFollowerProfile = async (body) => {
         }
     } catch (error) {
         console.log(error + "Lỗi")
-        return Promise.reject(error)
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 
@@ -42,7 +42,7 @@ const unFollow = async (body) => {
         }
     } catch (error) {
         console.log(error + "Lỗi unFollower")
-        return Promise.reject(error)
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 }
 

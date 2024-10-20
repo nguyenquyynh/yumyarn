@@ -8,23 +8,23 @@ import Geolocation from "@react-native-community/geolocation";
 import { useNavigation } from '@react-navigation/native'
 import { autoComplete, reverLocation, searchLocation } from 'services/MapService'
 
+class innitLocation {
+    constructor(latitude, longitude, latitudeDelta, longitudeDelta) {
+        this.latitude = latitude
+        this.longitude = longitude
+        this.latitudeDelta = latitudeDelta
+        this.longitudeDelta = longitudeDelta
+    }
+}
+const locationdefault = {
+    latitude: 108.43975632,
+    longitude: 10.1946193,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005
+}
+
 const SearchMap = ({ route }) => {
-    const { defaultlocation } = route.params || {
-        defaultlocation: {
-            latitude: 10.8728926,
-            longitude: 106.6176021,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005
-        }
-    }
-    class innitLocation {
-        constructor(latitude, longitude, latitudeDelta, longitudeDelta) {
-            this.latitude = latitude
-            this.longitude = longitude
-            this.latitudeDelta = latitudeDelta
-            this.longitudeDelta = longitudeDelta
-        }
-    }
+    const { defaultlocation = locationdefault } = route.params
     const map = useRef(null)
     const navigation = useNavigation()
     const [loaction, setloaction] = useState(defaultlocation);
@@ -42,7 +42,7 @@ const SearchMap = ({ route }) => {
     const revversLoacation = async (loaction) => {
         const data = await reverLocation(loaction)
         if (data.items?.[0]) {
-            setMarker({ ...marker, name: data.items[0]?.address?.label })
+            setMarker({ ...loaction, name: data.items[0]?.address?.label })
         }
     }
     //chọn địa điểm marker trên bản đồ
@@ -51,31 +51,17 @@ const SearchMap = ({ route }) => {
         const point = el.nativeEvent
         if (point?.coordinate) {
             const duration = 500
-            if (loaction.latitude !== point.coordinate.latitude) {
-                setMarker({
-                    latitude: point.coordinate.latitude,
-                    longitude: point.coordinate.longitude,
-                    latitudeDelta: point.coordinate.latitudeDelta,
-                    longitudeDelta: point.coordinate.longitudeDelta
-                })
-                revversLoacation({
-                    latitude: point.coordinate.latitude,
-                    longitude: point.coordinate.longitude,
-                })
-                if (Platform.OS === 'android') {
-                    if (this.marker) {
-                        this.marker.animateMarkerToCoordinate(
-                            point.coordinate,
-                            duration
-                        );
-                    }
-                } else {
-                    this.state.coordinate.timing({
-                        ...nextProps.coordinate,
-                        useNativeDriver: true,
-                        duration
-                    }).start();
-                }
+            revversLoacation({
+                latitude: point.coordinate.latitude,
+                longitude: point.coordinate.longitude,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005
+            })
+            if (this.marker) {
+                this.marker.animateMarkerToCoordinate(
+                    point.coordinate,
+                    duration
+                );
             }
         }
     }
@@ -120,22 +106,6 @@ const SearchMap = ({ route }) => {
         latitudeDelta: marker.latitudeDelta,
         longitudeDelta: marker.longitudeDelta
     })
-    //Thay đổi vùng chọn bản đồ
-    const religionZoneChange = (religion) => {
-        if (
-            Math.abs(religion.latitude - loaction.latitude) > 0.0001 ||
-            Math.abs(religion.longitude - loaction.longitude) > 0.0001 ||
-            Math.abs(religion.latitudeDelta - loaction.latitudeDelta) > 0.0001 ||
-            Math.abs(religion.longitudeDelta - loaction.longitudeDelta) > 0.0001
-        ) {
-            setloaction({
-                latitude: religion.latitude,
-                longitude: religion.longitude,
-                latitudeDelta: religion.latitudeDelta,
-                longitudeDelta: religion.longitudeDelta,
-            });
-        }
-    }
     // render địa điểm tìm kiếm
     const pointLocation = (item) => {
         return (<TouchableOpacity center style={{ width: 150 }}>
@@ -152,7 +122,6 @@ const SearchMap = ({ route }) => {
                     style={[styles.mapSize, StyleSheet.absoluteFillObject]}
                     region={loaction}
                     showsMyLocationButton={false}
-                    onRegionChangeComplete={religionZoneChange}
                     moveOnMarkerPress
                     showsUserLocation={true}
                     onPress={handlePoiLocation}

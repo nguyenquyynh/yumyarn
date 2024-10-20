@@ -31,13 +31,10 @@ const NotificationModalApp = ({
                                     <IconApp assetName={asseticon} size={70} />
                                     <Text xviText style={styles.title}>{title}</Text>
                                     <View padding-xx centerH>
-                                        <Text styles={{ textAlign: 'center' }}>{content}</Text>
+                                        <Text center styles={{ textAlign: 'center' }}>{content}</Text>
                                     </View>
                                     <View centerH row>
-                                        <TouchableOpacity flex-1 marginV-5 center br10 bg-white style={styles.button_model} onPress={() => { modalhiden(false) }} >
-                                            <Text text70BO color={Colors.yellow}>{funt ? t("title_model.cancel") : t("title_model.ok")}</Text>
-                                        </TouchableOpacity>
-                                        {funt && <TouchableOpacity flex-1 marginV-5 center br10 bg-yellow style={styles.button_model} onPress={funt}>
+                                        {funt && <TouchableOpacity flex-1 marginV-5 center br10 bg-yellow style={[styles.button_model, {borderColor: Colors.yellow}]} onPress={funt}>
                                             <Text text70BO color='white'>{t("title_model.ok")}</Text>
                                         </TouchableOpacity>}
                                     </View>
@@ -62,5 +59,6 @@ const styles = StyleSheet.create({
     button_model: {
         padding: 10,
         elevation: 5,
+        borderWidth: 1,
     }
 })

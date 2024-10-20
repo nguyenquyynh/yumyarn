@@ -13,7 +13,7 @@ const ShowMoreDetailPost = props => {
     const { disable, setDisable, create_post, id_post, post } = props
     const navigation = useNavigation()
     const auth = useSelector(state => state.auth.user)
-    const role = auth._id === create_post ? 'ME' : 'OTHER'
+    const role = auth._id === create_post || post?.repost_by ? 'ME' : 'OTHER'
 
     const handlerFollow = async () => {
         const follow = await createFollow(auth._id, create_post)
@@ -50,7 +50,7 @@ const ShowMoreDetailPost = props => {
                 navigation.navigate('BuyAdvertisement', { post: id_post })
             }
         },
-        { id: 3, role: "ME", img: "edit", title: "post.edit", disription: "post.edit_d", funt: handlerEditPost },
+        { id: 3, role: post?.repost_by ? 'DIFF' : 'ME', img: "edit", title: "post.edit", disription: "post.edit_d", funt: handlerEditPost },
         { id: 4, role: "ME", img: "remove", title: "post.remove", disription: "post.remove_d", funt: handlerRemove },
     ]
 

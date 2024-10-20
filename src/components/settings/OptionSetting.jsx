@@ -12,6 +12,7 @@ const OptionSetting = ({ navigation }) => {
     }
     const optionsuser = [
         { id: 1, title: "setting.saved", icon: "crop", funt: () => { navigation.navigate('PostSaved') } },
+        { id: 5, title: "setting.report", icon: "report", funt: () => { navigation.navigate('Report') } },
         { id: 2, title: "setting.advertisement", icon: "flash", funt: () => { navigation.navigate('Advertisement') } },
         { id: 3, title: "setting.payment", icon: "wallet", funt: () => { navigation.navigate('Payment') } },
         { id: 4, title: "setting.link", icon: "link", funt: handlerClipboard},

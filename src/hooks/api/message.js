@@ -12,7 +12,7 @@ export async function getFriend(userId) {
       return {status: false, data: resault.data};
     }
   } catch (error) {
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
@@ -28,7 +28,7 @@ export async function getOldMessage(idmessage, user, friend) {
     }
   } catch (error) {
     console.log(error);
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
@@ -44,7 +44,7 @@ export const getListFriendMessage = async (userId, page) => {
     }
   } catch (error) {
     console.log(error);
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };
 
@@ -66,6 +66,6 @@ export const seenMessage = async (userId, friendId) => {
     }
   } catch (error) {
     console.log(error);
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };

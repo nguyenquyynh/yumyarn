@@ -126,7 +126,7 @@ const ShowComments = props => {
           setParent(null);
           setMorePage(true);
           setWriteComment('');
-          setPost(null);
+          setPost?.(null);
         }
       }}>
       <View>

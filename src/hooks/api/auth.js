@@ -23,12 +23,15 @@ export async function userLogin(fcmtoken) {
             if (resault.data.value === USERS_AUTHEN.VERIFY) {
                 return { status: false, data: t("login.verify") }
             }
+            if (resault.data.value === 'BLOCK') {
+                return { status: false, data: 'You account was block !!' }
+            }
         } else {
             return { status: false, data: resault.data.data }
         }
 
     } catch (error) {
-        return Promise.reject(error)
+        return { status: false, data: 'Opps ! Have a problem' };
     }
 
 }

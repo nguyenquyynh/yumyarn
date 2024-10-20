@@ -41,10 +41,6 @@ const MainPost = ({ route }) => {
     setModelshow(true);
   };
 
-  // Hàm chuyển component
-  const gotoScreen = (screen, props) => {
-    navigation.navigate(screen, props)
-  }
   const buttonright = () => {
     return (
       <ButtonApp
@@ -138,7 +134,6 @@ const MainPost = ({ route }) => {
         setImages([])
         sethashtag("")
         setcontent("")
-
         setNotifytitle(t("title_model.success"))
         setNotifycontent(t("title_model.post_success"))
         setIsnotifiy(true)
@@ -245,6 +240,13 @@ const MainPost = ({ route }) => {
       modalhiden={setIsnotifiy}
       modalVisible={isnotifiy}
       title={notifytitle}
+      funt={() => {
+        if (notifycontent == t("title_model.post_success")) {
+          navigation.navigate('Main')
+        } else {
+          setIsnotifiy(false)
+        }
+      }}
       asseticon={statusRequest ? "done" : "dont"}
       content={notifycontent} />)
   }
@@ -316,7 +318,7 @@ const MainPost = ({ route }) => {
               </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={{ width: '100%' }} onPress={() => { navigation.navigate("Adddrressscreen", { back: "Post" }) }}>
+          <TouchableOpacity style={{ width: '100%' }} onPress={() => { navigation.navigate("Adddrressscreen", { back: "Post", defaultlocation: address }) }}>
             <View style={styles.contentlocation}>
               <IconApp assetName={"location"} size={25} />
               <View flex>

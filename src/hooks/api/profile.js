@@ -14,7 +14,7 @@ const changeAvatar = async body => {
     }
   } catch (error) {
     console.log(error + 'Lỗi getPost');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };
 const changeCoverPhoto = async body => {
@@ -30,7 +30,7 @@ const changeCoverPhoto = async body => {
     }
   } catch (error) {
     console.log(error + 'Lỗi getPost');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };
 
@@ -47,7 +47,7 @@ const updateInfor = async body => {
     }
   } catch (error) {
     console.log(error + 'Lỗi updateInfor');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };
 
@@ -63,7 +63,7 @@ const countFollower = async _id => {
     }
   } catch (error) {
     console.log(error + 'Lỗi');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };
 const getTimeline = async body => {
@@ -78,7 +78,7 @@ const getTimeline = async body => {
     }
   } catch (error) {
     console.log(error + 'Lỗi getPost');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };
 
@@ -94,7 +94,7 @@ const finduser = async query => {
     }
   } catch (error) {
     console.log(error + 'Lỗi getPost');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };
 
@@ -110,7 +110,7 @@ const logout = async _id => {
     }
   } catch (error) {
     console.log(error + 'Lỗi logout');
-    return Promise.reject(error);
+    return { status: false, data: 'Opps ! Have a problem' };
   }
 };
 

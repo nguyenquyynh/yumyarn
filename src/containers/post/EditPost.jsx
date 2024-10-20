@@ -14,6 +14,7 @@ import CameraApp from 'containers/camera/CameraApp';
 import NotificationModalApp from 'components/commons/NotificationModalApp';
 import { useSelector } from 'react-redux';
 import { B } from 'configs/fonts';
+import LoadingApp from 'components/commons/LoadingApp';
 
 const EditPost = ({ route }) => {
     const navigation = useNavigation()
@@ -134,8 +135,6 @@ const EditPost = ({ route }) => {
                 hashtags: extractHashtags(hashtag),
                 content: content,
             }
-            console.log(body);
-
 
             const response = await editmypost(body)
             setStatusAction(response.status)
@@ -257,6 +256,13 @@ const EditPost = ({ route }) => {
         return (<NotificationModalApp
             modalhiden={setIsnotifiy}
             modalVisible={isnotifiy}
+            funt={() => {
+                if (notifycontent == t("title_model.post_success")) {
+                    navigation.navigate('Main')
+                } else{
+                    setIsnotifiy(false)
+                }
+            }}
             title={notifytitle}
             asseticon={statusAction ? "done" : "dont"}
             content={notifycontent} />)
@@ -331,7 +337,7 @@ const EditPost = ({ route }) => {
                             </Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ width: '100%' }} onPress={() => { navigation.navigate("Adddrressscreen", { back: "EditPost" }) }}>
+                    <TouchableOpacity style={{ width: '100%' }} onPress={() => { navigation.navigate("Adddrressscreen", { back: "EditPost", defaultlocation: post?.address }) }}>
                         <View style={styles.contentlocation}>
                             <IconApp assetName={"location"} size={25} />
                             <View flex>

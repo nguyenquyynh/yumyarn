@@ -24,7 +24,7 @@ Assets.loadAssetsGroup('icons', {
     plus: require('assets/icon/plus.png'),
     search: require('assets/icon/search.png'),
     edit: require('assets/icon/edit.png'),
-    chopsticks: require('assets/icon/chopsticks.png'),
+    report: require('assets/icon/report.png'),
     google: require('assets/icon/google.png'),
     send: require('assets/icon/send.png'),
     plus_only: require('assets/icon/plus_only.png'),

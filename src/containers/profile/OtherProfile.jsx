@@ -1,12 +1,14 @@
 import {
   ActivityIndicator,
   Dimensions,
+  FlatList,
   ImageBackground,
   RefreshControl,
   ScrollView,
   StyleSheet,
+  ToastAndroid,
 } from 'react-native';
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   Avatar,
   Colors,
@@ -15,14 +17,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native-ui-lib';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {t} from 'lang';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { t } from 'lang';
 import numberFormat from 'configs/ui/format';
 import ListMediaProfile from 'components/profile/ListMediaProfile';
-import {finduser, getTimeline} from 'src/hooks/api/profile';
-import Modals from 'components/BottomSheetApp';
-import {BI, I, SBI} from 'configs/fonts';
+import { finduser, getTimeline } from 'src/hooks/api/profile';
+import { BI, I, SBI } from 'configs/fonts';
 import Animated from 'react-native-reanimated';
 import Wapper from 'components/Wapper';
 import {
@@ -30,11 +31,14 @@ import {
   createFollow,
   unFollow,
 } from 'src/hooks/api/follow';
+import Modals from 'components/BottomSheetApp';
+import { ReportModel } from 'src/hooks/api/Model';
+import ButtonApp from 'components/ButtonApp';
+import { createReport } from 'src/hooks/api/post';
 
-const screenheight = Dimensions.get('window').height;
 const screenwidth = Dimensions.get('window').width;
-const OtherProfile = ({route}) => {
-  const {name, _id} = route.params;
+const OtherProfile = ({ route }) => {
+  const { name, _id } = route.params;
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth.user);
   const timeout = useRef(null);
@@ -45,7 +49,7 @@ const OtherProfile = ({route}) => {
   const [dataUser, setDataUser] = useState({});
   const [loadingScreen, setLoadingScreen] = useState(false);
   const [statusFollow, setStatusFollow] = useState(false);
-
+  const [report, setReport] = useState(false)
   async function loadTimeline(option) {
     switch (option) {
       case 'refress':
@@ -72,8 +76,8 @@ const OtherProfile = ({route}) => {
   }
   const handleScroll = useCallback(event => {
     clearTimeout(timeout.current);
-    const {contentOffset, contentSize} = event.nativeEvent;
-    const {height: windowHeight} = Dimensions.get('window');
+    const { contentOffset, contentSize } = event.nativeEvent;
+    const { height: windowHeight } = Dimensions.get('window');
     if (contentOffset.y + windowHeight > contentSize.height) {
       timeout.current = setTimeout(() => {
         setLoad(true);
@@ -131,7 +135,16 @@ const OtherProfile = ({route}) => {
       console.log('ERROR getIdUser ', error);
     }
   };
-
+  const handleReport = async (e) => {
+    const resault = await createReport({
+      id_user: _id, content: e.content
+    })
+    if (resault?.status) {
+      ToastAndroid.show(t('error.reporting'), ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show(t(resault?.data), ToastAndroid.SHORT);
+    }
+  };
   const handleCheckPersonFollow = async statusFollow => {
     if (statusFollow) {
       await handleUnFollow();
@@ -155,7 +168,11 @@ const OtherProfile = ({route}) => {
       console.log('ERROR getIdUser ', error);
     }
   };
-
+  const customRight = () => {
+    if (auth?._id !== _id) {
+      return (<ButtonApp title={t("post.report")} onclick={() => { setReport(true) }} />)
+    }
+  }
   useEffect(() => {
     const fetchData = async () => {
       setLoadingScreen(true);
@@ -168,7 +185,7 @@ const OtherProfile = ({route}) => {
   }, []);
 
   return (
-    <Wapper renderleft funtleft={() => navigation.goBack()} title={name}>
+    <Wapper renderleft funtleft={() => navigation.goBack()} title={name} customright={customRight}>
       {loadingScreen ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
@@ -177,7 +194,7 @@ const OtherProfile = ({route}) => {
       ) : (
         <View flex bg-white>
           <ImageBackground
-            style={{width: '100%', height: 210}}
+            style={{ width: '100%', height: 210 }}
             source={{
               uri:
                 dataUser?.coverPhoto ||
@@ -192,7 +209,7 @@ const OtherProfile = ({route}) => {
             }
             onScroll={state => handleScroll(state)}>
             <View centerH paddingT-120>
-              <Animated.View style={{zIndex: 1}}>
+              <Animated.View style={{ zIndex: 1 }}>
                 <Avatar
                   source={{
                     uri:
@@ -266,7 +283,7 @@ const OtherProfile = ({route}) => {
                       center
                       br100
                       onPress={() => {
-                        navigation.navigate('Chating', {friend: dataUser});
+                        navigation.navigate('Chating', { friend: dataUser });
                       }}>
                       <Text text80H>{t('chat.title')}</Text>
                     </TouchableOpacity>
@@ -275,7 +292,7 @@ const OtherProfile = ({route}) => {
                 <View
                   marginT-xx
                   br50
-                  style={{width: '100%', height: '100%'}}
+                  style={{ width: '100%', height: '100%' }}
                   bg-white
                   padding-x>
                   <ListMediaProfile
@@ -293,6 +310,22 @@ const OtherProfile = ({route}) => {
           </ScrollView>
         </View>
       )}
+      <Modals modalhiden={setReport} modalVisible={report} >
+        <View>
+          <Text center margin-10 text80BO>{t("post.report_d")}</Text>
+          <FlatList
+            scrollEnabled={false}
+            data={optionReport}
+            keyExtractor={item => item._id}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity onPress={() => { handleReport(item) }} spread row centerV paddingV-15 paddingH-16 >
+                <Text text80BO>{item?.value}</Text>
+                <Icon assetName='right_arrow' size={15} />
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      </Modals>
     </Wapper>
   );
 };
@@ -306,7 +339,7 @@ const styles = StyleSheet.create({
   opacity: {
     width: 130,
   },
-  scroll: {width: '100%', height: '100%', position: 'absolute', bottom: 0},
+  scroll: { width: '100%', height: '100%', position: 'absolute', bottom: 0 },
   background: {
     width: '100%',
     position: 'relative',
@@ -336,9 +369,18 @@ const styles = StyleSheet.create({
   },
   shadowStyle: {
     shadowColor: '#000', // Màu đổ bóng
-    shadowOffset: {width: 0, height: 2}, // Vị trí đổ bóng
+    shadowOffset: { width: 0, height: 2 }, // Vị trí đổ bóng
     shadowOpacity: 0.25, // Độ mờ của đổ bóng
     shadowRadius: 3.84, // Độ lan tỏa của đổ bóng
     elevation: 5, // Độ cao (chỉ cho Android)
   },
 });
+
+var optionReport = [
+  { value: "Người dùng này giả mạo tổ chức khác.", content: ReportModel.WAR },
+  { value: "Đăng tải các hình ảnh nhạy cảm 18+.", content: ReportModel.NFSW },
+  { value: "Đăng tải các bài viết liên quan đển an toàn trẻ dưới vị thành niên.", content: ReportModel.KID },
+  { value: "Nội dung chia rẽ sắc tộc, tôn giáo.", content: ReportModel.RELIGION },
+  { value: "Người này là thuộc thành phần thù địch.", content: ReportModel.SUCK },
+  { value: "Đăng tải các nội dung không đúng sự thật.", content: ReportModel.FAKE },
+]
