@@ -1,56 +1,59 @@
-import { StyleSheet, FlatList, Text } from 'react-native'
-import React from 'react'
-import { Image, View } from 'react-native-ui-lib'
+import { StyleSheet, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Icon, Image, Text, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
-
-// Dữ liệu giả lập cho lịch sử giao dịch
-const transactionData = [
-  {
-    id: '1',
-    packageName: 'Premium Plan',
-    amount: '$10.99',
-    purchaseDate: '2024-09-15',
-    purchaseTime: '14:35',
-  },
-  {
-    id: '2',
-    packageName: 'Basic Plan',
-    amount: '$4.99',
-    purchaseDate: '2024-08-20',
-    purchaseTime: '09:10',
-  },
-  {
-    id: '3',
-    packageName: 'Pro Plan',
-    amount: '$19.99',
-    purchaseDate: '2024-07-01',
-    purchaseTime: '18:45',
-  }
-]
+import { getHistoryPayment } from 'src/hooks/api/post'
+import { HistoryPack } from 'configs/ui/money'
+import { millisecondsToDate } from 'configs/ui/time'
+import LinearGradient from 'react-native-linear-gradient'
 
 const Payment = () => {
   const navigation = useNavigation()
+  const [data, setData] = useState([])
 
-  const renderTransactionItem = ({ item }) => (
-    <View style={styles.transactionItem}>
-      <View style={styles.transactionContent}>
-        <Text style={styles.packageName}>{item.packageName}</Text>
-        <Text style={styles.amount}>- {item.amount}</Text>
-        <Text style={styles.dateTime}>{t('purchase.date')}: {item.purchaseDate}</Text>
-        <Text style={styles.dateTime}>{t('purchase.time')}: {item.purchaseTime}</Text>
-      </View>
-      <View style={styles.divider}></View>
-    </View>
-  )
+  const loadHistory = async () => {
+    await getHistoryPayment()
+      .then(resault => setData(resault.data)
+      )
+      .catch(err => console.log(err)
+      )
+  }
+  useEffect(() => {
+    loadHistory()
+  }, [])
+
+  const renderTransactionItem = ({ item }) => {
+    const layout = HistoryPack(parseFloat(item?.cost))
+    return (
+      <LinearGradient
+        colors={[layout.color + '99', '#ffffff']} // Replace with your desired colors
+        start={{ x: 0, y: 0 }} // Start from the left
+        end={{ x: 1, y: 0 }} // End at the right
+        style={styles.transactionItem}>
+        <View style={styles.transactionContent}>
+          <Text style={styles.packageName}>{t(layout.title)}</Text>
+          <Text style={styles.amount} text65BO>- {item.cost}</Text>
+          <Text style={styles.dateTime}>{t('pack.date')}: {millisecondsToDate(item?.create_at)}</Text>
+          <Text style={styles.dateTime}>{t('pack.code')}: {item.code}</Text>
+        </View>
+        <Icon
+          assetName='logoapp' // Thay đổi tên icon theo ý muốn
+          size={30}
+          style={styles.icon} // Sử dụng style riêng cho icon
+        />
+      </LinearGradient>
+    )
+  }
 
   return (
     <Wapper renderleft funtleft={() => navigation.goBack()} title={t("setting.payment")}>
       <View flex bg-white>
         <FlatList
-          data={transactionData}  // Dữ liệu giao dịch
-          keyExtractor={item => item.id}  // Mỗi giao dịch có một key duy nhất
+          showsVerticalScrollIndicator={false}
+          data={data}  // Dữ liệu giao dịch
+          keyExtractor={(item) => item._di}  // Mỗi giao dịch có một key duy nhất
           renderItem={renderTransactionItem}  // Hàm render từng mục
           contentContainerStyle={styles.transactionList}  // Phong cách chung cho danh sách
         />
@@ -68,6 +71,13 @@ const styles = StyleSheet.create({
   transactionItem: {
     paddingVertical: 15,
     paddingHorizontal: 20,
+    marginBottom: 1,
+    position: 'relative',
+  },
+  icon: {
+    position: 'absolute',
+    bottom: 0, // Cách từ dưới lên
+    right: 0,  // Cách từ bên phải vào
   },
   transactionContent: {
     flexDirection: 'column',

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'lang';
 import React, { useState } from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
+import { ImageBackground, LayoutAnimation, StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Animated from 'react-native-reanimated';
 import { Colors, Text, TouchableOpacity, View } from 'react-native-ui-lib';

@@ -27,7 +27,7 @@ const UserRender = ({ item }) => {
     return (
         <View bg-white padding-viii marginT-x centerV center spread>
             <View row>
-                <TouchableOpacity row flex-3 onPress={() => navigation.navigate('OtherProfile', { name: item.name })} >
+                <TouchableOpacity row flex-3 onPress={() => navigation.navigate('OtherProfile', { name: item?.name, _id: item?._id })} >
                     <Avatar source={{ uri: item?.avatar }} size={44} />
                     <View paddingH-x flex>
                         <Text text70BO numberOfLines={1} ellipsizeMode="tail">{item?.name}</Text>
