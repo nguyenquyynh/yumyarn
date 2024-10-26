@@ -1,14 +1,18 @@
-import { FlatList, StyleSheet } from 'react-native'
+import { Dimensions, FlatList, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Text, View } from 'react-native-ui-lib'
+import { Icon, Text, View } from 'react-native-ui-lib'
 import { search_user } from 'src/hooks/api/search';
 import { useSelector } from 'react-redux';
 import UserRender from 'components/searchs/UserRender';
 import { removeSpecialCharacters } from 'src/libs/InputValidate';
+import lottie from 'configs/ui/lottie';
+import LottieView from 'lottie-react-native';
 
+const windownsize = Dimensions.get('window').height
 const UserSearch = ({ route }) => {
-  const { data, navigation, keyword } = route.params;
+  const { data, keyword } = route.params;
   const [datalist, setDatalist] = useState(data.user.data)
+  const [page, setPage] = useState(1)
   const user = useSelector(state => state.auth.user)
 
   useEffect(() => {
@@ -17,9 +21,11 @@ const UserSearch = ({ route }) => {
 
   const onScrollUsers = async () => {
     if (removeSpecialCharacters(keyword).trim().length > 0) {
-      const page = Math.ceil(datalist.length / 10) + 1
-      const resault_user = await search_user(removeSpecialCharacters(keyword), page, user._id)
-      setDatalist([...datalist, ...resault_user.data])
+      const resault_user = await search_user(removeSpecialCharacters(keyword), page + 1, user._id)
+      if (Array.isArray(resault_user.data) && resault_user.length !== 0) {
+        setPage(page + 1)
+        setDatalist([...datalist, ...resault_user.data])
+      }
     }
   }
   return (
@@ -31,6 +37,11 @@ const UserSearch = ({ route }) => {
         data={datalist}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => <UserRender item={item} />}
+        ListEmptyComponent={() =>
+          <View flex center height={windownsize - 100}>
+            <LottieView source={lottie.Nodata} autoPlay loop={false} style={{height: 200, width: 200}}/>
+          </View>
+        }
       />
     </View>
   )

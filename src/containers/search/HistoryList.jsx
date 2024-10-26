@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FlatList, ScrollView } from 'react-native';
+import { FlatList, LayoutAnimation, ScrollView } from 'react-native';
 import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import IconApp from 'components/IconApp';
 import { history_remaove } from 'reducers/search';
@@ -10,6 +10,7 @@ import { removeSpecialCharacters } from 'src/libs/InputValidate';
 const HistoryList = ({
     keyword,
     setKeyword,
+    hanlderSearch
 }) => {
     const dispatch = useDispatch()
     const data_history = useSelector(state => state.search.history);
@@ -17,16 +18,14 @@ const HistoryList = ({
     const [suggest, setSuggest] = useState([])
     const timeoutref = useRef(null)
     useEffect(() => {
-        if (!removeSpecialCharacters(keyword)) {
-            return 
-        }
-        if (keyword.replace(/\s+/g, ' ').trim() != "") {
+        if (removeSpecialCharacters(keyword).trim().length > 0) {
             setHistory(data_history.filter(item => item.toLocaleLowerCase().includes(keyword.toLocaleLowerCase().trim())))
             keywordSearchChange(keyword)
         } else {
             setHistory(data_history)
             setSuggest([])
         }
+        LayoutAnimation.easeInEaseOut()
     }, [keyword])
     const handlerRemoveHistory = (item) => {
         setHistory(history.filter(el => el != item))
@@ -38,13 +37,18 @@ const HistoryList = ({
             const resault = await get_suggest(removeSpecialCharacters(keyword))
             if (resault?.status) {
                 setSuggest(resault?.data)
+                LayoutAnimation.easeInEaseOut()
             }
         }, 1000)
+        LayoutAnimation.easeInEaseOut()
     }, [])
     const renderItemHistory = (item) => {
         return (
             <View flex row padding-x centerV spread>
-                <TouchableOpacity row centerV flex-9 onPress={() => { setKeyword(item) }}>
+                <TouchableOpacity row centerV flex-9 onPress={() => {
+                    setKeyword(item)
+                    hanlderSearch()
+                }}>
                     <IconApp assetName={"history"} />
                     <View marginL-x>
                         <Text numberOfLines={1} text70BO>{item}</Text>
@@ -59,7 +63,10 @@ const HistoryList = ({
     const renderItemSuggest = (item) => {
         return (
             <View flex row padding-x centerV spread>
-                <TouchableOpacity row centerV flex-9 onPress={() => { setKeyword(item.content) }}>
+                <TouchableOpacity row centerV flex-9 onPress={() => {
+                    setKeyword(item.content)
+                    hanlderSearch()
+                }}>
                     <IconApp assetName={"fire"} />
                     <View marginL-x>
                         <Text numberOfLines={1} text70BO>{item.content}</Text>

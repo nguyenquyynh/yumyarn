@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { LayoutAnimation, StyleSheet } from 'react-native'
 import React from 'react'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
@@ -28,6 +28,7 @@ const Main = () => {
 
                             if (!isFocused && !event.defaultPrevented) {
                                 navigation.navigate(route.name);
+                                LayoutAnimation.easeInEaseOut()
                             }
                         };
 

@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, TextInput } from 'react-native'
-import React, { useState } from 'react'
+import { LayoutAnimation, Pressable, StyleSheet, TextInput } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Wapper from 'components/Wapper'
 import { Colors, Icon, TouchableOpacity, View } from 'react-native-ui-lib'
 import IconApp from 'components/IconApp'
@@ -13,11 +13,10 @@ import { search_post, search_user } from 'src/hooks/api/search'
 import { removeSpecialCharacters } from 'src/libs/InputValidate'
 
 const SearchMain = ({ route }) => {
-    const inputkey = route.params?.inputkey
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const user = useSelector(state => state.auth.user)
-    const [keyword, setKeyword] = useState(inputkey || '')
+    const [keyword, setKeyword] = useState(route.params?.inputkey || '')
     const [data_search, setData_search] = useState()
 
     const hanlderSearch = async () => {
@@ -31,8 +30,15 @@ const SearchMain = ({ route }) => {
             })
         }
     }
+    useEffect(() => {
+        if (removeSpecialCharacters(route.params?.inputkey ?? '').trim().length > 0) {
+            hanlderSearch()
+        }
+    }, [])
+
     const handlerFocus = () => {
         setData_search(null)
+        LayoutAnimation.easeInEaseOut()
     }
     const customerHeader = () => {
         return (
@@ -43,11 +49,10 @@ const SearchMain = ({ route }) => {
                             <Icon assetName='arrow_back' size={15} tintColor='white' />
                         </TouchableOpacity>
                         <View row spread flex-1 br100 marginH-x centerV paddingH-x style={styles.searchinput}>
-                            <Pressable onPress={hanlderSearch}>
-                                <IconApp assetName={"search"} size={20} />
-                            </Pressable>
+                            <IconApp assetName={"search"} size={20} />
                             <TextInput style={{ flex: 1, color: 'black' }} placeholder={t("app.search")} value={keyword}
                                 onFocus={handlerFocus}
+                                onEndEditing={hanlderSearch}
                                 onChangeText={value => setKeyword(value)} />
                             <Pressable onPress={() => { setKeyword('') }}>
                                 <IconApp assetName={"cancel"} size={20} />
@@ -61,7 +66,7 @@ const SearchMain = ({ route }) => {
     return (
         <Wapper gadient customheader={customerHeader}>
             {
-                data_search ? <SearchList data={data_search} keyword={keyword} /> : <HistoryList keyword={keyword} setKeyword={setKeyword} />
+                data_search ? <SearchList data={data_search} keyword={keyword} /> : <HistoryList keyword={keyword} setKeyword={setKeyword} hanlderSearch={hanlderSearch} />
             }
         </Wapper>
     )

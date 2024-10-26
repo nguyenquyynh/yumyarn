@@ -1,6 +1,5 @@
 import AxiosInstance from "services/AxiosInstance"
 import { Model, POST, SUGGEST, USERS } from "./Model"
-import { removeSpecialCharacters } from "src/libs/InputValidate"
 
 const get_suggest = async (keyword) => {
     try {
@@ -15,7 +14,6 @@ const get_suggest = async (keyword) => {
 const search_post = async (keyword, page) => {
     try {
         const resault = await AxiosInstance().get(`${Model.POSTS}/${POST.SEARCH}?q=${keyword}&page=${page}`, null)
-        console.log("search_post", resault);
         return resault
     } catch (error) {
         console.log(error)
@@ -26,7 +24,6 @@ const search_post = async (keyword, page) => {
 const search_user = async (keyword, page, user) => {
     try {
         const resault = await AxiosInstance().get(`${Model.USERS}/${USERS.SEARCH}?q=${keyword}&page=${page}&user=${user}`, null)
-        console.log("search_user", resault);
         return resault
     } catch (error) {
         console.log(error)

@@ -7,6 +7,7 @@ import { removeSpecialCharacters } from 'src/libs/InputValidate';
 
 const PostSearch = ({ route }) => {
   const { data, keyword } = route.params;
+  const [page, setPage] = useState(1)
   const [datalist, setDatalist] = useState(data.posts.data)
   useEffect(() => {
     setDatalist(data.posts.data)
@@ -14,9 +15,12 @@ const PostSearch = ({ route }) => {
 
   const onScrollPosts = async () => {
     if (removeSpecialCharacters(keyword).trim().length > 0) {
-      const page = Math.ceil(datalist.length / 10) + 1
-    const resault_post = await search_post(removeSpecialCharacters(keyword), page)
-    setDatalist([...datalist, ...resault_post.data])
+      const resault_post = await search_post(removeSpecialCharacters(keyword), page + 1)
+      if (Array.isArray(resault_post.data) && resault_post.data.length !== 0) {
+        setPage(page + 1)
+        setDatalist([...datalist, ...resault_post.data])
+      }
+
     }
   }
   return (
