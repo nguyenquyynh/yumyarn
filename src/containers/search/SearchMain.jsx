@@ -10,6 +10,7 @@ import SearchList from './SearchList'
 import { useDispatch, useSelector } from 'react-redux'
 import { history_addsearch } from 'reducers/search'
 import { search_post, search_user } from 'src/hooks/api/search'
+import { removeSpecialCharacters } from 'src/libs/InputValidate'
 
 const SearchMain = ({ route }) => {
     const inputkey = route.params?.inputkey
@@ -20,10 +21,10 @@ const SearchMain = ({ route }) => {
     const [data_search, setData_search] = useState()
 
     const hanlderSearch = async () => {
-        if (keyword.trim().length > 0) {
-            dispatch(history_addsearch(keyword))
-            const resault_post = await search_post(keyword, 1)
-            const resault_user = await search_user(keyword, 1, user._id)
+        if (removeSpecialCharacters(keyword).trim().length > 0) {
+            dispatch(history_addsearch(removeSpecialCharacters(keyword)))
+            const resault_post = await search_post(removeSpecialCharacters(keyword), 1)
+            const resault_user = await search_user(removeSpecialCharacters(keyword), 1, user._id)
             setData_search({
                 posts: resault_post,
                 user: resault_user

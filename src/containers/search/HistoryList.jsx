@@ -5,6 +5,7 @@ import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import IconApp from 'components/IconApp';
 import { history_remaove } from 'reducers/search';
 import { get_suggest } from 'src/hooks/api/search';
+import { removeSpecialCharacters } from 'src/libs/InputValidate';
 
 const HistoryList = ({
     keyword,
@@ -16,6 +17,9 @@ const HistoryList = ({
     const [suggest, setSuggest] = useState([])
     const timeoutref = useRef(null)
     useEffect(() => {
+        if (!removeSpecialCharacters(keyword)) {
+            return 
+        }
         if (keyword.replace(/\s+/g, ' ').trim() != "") {
             setHistory(data_history.filter(item => item.toLocaleLowerCase().includes(keyword.toLocaleLowerCase().trim())))
             keywordSearchChange(keyword)
@@ -31,7 +35,7 @@ const HistoryList = ({
     const keywordSearchChange = useCallback((keyword) => {
         clearTimeout(timeoutref.current)
         timeoutref.current = setTimeout(async () => {
-            const resault = await get_suggest(keyword)
+            const resault = await get_suggest(removeSpecialCharacters(keyword))
             if (resault?.status) {
                 setSuggest(resault?.data)
             }

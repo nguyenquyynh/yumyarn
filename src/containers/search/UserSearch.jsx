@@ -4,6 +4,7 @@ import { Text, View } from 'react-native-ui-lib'
 import { search_user } from 'src/hooks/api/search';
 import { useSelector } from 'react-redux';
 import UserRender from 'components/searchs/UserRender';
+import { removeSpecialCharacters } from 'src/libs/InputValidate';
 
 const UserSearch = ({ route }) => {
   const { data, navigation, keyword } = route.params;
@@ -15,9 +16,11 @@ const UserSearch = ({ route }) => {
   }, [data])
 
   const onScrollUsers = async () => {
-    const page = Math.ceil(datalist.length / 10) + 1
-    const resault_user = await search_user(keyword, page, user._id)
-    setDatalist([...datalist, ...resault_user.data])
+    if (removeSpecialCharacters(keyword).trim().length > 0) {
+      const page = Math.ceil(datalist.length / 10) + 1
+      const resault_user = await search_user(removeSpecialCharacters(keyword), page, user._id)
+      setDatalist([...datalist, ...resault_user.data])
+    }
   }
   return (
     <View flex bg-white>
