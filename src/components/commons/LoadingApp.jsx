@@ -18,7 +18,6 @@ const LoadingApp = ({
                         loop
                         style={{ width: 100, height: 100}}
                     />
-                   
                 </View>
             </View>
         </View>
