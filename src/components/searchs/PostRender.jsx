@@ -1,7 +1,6 @@
 import { Dimensions, StyleSheet, Image } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
 import { Avatar, Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
-import Video from 'react-native-video';
 import numberFormat from 'configs/ui/format';
 import { millisecondsToDate } from 'configs/ui/time';
 import { useNavigation } from '@react-navigation/native';
@@ -36,7 +35,7 @@ const PostRender = ({ item }) => {
     }, [item])
 
     const renderMedia = (item) => {
-        const first = item?.media[0]
+        const first = item?.media?.[0]
         if (first.endsWith('.jpg' || '.png' || '.jpeg' || '.gif' || '.svg')) {
             return (
                 <Image source={{ uri: first }} style={styles.media} />
@@ -51,7 +50,7 @@ const PostRender = ({ item }) => {
         <View bg-white marginT-x style={itemstyle}>
             <View flex-5 style={styles.videoBorder}>
                 <TouchableOpacity flex onPress={() => navigation.navigate('PostDetail', { id: item._id })}>
-                    {renderMedia(item)}
+                    {item && renderMedia(item)}
                 </TouchableOpacity>
                 <View absB style={{ width: '100%', height: '20%' }} row padding-v spread>
                     <View row bottom>

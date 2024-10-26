@@ -238,9 +238,19 @@ export async function getReport(data) {
 
 export async function removeReport(data) {
   console.log(data);
-  
+
   try {
-    const resault = await AxiosInstance().delete(`${Model.REPORT}/${ReportModel.REMOVE}`, {data: data});
+    const resault = await AxiosInstance().delete(`${Model.REPORT}/${ReportModel.REMOVE}`, { data: data });
+    return resault
+  } catch (error) {
+    console.log(error + ' Lỗi');
+    return { status: false, data: error.data };
+  }
+}
+
+export async function getHistoryPayment() {
+  try {
+    const resault = await AxiosInstance().get(`${Model.ADVERTISEMENT}/history`, null);
     return resault
   } catch (error) {
     console.log(error + ' Lỗi');

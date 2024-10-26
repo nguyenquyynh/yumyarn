@@ -3,18 +3,25 @@ import React, { memo, useEffect, useState } from 'react'
 import { Text, View } from 'react-native-ui-lib'
 import { search_post } from 'src/hooks/api/search';
 import PostRender from 'components/searchs/PostRender';
+import { removeSpecialCharacters } from 'src/libs/InputValidate';
 
 const PostSearch = ({ route }) => {
   const { data, keyword } = route.params;
+  const [page, setPage] = useState(1)
   const [datalist, setDatalist] = useState(data.posts.data)
   useEffect(() => {
     setDatalist(data.posts.data)
   }, [data])
 
   const onScrollPosts = async () => {
-    const page = Math.ceil(datalist.length / 10) + 1
-    const resault_post = await search_post(keyword, page)
-    setDatalist([...datalist, ...resault_post.data])
+    if (removeSpecialCharacters(keyword).trim().length > 0) {
+      const resault_post = await search_post(removeSpecialCharacters(keyword), page + 1)
+      if (Array.isArray(resault_post.data) && resault_post.data.length !== 0) {
+        setPage(page + 1)
+        setDatalist([...datalist, ...resault_post.data])
+      }
+
+    }
   }
   return (
     <View flex bg-white paddingH-v>
@@ -25,7 +32,9 @@ const PostSearch = ({ route }) => {
         numColumns={2}
         data={datalist}
         key={(item) => item._id}
-        renderItem={({ item }) => <PostRender key={item?._id} item={item} />}
+        renderItem={({ item }) => {
+          return <PostRender key={item?._id} item={item} />
+        }}
       />
     </View>
   )

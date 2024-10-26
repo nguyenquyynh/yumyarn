@@ -213,5 +213,15 @@
     "off":"Tắt",
     "on":"Bật",
     "second":"giây"
+  },
+  "pack" : {
+    "xs": "Gói diêm nhỏ",
+    "sm": "Gói nến thơm",
+    "lg": "Gói bếp lửa",
+    "xl": "Gói trại lửa",
+    "big": "Gói núi lửa",
+    "limited": "Gói mặt trời",
+    "date": "Ngày",
+    "code": "Mã thanh toán"
   }
 }

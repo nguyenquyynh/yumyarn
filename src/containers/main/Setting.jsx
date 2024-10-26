@@ -2,6 +2,7 @@ import {
   Alert,
   FlatList,
   ImageBackground,
+  LayoutAnimation,
   ScrollView,
   StyleSheet,
 } from 'react-native';
@@ -82,6 +83,7 @@ const Setting = () => {
           spread
           onPress={() => {
             setshowlanguage(!showlanguage);
+            LayoutAnimation.easeInEaseOut()
           }}>
           <View row center>
             <Icon assetName="languages" size={25} />

@@ -6,6 +6,7 @@ import en from './translations/en.json';
 import vi from './translations/vi.json';
 import jp from './translations/jp.json';
 import cn from './translations/cn.json';
+import { LayoutAnimation } from 'react-native';
 
 const resources = {
     en: { translation: en },
@@ -29,6 +30,7 @@ export const I18nProvider = ({ children }) => {
     useEffect(() => {
         if (setting && setting.language) {
             i18n.changeLanguage(setting.language)
+            LayoutAnimation.spring()
         }
     }, [setting]);
 
