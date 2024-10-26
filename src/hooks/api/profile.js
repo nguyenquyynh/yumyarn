@@ -104,15 +104,32 @@ const logout = async _id => {
       `${Model.USERS}/${USERS.LOGOUT_USER}?_id=${_id}`,
     );
     if (result.status) {
-      return {status: true, data: result.data};
+      return result;
     } else {
-      return {status: false, data: result.data};
+      return result;
     }
   } catch (error) {
     console.log(error + 'Lỗi logout');
     return { status: false, data: 'Opps ! Have a problem' };
   }
 };
+
+const messageSetting = async (body) => {
+  try {
+    const result = await AxiosInstance().put(
+      `${Model.USERS}/${USERS.UPDATEMESSAGE}`,
+      body
+    );
+    if (result.status) {
+      return result;
+    } else {
+      return result;
+    }
+  } catch (error) {
+    console.log(error + 'L��i getPost');
+    return { status: false, data: 'Opps! Have a problem' };
+  }
+}
 
 export {
   findUser,
@@ -121,5 +138,6 @@ export {
   changeCoverPhoto,
   countFollower,
   getTimeline,
-  logout
+  logout,
+  messageSetting
 };

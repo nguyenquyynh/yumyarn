@@ -23,6 +23,7 @@ const CommentSection = ({
   isLoading,
   handleLoadMore,
   setDataComment,
+  setOpen
 }) => {
   const {width: MAX_WIDTH, height: MAX_HEIGHT} = Dimensions.get('screen');
   const [page, setPage] = useState({});
@@ -144,6 +145,7 @@ const CommentSection = ({
           isCommentMain={true}
           isLoadingRecomment={isLoadingRecomment}
           page={page}
+          setOpen={setOpen}
         />
       )}
       onEndReached={handleLoadMore} // Gọi hàm khi kéo tới cuối danh sách

@@ -5,13 +5,13 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { Avatar, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
-import { useSelector } from 'react-redux';
-import { t } from 'lang';
-import { useNavigation } from '@react-navigation/native';
+import React, {memo, useEffect, useRef, useState} from 'react';
+import {Avatar, Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
+import {useSelector} from 'react-redux';
+import {t} from 'lang';
+import {useNavigation} from '@react-navigation/native';
 import ListPost from 'containers/post/ListPost';
-import { getPost } from 'src/hooks/api/post';
+import {getPost} from 'src/hooks/api/post';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -35,9 +35,9 @@ const Home = () => {
   return (
     <View flex bg-white>
       <Animated.View
-        style={[styles.header, { transform: [{ translateY: tranSlateY }] }]}>
+        style={[styles.header, {transform: [{translateY: tranSlateY}]}]}>
         <View row centerV>
-          <Avatar source={{ uri: auth.avatar }} size={40} onPress={() => { }} />
+          <Avatar source={{uri: auth.avatar}} size={40} onPress={() => {}} />
           <Text marginH-xvi style={styles.name}>
             {t('home.welcome')} {name}
           </Text>

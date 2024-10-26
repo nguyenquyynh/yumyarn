@@ -43,7 +43,7 @@ const PostDetail = ({ route }) => {
     useEffect(() => {
         getPost({
             u: user._id,
-            p: id
+            p: id ? id : _id,
         })
     }, [])
     useEffect(() => {
@@ -61,7 +61,7 @@ const PostDetail = ({ route }) => {
         }
     };
     const handlerPressFire = async () => {
-        const fire = await firePost(user._id, id)
+        const fire = await firePost(user._id, id ? id : _id);
         if (fire?.status) {
             setIsfire(fire?.data)
             setPost({ ...post, isfire: fire?.data, fires: fire?.data ? post?.fires + 1 : post?.fires - 1 })
@@ -97,7 +97,7 @@ const PostDetail = ({ route }) => {
             /> : <View flex bg-black>
 
             </View>}
-            <HearDetailPost back={() => navigation.goBack()} dot={() => { setDots(!dots) }} />
+            <HearDetailPost back={() => navigation.navigate("Home")} dot={() => { setDots(!dots) }} />
             <View flex absB padding-x style={{ maxHeight: heightscreen / 2 }}>
                 <View flex row marginB-x>
                     <Avatar source={{ uri: post ? post?.create_by?.avatar : "https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_1280.png" }}

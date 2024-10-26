@@ -30,6 +30,11 @@ export const auth = createSlice({
         deleteStory: (state) => {
             return { ...state, user: { ...state.user, story: '' } }
         },
+        udpateMessageProfile: (state, action) => {
+            state.user.message_recive_status = action.payload.message_recive_status
+            state.user.message_active_status = action.payload.message_active_status
+            state.user.message_reading_status = action.payload.message_reading_status
+        },
         updateInforRedux: (state, action) => {
             return {
                 ...state,
@@ -44,6 +49,6 @@ export const auth = createSlice({
     },
 })
 
-export const { updateInforRedux,deleteStory, auth_logout, auth_login, auth_check, changeAvatarRedux, changeCoverPhotoRedux } = auth.actions
+export const { updateInforRedux,deleteStory, auth_logout, auth_login, auth_check, changeAvatarRedux, changeCoverPhotoRedux , udpateMessageProfile} = auth.actions
 
 export default auth.reducer

@@ -4,7 +4,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-  webClientId: '254299987381-28gqrb6m1luci16l176tfpmkbtoue0eq.apps.googleusercontent.com'
+  webClientId: process.env.GOOGLE_SIGNINAPI
 });
 
 export const signOutGoogle = async () => {
