@@ -206,5 +206,15 @@
     "reported" : "Báo cào này của bạn đã gửi trước đó vui lòng đợi",
     "reporting": "Chúng tôi sẽ xem xét báo cáo của bạn.",
     "missinput": "Thiếu dữ liệu để xử lý."
+  },
+  "pack" : {
+    "xs": "Gói diêm nhỏ",
+    "sm": "Gói nến thơm",
+    "lg": "Gói bếp lửa",
+    "xl": "Gói trại lửa",
+    "big": "Gói núi lửa",
+    "limited": "Gói mặt trời",
+    "date": "Ngày",
+    "code": "Mã thanh toán"
   }
 }

@@ -5,7 +5,7 @@ import { store } from 'store/store';
 
 const AxiosInstance = (token = '', contentType = 'application/json') => {
   const axiosInstance = axios.create({
-    baseURL: 'http://192.168.1.26:3001/',
+    baseURL: process.env.BASEAPI_URL,
   });
 
   axiosInstance.interceptors.request.use(
