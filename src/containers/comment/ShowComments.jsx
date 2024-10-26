@@ -1,5 +1,5 @@
 import {Alert, StyleSheet, TextInput} from 'react-native';
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useLayoutEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
@@ -141,6 +141,7 @@ const ShowComments = props => {
           isLoading={isLoading}
           handleLoadMore={handleLoadMore}
           setDataComment={setDataComment}
+          setOpen={setOpen}
         />
 
         <View style={styles.reponsiveSendComment}>

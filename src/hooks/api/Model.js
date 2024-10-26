@@ -30,6 +30,7 @@ export const USERS = {
   UPDATE_INFOR: 'updateInfor',
   FIND_USER: 'finduser',
   LOGOUT_USER: 'logout',
+  UPDATEMESSAGE: 'updateMessage',
 };
 
 export const COMMENT = {

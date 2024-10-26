@@ -3,9 +3,9 @@ import notifee, {
   AndroidImportance,
   AndroidStyle,
   EventType,
-  TriggerType,
 } from '@notifee/react-native';
 import {NAVIGATION_IDS} from './Linking';
+import {Linking} from 'react-native';
 
 const createChannelId = async () => {
   const channelId = await notifee.createChannel({
@@ -17,7 +17,7 @@ const createChannelId = async () => {
   return channelId;
 };
 
-const viewNotify = async remoteMessage => {
+export const viewNotify = async remoteMessage => {
   try {
     const channelId = await createChannelId();
     notifee.displayNotification({
@@ -26,7 +26,7 @@ const viewNotify = async remoteMessage => {
       android: {
         channelId: channelId,
         pressAction: {
-          id: remoteMessage.data?.navigationId || 'Main',
+          id: remoteMessage.data?.navigationId || 'Home',
         },
         style: {
           type: AndroidStyle.MESSAGING,
@@ -51,30 +51,21 @@ const viewNotify = async remoteMessage => {
 const notifyApp = async gotoLink => {
   notifee.onBackgroundEvent(async ({type, detail}) => {
     if (
-      type === EventType.PRESS &&
-      NAVIGATION_IDS.includes(detail.pressAction.id)
+      type === EventType.PRESS
     ) {
       gotoLink(detail.pressAction.id);
     }
   });
 
-  messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Message hanlde background', remoteMessage);
-    viewNotify(remoteMessage);
-  });
+  // messaging().setBackgroundMessageHandler(async remoteMessage => {
+  //   console.log('Message hanlde background', remoteMessage);
+  //   viewNotify(remoteMessage);
+  // });
 
   messaging().onMessage(async remoteMessage => {
     console.log('Message hanlde open', remoteMessage);
     viewNotify(remoteMessage);
   });
-
-  messaging()
-    .getInitialNotification()
-    .then(async remoteMessage => {
-      if (remoteMessage) {
-        viewNotify(remoteMessage);
-      }
-    });
 };
 
 export {notifyApp};

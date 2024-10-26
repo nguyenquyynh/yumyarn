@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { createReport, createSaved, dePost, getPost } from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';

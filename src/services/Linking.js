@@ -1,54 +1,45 @@
 import {Linking} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import Chating from 'containers/chat/Chating';
 
 const NAVIGATION_IDS = ['Home', 'MainChat', 'PostDetail'];
 
 const buildDeepLinkFromNotificationData = data => {
-  const navigationId = data?.navigationId;
-  if (!NAVIGATION_IDS.includes(navigationId)) {
-    Linking.openURL(`yumyarn://Home`).catch(err =>
-      console.warn('Error opening URL:', err),
-    );
+  if (!data) {
+    Linking.openURL('yumyarn://Home');
   }
+  console.log(data)
 
-  Linking.openURL(`yumyarn://${navigationId}`).catch(err =>
-    console.warn('Error opening URL:', err),
-  );
+  Linking.openURL(`yumyarn://${data}`);
+};
+
+const config = {
+  screens: {
+    Home: 'Home',
+    MainChat: 'MainChat',
+    PostDetail: 'PostDetail/:id',
+  },
 };
 
 const linking = {
   prefixes: ['yumyarn://'],
-  config: {
-    initialRouteName: 'Home',
-    screens: {
-      Home: 'Home',
-      MainChat: 'MainChat',
-      PostDetail: 'PostDetail',
-    },
-  },
+  config,
   async getInitialURL() {
     const url = await Linking.getInitialURL();
-    if (typeof url === 'string') {
-      return url;
-    }
-    //getInitialNotification: When the application is opened from a quit state.
+    if (url) return url;
     const message = await messaging().getInitialNotification();
-    if (message) {
-      const deeplinkURL = buildDeepLinkFromNotificationData(message.data);
-      if (deeplinkURL) {
-        return deeplinkURL;
-      }
-    }
+    return message ? buildDeepLinkFromNotificationData(message.data) : null;
   },
   subscribe(listener) {
-    const onReceiveURL = ({url}) => listener(url);
-    const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
+    const linkingSubscription = Linking.addEventListener('url', event => {
+      listener(event.url); // listener nhận event chứ không phải url trực tiếp
+    });
 
     const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
-      const url = buildDeepLinkFromNotificationData(remoteMessage.data);
-      if (typeof url === 'string') {
-        listener(url);
-      }
+      buildDeepLinkFromNotificationData(remoteMessage.data);
+    });
+    messaging().setBackgroundMessageHandler(async remoteMessage => {
+      buildDeepLinkFromNotificationData(remoteMessage.data);
     });
     return () => {
       linkingSubscription.remove();

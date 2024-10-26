@@ -83,8 +83,18 @@ const RenderPost = memo(props => {
               </Text>
               {item?.repost_by && (
                 <TouchableOpacity onPress={() => { navigation.navigate('OtherProfile', { name: item?.repost_by?.name, _id: item?.repost_by?._id }) }} row centerV>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('OtherProfile', {
+                      name: item?.repost_by?.name,
+                      _id: item?.repost_by?._id,
+                    });
+                  }}
+                  row
+                  centerV>
                   <Icon marginH-10 assetName="retweet" size={10} />
                   <Text text80BO>@{item?.repost_by?.tagName}</Text>
+                </TouchableOpacity>
                 </TouchableOpacity>
               )}
             </View>
@@ -183,7 +193,7 @@ const RenderPost = memo(props => {
       />
     </View>
   );
-});
+};
 
 export default RenderPost;
 

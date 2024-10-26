@@ -2,11 +2,12 @@ import {
   View,
   Keyboard,
   TextInput,
-  RefreshControl,
   FlatList,
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ActivityIndicator,
+  LayoutAnimation,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
@@ -16,11 +17,12 @@ import ItemChating from './ItemChating';
 import CustomCirlceOnline from './CustomCirlceOnline';
 import {useNavigation} from '@react-navigation/native';
 import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
+import NotificationModalApp from 'components/commons/NotificationModalApp';
 
 const Chating = ({route}) => {
   const {friend} = route.params;
   const navigation = useNavigation();
-  const user = useSelector(state => state.auth.user._id);
+  const user = useSelector(state => state.auth.user);
   const socket = useSelector(state => state.fcm.socket);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -30,35 +32,35 @@ const Chating = ({route}) => {
   const lastTimeOnline = friend?.lastOnline
     ? changeTime(transDate(friend?.lastOnline))
     : '';
-
-  const scroll = () => {
-    if (refScoll?.current) {
-      refScoll.current?.scrollToEnd({animated: true});
-    }
-  };
-
-  const scrollTo = index => {
-    if (refScoll?.current) {
-      refScoll.current?.scrollToIndex({index: index, animated: true});
-    }
-  };
+  const [showModal, setshowModal] = useState(false);
+  const [end, setEnd] = useState(false);
 
   const getMessage = async () => {
     try {
-      if (!isLoading) {
-        setIsLoading(true);
+      setIsLoading(true);
+      if (!isLoading && !end) {
         const response = await getOldMessage(
-          listMessage?.length > 0 ? listMessage[0]._id : null,
-          user,
+          listMessage?.length > 0
+            ? listMessage[listMessage.length - 1]._id
+            : null,
+          user._id,
           friend._id,
         );
 
         if (response.status) {
-          const reversedData = [...response?.data].reverse();
-          setlistMessage(prev => [...reversedData, ...prev]);
-          if (reversedData.length >= 20 && listMessage.length != 0) {
-            scrollTo(reversedData.length-1);
+          if (response.data.length === 0) {
+            setEnd(true);
           }
+          if (
+            response.data.length === 0 &&
+            listMessage.length === 0 &&
+            ((friend?.message_recive_status == 'FRIEND' && !friend.isFriend) ||
+              friend?.message_recive_status == 'NOBODY')
+          ) {
+            setshowModal(true);
+          }
+          setlistMessage(prev => [...prev, ...response?.data]);
+          LayoutAnimation.easeInEaseOut();
         }
       }
     } catch (error) {
@@ -70,7 +72,7 @@ const Chating = ({route}) => {
 
   const hanldeseenAllMessage = async () => {
     try {
-      await seenMessage(user, friend._id);
+      await seenMessage(user._id, friend._id);
     } catch (error) {
       console.log(error);
     }
@@ -81,22 +83,23 @@ const Chating = ({route}) => {
       if (message && message.trim()) {
         const data = {
           receiveName: friend._id,
-          sendderName: user,
+          sendderName: user._id,
           content: message,
         };
         socket.emit('send_message', data);
         setlistMessage(prev => [
-          ...prev,
           {
             content: message,
             receive_user: friend._id,
-            create_by: user,
+            create_by: user._id,
             _id: (listMessage?.length + 1).toString(),
-            create_at: new Date().getMilliseconds(),
+            create_at: new Date().getTime(),
           },
+          ...prev,
         ]);
+        LayoutAnimation.easeInEaseOut();
         setMessage('');
-        scroll();
+        scrollToStart();
       } else {
         Alert.alert('Thông báo', 'không được bỏ trống tin nhắn');
       }
@@ -105,15 +108,24 @@ const Chating = ({route}) => {
     }
   };
 
+  const scrollToStart = () => {
+    if (refScoll.current)
+      refScoll.current?.scrollToIndex({
+        index: 0,
+        animated: true,
+        viewPosition: 0,
+        viewOffset: 0,
+      });
+  };
+
   useEffect(() => {
     hanldeseenAllMessage();
     getMessage();
     socket.on('receive_message', data => {
       setlistMessage(prev => [...prev, data]);
-      scroll();
     });
 
-    socket.emit('onChat', {userId: user, friend: friend._id});
+    socket.emit('onChat', {userId: user._id, friend: friend._id});
     socket.on('CheckIsWritting', data => {
       if (data.user == friend._id) {
         setfriendIsWritting(data.data);
@@ -122,8 +134,7 @@ const Chating = ({route}) => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        scroll();
-        socket.emit('isWritting', {receiveName: friend._id, userId: user});
+        socket.emit('isWritting', {receiveName: friend._id, userId: user._id});
       },
     );
 
@@ -134,7 +145,7 @@ const Chating = ({route}) => {
       },
     );
     return () => {
-      socket.emit('outChat', {userId: user});
+      socket.emit('outChat', {userId: user._id});
       socket.off('receive_message');
       socket.off('CheckIsWritting');
       keyboardDidShowListener.remove();
@@ -142,45 +153,62 @@ const Chating = ({route}) => {
     };
   }, []);
 
+  const renderFooter = () => {
+    if (!isLoading) return null;
+    return <ActivityIndicator animating size="large" />;
+  };
+
   return (
-    <View style={{position: 'relative', flex: 1}}>
-      <View style={styles.containerIcon}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon assetName="back" size={30} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.touchProfile}>
-          <View style={styles.outlineImage}>
-            <Image source={{uri: friend?.avatar}} style={styles.image} />
-            {friend?.isOnline && <CustomCirlceOnline />}
-          </View>
-          <View style={{justifyContent: 'space-between'}}>
-            <Text text80BO>{friend.name}</Text>
-            <Text>
-              {friend.isOnline ? 'Online' : 'Offline ' + lastTimeOnline}
-            </Text>
-          </View>
-        </TouchableOpacity>
+    <View style={{position: 'relative', flex: 1, backgroundColor: 'white'}}>
+      <View style={styles.shadowContainer}>
+        <View style={styles.containerIcon}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon assetName="back" size={22} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.touchProfile}
+            onPress={() =>
+              navigation.navigate('OtherProfile', {
+                name: friend?.name,
+                _id: friend?._id,
+              })
+            }>
+            <View style={styles.outlineImage}>
+              <Image source={{uri: friend?.avatar}} style={styles.image} />
+              {friend?.isOnline &&
+                friend?.message_active_status &&
+                user?.message_active_status && <CustomCirlceOnline />}
+            </View>
+            <View style={{justifyContent: 'space-between'}}>
+              <Text text80BO>{friend.name}</Text>
+              {friend?.message_active_status && user?.message_active_status && (
+                <Text>
+                  {friend.isOnline ? 'Online' : 'Offline ' + lastTimeOnline}
+                </Text>
+              )}
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
       <FlatList
         ref={refScoll}
         data={listMessage}
         keyExtractor={item => item._id}
-        renderItem={({item}) => <ItemChating item={item} user={user} />}
+        renderItem={({item}) => (
+          <ItemChating item={item} user={user} friend={friend} />
+        )}
         contentContainerStyle={{
           paddingHorizontal: 20,
           justifyContent: 'flex-end',
           minHeight: '100%',
         }}
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={() => getMessage()}
-          />
-        }
-        onLayout={() => scroll()}
-        onContentSizeChange={() => listMessage?.length <= 20 && scroll()}
+        onEndReached={getMessage}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
         automaticallyAdjustKeyboardInsets
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        inverted={true}
       />
 
       <View style={styles.containerChat}>
@@ -190,6 +218,11 @@ const Chating = ({route}) => {
           </Text>
         )}
         <TextInput
+          readOnly={
+            ((friend?.message_recive_status == 'FRIEND' && !friend.isFriend) ||
+              friend?.message_recive_status == 'NOBODY') &&
+            listMessage.length == 0
+          }
           style={styles.chatInput}
           value={message}
           onChangeText={setMessage}
@@ -199,6 +232,16 @@ const Chating = ({route}) => {
           <Icon assetName="send_message" size={25} />
         </TouchableOpacity>
       </View>
+
+      <NotificationModalApp
+        modalVisible={showModal}
+        title={'Thông báo'}
+        content={'Người dùng đã tắt nhận tin nhắn từ người lạ'}
+        asseticon={'dont'}
+        funt={() => {
+          navigation.goBack();
+        }}
+      />
     </View>
   );
 };
@@ -220,12 +263,21 @@ const styles = StyleSheet.create({
     borderRadius: 360,
   },
   containerIcon: {
-    height: 50,
-    marginTop: 50,
+    paddingTop: 35,
+    paddingBottom: 15,
     paddingHorizontal: 20,
-    gap: 10,
+    gap: 15,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  shadowContainer: {
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10, // Cho Android
+    backgroundColor: 'white',
   },
   containerChat: {
     flexDirection: 'row',
@@ -236,14 +288,12 @@ const styles = StyleSheet.create({
   },
   chatInput: {
     flex: 1,
-    maxHeight: 50,
     paddingHorizontal: 10,
     borderRadius: 20,
     backgroundColor: '#E5E1E1',
   },
   containerSend: {
     width: 50,
-    height: 50,
     borderRadius: 360,
     backgroundColor: '#F8C630',
     justifyContent: 'center',
