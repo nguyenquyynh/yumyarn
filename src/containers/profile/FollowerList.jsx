@@ -1,4 +1,4 @@
-import {StyleSheet, FlatList, ActivityIndicator} from 'react-native';
+import {StyleSheet, FlatList, ActivityIndicator, LayoutAnimation} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native-ui-lib';
 import Wapper from 'components/Wapper';
@@ -18,9 +18,11 @@ const FollowerList = ({route}) => {
       const result = await getFollowers(user);
       if (result.status) {
         setFollowersData(result.data);
+        LayoutAnimation.easeInEaseOut()
       } else {
         ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
       }
+      LayoutAnimation.easeInEaseOut()
     } catch (error) {
       console.log('getDataFollowers :', error);
     }

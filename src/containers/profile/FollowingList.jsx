@@ -3,6 +3,7 @@ import {
   FlatList,
   ToastAndroid,
   ActivityIndicator,
+  LayoutAnimation,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Text, View, Image, Button} from 'react-native-ui-lib';
@@ -26,6 +27,7 @@ const FollowingList = ({route}) => {
       } else {
         ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
       }
+      LayoutAnimation.easeInEaseOut()
     } catch (error) {
       console.log('getDataFollowing :', error);
     }

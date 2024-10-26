@@ -44,7 +44,6 @@ const Setting = () => {
     const handlerChangeLanguage = (key) => {
       dispatch(setting_changelanguage(key))
       setshowlanguage(false)
-      LayoutAnimation.easeInEaseOut()
     }
     return (
       <TouchableOpacity

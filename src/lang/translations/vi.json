@@ -83,10 +83,9 @@
     "report_d": "Báo lại cho chúng tôi vấn đề của bài viết này.",
     "save":"Lưu",
     "save_des":"Lưu bài viết bạn yêu thích",
-    "unsave":"Bỏ lưu",
-    "unsave_des":"Xóa bài viết khỏi danh sách lưu",
     "follow_des":"Theo dõi người bạn thích",
     "unFollow_des":"Gỡ theo dõi người bạn không thích",
+    "unsave":"Bỏ lưu bài viết"
   },
   "notification": {
     "title": "Thông báo",

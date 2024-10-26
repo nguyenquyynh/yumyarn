@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { B } from 'configs/fonts';
 import LoadingApp from 'components/commons/LoadingApp';
 
+
 const EditPost = ({ route }) => {
     const navigation = useNavigation()
     const user = useSelector(state => state.auth.user)

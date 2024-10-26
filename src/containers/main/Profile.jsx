@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   Avatar,
   Colors,
@@ -15,14 +15,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native-ui-lib';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {t} from 'lang';
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { t } from 'lang';
 import numberFormat from 'configs/ui/format';
 import ListMediaProfile from 'components/profile/ListMediaProfile';
-import {getTimeline} from 'src/hooks/api/profile';
+import { findUser, getTimeline } from 'src/hooks/api/profile';
 import Modals from 'components/BottomSheetApp';
-import {BI, I, SBI} from 'configs/fonts';
+import { BI, I, SBI } from 'configs/fonts';
 import Animated from 'react-native-reanimated';
 
 const Profile = () => {
@@ -32,6 +32,7 @@ const Profile = () => {
   const [showmodal, setShowmodal] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [load, setLoad] = useState(true);
+  const [dataUser, setDataUser] = useState([])
   const timeout = useRef(null);
 
   async function loadTimeline(option) {
@@ -51,6 +52,7 @@ const Profile = () => {
           user: auth._id,
           page: Math.ceil(data.length / 10) + 1,
         });
+
         if (resault.status) {
           setdata([...data, ...resault.data]);
           setLoad(false);
@@ -58,6 +60,7 @@ const Profile = () => {
         break;
     }
   }
+
   const onRefresh = () => {
     setRefreshing(true);
     setTimeout(() => {
@@ -67,8 +70,8 @@ const Profile = () => {
   };
   const handleScroll = useCallback(event => {
     clearTimeout(timeout.current);
-    const {contentOffset, contentSize} = event.nativeEvent;
-    const {height: windowHeight} = Dimensions.get('window');
+    const { contentOffset, contentSize } = event.nativeEvent;
+    const { height: windowHeight } = Dimensions.get('window');
     if (contentOffset.y + windowHeight > contentSize.height) {
       timeout.current = setTimeout(() => {
         setLoad(true);
@@ -77,17 +80,40 @@ const Profile = () => {
     }
   });
 
-  useEffect(() => {
-    loadTimeline();
-  }, []);
+  const getIdUser = async () => {
+    try {
+      const query = {
+        _id: auth._id,
+      };
+      const result = await findUser(query);
+      if (result.status) {
+        setDataUser(result.data);
+      }
+    } catch (error) {
+      console.log('ERROR getIdUser ', error);
+    }
+  };
 
+    useEffect(() => {
+      const reaload =async()=>{
+        await getIdUser();
+        await loadTimeline();
+      }
+      reaload()
+    }, [])
+    
+    const foucus = useIsFocused()
+    useEffect(() => {
+         getIdUser();
+    }, [foucus])
+    
   return (
     <View flex>
       <ImageBackground
-        style={{height: 210}}
+        style={{ height: 210 }}
         source={{
           uri:
-            auth?.coverPhoto ||
+            dataUser?.coverPhoto ||
             'https://cdn.pixabay.com/photo/2020/01/07/16/41/vietnam-4748105_1280.jpg',
         }}
       />
@@ -99,16 +125,16 @@ const Profile = () => {
         }
         onScroll={state => handleScroll(state)}>
         <TouchableOpacity
-          style={{position: 'absolute', right: 15, top: 15}}
+          style={{ position: 'absolute', right: 15, top: 15 }}
           onPress={() => {
             setShowmodal(!showmodal);
           }}>
           <Icon assetName="dots" tintColor="white" size={26} />
         </TouchableOpacity>
         <View centerH paddingT-120>
-          <Animated.View style={{zIndex: 1}}>
+          <Animated.View style={{ zIndex: 1 }}>
             <Avatar
-              source={{uri: auth?.avatar}}
+              source={{ uri: dataUser?.avatar }}
               size={100}
               imageStyle={styles.avatar}
             />
@@ -120,12 +146,12 @@ const Profile = () => {
                 center
                 onPress={() =>
                   navigation.navigate('FollowerList', {
-                    user: auth._id,
+                    user: dataUser._id,
                     statusView: false,
                   })
                 }>
                 <Text text70BO style={styles.numbercard}>
-                  {numberFormat(auth.follower)}
+                  {numberFormat(dataUser.count_followers)}
                 </Text>
                 <Text ixtext style={styles.numbercard}>
                   {t('profile.followers')}
@@ -137,12 +163,12 @@ const Profile = () => {
                 center
                 onPress={() =>
                   navigation.navigate('FollowingList', {
-                    user: auth._id,
+                    user: dataUser._id,
                     statusView: true,
                   })
                 }>
                 <Text text70BO style={styles.numbercard}>
-                  {numberFormat(auth.following)}
+                  {numberFormat(dataUser.count_following)}
                 </Text>
                 <Text ixtext style={styles.numbercard}>
                   {t('profile.following')}
@@ -151,10 +177,10 @@ const Profile = () => {
             </View>
             <View paddingH-l centerH>
               <Text xviiiText style={styles.name}>
-                {auth.name}
+                {dataUser.name}
               </Text>
               <Text marginB-xv style={styles.name}>
-                @{auth.tagName}
+                @{dataUser.tagName}
               </Text>
               <Text xivtext style={styles.story}>
                 {auth.story.length == 0 ? 'Tạo ghi chú mới' : auth.story}
@@ -163,7 +189,7 @@ const Profile = () => {
             <View
               marginT-xx
               br50
-              style={{width: '100%', height: '100%'}}
+              style={{ width: '100%', height: '100%' }}
               bg-white
               padding-x>
               <ListMediaProfile
@@ -195,7 +221,7 @@ const Profile = () => {
             marginH-x
           />
           <View>
-            <Text style={{fontFamily: BI}}>{t('profile.edit')}</Text>
+            <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
             <Text color={Colors.gray}>{t('profile.edit_description')}</Text>
           </View>
         </TouchableOpacity>
@@ -207,7 +233,7 @@ const Profile = () => {
 export default memo(Profile);
 
 const styles = StyleSheet.create({
-  scroll: {width: '100%', height: '100%', position: 'absolute', bottom: 0},
+  scroll: { width: '100%', height: '100%', position: 'absolute', bottom: 0 },
   background: {
     width: '100%',
     position: 'relative',

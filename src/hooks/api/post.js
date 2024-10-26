@@ -46,7 +46,7 @@ export async function getPost(dataRequest) {
     );
 
     if (resault.status) {
-      return { status: true, data: resault.data };-
+      return { status: true, data: resault.data };
     } else {
       return { status: false, data: resault.data };
     }

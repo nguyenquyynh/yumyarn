@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 import { t } from 'lang';
 import numberFormat from 'configs/ui/format';
 import ListMediaProfile from 'components/profile/ListMediaProfile';
-import { finduser, getTimeline } from 'src/hooks/api/profile';
+import { findUser, getTimeline } from 'src/hooks/api/profile';
 import { BI, I, SBI } from 'configs/fonts';
 import Animated from 'react-native-reanimated';
 import Wapper from 'components/Wapper';
@@ -35,8 +35,11 @@ import Modals from 'components/BottomSheetApp';
 import { ReportModel } from 'src/hooks/api/Model';
 import ButtonApp from 'components/ButtonApp';
 import { createReport } from 'src/hooks/api/post';
+import LoadingApp from 'components/commons/LoadingApp';
+import ModalFollowSuccess from 'components/profile/ModalFollowSuccess';
 
 const screenwidth = Dimensions.get('window').width;
+const screenheight = Dimensions.get('window').height;
 const OtherProfile = ({ route }) => {
   const { name, _id } = route.params;
   const navigation = useNavigation();
@@ -49,8 +52,10 @@ const OtherProfile = ({ route }) => {
   const [dataUser, setDataUser] = useState({});
   const [loadingScreen, setLoadingScreen] = useState(false);
   const [statusFollow, setStatusFollow] = useState(false);
-  const [report, setReport] = useState(false)
+  const [report, setReport] = useState(false);
   const [statusView, setstatusView] = useState(false);
+  const [statusFollowSuccess, setFollowSuccess] = useState(false)
+  const [dataEmpty, setDataEmpty] = useState(false)
 
   async function loadTimeline(option) {
     switch (option) {
@@ -69,13 +74,16 @@ const OtherProfile = ({ route }) => {
           user: _id,
           page: Math.ceil(data.length / 10) + 1,
         });
-        if (resault.status) {
+
+        if (resault.status && resault.data.length > 0) {
           setdata([...data, ...resault.data]);
-          setLoad(false);
+
         }
+        setLoad(false);
         break;
     }
   }
+
   const handleScroll = useCallback(event => {
     clearTimeout(timeout.current);
     const { contentOffset, contentSize } = event.nativeEvent;
@@ -101,6 +109,7 @@ const OtherProfile = ({ route }) => {
       const result = await createFollow(auth._id, _id);
       if (result.status) {
         setStatusFollow(true);
+        setFollowSuccess(true)
       }
     } catch (error) {
       console.log('ERROR getIdUser ', error);
@@ -136,10 +145,11 @@ const OtherProfile = ({ route }) => {
       console.log('ERROR getIdUser ', error);
     }
   };
-  const handleReport = async (e) => {
+  const handleReport = async e => {
     const resault = await createReport({
-      id_user: _id, content: e.content
-    })
+      id_user: _id,
+      content: e.content,
+    });
     if (resault?.status) {
       ToastAndroid.show(t('error.reporting'), ToastAndroid.SHORT);
     } else {
@@ -159,20 +169,30 @@ const OtherProfile = ({ route }) => {
       const query = {
         _id: _id,
       };
-      const result = await finduser(query);
+      const result = await findUser(query);
       if (result.status) {
         setDataUser(result.data);
-        console.log(result.data);
-        
       }
     } catch (error) {
       console.log('ERROR getIdUser ', error);
     }
   };
+
   const customRight = () => {
     if (auth?._id !== _id) {
-      return (<ButtonApp title={t("post.report")} onclick={() => { setReport(true) }} />)
+      return (
+        <ButtonApp
+          title={t('post.report')}
+          onclick={() => {
+            setReport(true);
+          }}
+        />
+      );
     }
+  };
+
+  const onLottieSuccess =()=>{
+    setFollowSuccess(false)
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -186,12 +206,13 @@ const OtherProfile = ({ route }) => {
   }, [name, _id]);
 
   return (
-    <Wapper renderleft funtleft={() => navigation.goBack()} title={name} customright={customRight}>
+    <Wapper
+      renderleft
+      funtleft={() => navigation.goBack()}
+      title={name}
+      customright={customRight}>
       {loadingScreen ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text>Loading...</Text>
-        </View>
+        <LoadingApp loading={loadingScreen} />
       ) : (
         <View flex bg-white>
           <ImageBackground
@@ -233,7 +254,7 @@ const OtherProfile = ({ route }) => {
                       })
                     }>
                     <Text text70BO style={styles.numbercard}>
-                      {numberFormat(0)}
+                      {numberFormat(dataUser.count_followers)}
                     </Text>
                     <Text ixtext style={styles.numbercard}>
                       {t('profile.followers')}
@@ -250,7 +271,7 @@ const OtherProfile = ({ route }) => {
                       })
                     }>
                     <Text text70BO style={styles.numbercard}>
-                      {numberFormat(0)}
+                      {numberFormat(dataUser?.count_following)}
                     </Text>
                     <Text ixtext style={styles.numbercard}>
                       {t('profile.following')}
@@ -271,7 +292,7 @@ const OtherProfile = ({ route }) => {
                   )}
                 </View>
                 {_id !== auth._id && (
-                  <View row spread style={styles.view_opaticy}>
+                  <View row spread width={300} style={styles.view_opaticy}>
                     <TouchableOpacity
                       activeOpacity={0.6}
                       style={[styles.opacity, styles.shadowStyle]}
@@ -321,22 +342,39 @@ const OtherProfile = ({ route }) => {
           </ScrollView>
         </View>
       )}
-      <Modals modalhiden={setReport} modalVisible={report} >
+      <Modals modalhiden={setReport} modalVisible={report}>
         <View>
-          <Text center margin-10 text80BO>{t("post.report_d")}</Text>
+          <Text center margin-10 text80BO>
+            {t('post.report_d')}
+          </Text>
           <FlatList
             scrollEnabled={false}
             data={optionReport}
             keyExtractor={item => item._id}
             renderItem={({ item, index }) => (
-              <TouchableOpacity onPress={() => { handleReport(item) }} spread row centerV paddingV-15 paddingH-16 >
+              <TouchableOpacity
+                onPress={() => {
+                  handleReport(item);
+                }}
+                spread
+                row
+                centerV
+                paddingV-15
+                paddingH-16>
                 <Text text80BO>{item?.value}</Text>
-                <Icon assetName='right_arrow' size={15} />
+                <Icon assetName="right_arrow" size={15} />
               </TouchableOpacity>
             )}
           />
         </View>
       </Modals>
+      {
+        statusFollowSuccess && (
+          <View style={{ backgroundColor: 'rgba(0,0,0,0.5)',height:screenheight,width:screenwidth , position: 'absolute' }}>
+            <ModalFollowSuccess statusFollowSuccess={statusFollowSuccess} onLottieSuccess={onLottieSuccess} />
+          </View>
+        )
+      }
     </Wapper>
   );
 };
@@ -345,7 +383,7 @@ export default OtherProfile;
 
 const styles = StyleSheet.create({
   view_opaticy: {
-    paddingHorizontal: screenwidth * 0.1,
+    alignSelf: "center"
   },
   opacity: {
     width: 130,
@@ -388,10 +426,17 @@ const styles = StyleSheet.create({
 });
 
 var optionReport = [
-  { value: "Người dùng này giả mạo tổ chức khác.", content: ReportModel.WAR },
-  { value: "Đăng tải các hình ảnh nhạy cảm 18+.", content: ReportModel.NFSW },
-  { value: "Đăng tải các bài viết liên quan đển an toàn trẻ dưới vị thành niên.", content: ReportModel.KID },
-  { value: "Nội dung chia rẽ sắc tộc, tôn giáo.", content: ReportModel.RELIGION },
-  { value: "Người này là thuộc thành phần thù địch.", content: ReportModel.SUCK },
-  { value: "Đăng tải các nội dung không đúng sự thật.", content: ReportModel.FAKE },
-]
+  { value: 'Người dùng này giả mạo tổ chức khác.', content: ReportModel.WAR },
+  { value: 'Đăng tải các hình ảnh nhạy cảm 18+.', content: ReportModel.NFSW },
+  {
+    value:
+      'Đăng tải các bài viết liên quan đển an toàn trẻ dưới vị thành niên.',
+    content: ReportModel.KID,
+  },
+  { value: 'Nội dung chia rẽ sắc tộc, tôn giáo.', content: ReportModel.RELIGION },
+  { value: 'Người này là thuộc thành phần thù địch.', content: ReportModel.SUCK },
+  {
+    value: 'Đăng tải các nội dung không đúng sự thật.',
+    content: ReportModel.FAKE,
+  },
+];

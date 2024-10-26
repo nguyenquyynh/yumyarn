@@ -6,7 +6,7 @@ console.log("store.getState().auth.token",store.getState().auth.token);
 
 const AxiosInstance = (token = '', contentType = 'application/json') => {
     const axiosInstance = axios.create({
-        baseURL: 'http://192.168.1.22:3001'
+        baseURL: 'http://192.168.1.18:3001'
     });
 
   axiosInstance.interceptors.request.use(

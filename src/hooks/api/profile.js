@@ -82,7 +82,7 @@ const getTimeline = async body => {
   }
 };
 
-const finduser = async query => {
+const findUser = async query => {
   try {
     const result = await AxiosInstance().post(
       `${Model.USERS}/${USERS.FIND_USER}?_id=${query._id}`,
@@ -115,7 +115,7 @@ const logout = async _id => {
 };
 
 export {
-  finduser,
+  findUser,
   updateInfor,
   changeAvatar,
   changeCoverPhoto,
