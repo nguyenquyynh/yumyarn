@@ -4,17 +4,19 @@ import {Image, Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import CustomCirlceOnline from './CustomCirlceOnline';
 import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const ItemChat = props => {
   const {item} = props;
   const navigation = useNavigation();
+  const user = useSelector(state => state.auth.user);
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('Chating', {friend: item})}
       style={styles.container}>
       <View style={styles.styleIcon}>
         <Image source={{uri: item?.avatar}} style={styles.styleIcon} />
-        {item?.isOnline && <CustomCirlceOnline />}
+        {item?.isOnline && item?.message_active_status && user?.message_active_status && <CustomCirlceOnline />}
       </View>
       <View style={{flex: 1}}>
         <Text text80BO numberOfLines={1}>

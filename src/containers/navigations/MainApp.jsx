@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, {useEffect, useRef} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AddAdrressScreen from 'containers/post/AddAdrressScreen';
 import MainPost from 'containers/post/MainPost';
 import Main from 'containers/main/Main';
@@ -24,9 +24,9 @@ import BuyAdvertisement from 'containers/advertisement/BuyAdvertisement';
 import ZaloWebView from 'containers/advertisement/ZaloWebView';
 import Policy from 'containers/setting/Policy';
 import EditPost from 'containers/post/EditPost';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import Chating from 'containers/chat/Chating';
-import { AppState } from 'react-native';
+import {AppState, Linking} from 'react-native';
 import Report from 'containers/setting/Report';
 
 const MainApp = () => {
@@ -38,6 +38,9 @@ const MainApp = () => {
     if (fcm.socket) {
       fcm.socket.emit('newOnlUser', {
         id: auth.user._id,
+        message_recive_status: auth?.user?.message_recive_status,
+        message_active_status: auth?.user?.message_active_status,
+        message_reading_status: auth?.user?.message_reading_status,
       });
     }
     const subscription = AppState.addEventListener('change', nextAppState => {
@@ -48,6 +51,9 @@ const MainApp = () => {
         if (fcm.socket) {
           fcm.socket.emit('newOnlUser', {
             id: auth.user._id,
+            message_recive_status: auth?.user?.message_recive_status,
+            message_active_status: auth?.user?.message_active_status,
+            message_reading_status: auth?.user?.message_reading_status,
           });
         }
       }

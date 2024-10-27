@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import {t} from 'lang';
 import React, {memo} from 'react';
@@ -14,6 +15,7 @@ const RenderComment = props => {
     isCommentMain,
     page,
     isLoadingRecomment,
+    setOpen
   } = props;
   const avatar = item?.create_by?.avatar;
   const nameUser = item?.create_by?.name;
@@ -24,10 +26,24 @@ const RenderComment = props => {
   const paddingRecomment = {
     paddingLeft: isCommentMain ? 30 : 0,
   };
+  const navigation = useNavigation();
   return (
     <View>
       <View flex marginT-8 row spread>
-        <Avatar source={{uri: avatar}} size={isCommentMain ? 35 : 30} />
+        <TouchableOpacity
+          onPress={() =>{
+            setOpen(false);
+            navigation.navigate(
+              'OtherProfile',
+              {
+                name: nameUser,
+                _id: item?.create_by?._id,
+              },
+            )
+          }
+          }>
+          <Avatar source={{uri: avatar}} size={isCommentMain ? 35 : 30} />
+        </TouchableOpacity>
         <View flex paddingR-15>
           <View marginL-15 style={Style.backgroundComment}>
             <Text text80BO numberOfLines={1}>
@@ -88,6 +104,7 @@ const RenderComment = props => {
               isCommentMain={false}
               page={page}
               isLoadingRecomment={isLoadingRecomment}
+              setOpen={setOpen}
             />
           )}
           ListFooterComponent={

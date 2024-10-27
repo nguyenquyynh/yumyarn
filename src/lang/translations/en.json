@@ -200,5 +200,10 @@
     "status": "Activity status",
     "seen": "Read status",
     "seen_d": "Others can know when you read their messages, but only if both you and they have enabled this feature"
+  },
+  "camera": {
+    "off": "Off",
+    "on": "On",
+    "second": "second"
   }
 }

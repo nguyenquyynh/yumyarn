@@ -97,6 +97,7 @@ export async function getAllAdvertisement(dataRequest) {
     await isTokenExpired(resault.statuscode);
     if (resault.status) {
       return { status: true, data: resault.data };
+
     } else {
       return { status: false, data: resault.data };
     }
@@ -173,7 +174,42 @@ export async function createSaved(data) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
+    console.log(error + 'Lỗi');
+    return { status: false, data: 'Opps ! Have a problem' };
+  }
+}
+
+export async function getPostSaved(data) {
+  console.log(data);
+  try {
+    const resault = await AxiosInstance().get(`${Model.SAVED}?user=${data.id}&page=${data.page}`)
+    if (resault.status) {
+      return { status: true, data: resault.data }
+    } else {
+      return { status: false, data: resault.data }
+    }
+  } catch (error) {
+    console.log(error + "Lỗi")
+    return { status: false, data: "Opps ! Have a problem" }
+  }
+}
+
+export async function isCheckPost(data) {
+  try {
+    const resault = await AxiosInstance().post(
+      `${Model.SAVED}/${SAVED.CHECK_POST}`,
+      data,
+    );
+    if (resault.status) {
+      return { status: resault.status};
+    } else {
+      return { status: false, data: resault.data };
+      return { status: resault.status};
+    }
+  } catch (error) {
     console.log(error, 'aaaaaaaaaaaaa');
+    return { status: false, data: 'Opps ! Have a problem' };
+    console.log(error + 'Lỗi');
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }

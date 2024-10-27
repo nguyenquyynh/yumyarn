@@ -2,11 +2,12 @@ import axios from 'axios';
 import { auth_logout } from 'reducers/auth';
 import { store } from 'store/store';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
+console.log("store.getState().auth.token",store.getState().auth.token);
 
 const AxiosInstance = (token = '', contentType = 'application/json') => {
-  const axiosInstance = axios.create({
-    baseURL: process.env.BASEAPI_URL,
-  });
+    const axiosInstance = axios.create({
+        baseURL: 'http://192.168.1.18:3001'
+    });
 
   axiosInstance.interceptors.request.use(
     async config => {

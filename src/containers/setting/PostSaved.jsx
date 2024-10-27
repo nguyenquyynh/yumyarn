@@ -6,7 +6,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { getPost } from 'src/hooks/api/post';
+import { createSaved, getPostSaved } from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';
 import { createFollow } from 'src/hooks/api/follow';
@@ -25,19 +25,21 @@ const PostSaved = (props) => {
   const [idPost, setIdPost] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [dataPost, setDataPost] = useState([]);
-  const [page, setPage] = useState(0);
+  const [post, setPost] = useState({})
+  const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const [showmodal, setShowmodal] = useState(false);
   const navigation = useNavigation();
   const [userIdPost, setUserIdPost] = useState(null);
   const [isFollow, setIsFollow] = useState(false);
-  const getPostData = async (idUser, page) => {
+  
+  const getPostData = async (idUser,page) => {
     try {
       const dataRequest = {
         id: idUser,
         page: page,
       };
-      const response = await getPost(dataRequest);
+      const response = await getPostSaved(dataRequest);
       if (response.status && response.data.length > 0) {
         if (page == 1) {
           setDataPost(response.data);
@@ -64,8 +66,10 @@ const PostSaved = (props) => {
   const handleLoadMore = async page => {
     if (!isLoading) {
       setIsLoading(true);
-      await getPostData(idUser, page);
+      setPage(page)
+    //  await getPostData(idUser, page); // error khi scroll đến 60% thì chạy hàm này  nhưng khi chỉ mới lưu 1 bài viết thì scroll đã lớn hơn 60% hàm này bị call API liên tục
       console.log('đã tải');
+      setIsLoading(false);
     }
   };
 
@@ -82,7 +86,9 @@ const PostSaved = (props) => {
     try {
       if (userIdPost) {
         const followUpdate = dataPost?.map(ele => {
-          if (ele.create_by._id == userIdPost) {
+          console.log(ele);
+          
+          if (ele?.create_by?._id == userIdPost) {
             console.log(ele.follow);
             return { ...ele, follow: !ele.follow };
           }
@@ -115,6 +121,20 @@ const PostSaved = (props) => {
     setIdPost(id);
     setOpen(true);
   };
+
+  const handlerUnSave = async () => {
+    console.log(idUser,"-",post._id);
+    
+    const resault = await createSaved({
+      _id: idUser,
+      post: post?._id
+    })
+    if (resault.status) {
+      ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+    } else {
+      ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+    }
+  }
   return (
     <Wapper renderleft funtleft={() => navigation.goBack()} title={t("setting.saved")}>
       <View flex bg-white>
@@ -140,10 +160,11 @@ const PostSaved = (props) => {
           maxToRenderPerBatch={2}
           renderItem={({ item }) => (
             <RenderPost
-              item={item}
+              item={item.post}
               handleOpenComment={handleOpenComment}
               idUser={idUser}
               openModalFollow={openModalFollow}
+              setPost={setPost}
             />
           )}
           ListFooterComponent={() =>
@@ -222,7 +243,7 @@ const PostSaved = (props) => {
           centerV
           onPress={() => {
             setShowmodal(false);
-            Alert.alert('đã lưu thành công nhưung chưa có api');
+            handlerUnSave()
           }}>
           <Icon
             assetName="bookmark"
@@ -231,8 +252,8 @@ const PostSaved = (props) => {
             marginH-x
           />
           <View>
-            <Text style={{ fontFamily: BI }}>{t('post.save')}</Text>
-            <Text color={Colors.gray}>{t('post.save_des')}</Text>
+            <Text style={{ fontFamily: BI }}>{t('post.unsave')}</Text>
+            <Text color={Colors.gray}>{t('post.unsave_des')}</Text>
           </View>
         </TouchableOpacity>
       </Modals>

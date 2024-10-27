@@ -30,6 +30,7 @@ export const USERS = {
   UPDATE_INFOR: 'updateInfor',
   FIND_USER: 'finduser',
   LOGOUT_USER: 'logout',
+  UPDATEMESSAGE: 'updateMessage',
 };
 
 export const COMMENT = {
@@ -62,11 +63,13 @@ export const SUGGEST = {
 };
 
 export const FOLLOW = {
-  CHECK: 'check',
-  UNFOLLOW: 'unfollow',
-  FOLLOW: 'follow',
-  CHECKFOLLOWER: 'checkfollowerprofile',
-};
+    CHECK: 'check',
+    UNFOLLOW: 'unfollow',
+    FOLLOW: 'follow',
+    CHECKFOLLOWER: "checkfollowerprofile",
+    GETFOLLOWING: "getfollowing",
+    GETFOLLOWERS: "getFollowers",
+}
 
 export const FIRE = {
   CREATE: 'create',
@@ -76,6 +79,7 @@ export const FIRE = {
 export const SAVED = {
   CREATE: 'new',
   DELETE: 'delete',
+  CHECK_POST: 'check_post'
 };
 
 export const MESSAGE = {

@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { createReport, createSaved, dePost, getPost } from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';
@@ -42,6 +42,7 @@ const ListPost = props => {
   const [isFollow, setIsFollow] = useState(false);
   const [report, setReport] = useState(false)
 
+  const [statusSavePost, setStatusSavePost] = useState(false);
   const getPostData = async (idUser, page) => {
     try {
       const dataRequest = {
@@ -119,10 +120,11 @@ const ListPost = props => {
     }
   };
 
-  const openModalFollow = (idUserCreatePost, followIs, data) => {
+  const openModalFollow = (idUserCreatePost, followIs, data, statusSavePost) => {
     setPost(data);
     setIsFollow(followIs);
     setUserIdPost(idUserCreatePost);
+    setStatusSavePost(statusSavePost)
     setShowmodal(true);
   };
 
@@ -139,18 +141,20 @@ const ListPost = props => {
       ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
     }
   };
+
   const handlerSave = async () => {
     const resault = await createSaved({
       _id: idUser,
       post: post._id,
     });
-
     if (resault?.status) {
       ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
     } else {
       ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
     }
+    // setStatusSavePost(!statusSavePost)
   };
+
   const handleOpenComment = data => {
     setPost(data);
     setOpen(true);
@@ -182,6 +186,7 @@ const ListPost = props => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         key={({ index }) => index}
+        keyExtractor={(_, index) => index.toString()}
         onEndReached={() => {
           handleLoadMore(page + 1);
         }}
@@ -196,6 +201,7 @@ const ListPost = props => {
           />
         )
         }
+        
         ListFooterComponent={() => {
           return (
             <>
@@ -287,25 +293,6 @@ const ListPost = props => {
                   </View>
                 </TouchableOpacity>
               )}
-              <TouchableOpacity
-                row
-                paddingV-x
-                centerV
-                onPress={() => {
-                  setShowmodal(false);
-                  handlerSave();
-                }}>
-                <Icon
-                  assetName="bookmark"
-                  size={33}
-                  tintColor={Colors.yellow}
-                  marginH-x
-                />
-                <View>
-                  <Text style={{ fontFamily: BI }}>{t('post.save')}</Text>
-                  <Text color={Colors.gray}>{t('post.save_des')}</Text>
-                </View>
-              </TouchableOpacity>
               {idUser === userIdPost && (
                 <TouchableOpacity
                   row
@@ -349,6 +336,56 @@ const ListPost = props => {
               )}
             </View>
         }
+        
+        
+        <TouchableOpacity
+          row
+          paddingV-x
+          centerV
+          onPress={() => {
+            setShowmodal(false);
+            handlerSave();
+          }}>
+          <Icon
+            assetName="bookmark"
+            size={33}
+            tintColor={Colors.yellow}
+            marginH-x
+          />
+          <View>
+            <Text style={{fontFamily: BI}}>
+              {statusSavePost ? t('post.unsave') : t('post.save')}
+            </Text>
+            {
+              !statusSavePost && (
+                <Text color={Colors.gray}>{t('post.save_des')}</Text>
+              )
+            }
+          </View>
+        </TouchableOpacity>
+        {idUser === userIdPost ? (
+          <TouchableOpacity
+            row
+            paddingV-x
+            centerV
+            onPress={() => {
+              setShowmodal(false);
+              handlerRemove();
+            }}>
+            <Icon
+              assetName="remove"
+              size={33}
+              tintColor={Colors.yellow}
+              marginH-x
+            />
+            <View>
+              <Text style={{fontFamily: BI}}>{t('post.remove')}</Text>
+              <Text color={Colors.gray}>{t('post.remove_d')}</Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <></>
+        )}
       </Modals>
     </>
   );

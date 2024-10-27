@@ -85,6 +85,7 @@
     "save_des":"Lưu bài viết bạn yêu thích",
     "follow_des":"Theo dõi người bạn thích",
     "unFollow_des":"Gỡ theo dõi người bạn không thích",
+    "unsave":"Bỏ lưu bài viết"
   },
   "notification": {
     "title": "Thông báo",
@@ -206,6 +207,11 @@
     "reported" : "Báo cào này của bạn đã gửi trước đó vui lòng đợi",
     "reporting": "Chúng tôi sẽ xem xét báo cáo của bạn.",
     "missinput": "Thiếu dữ liệu để xử lý."
+  },
+  "camera":{
+    "off":"Tắt",
+    "on":"Bật",
+    "second":"giây"
   },
   "pack" : {
     "xs": "Gói diêm nhỏ",

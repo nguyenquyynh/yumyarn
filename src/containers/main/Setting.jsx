@@ -40,11 +40,11 @@ const Setting = () => {
     await dispatch(auth_logout());
   };
 
-  const renderLanguage = item => {
-    const handlerChangeLanguage = key => {
-      dispatch(setting_changelanguage(key));
-      setshowlanguage(false);
-    };
+  const renderLanguage = (item) => {
+    const handlerChangeLanguage = (key) => {
+      dispatch(setting_changelanguage(key))
+      setshowlanguage(false)
+    }
     return (
       <TouchableOpacity
         left
