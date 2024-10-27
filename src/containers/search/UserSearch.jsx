@@ -37,11 +37,9 @@ const UserSearch = ({ route }) => {
         data={datalist}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => <UserRender item={item} />}
-        ListEmptyComponent={() =>
-          <View flex center height={windownsize - 100}>
-            <LottieView source={lottie.Nodata} autoPlay loop={false} style={{height: 200, width: 200}}/>
-          </View>
-        }
+        ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+          <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+        </View>}
       />
     </View>
   )

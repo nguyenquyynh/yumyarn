@@ -1,4 +1,4 @@
-import { ActivityIndicator, Dimensions, FlatList, Pressable, RefreshControl, StyleSheet, ToastAndroid } from 'react-native'
+import { ActivityIndicator, Dimensions, FlatList, LayoutAnimation, Pressable, RefreshControl, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Wapper from 'components/Wapper'
 import { useNavigation } from '@react-navigation/native'
@@ -9,6 +9,8 @@ import { BI, EBI, I } from 'configs/fonts'
 import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate'
 import RenderVideo from 'components/homes/RenderVideo'
 import { getReport, removeReport } from 'src/hooks/api/post'
+import LottieView from 'lottie-react-native'
+import lottie from 'configs/ui/lottie'
 const { width: MAX_WIDTH } = Dimensions.get('window');
 const Report = () => {
     const navigation = useNavigation()
@@ -27,10 +29,12 @@ const Report = () => {
     const handleRemove = async (id) => {
         const resault = await removeReport({ _id: id })
         if (resault.status) {
+            setDataPost(dataPost.filter((item) => item._id != id))
             ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
         } else {
             ToastAndroid.show(resault.data, ToastAndroid.SHORT)
         }
+        LayoutAnimation.easeInEaseOut()
     }
     const renderPost = (item) => {
         return (
@@ -143,6 +147,9 @@ const Report = () => {
                             </Pressable>
                         )}
                         key={item => item.id}
+                        ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+                            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+                        </View>}
                     />
                 </View>
             </View>

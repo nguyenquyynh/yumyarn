@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList } from 'react-native'
+import { StyleSheet, FlatList, Dimensions } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Icon, Image, Text, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
@@ -8,6 +8,8 @@ import { getHistoryPayment } from 'src/hooks/api/post'
 import { HistoryPack } from 'configs/ui/money'
 import { millisecondsToDate } from 'configs/ui/time'
 import LinearGradient from 'react-native-linear-gradient'
+import LottieView from 'lottie-react-native'
+import lottie from 'configs/ui/lottie'
 
 const Payment = () => {
   const navigation = useNavigation()
@@ -28,6 +30,7 @@ const Payment = () => {
     const layout = HistoryPack(parseFloat(item?.cost))
     return (
       <LinearGradient
+        key={item?._id}
         colors={[layout.color + '99', '#ffffff']} // Replace with your desired colors
         start={{ x: 0, y: 0 }} // Start from the left
         end={{ x: 1, y: 0 }} // End at the right
@@ -38,11 +41,7 @@ const Payment = () => {
           <Text style={styles.dateTime}>{t('pack.date')}: {millisecondsToDate(item?.create_at)}</Text>
           <Text style={styles.dateTime}>{t('pack.code')}: {item.code}</Text>
         </View>
-        <Icon
-          assetName='logoapp' // Thay đổi tên icon theo ý muốn
-          size={30}
-          style={styles.icon} // Sử dụng style riêng cho icon
-        />
+        <LottieView source={lottie.Nodata} loop={false} autoPlay style={styles.icon} />
       </LinearGradient>
     )
   }
@@ -56,6 +55,9 @@ const Payment = () => {
           keyExtractor={(item) => item._di}  // Mỗi giao dịch có một key duy nhất
           renderItem={renderTransactionItem}  // Hàm render từng mục
           contentContainerStyle={styles.transactionList}  // Phong cách chung cho danh sách
+          ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+          </View>}
         />
       </View>
     </Wapper>
@@ -76,8 +78,10 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    bottom: 0, // Cách từ dưới lên
-    right: 0,  // Cách từ bên phải vào
+    bottom: 0,
+    right: 0,
+    width: 100,
+    height: '100%'
   },
   transactionContent: {
     flexDirection: 'column',

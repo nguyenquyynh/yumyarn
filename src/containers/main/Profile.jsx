@@ -238,8 +238,8 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'relative',
     top: -50,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   avatar: {
     borderColor: 'white',

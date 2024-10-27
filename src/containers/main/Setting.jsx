@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import React, {memo, useState} from 'react';
+import React, { memo, useState } from 'react';
 import {
   Avatar,
   Colors,
@@ -16,12 +16,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native-ui-lib';
-import {t} from 'lang';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {auth_logout} from 'reducers/auth';
+import { t } from 'lang';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { auth_logout } from 'reducers/auth';
 import languageFormat from 'configs/ui/languages';
-import {setting_changelanguage} from 'reducers/setting';
+import { setting_changelanguage } from 'reducers/setting';
 import TextApp from 'components/commons/TextApp';
 import OptionSetting from 'components/settings/OptionSetting';
 import { logout } from 'src/hooks/api/profile';
@@ -36,14 +36,14 @@ const Setting = () => {
 
   const handlerSignout = async () => {
     await logout(auth?._id)
-    socket.emit('logout', {id: auth?._id});
+    socket.emit('logout', { id: auth?._id });
     await dispatch(auth_logout());
   };
 
   const renderLanguage = (item) => {
     const handlerChangeLanguage = (key) => {
       dispatch(setting_changelanguage(key))
-      setshowlanguage(false)
+      // setshowlanguage(false)
     }
     return (
       <TouchableOpacity
@@ -65,11 +65,11 @@ const Setting = () => {
   return (
     <View flex bg-puper padding-x>
       <ImageBackground
-        source={{uri: auth.avatar}}
+        source={{ uri: auth.avatar }}
         resizeMode="cover"
         style={styles.card_logout}>
-        <View br100 marginL-x style={{borderWidth: 2, borderColor: 'white'}}>
-          <Avatar source={{uri: auth.avatar}} />
+        <View br100 marginL-x style={{ borderWidth: 2, borderColor: 'white' }}>
+          <Avatar source={{ uri: auth.avatar }} />
         </View>
         <TouchableOpacity marginR-xx onPress={handlerSignout}>
           <Icon assetName="log_out" size={24} />
@@ -103,7 +103,7 @@ const Setting = () => {
             <FlatList
               key={item => item.key}
               data={languages}
-              renderItem={({item}) => renderLanguage(item)}
+              renderItem={({ item }) => renderLanguage(item)}
             />
           </View>
         )}
@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
 });
 
 var languages = [
-  {key: 'vi', name: 'Viet Nam'},
-  {key: 'cn', name: 'China'},
-  {key: 'jp', name: 'Japan'},
-  {key: 'en', name: 'English'},
+  { key: 'vi', name: 'Viet Nam' },
+  { key: 'cn', name: 'China' },
+  { key: 'jp', name: 'Japan' },
+  { key: 'en', name: 'English' },
 ];

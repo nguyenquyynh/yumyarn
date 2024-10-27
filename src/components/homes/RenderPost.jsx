@@ -33,7 +33,7 @@ const RenderPost = memo(props => {
   const id = item?._id;
   const differenceInSeconds = transDate(item?.create_at);
   const isFire = item.isFire;
-
+  
   const checkSavePost = async () => {
     try {
       const resault = await isCheckPost({
@@ -193,7 +193,7 @@ const RenderPost = memo(props => {
       />
     </View>
   );
-};
+})
 
 export default RenderPost;
 

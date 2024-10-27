@@ -1,4 +1,4 @@
-import {Alert, StyleSheet, TextInput} from 'react-native';
+import {Alert, LayoutAnimation, StyleSheet, TextInput} from 'react-native';
 import React, {memo, useEffect, useLayoutEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import IconApp from 'components/IconApp';
@@ -33,6 +33,7 @@ const ShowComments = props => {
       if (result.status && result.data.length > 0) {
         setDataComment([...dataComment, ...result.data]);
         setMorePage(true);
+        LayoutAnimation.easeInEaseOut()
       } else {
         setMorePage(false);
       }

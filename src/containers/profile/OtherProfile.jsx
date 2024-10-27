@@ -53,9 +53,7 @@ const OtherProfile = ({ route }) => {
   const [loadingScreen, setLoadingScreen] = useState(false);
   const [statusFollow, setStatusFollow] = useState(false);
   const [report, setReport] = useState(false);
-  const [statusView, setstatusView] = useState(false);
   const [statusFollowSuccess, setFollowSuccess] = useState(false)
-  const [dataEmpty, setDataEmpty] = useState(false)
 
   async function loadTimeline(option) {
     switch (option) {
@@ -171,6 +169,8 @@ const OtherProfile = ({ route }) => {
       };
       const result = await findUser(query);
       if (result.status) {
+        console.log(result);
+        
         setDataUser(result.data);
       }
     } catch (error) {
@@ -191,7 +191,7 @@ const OtherProfile = ({ route }) => {
     }
   };
 
-  const onLottieSuccess =()=>{
+  const onLottieSuccess = () => {
     setFollowSuccess(false)
   }
   useEffect(() => {
@@ -209,7 +209,7 @@ const OtherProfile = ({ route }) => {
     <Wapper
       renderleft
       funtleft={() => navigation.goBack()}
-      title={name}
+      title={!dataUser ? name : ''}
       customright={customRight}>
       {loadingScreen ? (
         <LoadingApp loading={loadingScreen} />
@@ -254,7 +254,7 @@ const OtherProfile = ({ route }) => {
                       })
                     }>
                     <Text text70BO style={styles.numbercard}>
-                      {numberFormat(dataUser.count_followers)}
+                      {numberFormat(dataUser.count_followers )}
                     </Text>
                     <Text ixtext style={styles.numbercard}>
                       {t('profile.followers')}
@@ -350,11 +350,12 @@ const OtherProfile = ({ route }) => {
           <FlatList
             scrollEnabled={false}
             data={optionReport}
-            keyExtractor={item => item._id}
+            keyExtractor={item => item.id}
             renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={() => {
                   handleReport(item);
+                  setReport(false)
                 }}
                 spread
                 row
@@ -370,7 +371,7 @@ const OtherProfile = ({ route }) => {
       </Modals>
       {
         statusFollowSuccess && (
-          <View style={{ backgroundColor: 'rgba(0,0,0,0.5)',height:screenheight,width:screenwidth , position: 'absolute' }}>
+          <View style={{ backgroundColor: 'rgba(0,0,0,0.5)', height: screenheight, width: screenwidth, position: 'absolute' }}>
             <ModalFollowSuccess statusFollowSuccess={statusFollowSuccess} onLottieSuccess={onLottieSuccess} />
           </View>
         )
@@ -393,8 +394,8 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'relative',
     top: -50,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   avatar: {
     borderColor: 'white',
@@ -426,16 +427,18 @@ const styles = StyleSheet.create({
 });
 
 var optionReport = [
-  { value: 'Người dùng này giả mạo tổ chức khác.', content: ReportModel.WAR },
-  { value: 'Đăng tải các hình ảnh nhạy cảm 18+.', content: ReportModel.NFSW },
+  { id: 1, value: 'Người dùng này giả mạo tổ chức khác.', content: ReportModel.WAR },
+  { id: 2, value: 'Đăng tải các hình ảnh nhạy cảm 18+.', content: ReportModel.NFSW },
   {
+    id: 3,
     value:
       'Đăng tải các bài viết liên quan đển an toàn trẻ dưới vị thành niên.',
     content: ReportModel.KID,
   },
-  { value: 'Nội dung chia rẽ sắc tộc, tôn giáo.', content: ReportModel.RELIGION },
-  { value: 'Người này là thuộc thành phần thù địch.', content: ReportModel.SUCK },
+  { id: 4, value: 'Nội dung chia rẽ sắc tộc, tôn giáo.', content: ReportModel.RELIGION },
+  { id: 5, value: 'Người này là thuộc thành phần thù địch.', content: ReportModel.SUCK },
   {
+    id: 6,
     value: 'Đăng tải các nội dung không đúng sự thật.',
     content: ReportModel.FAKE,
   },

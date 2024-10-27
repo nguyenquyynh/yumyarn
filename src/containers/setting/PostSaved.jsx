@@ -2,8 +2,11 @@ import {
   ActivityIndicator,
   Alert,
   Animated,
+  Dimensions,
+  LayoutAnimation,
   RefreshControl,
   StyleSheet,
+  ToastAndroid,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { createSaved, getPostSaved } from 'src/hooks/api/post';
@@ -17,6 +20,8 @@ import { BI } from 'configs/fonts';
 import { t } from 'lang';
 import Wapper from 'components/Wapper';
 import { useSelector } from 'react-redux';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
 
 const PostSaved = (props) => {
   const { scrollY } = props;
@@ -32,8 +37,8 @@ const PostSaved = (props) => {
   const navigation = useNavigation();
   const [userIdPost, setUserIdPost] = useState(null);
   const [isFollow, setIsFollow] = useState(false);
-  
-  const getPostData = async (idUser,page) => {
+
+  const getPostData = async (idUser, page) => {
     try {
       const dataRequest = {
         id: idUser,
@@ -67,7 +72,7 @@ const PostSaved = (props) => {
     if (!isLoading) {
       setIsLoading(true);
       setPage(page)
-    //  await getPostData(idUser, page); // error khi scroll đến 60% thì chạy hàm này  nhưng khi chỉ mới lưu 1 bài viết thì scroll đã lớn hơn 60% hàm này bị call API liên tục
+      //  await getPostData(idUser, page); // error khi scroll đến 60% thì chạy hàm này  nhưng khi chỉ mới lưu 1 bài viết thì scroll đã lớn hơn 60% hàm này bị call API liên tục
       console.log('đã tải');
       setIsLoading(false);
     }
@@ -87,7 +92,7 @@ const PostSaved = (props) => {
       if (userIdPost) {
         const followUpdate = dataPost?.map(ele => {
           console.log(ele);
-          
+
           if (ele?.create_by?._id == userIdPost) {
             console.log(ele.follow);
             return { ...ele, follow: !ele.follow };
@@ -123,14 +128,14 @@ const PostSaved = (props) => {
   };
 
   const handlerUnSave = async () => {
-    console.log(idUser,"-",post._id);
-    
     const resault = await createSaved({
       _id: idUser,
-      post: post?._id
+      post: idPost?._id
     })
     if (resault.status) {
       ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+      setDataPost(dataPost.filter((item) => item.post._id != idPost._id))
+      LayoutAnimation.easeInEaseOut()
     } else {
       ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
     }
@@ -176,6 +181,9 @@ const PostSaved = (props) => {
               />
             )
           }
+          ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+          </View>}
         />
 
         {idPost && (
@@ -197,46 +205,25 @@ const PostSaved = (props) => {
             centerV
             onPress={() => {
               setShowmodal(false);
-              navigation.navigate('EditProfile');
+              handleFollow();
             }}>
             <Icon
-              assetName="edit"
+              assetName={isFollow ? 'cancle_follow' : 'check_follow'}
               size={33}
-              tintColor={Colors.yellow}
+              // tintColor={Colors.yellow}
               marginH-x
             />
             <View>
-              <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
-              <Text color={Colors.gray}>{t('profile.edit_description')}</Text>
+              <Text style={{ fontFamily: BI }}>
+                {isFollow ? t('app.following') : t('app.follow')}
+              </Text>
+              <Text color={Colors.gray}>
+                {' '}
+                {isFollow ? t('post.unFollow_des') : t('post.follow_des')}
+              </Text>
             </View>
           </TouchableOpacity>
         )}
-
-        <TouchableOpacity
-          row
-          paddingV-x
-          centerV
-          onPress={() => {
-            setShowmodal(false);
-            handleFollow();
-          }}>
-          <Icon
-            assetName={isFollow ? 'cancle_follow' : 'check_follow'}
-            size={33}
-            // tintColor={Colors.yellow}
-            marginH-x
-          />
-          <View>
-            <Text style={{ fontFamily: BI }}>
-              {isFollow ? t('app.following') : t('app.follow')}
-            </Text>
-            <Text color={Colors.gray}>
-              {' '}
-              {isFollow ? t('post.unFollow_des') : t('post.follow_des')}
-            </Text>
-          </View>
-        </TouchableOpacity>
-
         <TouchableOpacity
           row
           paddingV-x

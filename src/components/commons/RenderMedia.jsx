@@ -30,14 +30,14 @@ const RenderMedia = ({ i, item }) => {
             return (
                 <Image
                     source={{ uri: item }}
-                    style={{ width: '100%', height: i % 2 === 0 ? 250 : 150 }}
+                    style={{ width: '100%', height: i % 3 === 0 ? 230 :  i % 2 === 0 ? 200 : 230}}
                 />
             );
         } else if (item.endsWith('.mp4')) {
             return (
                 <Image
                     source={{ uri: thumbnailUrl || 'https://i.imgur.com/eZLxXda.png' }}
-                    style={{ width: '100%', height: i % 2 === 0 ? 200 : 250 }}
+                    style={{ width: '100%', height: i % 3 === 0 ? 230 :  i % 2 === 0 ? 200 : 230}}
                     resizeMode='cover'
                 />
             );

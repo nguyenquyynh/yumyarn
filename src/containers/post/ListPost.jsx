@@ -3,6 +3,7 @@ import {
   Alert,
   Animated,
   FlatList,
+  LayoutAnimation,
   RefreshControl,
   StyleSheet,
   ToastAndroid,
@@ -20,12 +21,12 @@ import { t } from 'lang';
 import { ReportModel } from 'src/hooks/api/Model';
 
 const optionReport = [
-  { value: "Nội dung kích động bạo lực mạng.", content: ReportModel.WAR },
-  { value: "Nội dung chứ hình ảnh nhạy cảm 18+.", content: ReportModel.NFSW },
-  { value: "Bài viết liên quan đển an toàn trẻ dưới vị thành niên.", content: ReportModel.KID },
-  { value: "Nội dung chia rẽ sắc tộc, tôn giáo.", content: ReportModel.RELIGION },
-  { value: "Bài viết chứa từ ngữ thô tục.", content: ReportModel.SUCK },
-  { value: "Bài viết chứa nội dung không đúng sự thật", content: ReportModel.FAKE },
+  { id: 1, value: "Nội dung kích động bạo lực mạng.", content: ReportModel.WAR },
+  { id: 2, value: "Nội dung chứa hình ảnh nhạy cảm 18+.", content: ReportModel.NFSW },
+  { id: 3, value: "Bài viết liên quan đến an toàn trẻ dưới vị thành niên.", content: ReportModel.KID },
+  { id: 4, value: "Nội dung chia rẽ sắc tộc, tôn giáo.", content: ReportModel.RELIGION },
+  { id: 5, value: "Bài viết chứa từ ngữ thô tục.", content: ReportModel.SUCK },
+  { id: 6, value: "Bài viết chứa nội dung không đúng sự thật.", content: ReportModel.FAKE },
 ]
 
 const ListPost = props => {
@@ -89,6 +90,7 @@ const ListPost = props => {
   useEffect(() => {
     if (!showmodal) {
       setReport(false)
+      LayoutAnimation.easeInEaseOut()
     }
   }, [showmodal])
 
@@ -201,7 +203,7 @@ const ListPost = props => {
           />
         )
         }
-        
+
         ListFooterComponent={() => {
           return (
             <>
@@ -235,9 +237,13 @@ const ListPost = props => {
             <FlatList
               scrollEnabled={false}
               data={optionReport}
-              keyExtractor={item => item._id}
+              keyExtractor={item => item.id}
               renderItem={({ item, index }) => (
-                <TouchableOpacity onPress={() => { handleReport(item) }} spread row centerV paddingV-15 paddingH-16 style={{ borderBottomWidth: 0.5 }}>
+                <TouchableOpacity onPress={() => {
+                  handleReport(item)
+                  setReport(false)
+                  LayoutAnimation.easeInEaseOut()
+                }} spread row centerV paddingV-15 paddingH-16 style={{ borderBottomWidth: 0.5 }}>
                   <Text text80BO>{item?.value}</Text>
                   <Icon assetName='right_arrow' size={15} />
                 </TouchableOpacity>
@@ -246,7 +252,7 @@ const ListPost = props => {
           </View>
             :
             <View>
-              {idUser === userIdPost || idUser === post?.repost_by?._id && (
+              {idUser === userIdPost && (
                 <TouchableOpacity
                   row
                   paddingV-x
@@ -293,27 +299,6 @@ const ListPost = props => {
                   </View>
                 </TouchableOpacity>
               )}
-              {idUser === userIdPost && (
-                <TouchableOpacity
-                  row
-                  paddingV-x
-                  centerV
-                  onPress={() => {
-                    setShowmodal(false);
-                    handlerRemove();
-                  }}>
-                  <Icon
-                    assetName="remove"
-                    size={33}
-                    tintColor={Colors.yellow}
-                    marginH-x
-                  />
-                  <View>
-                    <Text style={{ fontFamily: BI }}>{t('post.remove')}</Text>
-                    <Text color={Colors.gray}>{t('post.remove_d')}</Text>
-                  </View>
-                </TouchableOpacity>
-              )}
               {(idUser !== post?.create_by?._id && idUser !== post?.repost_by?._id) && (
                 <TouchableOpacity
                   row
@@ -321,6 +306,7 @@ const ListPost = props => {
                   centerV
                   onPress={() => {
                     setReport(true)
+                    LayoutAnimation.easeInEaseOut()
                   }}>
                   <Icon
                     assetName="flag"
@@ -334,35 +320,33 @@ const ListPost = props => {
                   </View>
                 </TouchableOpacity>
               )}
+              <TouchableOpacity
+                row
+                paddingV-x
+                centerV
+                onPress={() => {
+                  setShowmodal(false);
+                  handlerSave();
+                }}>
+                <Icon
+                  assetName="bookmark"
+                  size={33}
+                  tintColor={Colors.yellow}
+                  marginH-x
+                />
+                <View>
+                  <Text style={{ fontFamily: BI }}>
+                    {statusSavePost ? t('post.unsave') : t('post.save')}
+                  </Text>
+                  {
+                    !statusSavePost && (
+                      <Text color={Colors.gray}>{t('post.save_des')}</Text>
+                    )
+                  }
+                </View>
+              </TouchableOpacity>
             </View>
         }
-        
-        
-        <TouchableOpacity
-          row
-          paddingV-x
-          centerV
-          onPress={() => {
-            setShowmodal(false);
-            handlerSave();
-          }}>
-          <Icon
-            assetName="bookmark"
-            size={33}
-            tintColor={Colors.yellow}
-            marginH-x
-          />
-          <View>
-            <Text style={{fontFamily: BI}}>
-              {statusSavePost ? t('post.unsave') : t('post.save')}
-            </Text>
-            {
-              !statusSavePost && (
-                <Text color={Colors.gray}>{t('post.save_des')}</Text>
-              )
-            }
-          </View>
-        </TouchableOpacity>
         {idUser === userIdPost ? (
           <TouchableOpacity
             row
@@ -379,7 +363,7 @@ const ListPost = props => {
               marginH-x
             />
             <View>
-              <Text style={{fontFamily: BI}}>{t('post.remove')}</Text>
+              <Text style={{ fontFamily: BI }}>{t('post.remove')}</Text>
               <Text color={Colors.gray}>{t('post.remove_d')}</Text>
             </View>
           </TouchableOpacity>
