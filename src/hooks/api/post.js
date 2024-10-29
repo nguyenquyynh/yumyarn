@@ -204,11 +204,8 @@ export async function isCheckPost(data) {
       return { status: resault.status};
     } else {
       return { status: false, data: resault.data };
-      return { status: resault.status};
     }
   } catch (error) {
-    console.log(error, 'aaaaaaaaaaaaa');
-    return { status: false, data: 'Opps ! Have a problem' };
     console.log(error + 'Lỗi');
     return { status: false, data: 'Opps ! Have a problem' };
   }

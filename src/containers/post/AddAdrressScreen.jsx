@@ -7,6 +7,8 @@ import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
 import { useNavigation } from '@react-navigation/native'
 import { reverLocation, searchLocation } from 'services/MapService'
+import LottieView from 'lottie-react-native'
+import lottie from 'configs/ui/lottie'
 
 class innitLocation {
     constructor(latitude, longitude, latitudeDelta, longitudeDelta) {
@@ -32,6 +34,7 @@ const Adddrressscreen = ({ route }) => {
     const [marker, setMarker] = useState(defaultlocation)
     const [search, setSearch] = useState(defaultlocation?.detail)
     const [searchData, setSearchData] = useState([])
+    const [loading, setLoading] = useState(false)
 
     //Lấy vị trí nguời dùng
     const getGeolocation = () => {
@@ -73,6 +76,7 @@ const Adddrressscreen = ({ route }) => {
         if (!search) {
             return
         }
+        setLoading(true)
         var keysearch = search.trim()
         const locationsearch = `@${loaction.latitude},${loaction.longitude},16z`
         try {
@@ -100,6 +104,8 @@ const Adddrressscreen = ({ route }) => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false)
         }
     }
     //Tạo đánh dấu địa điểm đã chọn
@@ -128,10 +134,6 @@ const Adddrressscreen = ({ route }) => {
                     moveOnMarkerPress
                     showsUserLocation={true}
                     onPress={handlePoiLocation}
-                    onPointerEnter={m => {
-                        console.log(m);
-
-                    }}
                     provider='google'
                 >
                     {marker && <MarkerAnimated
@@ -145,11 +147,14 @@ const Adddrressscreen = ({ route }) => {
                             longitude: element.longitude,
                         }
                         return (<MarkerAnimated
+                            
                             key={element.longitude}
                             ref={marker => { this.marker = marker }}
                             coordinate={crood}
                             onPress={() => {
-
+                                setMarker({...defaultlocation, name: (element?.name + " " + element?.address), ...element})
+                                // {"address": "193 Nguyễn Gia Trí, Phường 25, Bình Thạnh, Hồ Chí Minh, Việt Nam", "latitude": 10.8018878, "longitude": 106.7155964, "name": "Nhà Sách Đà Nẵng"}
+            
                             }}
                         >{pointLocation(element)}</MarkerAnimated>)
                     }) : null}
@@ -177,7 +182,7 @@ const Adddrressscreen = ({ route }) => {
                         <View bottom margin-v>
                             <TouchableOpacity br40 disabled={marker?.detail !== null ? false : true} bg-yellow padding-x onPress={() => {
                                 navigation.navigate(back, {
-                                    address: { ...marker, }
+                                    address: { ...marker }
                                 })
                             }}>
                                 <Text color='white'>Chọn</Text>
@@ -189,6 +194,11 @@ const Adddrressscreen = ({ route }) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            {loading &&
+                <View absF flex center bg-tr_black>
+                    <LottieView loop autoPlay source={lottie.Search_location} style={{ width: 250, height: 250 }} />
+                </View>
+            }
         </View>
     )
 }

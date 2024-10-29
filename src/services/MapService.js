@@ -1,25 +1,45 @@
-import axios from 'axios';
 
 export const searchLocation = async (keysearch, location) => {
-    const options = {
-        method: 'GET',
-        url: 'https://api.hasdata.com/scrape/google-maps/search',
-        params: {
-            q: keysearch,
-            ll: location,
-            hl: 'vi',
-            domain: 'google.com.vn'
-        },
-        headers: {
-            'x-api-key': process.env.SEARCHPLACE_KEY,
-            'Content-Type': 'application/json'
-        }
-    };
     try {
-        const { data } = await axios.request(options);
-        return data.localResults
+        const options = {
+            method: 'GET',
+            headers: {
+                'x-api-key': '534e01af-2c9b-49b5-9579-580c459e5f9f',
+                'Content-Type': 'application/json'
+            }
+        };
+
+        const fetchData = async (keysearch, location) => {
+            const url = new URL('https://api.hasdata.com/scrape/google-maps/search');
+            url.searchParams.append('q', keysearch);
+            url.searchParams.append('ll', location);
+            url.searchParams.append('hl', 'vi');
+            url.searchParams.append('domain', 'google.com.vn');
+
+            return fetch(url, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    return data.localResults;
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                });
+        };
+
+        // Sử dụng hàm fetchData
+        const data = await fetchData(keysearch, location)
+            .then(data => data)
+            .catch(error => console.error(error));
+
+        return data
     } catch (error) {
         console.error("mmmmmmmmmmmm", error);
+        return null
     }
 }
 

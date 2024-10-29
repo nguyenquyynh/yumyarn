@@ -147,9 +147,7 @@ const Report = () => {
                             </Pressable>
                         )}
                         key={item => item.id}
-                        ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
-                            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
-                        </View>}
+                        
                     />
                 </View>
             </View>
@@ -212,6 +210,9 @@ const Report = () => {
                 onEndReached={() => {
 
                 }}
+                ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+                            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+                        </View>}
                 onEndReachedThreshold={0.6}
                 initialNumToRender={10}
                 renderItem={({ item, index }) =>
