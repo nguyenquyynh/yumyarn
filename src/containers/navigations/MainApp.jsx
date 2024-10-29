@@ -26,8 +26,9 @@ import Policy from 'containers/setting/Policy';
 import EditPost from 'containers/post/EditPost';
 import {useSelector} from 'react-redux';
 import Chating from 'containers/chat/Chating';
-import {AppState, Linking} from 'react-native';
+import {AppState, Linking, ToastAndroid} from 'react-native';
 import Report from 'containers/setting/Report';
+import ShakeDetection from 'containers/orther/ShakeScreen';
 
 const MainApp = () => {
   const Stack = createNativeStackNavigator();
@@ -64,6 +65,7 @@ const MainApp = () => {
       subscription.remove();
     };
   }, [fcm]);
+  
   return (
     <Stack.Navigator
       screenOptions={{
@@ -96,6 +98,7 @@ const MainApp = () => {
       <Stack.Screen name="EditPost" component={EditPost} />
       <Stack.Screen name="Chating" component={Chating} />
       <Stack.Screen name="Report" component={Report} />
+      <Stack.Screen name="ShakeScreen" component={ShakeDetection} />
     </Stack.Navigator>
   );
 };
