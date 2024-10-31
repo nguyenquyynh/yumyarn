@@ -208,6 +208,8 @@ const Style = StyleSheet.create({
   borderRadiusSwiper: {
     width: '100%',
     height: 210,
+    borderRadius: 20,
+    overflow: 'hidden'
   },
   styleImage: {
     width: MAX_WIDTH - 20,

@@ -1,6 +1,6 @@
-import { LayoutAnimation, StyleSheet, ToastAndroid } from 'react-native'
+import { ImageBackground, LayoutAnimation, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import Home from './Home'
 import Profile from './Profile'
@@ -8,37 +8,11 @@ import Setting from './Setting'
 import Animated from 'react-native-reanimated'
 import { t } from 'lang'
 import TextApp from 'components/commons/TextApp'
-import { accelerometer, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
-import { map } from 'rxjs/operators';
-import LottieView from 'lottie-react-native'
-import lottie from 'configs/ui/lottie'
+import ShakePost from 'containers/extentions/ShakePost'
 
 const Main = () => {
     const Toptab = createMaterialTopTabNavigator()
     const [isShake, setIsShake] = useState(false)
-
-    useEffect(() => {
-        // Thiết lập khoảng thời gian cập nhật cho cảm biến
-        setUpdateIntervalForType(SensorTypes.accelerometer, 2000); // 100ms
-
-        const subscription = accelerometer
-            .pipe(
-                map(({ x, y, z }) => Math.sqrt(x * x + y * y + z * z)) // Tính độ lớn
-            )
-            .subscribe((acceleration) => {
-                // Kiểm tra nếu độ lớn lớn hơn một ngưỡng nhất định
-                if (acceleration > 20) { // Ngưỡng có thể thay đổi
-                    setIsShake(true)
-                    setTimeout(() => {
-                        setIsShake(false)
-                    }, 2000);
-                }
-            });
-
-        return () => {
-            subscription.unsubscribe();
-        };
-    }, []);
 
     const CustomTabBar = ({ state, descriptors, navigation
     }) => {
@@ -91,16 +65,10 @@ const Main = () => {
                 tabBar={props => <CustomTabBar {...props} />}>
                 <Toptab.Screen name='Home' component={Home} />
                 <Toptab.Screen name='Profile' component={Profile} />
+
                 <Toptab.Screen name='Settings' component={Setting} />
             </Toptab.Navigator>
-            {isShake && <View absF flex bg-tr_black center>
-                <View>
-                    <LottieView loop autoPlay source={lottie.Shake} style={{width: 250, height: 250}} />
-                </View>
-                <TouchableOpacity>
-
-                </TouchableOpacity>
-            </View>}
+            <ShakePost isShake={isShake} setIsShake={setIsShake} />
         </View>
     )
 }
@@ -110,5 +78,36 @@ export default Main
 const styles = StyleSheet.create({
     text: { fontSize: 32, fontFamily: "Inter-ExtraBoldItalic" },
     header: { width: '100%', justifyContent: 'space-between' },
-    font: { fontFamily: 'Inter-Regular' }
+    font: { fontFamily: 'Inter-Regular' },
+    content: { width: '100%', height: 350, justifyContent: 'center', alignItems: 'center' },
+    imagerandom: { width: 200, height: 200, position: 'absolute', borderWidth: 3, borderColor: 'white', borderRadius: 5, overflow: 'hidden' }
 })
+
+var abc = {
+    "content": "Sốt cà chua nấu hoàn hảo thật tuyệt\n🤪🤪🤪",
+    "hashtags": [
+        "cachua",
+        "y",
+        "sot"
+    ],
+    "media": [
+        "https://cdn.pixabay.com/photo/2016/12/06/18/27/tomatoes-1887240_640.jpg",
+        "https://cdn.pixabay.com/photo/2016/12/06/18/27/tomatoes-1887240_640.jpg",
+        "https://cdn.pixabay.com/photo/2016/12/06/18/27/tomatoes-1887240_640.jpg",
+    ],
+    "fire": [],
+    "comments": [],
+    "address": {
+        "latitude": 10.8728926,
+        "longitude": 106.6176021,
+        "latitudeDelta": 0.005,
+        "longitudeDelta": 0.005,
+        "detail": "Hẻm 21 Đường Trung Mỹ Tây 16, Phường Trung Mỹ Tây, Quận 12, Hồ Chí Minh, Việt Nam"
+    },
+    "exist": false,
+    "create_by": {
+        "$oid": "669225710e3001246d117608"
+    },
+    "create_at": "1720854074280",
+    "update_at": "1729321086117"
+}

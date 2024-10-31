@@ -1,91 +1,135 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Animated,
+  Dimensions,
+  FlatList,
+  Pressable,
   RefreshControl,
   StyleSheet,
 } from 'react-native';
 import ShowComments from 'containers/comment/ShowComments';
-import RenderPost from 'components/homes/RenderPost';
 import Modals from 'components/BottomSheetApp';
-import { Colors, Icon, TouchableOpacity, Text, View } from 'react-native-ui-lib';
+import { Colors, Icon, TouchableOpacity, Text, View, Image } from 'react-native-ui-lib';
 import { useNavigation } from '@react-navigation/native';
-import { BI } from 'configs/fonts';
+import { BI, EBI } from 'configs/fonts';
 import { t } from 'lang';
 import Wapper from 'components/Wapper';
-
-const sampleData = [
-  {
-    "status": true,
-    "data": [
-      {
-        "_id": "66fa513a79b799f6237c01dd",
-        "start_vip": "1727680826459",
-        "end_vip": "1730791226459",
-        "create_at": "1727680826462",
-        "post": {
-          "_id": "666d1a1d9aade859d65619e5",
-          "content": "banh ngot",
-          "hashtags": [
-            "hhhhh"
-          ],
-          "media": [
-            "https://videos.pexels.com/video-files/3298478/3298478-sd_506_960_25fps.mp4"
-          ],
-          "address": {
-            "detail": "164/6 Đường Thới Tam Thôn 17, Xã Thới Tam Thôn, Huyện Hóc Môn, Hồ Chí Minh, Việt Nam",
-            "longitude": 106.61824,
-            "latitude": 10.87523,
-            "longitudeDelta": 0.005,
-            "latitudeDelta": 0.005
-          },
-          "exist": true,
-          "create_by": {
-            "_id": "669225710e3001246d117608",
-            "avatar": "http://res.cloudinary.com/dyqb9wx4r/image/upload/v1728787253/1000001680_jzekcd.jpg",
-            "name": "Nguyen Xuan Quynh",
-            "tagName": "quynh_64"
-          },
-          "create_at": "1720854074279",
-          "update_at": "1721744845653",
-          "fire": 5,
-          "comments": 29,
-          "isFire": true
-        }
-      }
-    ]
-  }
-];
-
+import { getPostAdvs } from 'src/hooks/api/post';
+import RenderVideo from 'components/homes/RenderVideo';
+import { millisecondsToDate } from 'configs/ui/time';
+import numberFormat from 'configs/ui/format';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
+const MAX_WIDTH = Dimensions.get('window').width
 const Advertisement = () => {
-  const [open, setOpen] = useState(false);
-  const [idPost, setIdPost] = useState('');
-  const [showmodal, setShowmodal] = useState(false);
-  const [userIdPost, setUserIdPost] = useState(null);
-  const [isFollow, setIsFollow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1)
+  const [data, setData] = useState([])
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
 
-  const handleOpenComment = (postId) => {
-    setIdPost(postId);
-    setOpen(true);
-  };
+  const loadAdvertisementPost = async () => {
+    await getPostAdvs()
+      .then(resault => setData(resault.data))
+      .catch(err => console.log(err))
 
-  const openModalFollow = () => {
-    setShowmodal(true);
-  };
+  }
 
-  const onRefresh = () => {
-    // Refresh data
+  const onRefresh = async () => {
     setRefreshing(true);
-    setRefreshing(false);
+    await getPostAdvs()
+      .then(resault => setData(resault.data))
+      .catch(err => console.log(err))
+      .finally(() => { setRefreshing(false) })
   };
 
-  const onLoadMore = () => {
-    // Load more data
+  const onLoadMore = async () => {
+    await getPostAdvs(page)
+      .then(resault => {
+        if (Array.isArray(resault.data && resault.data.length > 0)) {
+          setData([...data, resault.data])
+          setPage(page + 1)
+        }
+      })
+      .catch(err => console.log(err))
   };
 
+  useEffect(() => {
+    loadAdvertisementPost()
+  }, [])
+
+
+  const Render = (item) => {
+    return (
+      <View paddingH-x paddingB-10 bg-white style={styles.sizeContainer}>
+        {/* Image */}
+        <View marginB-10 marginT-15 style={styles.borderRadiusSwiper}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            pagingEnabled={true}
+            snapToAlignment="center"
+            data={item?.post?.media}
+            renderItem={data => (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('PostDetail', { id: item?.post?._id });
+                }}
+                style={{ overflow: 'hidden', borderRadius: 15 }}>
+                {data.item.endsWith('.mp4') ? (
+                  <RenderVideo urlvideo={data.item} />
+                ) : (
+                  <Image
+                    source={{ uri: data.item }}
+                    style={styles.styleImage}
+                    resizeMode="cover"
+                  />
+                )}
+              </Pressable>
+            )}
+            key={item => item.id}
+          />
+        </View>
+        {/* Content */}
+        <Text
+          text
+          text85BO
+          numberOfLines={3}>
+          {item?.post?.content}
+        </Text>
+        {item?.post?.hashtags.length != 0 && (
+          <View row>
+            {item?.post?.hashtags.map(el => (
+              <Text
+                key={el}
+                onPress={() => {
+                  navigation.navigate('Search', { inputkey: el });
+                }}
+                style={{ fontFamily: EBI }}
+                color={Colors.yellow}>
+                #{el}{' '}
+              </Text>
+            ))}
+          </View>
+        )}
+        <View row top centerV>
+          <Icon assetName="location" size={12} marginR-v />
+          <Text
+            numberOfLines={1}
+            onPress={() => {
+              navigation.navigate('SearchMap', { defaultlocation: item?.post?.address });
+            }}
+            text
+            text90BO
+            marginR-7>
+            {item?.post?.address?.detail}
+          </Text>
+        </View>
+      </View>
+    )
+  }
   return (
     <Wapper renderleft funtleft={() => navigation.goBack()} title={t("setting.advertisement")}>
       <View flex bg-white>
@@ -94,74 +138,43 @@ const Advertisement = () => {
             showsVerticalScrollIndicator={false}
             style={styles.scrollview}
             scrollEnabled
-            data={sampleData[0].data}  // Chỉ sử dụng phần data trong sampleData
+            data={data}  // Chỉ sử dụng phần data trong sampleData
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
             keyExtractor={(item) => item.post._id}
             onEndReached={onLoadMore}
-            onEndReachedThreshold={0.6}
+            onEndReachedThreshold={0.5}
             initialNumToRender={2}
             maxToRenderPerBatch={2}
             renderItem={({ item }) => (
               <View style={styles.postContainer}>
-                <Text style={styles.dateText}>06/10/2024 - 06/12/2024</Text>
-                <RenderPost
-                  item={item.post}
-                  handleOpenComment={handleOpenComment}
-                  openModalFollow={openModalFollow}
-                />
+                {Render(item)}
+                <View padding-3 paddingH-10 bg-puper style={{ width: '100%', }} spread row>
+                  <View row left >
+                    <Icon assetName='clock' size={15} marginR-3 />
+                    <Text text90BO>{millisecondsToDate(item.start_vip)} {`->`} {millisecondsToDate(item.end_vip)}</Text>
+                  </View>
+                  <View row spread>
+                    <View row left marginR-10>
+                      <Icon assetName='fire' size={15} marginH-3 />
+                      <Text text90BO>{numberFormat(item?.fires || 0)}</Text>
+                    </View>
+                    <View row right>
+                      <Icon assetName='send' size={15} marginH-3 />
+                      <Text text90BO>{numberFormat(item?.comments || 0)}</Text>
+                    </View>
+                  </View>
+                </View>
               </View>
             )}
+            ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+          </View>}
             ListFooterComponent={() =>
               isLoading && <ActivityIndicator style={{ marginBottom: 50 }} size="large" color="#0000ff" />
             }
           />
-
-          {/* Modal bình luận */}
-          {idPost && (
-            <ShowComments
-              open={open}
-              setOpen={setOpen}
-              idPost={idPost}
-              setIdPost={setIdPost}
-            />
-          )}
-
-          {/* Modal theo dõi/chỉnh sửa */}
-          <Modals modalhiden={setShowmodal} modalVisible={showmodal}>
-            {idPost !== userIdPost && (
-              <TouchableOpacity
-                row
-                paddingV-x
-                centerV
-                onPress={() => {
-                  setShowmodal(false);
-                  navigation.navigate('EditProfile');
-                }}>
-                <Icon assetName="edit" size={33} tintColor={Colors.yellow} marginH-x />
-                <View>
-                  <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
-                  <Text color={Colors.gray}>{t('profile.edit_description')}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-
-            <TouchableOpacity
-              row
-              paddingV-x
-              centerV
-              onPress={() => {
-                setShowmodal(false);
-                // Handle save post
-              }}>
-              <Icon assetName="bookmark" size={33} tintColor={Colors.yellow} marginH-x />
-              <View>
-                <Text style={{ fontFamily: BI }}>{t('post.save')}</Text>
-                <Text color={Colors.gray}>{t('post.save_des')}</Text>
-              </View>
-            </TouchableOpacity>
-          </Modals>
         </>
       </View>
     </Wapper>
@@ -172,7 +185,6 @@ export default Advertisement;
 
 const styles = StyleSheet.create({
   scrollview: {
-    paddingHorizontal: 10,
   },
   postContainer: {
     alignItems: 'center', // Center items in the container
@@ -184,5 +196,24 @@ const styles = StyleSheet.create({
     marginBottom: 10, // Space between date and post
     textAlign: 'center', // Center the text
     color: Colors.black, // Set text color
+  },
+  borderRadiusSwiper: {
+    width: '100%',
+    height: 210,
+    borderRadius: 20,
+    overflow: 'hidden'
+  },
+  styleImage: {
+    width: MAX_WIDTH - 20,
+    width: MAX_WIDTH - 20,
+    maxWidth: 480,
+    height: '100%',
+  },
+  sizeContainer: {
+    width: '100%',
+    maxWidth: 500,
+    alignSelf: 'center',
+    position: 'relative',
+    elevation: 10
   },
 });
