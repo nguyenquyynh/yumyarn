@@ -147,7 +147,7 @@ const Report = () => {
                             </Pressable>
                         )}
                         key={item => item.id}
-                        
+
                     />
                 </View>
             </View>
@@ -202,30 +202,32 @@ const Report = () => {
 
     return (
         <Wapper title={t("setting.report")} renderleft funtleft={() => navigation.goBack()}>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                data={dataPost}
-                extraData={dataPost}
-                key={({ index }) => index}
-                onEndReached={() => {
+            <View flex bg-white>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={dataPost}
+                    extraData={dataPost}
+                    key={({ index }) => index}
+                    onEndReached={() => {
 
-                }}
-                ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
-                            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
-                        </View>}
-                onEndReachedThreshold={0.6}
-                initialNumToRender={10}
-                renderItem={({ item, index }) =>
-                (
-                    <View>
-                        {!item?.post?._id ? renderUser(item) : renderPost(item)}
-                        <View backgroundColor={item?.status === 'PENDING' ? Colors.yellow : 'lightblue'}>
-                            <Text center color='black' text90BO>{item?.content}</Text>
+                    }}
+                    ListEmptyComponent={() => <View center bg-white style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+                        <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+                    </View>}
+                    onEndReachedThreshold={0.6}
+                    initialNumToRender={10}
+                    renderItem={({ item, index }) =>
+                    (
+                        <View>
+                            {!item?.post?._id ? renderUser(item) : renderPost(item)}
+                            <View backgroundColor={item?.status === 'PENDING' ? Colors.yellow : 'lightblue'}>
+                                <Text center color='black' text90BO>{item?.content}</Text>
+                            </View>
                         </View>
-                    </View>
-                )
-                }
-            />
+                    )
+                    }
+                />
+            </View>
         </Wapper >
     )
 }

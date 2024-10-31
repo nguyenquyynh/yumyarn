@@ -201,7 +201,7 @@ export async function isCheckPost(data) {
       data,
     );
     if (resault.status) {
-      return { status: resault.status};
+      return { status: resault.status };
     } else {
       return { status: false, data: resault.data };
     }
@@ -248,6 +248,28 @@ export async function removeReport(data) {
 export async function getHistoryPayment() {
   try {
     const resault = await AxiosInstance().get(`${Model.ADVERTISEMENT}/history`, null);
+    return resault
+  } catch (error) {
+    console.log(error + ' Lỗi');
+    return { status: false, data: error.data };
+  }
+}
+
+export async function getPostAdvs(page = 1) {
+  try {
+    const resault = await AxiosInstance().get(`${Model.ADVERTISEMENT}?page=${page}`, null);
+    return resault
+  } catch (error) {
+    console.log(error + ' Lỗi');
+    return { status: false, data: error.data };
+  }
+}
+
+export async function getRandom() {
+  try {
+    const resault = await AxiosInstance().get(`${Model.POSTS}/random`, null);
+    console.log(resault.data);
+    
     return resault
   } catch (error) {
     console.log(error + ' Lỗi');

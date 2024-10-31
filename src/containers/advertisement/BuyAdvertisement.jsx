@@ -70,7 +70,7 @@ const BuyAdvertisement = ({ route }) => {
     return (
         <Wapper title={t("advertisement.title")} renderleft funtleft={() => { navigation.goBack() }}>
             <View flex bg-gray >
-                <ScrollView>
+                <ScrollView style={{ flex: 1, backgroundColor: 'white', marginBottom: 10 }}>
                     <View flex bg-white paddingB-xx >
                         <Text flex marginL-xx xviText marginB-xxx style={{ fontFamily: I }}>{viptime}</Text>
                         <FlatList

@@ -65,7 +65,7 @@ const Setting = () => {
   return (
     <View flex bg-puper padding-x>
       <ImageBackground
-        source={{ uri: auth.avatar }}
+        source={{ uri: 'https://cdn.pixabay.com/photo/2021/02/12/18/14/wallpaper-6009269_640.png' }}
         resizeMode="cover"
         style={styles.card_logout}>
         <View br100 marginL-x style={{ borderWidth: 2, borderColor: 'white' }}>

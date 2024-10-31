@@ -41,7 +41,7 @@ const Payment = () => {
           <Text style={styles.dateTime}>{t('pack.date')}: {millisecondsToDate(item?.create_at)}</Text>
           <Text style={styles.dateTime}>{t('pack.code')}: {item.code}</Text>
         </View>
-        <LottieView source={lottie.Nodata} loop={false} autoPlay style={styles.icon} />
+        <LottieView source={lottie.Pay} loop={false} autoPlay style={styles.icon} />
       </LinearGradient>
     )
   }
