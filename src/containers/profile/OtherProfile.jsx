@@ -17,7 +17,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native-ui-lib';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { t } from 'lang';
 import numberFormat from 'configs/ui/format';
@@ -42,6 +42,7 @@ const screenwidth = Dimensions.get('window').width;
 const screenheight = Dimensions.get('window').height;
 const OtherProfile = ({ route }) => {
   const { name, _id } = route.params;
+  const {id} = useRoute();
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth.user);
   const timeout = useRef(null);
@@ -59,7 +60,7 @@ const OtherProfile = ({ route }) => {
     switch (option) {
       case 'refress':
         const refress = await getTimeline({
-          user: _id,
+          user: _id ? _id : id,
           page: 1,
         });
         if (refress.status) {
@@ -69,7 +70,7 @@ const OtherProfile = ({ route }) => {
 
       default:
         const resault = await getTimeline({
-          user: _id,
+          user: _id ? _id : id,
           page: Math.ceil(data.length / 10) + 1,
         });
 
@@ -104,7 +105,7 @@ const OtherProfile = ({ route }) => {
 
   const handleFollow = async () => {
     try {
-      const result = await createFollow(auth._id, _id);
+      const result = await createFollow(auth._id, _id ? _id : id);
       if (result.status) {
         setStatusFollow(true);
         setFollowSuccess(true)
@@ -118,7 +119,7 @@ const OtherProfile = ({ route }) => {
     try {
       const body = {
         user: auth._id,
-        follower: _id,
+        follower: _id ? _id : id,
       };
       const result = await unFollow(body);
       if (result.status) {
@@ -133,7 +134,7 @@ const OtherProfile = ({ route }) => {
     try {
       const body = {
         user: auth._id,
-        follower: _id,
+        follower: _id ? _id : id,
       };
       const result = await checkFollowerProfile(body);
       if (result.status) {
@@ -145,7 +146,7 @@ const OtherProfile = ({ route }) => {
   };
   const handleReport = async e => {
     const resault = await createReport({
-      id_user: _id,
+      id_user: _id ? _id : id,
       content: e.content,
     });
     if (resault?.status) {
@@ -165,7 +166,7 @@ const OtherProfile = ({ route }) => {
   const getIdUser = async () => {
     try {
       const query = {
-        _id: _id,
+        _id: _id ? _id : id,
       };
       const result = await findUser(query);
       if (result.status) {
@@ -179,7 +180,7 @@ const OtherProfile = ({ route }) => {
   };
 
   const customRight = () => {
-    if (auth?._id !== _id) {
+    if (auth?._id !== _id ? _id : id) {
       return (
         <ButtonApp
           title={t('post.report')}
@@ -203,7 +204,7 @@ const OtherProfile = ({ route }) => {
       setLoadingScreen(false);
     };
     fetchData();
-  }, [name, _id]);
+  }, [name, _id, id]);
 
   return (
     <Wapper
@@ -249,7 +250,7 @@ const OtherProfile = ({ route }) => {
                     center
                     onPress={() =>
                       navigation.navigate('FollowerList', {
-                        user: _id,
+                        user: _id ? _id : id,
                         statusView: false,
                       })
                     }>
@@ -266,7 +267,7 @@ const OtherProfile = ({ route }) => {
                     center
                     onPress={() =>
                       navigation.navigate('FollowingList', {
-                        user: _id,
+                        user: _id ? _id : id,
                         statusView: false,
                       })
                     }>

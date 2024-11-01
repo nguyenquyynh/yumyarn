@@ -3,13 +3,13 @@ import React, {useEffect, useLayoutEffect, useState} from 'react';
 import {View} from 'react-native-ui-lib';
 import Wapper from 'components/Wapper';
 import {t} from 'lang';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import FriendChat from './FriendChat';
 import {useSelector} from 'react-redux';
 import {getFriend, getListFriendMessage} from 'src/hooks/api/message';
 import ListChat from './ListChat';
 
-const MainChat = () => {
+const MainChat = ({route}) => {
   const navigation = useNavigation();
   const userId = useSelector(state => state.auth.user._id);
   const socket = useSelector(state => state.fcm.socket);
@@ -19,6 +19,8 @@ const MainChat = () => {
   const [page, setPage] = useState(0);
   const [endFriend, setEndFriend] = useState(false);
   const [endMessage, setEndMessage] = useState(false);
+  const {_id} = route.params;
+  const routes = useRoute();
   const getListFriend = async () => {
     try {
       if (!endFriend) {
@@ -69,6 +71,12 @@ const MainChat = () => {
         socket.emit('listOnlineMessage', {
           listFriend: response.data,
         });
+        if (_id) {
+          navigation.navigate('Chating', {
+            friend:  response.data?.find(item => item._id === _id),
+          });
+          navigation.getParent()?.setParams({_id: null});
+        }
         setPage(0);
       }
     } catch (error) {
@@ -104,7 +112,7 @@ const MainChat = () => {
   return (
     <Wapper
       renderleft
-      funtleft={() => navigation.navigate("Home")}
+      funtleft={() => navigation.navigate('Main')}
       title={t('chat.title')}>
       <View flex bg-white gap-8>
         <FriendChat listFriend={listFriend} loading={loading} />

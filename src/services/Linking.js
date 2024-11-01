@@ -2,22 +2,21 @@ import {Linking} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import Chating from 'containers/chat/Chating';
 
-const NAVIGATION_IDS = ['Home', 'MainChat', 'PostDetail'];
+const NAVIGATION_IDS = ['Main', 'MainChat', 'PostDetail',"OtherProfile"];
 
 const buildDeepLinkFromNotificationData = data => {
   if (!data) {
-    Linking.openURL('yumyarn://Home');
+    Linking.openURL('yumyarn://Main');
   }
-  console.log(data)
-
   Linking.openURL(`yumyarn://${data}`);
 };
 
 const config = {
   screens: {
-    Home: 'Home',
-    MainChat: 'MainChat',
-    PostDetail: 'PostDetail/:id',
+    Main: 'Main',
+    MainChat: 'MainChat/:_id',
+    PostDetail: 'PostDetail/:_id',
+    OtherProfile: 'OtherProfile/:id',
   },
 };
 
@@ -48,4 +47,4 @@ const linking = {
   },
 };
 
-export {buildDeepLinkFromNotificationData, linking, NAVIGATION_IDS};
+export {linking, NAVIGATION_IDS, buildDeepLinkFromNotificationData};

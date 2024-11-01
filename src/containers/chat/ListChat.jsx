@@ -1,7 +1,9 @@
 import React from 'react';
 import ItemChat from './ItemChat';
 import {Text, View} from 'react-native-ui-lib';
-import {ActivityIndicator, FlatList, RefreshControl} from 'react-native';
+import {ActivityIndicator, Dimensions, FlatList, RefreshControl} from 'react-native';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
 
 const ListChat = props => {
   const {listMessage, loading, getListMessage, refeshListMessage, page} = props;
@@ -28,7 +30,19 @@ const ListChat = props => {
             {loading ? (
               <ActivityIndicator size="large" color="#0313fc" />
             ) : (
-              <Text>Rất tiếc không tìm thấy bạn của bạn </Text>
+              <View
+                center
+                style={{
+                  width: '100%',
+                  marginTop: 150
+                }}>
+                <LottieView
+                  source={lottie.Nodata}
+                  loop={false}
+                  autoPlay
+                  style={{width: 150, height: 150}}
+                />
+              </View>
             )}
           </>
         )}

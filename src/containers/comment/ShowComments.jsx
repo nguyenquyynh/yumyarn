@@ -1,5 +1,10 @@
-import {Alert, LayoutAnimation, StyleSheet, TextInput} from 'react-native';
-import React, {memo, useEffect, useLayoutEffect, useState} from 'react';
+import {
+  Alert,
+  LayoutAnimation,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
+import React, {memo, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
@@ -33,7 +38,7 @@ const ShowComments = props => {
       if (result.status && result.data.length > 0) {
         setDataComment([...dataComment, ...result.data]);
         setMorePage(true);
-        LayoutAnimation.easeInEaseOut()
+        LayoutAnimation.easeInEaseOut();
       } else {
         setMorePage(false);
       }
@@ -45,12 +50,7 @@ const ShowComments = props => {
   };
 
   const handleLoadMore = async () => {
-    if (
-      !isLoading &&
-      dataComment?.length % 10 == 0 &&
-      idPost &&
-      MorePage
-    ) {
+    if (!isLoading && dataComment?.length % 10 == 0 && idPost && MorePage) {
       setIsLoading(true);
       await getComment(idPost, dataComment);
     }
@@ -108,6 +108,7 @@ const ShowComments = props => {
           }
           setDataPost(commentUpdate);
           setParent(null);
+          LayoutAnimation.easeInEaseOut();
         } else {
           console.log(result.data);
         }
@@ -120,7 +121,7 @@ const ShowComments = props => {
   return (
     <Modals
       modalVisible={open}
-      modalhiden={value => {       
+      modalhiden={value => {
         setOpen(value);
         if (!value) {
           setDataComment([]);
@@ -130,48 +131,48 @@ const ShowComments = props => {
           setPost?.(null);
         }
       }}>
-      <View>
-        <CommentSection
-          dataComment={dataComment}
-          setParent={setParent}
-          parent={parent}
-          dataReComment={dataReComment}
-          setDataReComment={setDataReComment}
-          openReComment={openReComment}
-          setOpenReComment={setOpenReComment}
-          isLoading={isLoading}
-          handleLoadMore={handleLoadMore}
-          setDataComment={setDataComment}
-          setOpen={setOpen}
-        />
+        <View>
+          <CommentSection
+            dataComment={dataComment}
+            setParent={setParent}
+            parent={parent}
+            dataReComment={dataReComment}
+            setDataReComment={setDataReComment}
+            openReComment={openReComment}
+            setOpenReComment={setOpenReComment}
+            isLoading={isLoading}
+            handleLoadMore={handleLoadMore}
+            setDataComment={setDataComment}
+            setOpen={setOpen}
+          />
 
-        <View style={styles.reponsiveSendComment}>
-          {parent && (
-            <View style={{flexDirection: 'row', width: '100%'}}>
-              <Text marginT-5 text>
-                {t('app.answering')}: {parent?.create_by?.name}{' '}
-                <Text
-                  style={styles.colorTextWaring}
-                  onPress={() => setParent(null)}>
-                  {t('app.cancel')}
+          <View style={styles.reponsiveSendComment}>
+            {parent && (
+              <View style={{flexDirection: 'row', width: '100%'}}>
+                <Text marginT-5 text>
+                  {t('app.answering')}: {parent?.create_by?.name}{' '}
+                  <Text
+                    style={styles.colorTextWaring}
+                    onPress={() => setParent(null)}>
+                    {t('app.cancel')}
+                  </Text>
                 </Text>
-              </Text>
-            </View>
-          )}
-          <View row spread style={styles.containerInput}>
-            <TextInput
-              style={styles.outLineInput}
-              value={writeComment}
-              onChangeText={text => setWriteComment(text)}
-              placeholder={t('app.writeComment')}
-            />
+              </View>
+            )}
+            <View row spread style={styles.containerInput}>
+              <TextInput
+                style={styles.outLineInput}
+                value={writeComment}
+                onChangeText={text => setWriteComment(text)}
+                placeholder={t('app.writeComment')}
+              />
 
-            <TouchableOpacity onPress={send} style={styles.styleSend}>
-              <IconApp assetName={'send'} size={25} />
-            </TouchableOpacity>
+              <TouchableOpacity onPress={send} style={styles.styleSend}>
+                <IconApp assetName={'send'} size={25} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
     </Modals>
   );
 };
@@ -200,10 +201,13 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   reponsiveSendComment: {
-    position: 'fixed',
+    position: 'absolute',
     alignSelf: 'center',
     borderColor: 'black',
     borderTopWidth: 1,
     paddingHorizontal: 10,
+    width: '100%',
+    backgroundColor:'white',
+    bottom: 0
   },
 });
