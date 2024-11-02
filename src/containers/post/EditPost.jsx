@@ -307,6 +307,7 @@ const EditPost = ({ route }) => {
                             multiline
                         />
                         <TextInput
+                            placeholderTextColor={'black'}
                             value={hashtag}
                             onChangeText={sethashtag}
                             style={[{ color: Colors.orange }, styles.hashtagHint]}

@@ -158,6 +158,7 @@ const SearchMap = ({ route }) => {
                         <View centerV flex row bg-white br50 paddingL-x style={styles.shadow}>
                             <View flex>
                                 <TextInput
+                                    placeholderTextColor={'black'}
                                     style={{}}
                                     placeholder={t("app.search")}
                                     value={search}

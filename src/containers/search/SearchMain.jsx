@@ -52,6 +52,7 @@ const SearchMain = ({ route }) => {
                             <IconApp assetName={"search"} size={20} />
                             <TextInput style={{ flex: 1, color: 'black' }} placeholder={t("app.search")} value={keyword}
                                 onFocus={handlerFocus}
+                                placeholderTextColor={'black'}
                                 onEndEditing={hanlderSearch}
                                 onChangeText={value => setKeyword(value)} />
                             <Pressable onPress={() => { setKeyword('') }}>

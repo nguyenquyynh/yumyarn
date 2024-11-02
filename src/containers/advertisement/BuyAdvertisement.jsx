@@ -48,6 +48,8 @@ const BuyAdvertisement = ({ route }) => {
         getTimeAdvertisement()
         getListAdvertisement()
     }, [])
+    
+    
 
     const RenderAdvertisement = (item) => {
         return (
