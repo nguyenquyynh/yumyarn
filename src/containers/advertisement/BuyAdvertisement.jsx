@@ -1,12 +1,12 @@
 import { FlatList, ScrollView, StyleSheet, ToastAndroid } from 'react-native'
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import { B, EB, I } from 'configs/fonts'
 import { useSelector } from 'react-redux'
 import { checkoutAdv, getAllAdvertisement, getTimeOutAdvertisement } from 'src/hooks/api/post'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { millisecondsToDate } from 'configs/ui/time'
 
 const BuyAdvertisement = ({ route }) => {
@@ -16,6 +16,25 @@ const BuyAdvertisement = ({ route }) => {
     const [AdvSelect, setAdvSelect] = useState()
     const [viptime, setviptime] = useState("")
     const [listAdvertisement, setListAdvertisement] = useState([])
+
+    async function getTimeAdvertisement() {
+        const timeoutAdvertisement = await getTimeOutAdvertisement({
+            token: auth.token,
+            post: post
+        })
+        if (timeoutAdvertisement.status) {
+            setviptime(`${millisecondsToDate(timeoutAdvertisement.data.start_vip)} -> ${millisecondsToDate(timeoutAdvertisement.data.end_vip)}`)
+        } else setviptime("Bạn chưa quảng bá bài viết này")
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            console.log("aaaaaaaa");
+            
+          return () => getTimeAdvertisement();
+        }, [])
+      );
+    
 
     const handlerCheckout = async () => {
         const resault = await checkoutAdv({
@@ -30,15 +49,8 @@ const BuyAdvertisement = ({ route }) => {
         }
     }
     useEffect(() => {
-        async function getTimeAdvertisement() {
-            const timeoutAdvertisement = await getTimeOutAdvertisement({
-                token: auth.token,
-                post: post
-            })
-            if (timeoutAdvertisement.status) {
-                setviptime(`${millisecondsToDate(timeoutAdvertisement.data.start_vip)} -> ${millisecondsToDate(timeoutAdvertisement.data.end_vip)}`)
-            } else setviptime("Bạn chưa quảng bá bài viết này")
-        }
+        console.log("bbbbbbbbb");
+        
         async function getListAdvertisement() {
             const listAdv = await getAllAdvertisement({ token: auth.token })
             if (listAdv.status) {

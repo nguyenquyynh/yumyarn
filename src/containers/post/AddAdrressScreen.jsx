@@ -36,6 +36,10 @@ const Adddrressscreen = ({ route }) => {
     const [searchData, setSearchData] = useState([])
     const [loading, setLoading] = useState(false)
 
+    useEffect(() => {
+        if (!route.params?.defaultlocation) getGeolocation()
+    }, [])
+    
     //Lấy vị trí nguời dùng
     const getGeolocation = () => {
         Geolocation.getCurrentPosition(location => {
@@ -132,6 +136,11 @@ const Adddrressscreen = ({ route }) => {
                     region={loaction}
                     showsMyLocationButton={false}
                     moveOnMarkerPress
+                    onMarkerSelect={(e) => {
+                        console.log(e.target);
+                        
+                    }}
+                    scrollDuringRotateOrZoomEnabled
                     showsUserLocation={true}
                     onPress={handlePoiLocation}
                     provider='google'
@@ -153,8 +162,6 @@ const Adddrressscreen = ({ route }) => {
                             coordinate={crood}
                             onPress={() => {
                                 setMarker({...defaultlocation, name: (element?.name + " " + element?.address), ...element})
-                                // {"address": "193 Nguyễn Gia Trí, Phường 25, Bình Thạnh, Hồ Chí Minh, Việt Nam", "latitude": 10.8018878, "longitude": 106.7155964, "name": "Nhà Sách Đà Nẵng"}
-            
                             }}
                         >{pointLocation(element)}</MarkerAnimated>)
                     }) : null}
@@ -170,8 +177,9 @@ const Adddrressscreen = ({ route }) => {
                         <View centerV flex row bg-white br50 paddingL-x style={styles.shadow}>
                             <View flex>
                                 <TextInput
+                                onSubmitEditing={handlerSearch}
                                     placeholderTextColor={'black'}
-                                    style={{}}
+                                    style={{color: 'black'}}
                                     placeholder={t("app.search")}
                                     value={search}
                                     onChangeText={setSearch} />

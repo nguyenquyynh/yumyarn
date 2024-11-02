@@ -147,7 +147,8 @@
     "link": "Profile link",
     "exepctmes": "Allow to receive messages",
     "mesOptions": "Receive messages",
-    "whosend": "Who can send you messages"
+    "whosend": "Who can send you messages",
+    "report": "Report list"
   },
   "home": {
     "welcome": "Hello,",

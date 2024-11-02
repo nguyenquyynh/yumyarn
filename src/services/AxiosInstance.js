@@ -4,9 +4,10 @@ import { store } from 'store/store';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 console.log("store.getState().auth.token",store.getState().auth.token);
 
+const url = process.env.BASEAPI_URL
 const AxiosInstance = (token = '', contentType = 'application/json') => {
     const axiosInstance = axios.create({
-        baseURL: process.env.BASEAPI_URL
+        baseURL: url
     });
 
   axiosInstance.interceptors.request.use(
