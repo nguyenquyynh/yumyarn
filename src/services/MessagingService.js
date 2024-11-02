@@ -13,6 +13,7 @@ const createChannelId = async () => {
     name: 'Default Channel',
     importance: AndroidImportance.HIGH,
     badge: true,
+    sound: "ringstoneyumyarn",
   });
   return channelId;
 };
@@ -26,8 +27,9 @@ export const viewNotify = async remoteMessage => {
       android: {
         channelId: channelId,
         pressAction: {
-          id: remoteMessage.data?.navigationId || 'Home',
+          id: remoteMessage.data?.navigationId || 'Main',
         },
+        sound: "ringstoneyumyarn",
         style: {
           type: AndroidStyle.MESSAGING,
           person: {
@@ -56,6 +58,14 @@ const notifyApp = async gotoLink => {
       gotoLink(detail.pressAction.id);
     }
   });
+
+  notifee.onForegroundEvent(async ({type, detail}) => {
+    if (
+      type === EventType.PRESS
+    ) {
+      gotoLink(detail.pressAction.id);
+    }
+  })
 
   // messaging().setBackgroundMessageHandler(async remoteMessage => {
   //   console.log('Message hanlde background', remoteMessage);

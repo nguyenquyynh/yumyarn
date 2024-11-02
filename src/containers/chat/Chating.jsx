@@ -35,7 +35,7 @@ const Chating = ({route}) => {
   const [showModal, setshowModal] = useState(false);
   const [end, setEnd] = useState(false);
 
-  const getMessage = async () => {
+  const getMessage = async listMessage => {
     try {
       setIsLoading(true);
       if (!isLoading && !end) {
@@ -46,8 +46,11 @@ const Chating = ({route}) => {
           user._id,
           friend._id,
         );
-
-        if (response.status) {
+        if (
+          response.status &&
+          response.data[response.data.length - 1]?._id !=
+            listMessage[listMessage.length - 1]?._id
+        ) {
           if (response.data.length === 0) {
             setEnd(true);
           }
@@ -59,6 +62,7 @@ const Chating = ({route}) => {
           ) {
             setshowModal(true);
           }
+
           setlistMessage(prev => [...prev, ...response?.data]);
           LayoutAnimation.easeInEaseOut();
         }
@@ -119,10 +123,14 @@ const Chating = ({route}) => {
   };
 
   useEffect(() => {
-    hanldeseenAllMessage();
-    getMessage();
+    const messageState = async () => {
+      await getMessage(listMessage);
+      await hanldeseenAllMessage();
+    };
+    messageState();
     socket.on('receive_message', data => {
-      setlistMessage(prev => [...prev, data]);
+      setlistMessage(prev => [data, ...prev]);
+      LayoutAnimation.easeInEaseOut();
     });
 
     socket.emit('onChat', {userId: user._id, friend: friend._id});
@@ -141,7 +149,10 @@ const Chating = ({route}) => {
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
-        socket.emit('isNotWritting', {receiveName: friend._id, userId: user});
+        socket.emit('isNotWritting', {
+          receiveName: friend._id,
+          userId: user._id,
+        });
       },
     );
     return () => {
@@ -199,10 +210,8 @@ const Chating = ({route}) => {
         )}
         contentContainerStyle={{
           paddingHorizontal: 20,
-          justifyContent: 'flex-end',
-          minHeight: '100%',
         }}
-        onEndReached={getMessage}
+        onEndReached={() => listMessage.length >= 20 && getMessage(listMessage)}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
         automaticallyAdjustKeyboardInsets

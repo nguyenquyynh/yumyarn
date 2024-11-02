@@ -9,7 +9,7 @@ const FriendChat = props => {
     <FlatList
       data={listFriend}
       horizontal={true}
-      style={{maxHeight: 91, marginLeft: 20}}
+      style={{minHeight: 91, marginLeft: 20, maxHeight: 91}}
       keyExtractor={item => item._id}
       renderItem={({item}) => <ItemFriendChat item={item} />}
       ListEmptyComponent={() => (

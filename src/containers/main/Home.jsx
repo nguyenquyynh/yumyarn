@@ -58,7 +58,7 @@ const Home = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('MainChat');
+              navigation.navigate('MainChat',{_id : null});
             }}>
             <Icon assetName="chat" size={20} />
           </TouchableOpacity>

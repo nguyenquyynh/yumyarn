@@ -1,7 +1,7 @@
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, ToastAndroid } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
 import { Avatar, Colors, Icon, LoaderScreen, Text, TouchableOpacity, View } from 'react-native-ui-lib'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import MediaPost from 'components/posts/MediaPost'
 import HearDetailPost from 'components/posts/HearDetailPost'
 import numberFormat from 'configs/ui/format'
@@ -17,7 +17,7 @@ import { Model, ReportModel } from 'src/hooks/api/Model'
 import Modals from 'components/BottomSheetApp'
 
 const PostDetail = ({ route }) => {
-    const { id } = route.params
+    const { id, _id } = route.params;
     const heightscreen = Dimensions.get('window').height
     const navigation = useNavigation()
     const user = useSelector(state => state.auth.user)
@@ -97,7 +97,7 @@ const PostDetail = ({ route }) => {
             /> : <View flex bg-black>
 
             </View>}
-            <HearDetailPost back={() => navigation.navigate("Home")} dot={() => { setDots(!dots) }} />
+            <HearDetailPost back={() => id ?  navigation.goBack() : navigation.navigate("Main")} dot={() => { setDots(!dots) }} />
             <View flex absB padding-x style={{ maxHeight: heightscreen / 2 }}>
                 <View flex row marginB-x>
                     <Avatar source={{ uri: post ? post?.create_by?.avatar : "https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_1280.png" }}
