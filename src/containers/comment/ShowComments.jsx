@@ -161,6 +161,7 @@ const ShowComments = props => {
             )}
             <View row spread style={styles.containerInput}>
               <TextInput
+                placeholderTextColor={'black'}
                 style={styles.outLineInput}
                 value={writeComment}
                 onChangeText={text => setWriteComment(text)}

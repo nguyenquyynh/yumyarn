@@ -2,7 +2,6 @@ import IconApp from 'components/IconApp';
 import React, {memo, useState} from 'react';
 import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
 import {
-  Avatar,
   Colors,
   Icon,
   Image,
@@ -16,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import RenderVideo from './RenderVideo';
 import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import {t} from 'lang';
+import { Avatar } from 'react-native-ui-lib/src/components/avatar'
 
 const { width: MAX_WIDTH } = Dimensions.get('window');
 const RenderPost = memo(props => {

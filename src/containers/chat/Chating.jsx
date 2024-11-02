@@ -232,6 +232,7 @@ const Chating = ({route}) => {
               friend?.message_recive_status == 'NOBODY') &&
             listMessage.length == 0
           }
+          placeholderTextColor={'black'}
           style={styles.chatInput}
           value={message}
           onChangeText={setMessage}

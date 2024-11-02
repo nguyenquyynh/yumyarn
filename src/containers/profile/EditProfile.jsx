@@ -307,6 +307,7 @@ const EditProfile = () => {
                     onChangeText={setStory}
                     style={styles.story}
                     multiline={true}
+                    placeholderTextColor={'black'}
                     textAlignVertical={'center'}
                     placeholder={statusStory ? auth.story : "Tạo ghi chú mới"}
                   />

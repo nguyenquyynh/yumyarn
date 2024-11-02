@@ -1,12 +1,14 @@
 import { Keyboard, StyleSheet, TextInput } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang'
 import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
 import { useNavigation } from '@react-navigation/native'
-import { autoComplete, reverLocation, searchLocation } from 'services/MapService'
+import { reverLocation, searchLocation } from 'services/MapService'
+import LottieView from 'lottie-react-native'
+import lottie from 'configs/ui/lottie'
 
 class innitLocation {
     constructor(latitude, longitude, latitudeDelta, longitudeDelta) {
@@ -30,7 +32,12 @@ const SearchMap = ({ route }) => {
     const [loaction, setloaction] = useState(defaultlocation);
     const [marker, setMarker] = useState(defaultlocation)
     const [search, setSearch] = useState(defaultlocation?.detail)
+    const [loading, setLoading] = useState(false)
     const [searchData, setSearchData] = useState([])
+
+    useEffect(() => {
+        if (!route.params?.defaultlocation) getGeolocation()
+    }, [])
 
     //Lấy vị trí nguời dùng
     const getGeolocation = () => {
@@ -70,6 +77,7 @@ const SearchMap = ({ route }) => {
         if (!search) {
             return
         }
+        setLoading(true)
         var keysearch = search.trim()
         const locationsearch = `@${loaction.latitude},${loaction.longitude},16z`
         try {
@@ -97,6 +105,8 @@ const SearchMap = ({ route }) => {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false)
         }
     }
     //Tạo đánh dấu địa điểm đã chọn
@@ -158,7 +168,8 @@ const SearchMap = ({ route }) => {
                         <View centerV flex row bg-white br50 paddingL-x style={styles.shadow}>
                             <View flex>
                                 <TextInput
-                                    style={{}}
+                                    placeholderTextColor={'black'}
+                                    style={{color: 'black'}}
                                     placeholder={t("app.search")}
                                     value={search}
                                     onChangeText={setSearch} />
@@ -173,6 +184,11 @@ const SearchMap = ({ route }) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            {loading &&
+                <View absF flex center bg-tr_black>
+                    <LottieView loop autoPlay source={lottie.Search_location} style={{ width: 250, height: 250 }} />
+                </View>
+            }
         </View>
     )
 }
