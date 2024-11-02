@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import React, { memo, useState } from 'react';
 import {
-  Avatar,
   Colors,
   Icon,
   Image,
@@ -25,6 +24,7 @@ import { setting_changelanguage } from 'reducers/setting';
 import TextApp from 'components/commons/TextApp';
 import OptionSetting from 'components/settings/OptionSetting';
 import { logout } from 'src/hooks/api/profile';
+import Avatar from 'components/Avatar';
 
 const Setting = () => {
   const auth = useSelector(state => state.auth.user);
@@ -69,7 +69,7 @@ const Setting = () => {
         resizeMode="cover"
         style={styles.card_logout}>
         <View br100 marginL-x style={{ borderWidth: 2, borderColor: 'white' }}>
-          <Avatar source={{ uri: auth.avatar }} />
+          <Avatar source={{ uri: auth.avatar }} size={50}/>
         </View>
         <TouchableOpacity marginR-xx onPress={handlerSignout}>
           <Icon assetName="log_out" size={24} />

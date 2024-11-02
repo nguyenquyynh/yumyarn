@@ -1,10 +1,11 @@
 import { Dimensions, StyleSheet, Image } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
-import { Avatar, Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import numberFormat from 'configs/ui/format';
 import { millisecondsToDate } from 'configs/ui/time';
 import { useNavigation } from '@react-navigation/native';
 import { createThumbnail } from 'react-native-create-thumbnail';
+import Avatar from 'components/Avatar';
 
 const PostRender = ({ item }) => {
     const navigation = useNavigation()

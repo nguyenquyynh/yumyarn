@@ -1,6 +1,6 @@
 import { Dimensions, FlatList, Pressable, ScrollView, StyleSheet, ToastAndroid } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
-import { Avatar, Colors, Icon, LoaderScreen, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Colors, Icon, LoaderScreen, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import MediaPost from 'components/posts/MediaPost'
 import HearDetailPost from 'components/posts/HearDetailPost'
@@ -15,6 +15,8 @@ import ShowShareDetailPost from 'components/posts/ShowShareDetailPost'
 import { t } from 'lang'
 import { Model, ReportModel } from 'src/hooks/api/Model'
 import Modals from 'components/BottomSheetApp'
+import Avatar from 'components/Avatar';
+
 
 const PostDetail = ({ route }) => {
     const { id, _id } = route.params;

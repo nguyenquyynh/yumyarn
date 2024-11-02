@@ -1,10 +1,5 @@
 import { Modal, StyleSheet } from 'react-native'
 import {
-    Avatar,
-    Colors,
-    Icon,
-    Text,
-    TouchableOpacity,
     View,
 } from 'react-native-ui-lib';
 import React from 'react'

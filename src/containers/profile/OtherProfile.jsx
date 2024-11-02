@@ -9,8 +9,8 @@ import {
   ToastAndroid,
 } from 'react-native';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import Avatar from 'components/Avatar';
 import {
-  Avatar,
   Colors,
   Icon,
   Text,
@@ -232,15 +232,12 @@ const OtherProfile = ({ route }) => {
             }
             onScroll={state => handleScroll(state)}>
             <View centerH paddingT-120>
-              <Animated.View style={{ zIndex: 1 }}>
+              <Animated.View style={[{ zIndex: 1 }, styles.avatar]}>
                 <Avatar
                   source={{
-                    uri:
-                      dataUser?.avatar ||
-                      'https://cdn.pixabay.com/photo/2020/01/07/16/41/vietnam-4748105_1280.jpg',
+                    uri: dataUser?.avatar
                   }}
                   size={100}
-                  imageStyle={styles.avatar}
                 />
               </Animated.View>
               <View bg-puper style={styles.background}>
@@ -401,6 +398,7 @@ const styles = StyleSheet.create({
   avatar: {
     borderColor: 'white',
     borderWidth: 3,
+    borderRadius: 360
   },
   name: {
     fontFamily: BI,

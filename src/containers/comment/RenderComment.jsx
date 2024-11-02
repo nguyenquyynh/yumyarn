@@ -1,9 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
+import Avatar from 'components/Avatar';
 import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import {t} from 'lang';
 import React, {memo} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
-import {Avatar, Text, TouchableOpacity, View} from 'react-native-ui-lib';
+import { Text, TouchableOpacity, View} from 'react-native-ui-lib';
 
 const RenderComment = props => {
   const {

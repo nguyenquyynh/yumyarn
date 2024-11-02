@@ -5,6 +5,7 @@ import CustomCirlceOnline from './CustomCirlceOnline';
 import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import {useNavigation} from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import Avatar from 'components/Avatar';
 
 const ItemChat = props => {
   const {item} = props;
@@ -15,7 +16,7 @@ const ItemChat = props => {
       onPress={() => navigation.navigate('Chating', {friend: item})}
       style={styles.container}>
       <View style={styles.styleIcon}>
-        <Image source={{uri: item?.avatar}} style={styles.styleIcon} />
+        <Avatar source={{uri: item?.avatar}} size={50}/>
         {item?.isOnline && item?.message_active_status && user?.message_active_status && <CustomCirlceOnline />}
       </View>
       <View style={{flex: 1}}>
@@ -61,11 +62,6 @@ const styles = StyleSheet.create({
   },
   textGray: {
     color: 'rgba(0, 0, 0, 0.4)',
-  },
-  styleIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 360,
   },
   container: {
     marginVertical: 10,

@@ -2,7 +2,7 @@ import { Alert, FlatList, Modal, ScrollView, StatusBar, StyleSheet, TextInput } 
 import React, { useEffect, useState } from 'react';
 import Wapper from 'components/Wapper';
 import { t } from 'lang';
-import { Avatar, Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
@@ -15,6 +15,7 @@ import NotificationModalApp from 'components/commons/NotificationModalApp';
 import { useSelector } from 'react-redux';
 import { B } from 'configs/fonts';
 import LoadingApp from 'components/commons/LoadingApp';
+import Avatar from 'components/Avatar';
 
 
 const EditPost = ({ route }) => {

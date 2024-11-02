@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Wapper from 'components/Wapper'
 import { useNavigation } from '@react-navigation/native'
 import { t } from 'lang'
-import { Avatar, Colors, Icon, Image, Text, Toast, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Colors, Icon, Image, Text, Toast, TouchableOpacity, View } from 'react-native-ui-lib'
 import IconApp from 'components/IconApp'
 import { BI, EBI, I } from 'configs/fonts'
 import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate'
@@ -11,6 +11,7 @@ import RenderVideo from 'components/homes/RenderVideo'
 import { getReport, removeReport } from 'src/hooks/api/post'
 import LottieView from 'lottie-react-native'
 import lottie from 'configs/ui/lottie'
+import Avatar from 'components/Avatar';
 const { width: MAX_WIDTH } = Dimensions.get('window');
 const Report = () => {
     const navigation = useNavigation()
