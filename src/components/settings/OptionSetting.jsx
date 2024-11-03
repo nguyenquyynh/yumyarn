@@ -4,7 +4,7 @@ import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import TextApp from 'components/commons/TextApp'
 import Clipboard from '@react-native-clipboard/clipboard';
 
-const OptionSetting = ({ navigation }) => {
+const OptionSetting = ({ navigation, showlanguage }) => {
 
     const handlerClipboard = () => {
         ToastAndroid.show("Liên kế đã thêm vào bộ nhớ tạm !", ToastAndroid.SHORT)
@@ -18,7 +18,7 @@ const OptionSetting = ({ navigation }) => {
         { id: 4, title: "setting.link", icon: "link", funt: handlerClipboard },
     ]
     const optionssetting = [
-        { id: 5, title: "setting.privacy_policy", icon: "insurance", funt: () => { navigation.navigate('Policy') } },
+        { id: 10, title: "setting.privacy_policy", icon: "insurance", funt: () => { navigation.navigate('Policy') } },
         { id: 6, title: "setting.help", icon: "question", funt: () => { navigation.navigate('HelpSupport') } },
         { id: 7, title: "setting.setting_message", icon: "mailing", funt: () => { navigation.navigate('MessageSetting') } },
         { id: 9, title: "setting.setting_dice", icon: "dice", funt: () => { navigation.navigate('Extentions') } },
@@ -27,7 +27,7 @@ const OptionSetting = ({ navigation }) => {
 
     return (
         <ScrollView>
-            <View flex marginT-x >
+            {!showlanguage && <View flex marginT-x >
                 <View style={styles.over}>
                     <FlatList
                         scrollEnabled={false}
@@ -35,7 +35,7 @@ const OptionSetting = ({ navigation }) => {
                         key={(item) => item.id}
                         renderItem={({ item }) => (
                             <View marginB-x >
-                                <TouchableOpacity padding-x row left onPress={item.funt}>
+                                <TouchableOpacity disabled={showlanguage} padding-x row left onPress={item.funt}>
                                     <Icon assetName={item.icon} size={25} marginR-x tintColor='black' />
                                     <TextApp style={styles.title} text={item.title} />
                                 </TouchableOpacity>
@@ -50,7 +50,7 @@ const OptionSetting = ({ navigation }) => {
                         key={(item) => item.id}
                         renderItem={({ item }) => (
                             <View marginB-x >
-                                <TouchableOpacity padding-x row left onPress={item.funt}>
+                                <TouchableOpacity disabled={showlanguage} padding-x row left onPress={item.funt}>
                                     <Icon assetName={item.icon} size={25} marginR-x tintColor='black' />
                                     <TextApp style={styles.title} text={item.title} />
                                 </TouchableOpacity>
@@ -58,7 +58,7 @@ const OptionSetting = ({ navigation }) => {
                         )}
                     />
                 </View>
-            </View>
+            </View>}
         </ScrollView>
 
     )

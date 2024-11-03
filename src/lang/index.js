@@ -30,7 +30,7 @@ export const I18nProvider = ({ children }) => {
     useEffect(() => {
         if (setting && setting.language) {
             i18n.changeLanguage(setting.language)
-            LayoutAnimation.spring()
+            LayoutAnimation.easeInEaseOut()
         }
     }, [setting]);
 

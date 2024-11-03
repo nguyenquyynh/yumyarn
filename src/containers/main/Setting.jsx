@@ -45,9 +45,9 @@ const Setting = () => {
     const handlerChangeLanguage = async (key) => {
       if (setting.language === key) return
       setshowlanguage(false)
-      await dispatch(setting_changelanguage(key))
-      LayoutAnimation.easeInEaseOut()
+      dispatch(setting_changelanguage(key))
       navigation.navigate('Settings')
+      LayoutAnimation.easeInEaseOut()
 
     }
     return (
@@ -116,7 +116,7 @@ const Setting = () => {
           </View>
         )}
       </View>
-      <OptionSetting navigation={navigation} />
+      <OptionSetting navigation={navigation} showlanguage={showlanguage} />
     </View>
   );
 };
