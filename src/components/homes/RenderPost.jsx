@@ -32,6 +32,8 @@ const RenderPost = memo(props => {
   const isFire = item?.isFire;
   const statusSavePost = item?.isSaved;
 
+  
+
   return (
     <View paddingH-x marginB-20 bg-white style={Style.sizeContainer}>
       <View row marginB-v paddingT-10>
@@ -171,6 +173,7 @@ const RenderPost = memo(props => {
         idUser={idUser}
       />
     </View>
+
   );
 })
 
