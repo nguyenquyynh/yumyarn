@@ -87,7 +87,8 @@
       "save": "保存",
       "save_des": "保存您喜欢的帖子",
       "follow_des": "关注您喜欢的朋友",
-      "unFollow_des": "取消关注您不喜欢的朋友"
+      "unFollow_des": "取消关注您不喜欢的朋友",
+      "unsave":"取消保存"
     },
     "notification": {
       "title": "通知",

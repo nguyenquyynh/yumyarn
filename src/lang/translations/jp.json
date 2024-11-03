@@ -87,7 +87,8 @@
     "save": "保存",
     "save_des": "お気に入りの投稿を保存します",
     "follow_des": "好きな友達をフォローします",
-    "unFollow_des": "好きでない友達のフォローを解除します"
+    "unFollow_des": "好きでない友達のフォローを解除します",
+    "unsave":"保存しない"
   },
   "notification": {
     "title": "通知",

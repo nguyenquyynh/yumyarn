@@ -87,7 +87,8 @@
     "save": "Save",
     "save_des": "Save your favorite post",
     "follow_des": "Follow the friend you like",
-    "unFollow_des": "Unfollow the friend you dislike"
+    "unFollow_des": "Unfollow the friend you dislike",
+    "unsave":"Unsave"
   },
   "notification": {
     "title": "Notification",
