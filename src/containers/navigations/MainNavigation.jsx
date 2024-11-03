@@ -1,20 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Authen from './Authen';
-import {NavigationContainer} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import MainApp from './MainApp';
 import OpenApp from 'components/commons/OpenApp';
-import {io} from 'socket.io-client';
-import {initAppStateManager} from 'services/SocketAppStatus';
+import { io } from 'socket.io-client';
+import { initAppStateManager } from 'services/SocketAppStatus';
 import messaging from '@react-native-firebase/messaging';
-import {addfcmtoken, addSocket} from 'reducers/fcm';
-import {linking} from 'services/Linking';
+import { addfcmtoken, addSocket } from 'reducers/fcm';
+import { linking } from 'services/Linking';
 import { PermissionsAndroid } from 'react-native';
 const MainNavigation = () => {
   const auth = useSelector(state => state.auth);
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const requestUserPermission = async () => {
     try {
@@ -38,6 +38,9 @@ const MainNavigation = () => {
   };
 
   useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
     requestUserPermission();
     const newSocket = io(process.env.BASEAPI_URL);
     dispatch(addSocket(newSocket));
