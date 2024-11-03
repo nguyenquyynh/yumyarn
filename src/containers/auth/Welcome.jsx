@@ -15,7 +15,7 @@ const Welcome = () => {
     { key: 1, title: 'wellcome.reality', description: 'wellcome.help_two', bg: 'https://cdn.pixabay.com/photo/2022/02/25/04/11/restaurant-7033508_640.jpg', btn: 'app.get_started' },
   ]
   const handlePressWellcome = () => {
-    if (page == screenOption.length -1) {
+    if (page == screenOption.length - 1) {
       navigation.navigate('Login')
     } else {
       setPage(page + 1)
@@ -26,9 +26,9 @@ const Welcome = () => {
       <View absB bottom style={styles.container}>
         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} colors={[Colors.transparent, '#FFFFFF']} style={styles.fl}>
           <View flex bottom padding-xx >
-            <Text text40BO>{t(screenOption[page].title)}</Text>
+            <Text text40BO style={{ paddingTop: 10 }}>{t(screenOption[page].title)}</Text>
             <Text marginV-x text80R>{t(screenOption[page].description)}</Text>
-            <Animated.View sharedTransitionTag='btn_auth' style={{width: 350, alignSelf: 'center'}}>
+            <Animated.View sharedTransitionTag='btn_auth' style={{ width: 350, alignSelf: 'center' }}>
               <TouchableOpacity bg-yellow padding-xiii center br30 onPress={handlePressWellcome}>
                 <Text color={Colors.white} text60BO>{t(screenOption[page].btn)}</Text>
               </TouchableOpacity>

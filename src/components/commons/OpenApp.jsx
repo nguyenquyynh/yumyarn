@@ -2,11 +2,9 @@ import { StyleSheet } from 'react-native'
 import React, { useEffect } from 'react'
 import { Colors, Icon, Image, Text, View } from 'react-native-ui-lib'
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { useNavigation } from '@react-navigation/native'
 
 const OpenApp = () => {
     const offset = useSharedValue(50)
-    const naviagtion = useNavigation()
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{ translateY: offset.value }],
         opacity: interpolate(offset.value, [0, 50], [1, 0])
@@ -14,9 +12,6 @@ const OpenApp = () => {
 
     useEffect(() => {
         offset.value = withTiming(0, { duration: 1000, easing: Easing.inOut(Easing.back(3)) })
-        setTimeout(() => {
-            naviagtion.navigate('Welcome')
-        }, 2000);
     }, [])
 
     return (

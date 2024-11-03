@@ -1,6 +1,8 @@
 import { createThumbnail } from "react-native-create-thumbnail";
 
 export const fetchThumbnail = async (item) => {
+    console.log(item);
+    
     try {
         if (item.endsWith('.jpg') || item.endsWith('.png') || item.endsWith('.jpeg') || item.endsWith('.gif') || item.endsWith('.svg') || item.endsWith('.webp')) {
             return item

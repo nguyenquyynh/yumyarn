@@ -1,4 +1,4 @@
-import { ImageBackground, LayoutAnimation, StyleSheet } from 'react-native'
+import { FlatList, ImageBackground, LayoutAnimation, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Icon, Image, TouchableOpacity, View } from 'react-native-ui-lib'
 import { accelerometer, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors';
@@ -7,22 +7,21 @@ import LottieView from 'lottie-react-native'
 import lottie from 'configs/ui/lottie'
 import { getRandom } from 'src/hooks/api/post'
 import { fetchThumbnail } from 'configs/ui/components/thumbnail';
-
+import RenderVideo from 'components/homes/RenderVideo';
+const regex = /https?:\/\/[^\s]+?\.(jpg|jpeg|png|gif|bmp|webp|svg)/
 const ShakePost = ({
     isShake, setIsShake
 }) => {
     const [random, setRandom] = useState(null)
 
     const getRandomPost = async () => {
+        // if (isShake) { return }
         setIsShake(true)
-        await getRandom().then(async resault => {
-            await setTimeout(() => { setRandom(resault.data) }, 3000)
+        await getRandom().then(resault => {
+            setRandom(resault.data)
         }
         )
             .catch(err => console.log(err))
-            .finally(() => {
-                // setIsShake(false)
-            })
         LayoutAnimation.easeInEaseOut()
     }
     const randomrota = (index) => {
@@ -38,7 +37,8 @@ const ShakePost = ({
                 map(({ x, y, z }) => Math.sqrt(x * x + y * y + z * z)) // Tính độ lớn
             )
             .subscribe((acceleration) => {
-                if (acceleration > 12) {
+                if (acceleration > 11) {
+                    setRandom(null)
                     getRandomPost()
                 }
             });
@@ -48,10 +48,9 @@ const ShakePost = ({
         };
     }, []);
     useEffect(() => {
-      console.log(random);
-      
+        console.log(random);
     }, [random])
-    
+
     return (
         <>
             {isShake && <View absF flex bg-tr_black center>
@@ -64,8 +63,24 @@ const ShakePost = ({
                                 <Image source={{ uri: await fetchThumbnail(media) }} resizeMode='cover' style={{ width: '100%', height: '100%' }} />
                             </View>
                         ))}
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false}
+                            horizontal={true}
+                            pagingEnabled={true}
+                            key={item => item._id}
+                            snapToAlignment='center'
+                            data={random?.media}
+                            renderItem={({ item, index }) =>
+                                <View bg-white style={[styles.imagerandom, { transform: [{ rotate: randomrota(index) }] }]}>
+                                    {regex.test(item) ? <Image source={{ uri: item }} resizeMode='cover' style={{ width: '100%', height: '100%' }} /> :
+                                        <RenderVideo urlvideo={item} />
+                                    }
+                                </View>
+                            }
+                        />
                     </ImageBackground>}
-                <TouchableOpacity onPress={() => { setIsShake(); setRandom(null) }}>
+                <TouchableOpacity onPress={() => { setRandom(null); setIsShake(false) }}>
                     <Icon assetName='cancel' size={30} />
                 </TouchableOpacity>
 
@@ -78,5 +93,5 @@ export default ShakePost
 
 const styles = StyleSheet.create({
     content: { width: '100%', height: 350, justifyContent: 'center', alignItems: 'center' },
-    imagerandom: { width: 200, height: 200, position: 'absolute', borderWidth: 3, borderColor: 'white', borderRadius: 5, overflow: 'hidden' }
+    imagerandom: { width: 220, height: 220, position: 'absolute', borderWidth: 3, borderColor: 'white', borderRadius: 5, overflow: 'hidden' }
 })
