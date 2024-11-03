@@ -45,7 +45,10 @@
     "choose": "選択",
     "buy": "支払い",
     "warning": "ああ、エラーが発生しました！",
-    "success": "すべてが完璧です！"
+    "success": "すべてが完璧です！",
+    "Home": "いえ",
+    "Profile": "プロフ",
+    "Settings": "設定"
   },
   "wellcome": {
     "greeting": "ようこそ",
@@ -148,7 +151,9 @@
     "exepctmes": "メッセージを受信することを許可",
     "mesOptions": "メッセージを受信",
     "whosend": "誰がメッセージを送信できますか",
-    "report": "ダン・サック・バオ・カオ"
+    "report": "ダン・サック・バオ・カオ",
+    "setting_dice": "ユーティリティをインストールする",
+    "roll" : "ランダム記事"
   },
   "home": {
     "welcome": "こんにちは、",

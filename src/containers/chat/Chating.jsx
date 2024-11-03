@@ -297,6 +297,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 20,
     backgroundColor: '#E5E1E1',
+    color:'black'
   },
   containerSend: {
     width: 50,

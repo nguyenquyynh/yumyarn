@@ -126,6 +126,7 @@ const RenderPost = memo(props => {
             navigation.navigate('SearchMap', { defaultlocation: item?.address });
           }}
           text
+          numberOfLines={1}
           text90BO
           marginR-7>
           {address}

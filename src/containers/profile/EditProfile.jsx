@@ -17,6 +17,7 @@ import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary'
 import { changeAvatarRedux, changeCoverPhotoRedux, deleteStory, updateInforRedux } from 'reducers/auth'
 import LoadingApp from 'components/commons/LoadingApp'
 import Avatar from 'components/Avatar';
+import { Upload } from 'src/libs/UploadImage'
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -59,21 +60,8 @@ const EditProfile = () => {
     setloading(true)
     const { uri, type, name } = file
     try {
-      const data = new FormData();
-      data.append('file', { uri, type, name });
-      data.append('upload_preset', 'ml_default');
-      data.append('cloud_name', 'dyqb9wx4r');
-
-      const response = await fetch('https://api.cloudinary.com/v1_1/dyqb9wx4r/upload', {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-        },
-        body: data
-      });
-
-      const newData = await response.json();
-      return newData.url
+      const newData = await Upload( uri, type, name )
+      return newData
     } catch (error) {
       console.log(error);
       return null;
@@ -265,9 +253,9 @@ const EditProfile = () => {
           <View centerH>
             <Pressable height={120} width={'100%'} backgroundColor='transparent' style={{ zIndex: -1 }} onPress={() => handlerAddImage("coverPhoto")}></Pressable>
             <Animated.View style={{ zIndex: 1 }}>
-              <TouchableOpacity style={styles.avatar} onPress={() => handlerAddImage("avatar")}>
-                <Avatar source={{ uri: auth?.avatar }} size={100} />
-              </TouchableOpacity>
+              <View style={styles.avatar}>
+                <Avatar source={{ uri: auth?.avatar }} size={100} onPress={() => handlerAddImage("avatar")}/>
+              </View>
             </Animated.View>
             <View bg-puper style={styles.background}>
               <View row spread padding-x>

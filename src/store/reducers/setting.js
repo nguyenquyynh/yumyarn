@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const INITIAL_STATE = {
     theme: 'light',
-    language: 'vi'
+    language: 'vi',
+    rollpost: true
 }
 
 export const setting = createSlice({
@@ -17,11 +18,19 @@ export const setting = createSlice({
                 ...state,
                 language: action.payload
             }
+        },
+        setting_roll: (state, action) => {
+            console.log(action);
+            
+            return {
+                ...state,
+                rollpost: action.payload
+            }
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setting_resetlanguage, setting_changelanguage } = setting.actions
+export const { setting_resetlanguage, setting_changelanguage, setting_roll } = setting.actions
 
 export default setting.reducer

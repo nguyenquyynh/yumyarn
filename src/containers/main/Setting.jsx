@@ -41,9 +41,12 @@ const Setting = () => {
   };
 
   const renderLanguage = (item) => {
-    const handlerChangeLanguage = (key) => {
-      dispatch(setting_changelanguage(key))
-      // setshowlanguage(false)
+    const handlerChangeLanguage = async (key) => {
+      if (setting.language === key) return
+      await dispatch(setting_changelanguage(key))
+      navigation.navigate('Settings')
+      setshowlanguage(false)
+      LayoutAnimation.easeInEaseOut()
     }
     return (
       <TouchableOpacity

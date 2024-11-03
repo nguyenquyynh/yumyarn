@@ -1,7 +1,6 @@
 import { StyleSheet} from 'react-native'
 import React from 'react'
 import { Translation } from 'react-i18next'
-import { t } from 'lang'
 import { Colors, Text } from 'react-native-ui-lib'
 
 const TextApp = ({

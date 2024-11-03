@@ -80,4 +80,7 @@ Assets.loadAssetsGroup('icons', {
     toggle_on: require('assets/icon/toggle_on.png'),
     send_message: require('assets/icon/send_message.png'),
     brush: require('assets/icon/brush.png'),
+    dice: require('assets/icon/dice.png'),
+    mailing: require('assets/icon/mailing.png'),
+    advertisement: require('assets/icon/advertisement.png'),
 })
