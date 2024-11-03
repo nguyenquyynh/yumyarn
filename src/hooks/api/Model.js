@@ -14,7 +14,6 @@ export const Model = {
   SAVED: 's',
   MESSAGE: 'message',
   REPORT: 'reports',
-  NOTI:'noti',
 };
 
 export const USERS = {
@@ -100,9 +99,4 @@ export const ReportModel = {
   RELIGION: 'Nội dung chia rẽ sắc tộc, tôn giáo.',
   SUCK: 'Bài viết chứa từ ngữ thô tục.',
   FAKE: 'Bài viết chứa nội dung không đúng sự thật'
-}
-
-export const NotiModel ={
-  GETNOTIBYEUSER:"getNotiByUser",
-
 }
