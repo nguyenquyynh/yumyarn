@@ -48,7 +48,9 @@
     "success": "Everything is perfect!!!",
     "Home": "Home",
     "Profile": "Profile",
-    "Settings": "Settings"
+    "Settings": "Settings",
+    "remove_success": "Removed successfully",
+    "remove_failed": "Removal failed, please try again"
   },
   "wellcome": {
     "greeting": "Welcome to",

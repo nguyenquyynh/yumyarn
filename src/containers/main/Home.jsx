@@ -5,20 +5,21 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import React, {memo, useEffect, useRef, useState} from 'react';
-import { Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
-import {useSelector} from 'react-redux';
-import {t} from 'lang';
-import {useNavigation} from '@react-navigation/native';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { useSelector } from 'react-redux';
+import { t } from 'lang';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import ListPost from 'containers/post/ListPost';
-import {getPost} from 'src/hooks/api/post';
 import Avatar from 'components/Avatar';
 
 const Home = () => {
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth.user);
+  const setting = useSelector(state => state.setting);
   const name = auth?.name?.split(' ')[0];
   const idUser = auth._id;
+  const [reload, setReload] = useState(setting?.language)
   //Animated header
   const scrollY = new Animated.Value(0);
   const diffclamp = Animated.diffClamp(scrollY, 0, 50);
@@ -33,15 +34,17 @@ const Home = () => {
     navigation.navigate('Post');
   }
 
+  useEffect(() => {
+    setReload(reload + 1)
+  }, [setting])
+
   return (
     <View flex bg-white>
       <Animated.View
-        style={[styles.header, {transform: [{translateY: tranSlateY}]}]}>
+        style={[styles.header, { transform: [{ translateY: tranSlateY }] }]}>
         <View row centerV>
-          <Avatar source={{uri: auth.avatar}} size={40} onPress={() => {}} />
-          <Text marginH-xvi style={styles.name}>
-            {t('home.welcome')} {name}
-          </Text>
+          <Avatar source={{ uri: auth.avatar }} size={40} onPress={() => { }} />
+          <Text style={styles.name}>{t('home.welcome') + ' ' + name}</Text>
           <TouchableOpacity onPress={handlerCreatePost}>
             <Icon assetName="add" size={20} />
           </TouchableOpacity>
@@ -59,7 +62,7 @@ const Home = () => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('MainChat',{_id : null});
+              navigation.navigate('MainChat', { _id: null });
             }}>
             <Icon assetName="chat" size={20} />
           </TouchableOpacity>
@@ -74,6 +77,7 @@ export default memo(Home);
 
 const styles = StyleSheet.create({
   name: {
+    marginHorizontal: 10,
     fontFamily: 'Inter-SemiBoldItalic',
     fontSize: 16,
   },

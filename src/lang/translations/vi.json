@@ -48,7 +48,9 @@
     "success": "Mọi thứ thật hoàn hảo !!!",
     "Home": "Trang chủ",
     "Profile": "Hồ sơ",
-    "Settings": "Cài đặt"
+    "Settings": "Cài đặt",
+    "remove_success" : "Đã xóa",
+    "remove_failed" : "Xóa thất bại vui lòng thử lại"
   },
   "wellcome": {
     "greeting": "Chào mừng đến với",

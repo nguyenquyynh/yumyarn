@@ -6,7 +6,7 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
   Colors,
   Icon,
@@ -16,7 +16,7 @@ import {
   View,
 } from 'react-native-ui-lib';
 import { t } from 'lang';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth_logout } from 'reducers/auth';
 import languageFormat from 'configs/ui/languages';
@@ -30,6 +30,7 @@ const Setting = () => {
   const auth = useSelector(state => state.auth.user);
   const socket = useSelector(state => state.fcm.socket);
   const setting = useSelector(state => state.setting);
+  const isfocus = useIsFocused()
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [showlanguage, setshowlanguage] = useState(false);
@@ -43,10 +44,11 @@ const Setting = () => {
   const renderLanguage = (item) => {
     const handlerChangeLanguage = async (key) => {
       if (setting.language === key) return
-      await dispatch(setting_changelanguage(key))
-      navigation.navigate('Settings')
       setshowlanguage(false)
+      await dispatch(setting_changelanguage(key))
       LayoutAnimation.easeInEaseOut()
+      navigation.navigate('Settings')
+
     }
     return (
       <TouchableOpacity
@@ -65,6 +67,9 @@ const Setting = () => {
     );
   };
 
+  useEffect(() => {
+    if (showlanguage) setshowlanguage(false)
+  }, [isfocus])
   return (
     <View flex bg-puper padding-x>
       <ImageBackground
@@ -72,7 +77,7 @@ const Setting = () => {
         resizeMode="cover"
         style={styles.card_logout}>
         <View br100 marginL-x style={{ borderWidth: 2, borderColor: 'white' }}>
-          <Avatar source={{ uri: auth.avatar }} size={50}/>
+          <Avatar source={{ uri: auth.avatar }} size={50} />
         </View>
         <TouchableOpacity marginR-xx onPress={handlerSignout}>
           <Icon assetName="log_out" size={24} />

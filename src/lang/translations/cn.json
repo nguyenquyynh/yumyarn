@@ -48,7 +48,9 @@
       "success": "一切都很完美！",
       "Home": "主页",
       "Profile": "个人",
-      "Settings": "环境"
+      "Settings": "环境",
+      "remove_success": "删除成功",
+      "remove_failed": "删除失败，请重试"
     },
     "wellcome": {
       "greeting": "欢迎来到",

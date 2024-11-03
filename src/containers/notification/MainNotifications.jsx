@@ -19,6 +19,10 @@ const MainNotifications = () => {
       if (!isloading) {
         const reponse = await getNotiByUser(page);
         if (reponse.status) {
+          if (reponse.data.length == 0) {
+            setpage(null)
+            return
+          }
           setpage(page)
           setnotification([...notification, ...reponse.data])
         }
@@ -31,6 +35,7 @@ const MainNotifications = () => {
   }
 
   const handleLoadMore = () => {
+    if (!page) return
     getNotifi(page + 1);
   }
 
@@ -68,9 +73,14 @@ const MainNotifications = () => {
         return "messenger"
 
     }
+    console.log(item.status);
 
+    const gotoNavidation = () => {
+      if (item.status === 'FOLLOW') navigation.navigate('OtherProfile', { _id: item?.create_by })
+      if (item.status === ('FOLLOW' || 'LIKE')) navigation.navigate('PostDetail', { id: item?.id_post })
+    }
     return (
-      <TouchableOpacity style={styles.notificationContainer}>
+      <TouchableOpacity key={item._id} style={styles.notificationContainer} onPress={gotoNavidation}>
         <View style={styles.avater}>
           <Image source={{ uri: item.avatar }} style={styles.avatar} />
           <Icon assetName={image()} style={styles.icon} size={24} />

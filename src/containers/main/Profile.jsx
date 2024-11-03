@@ -29,6 +29,7 @@ const Profile = () => {
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth.user);
   const [data, setdata] = useState([]);
+  const [page, setPage] = useState(1)
   const [showmodal, setShowmodal] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [load, setLoad] = useState(true);
@@ -44,16 +45,23 @@ const Profile = () => {
         });
         if (refress.status) {
           setdata([...refress.data]);
+          setPage(1)
         }
         break;
 
       default:
         const resault = await getTimeline({
           user: auth._id,
-          page: Math.ceil(data.length / 10) + 1,
+          page: page + 1,
         });
 
         if (resault.status) {
+          if (resault.data.length == 0) {
+            setPage(null)
+            setLoad(false)
+            return
+          }
+          setPage(page + 1)
           setdata([...data, ...resault.data]);
           setLoad(false);
         }
@@ -61,18 +69,19 @@ const Profile = () => {
     }
   }
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      loadTimeline('refress');
-      setRefreshing(false);
-    }, 1000);
+    await loadTimeline('refress');
+    setRefreshing(false);
   };
   const handleScroll = useCallback(event => {
     clearTimeout(timeout.current);
     const { contentOffset, contentSize } = event.nativeEvent;
     const { height: windowHeight } = Dimensions.get('window');
+
     if (contentOffset.y + windowHeight > contentSize.height) {
+      if (!page) return
+      console.log('load');
       timeout.current = setTimeout(() => {
         setLoad(true);
         loadTimeline();
@@ -94,19 +103,19 @@ const Profile = () => {
     }
   };
 
-    useEffect(() => {
-      const reaload =async()=>{
-        await getIdUser();
-        await loadTimeline();
-      }
-      reaload()
-    }, [])
-    
-    const foucus = useIsFocused()
-    useEffect(() => {
-         getIdUser();
-    }, [foucus])
-    
+  useEffect(() => {
+    const reaload = async () => {
+      await getIdUser();
+      await loadTimeline();
+    }
+    reaload()
+  }, [])
+
+  const foucus = useIsFocused()
+  useEffect(() => {
+    getIdUser();
+  }, [foucus])
+
   return (
     <View flex>
       <ImageBackground
@@ -132,11 +141,11 @@ const Profile = () => {
           <Icon assetName="dots" tintColor="white" size={26} />
         </TouchableOpacity>
         <View centerH paddingT-120>
-          <Animated.View style={[{ zIndex: 1}, styles.avatar ]}>
+          <Animated.View style={[{ zIndex: 1 }, styles.avatar]}>
             <Avatar
               source={{ uri: dataUser?.avatar }}
               size={100}
-              
+
             />
           </Animated.View>
           <View bg-puper style={styles.background}>

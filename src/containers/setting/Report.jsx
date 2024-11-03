@@ -16,14 +16,28 @@ const { width: MAX_WIDTH } = Dimensions.get('window');
 const Report = () => {
     const navigation = useNavigation()
     const [dataPost, setDataPost] = useState([])
-    useEffect(() => {
-        const LoadList = async (page = 1, limit = 10) => {
-            const resault = await getReport({ page: page, limit: limit })
-            if (resault.status) {
-                setDataPost(resault.data)
-            }
+    const [loading, setLoading] = useState(false)
+    const [page, setPage] = useState(1)
 
+    const LoadList = async (page = 1, limit = 10) => {
+        const resault = await getReport({ page: page, limit: limit })
+        if (resault.status) {
+            if (resault.data.length == 0) {
+                setPage(null)
+                return
+            }
+            setPage(page + 1)
+            setDataPost([...dataPost, ...resault.data])
+            setLoading(false)
         }
+
+    }
+    const handleRefes = async () => {
+        setLoading(true)
+        setPage(1)
+        await LoadList()
+    }
+    useEffect(() => {
         LoadList()
     }, [])
 
@@ -31,9 +45,9 @@ const Report = () => {
         const resault = await removeReport({ _id: id })
         if (resault.status) {
             setDataPost(dataPost.filter((item) => item._id != id))
-            ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+            ToastAndroid.show(t("app.remove_success"), ToastAndroid.SHORT)
         } else {
-            ToastAndroid.show(resault.data, ToastAndroid.SHORT)
+            ToastAndroid.show("app.remove_failed", ToastAndroid.SHORT)
         }
         LayoutAnimation.easeInEaseOut()
     }
@@ -124,6 +138,8 @@ const Report = () => {
 
                 <View marginB-22 marginT-15 style={styles.borderRadiusSwiper}>
                     <FlatList
+                        refreshing={loading}
+                        onRefresh={handleRefes}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                         horizontal
