@@ -45,7 +45,10 @@
       "choose": "选择",
       "buy": "支付",
       "warning": "哎呀，出错了！",
-      "success": "一切都很完美！"
+      "success": "一切都很完美！",
+      "Home": "主页",
+      "Profile": "个人",
+      "Settings": "环境"
     },
     "wellcome": {
       "greeting": "欢迎来到",
@@ -148,7 +151,9 @@
       "exepctmes": "允许接收消息",
       "mesOptions": "接收消息",
       "whosend": "谁可以给您发消息",
-      "report": "丹·萨赫·鲍曹"
+      "report": "丹·萨赫·鲍曹",
+      "setting_dice": "安装实用程序",
+      "roll" : "随机文章"
     },
     "home": {
       "welcome": "你好，",

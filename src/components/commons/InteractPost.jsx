@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, ToastAndroid } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Colors, Icon, Text, Toast, TouchableOpacity, View } from 'react-native-ui-lib';
 import { firePost } from 'src/hooks/api/fire';
 import numberFormat from 'configs/ui/format';
@@ -47,6 +47,10 @@ const InteractPost = props => {
   const handlerShare = () => {
     ToastAndroid.show(t("post.share"), ToastAndroid.SHORT)
   }
+  useEffect(() => {
+    setFireStatus(isFire);
+    setCountFireStatus(countFire)
+  }, [isFire, countFire]);
   return (
     <View bg-white row spread centerV paddingH-9 style={styles.container}>
       <TouchableOpacity style={styles.containerClick} onPress={toggleFire}>

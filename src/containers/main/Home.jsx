@@ -6,12 +6,13 @@ import {
   StyleSheet,
 } from 'react-native';
 import React, {memo, useEffect, useRef, useState} from 'react';
-import {Avatar, Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
+import { Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import {useSelector} from 'react-redux';
 import {t} from 'lang';
 import {useNavigation} from '@react-navigation/native';
 import ListPost from 'containers/post/ListPost';
 import {getPost} from 'src/hooks/api/post';
+import Avatar from 'components/Avatar';
 
 const Home = () => {
   const navigation = useNavigation();

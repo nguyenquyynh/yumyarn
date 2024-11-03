@@ -13,6 +13,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {getOldMessage, seenMessage} from 'src/hooks/api/message';
 import {Icon, Image, Text} from 'react-native-ui-lib';
+import Avatar from 'components/Avatar';
 import ItemChating from './ItemChating';
 import CustomCirlceOnline from './CustomCirlceOnline';
 import {useNavigation} from '@react-navigation/native';
@@ -185,7 +186,7 @@ const Chating = ({route}) => {
               })
             }>
             <View style={styles.outlineImage}>
-              <Image source={{uri: friend?.avatar}} style={styles.image} />
+              <Avatar source={{uri: friend?.avatar}} size={50} />
               {friend?.isOnline &&
                 friend?.message_active_status &&
                 user?.message_active_status && <CustomCirlceOnline />}
@@ -267,11 +268,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     borderRadius: 360,
   },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 360,
-  },
   containerIcon: {
     paddingTop: 35,
     paddingBottom: 15,
@@ -301,6 +297,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 20,
     backgroundColor: '#E5E1E1',
+    color:'black'
   },
   containerSend: {
     width: 50,

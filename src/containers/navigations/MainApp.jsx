@@ -29,6 +29,7 @@ import Chating from 'containers/chat/Chating';
 import {AppState, Linking, ToastAndroid} from 'react-native';
 import Report from 'containers/setting/Report';
 import ShakeDetection from 'containers/orther/ShakeScreen';
+import Extentions from 'containers/setting/Extentions';
 
 const MainApp = () => {
   const Stack = createNativeStackNavigator();
@@ -99,6 +100,7 @@ const MainApp = () => {
       <Stack.Screen name="Chating" component={Chating} />
       <Stack.Screen name="Report" component={Report} />
       <Stack.Screen name="ShakeScreen" component={ShakeDetection} />
+      <Stack.Screen name="Extentions" component={Extentions} />
     </Stack.Navigator>
   );
 };

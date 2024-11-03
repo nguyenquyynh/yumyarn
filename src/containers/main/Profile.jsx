@@ -8,13 +8,13 @@ import {
 } from 'react-native';
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
-  Avatar,
   Colors,
   Icon,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native-ui-lib';
+import Avatar from 'components/Avatar';
 import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { t } from 'lang';
@@ -132,11 +132,11 @@ const Profile = () => {
           <Icon assetName="dots" tintColor="white" size={26} />
         </TouchableOpacity>
         <View centerH paddingT-120>
-          <Animated.View style={{ zIndex: 1 }}>
+          <Animated.View style={[{ zIndex: 1}, styles.avatar ]}>
             <Avatar
               source={{ uri: dataUser?.avatar }}
               size={100}
-              imageStyle={styles.avatar}
+              
             />
           </Animated.View>
           <View bg-puper style={styles.background}>
@@ -244,6 +244,7 @@ const styles = StyleSheet.create({
   avatar: {
     borderColor: 'white',
     borderWidth: 3,
+    borderRadius: 360
   },
   name: {
     fontFamily: BI,

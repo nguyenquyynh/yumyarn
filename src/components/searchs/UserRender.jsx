@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Avatar,
   Colors,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native-ui-lib';
+import Avatar from 'components/Avatar';
 import {t} from 'lang';
 import {checkFollowerProfile, createFollow} from 'src/hooks/api/follow';
 import {useSelector} from 'react-redux';

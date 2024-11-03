@@ -6,6 +6,7 @@ import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
 import { EB, SBI } from 'configs/fonts'
 
+
 const About = () => {
   const navigation = useNavigation()
   return (

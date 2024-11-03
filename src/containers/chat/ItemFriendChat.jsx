@@ -4,6 +4,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native-ui-lib';
 import CustomCirlceOnline from './CustomCirlceOnline';
 import {useNavigation} from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import Avatar from 'components/Avatar';
 
 const ItemFriendChat = props => {
   const navigation = useNavigation();
@@ -14,7 +15,7 @@ const ItemFriendChat = props => {
       onPress={() => navigation.navigate('Chating', {friend: item})}
       style={styles.container}>
       <View style={styles.outlineImage}>
-        <Image source={{uri: item?.avatar}} style={styles.image} />
+        <Avatar source={{uri: item?.avatar}} size={70}/>
         {item?.isOnline &&
           item?.message_active_status &&
           user?.message_active_status && <CustomCirlceOnline />}
@@ -39,15 +40,7 @@ const styles = StyleSheet.create({
     borderColor: '#D9D9D9',
     borderWidth: 5,
     padding: 2,
-    width: 70,
-    height: 70,
     position: 'relative',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain',
-    borderRadius: 360,
   },
 });
 

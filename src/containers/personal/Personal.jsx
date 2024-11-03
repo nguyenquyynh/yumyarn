@@ -3,7 +3,8 @@ import { Dimensions, StyleSheet, ScrollView, Pressable, ActivityIndicator, FlatL
 import React, { useState, useEffect } from 'react'
 import { t } from 'lang';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, Image, Avatar, TouchableOpacity, Modal } from 'react-native-ui-lib';
+import { View, Text, Image, TouchableOpacity, Modal } from 'react-native-ui-lib';
+import Avatar from 'components/Avatar';
 import IconApp from 'components/IconApp';
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
 import Modals from 'components/BottomSheetApp';

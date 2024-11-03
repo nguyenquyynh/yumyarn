@@ -2,7 +2,7 @@ import { Alert, FlatList, Modal, ScrollView, StatusBar, StyleSheet, TextInput } 
 import React, { useEffect, useState } from 'react';
 import Wapper from 'components/Wapper';
 import { t } from 'lang';
-import { Avatar, Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { Colors, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
@@ -15,6 +15,7 @@ import NotificationModalApp from 'components/commons/NotificationModalApp';
 import { useSelector } from 'react-redux';
 import { B } from 'configs/fonts';
 import LoadingApp from 'components/commons/LoadingApp';
+import Avatar from 'components/Avatar';
 
 
 const EditPost = ({ route }) => {
@@ -61,21 +62,8 @@ const EditPost = ({ route }) => {
     const onUploadMedia = async (file) => {
         const { uri, type, name } = file;
         try {
-            const data = new FormData();
-            data.append('file', { uri, type, name });
-            data.append('upload_preset', 'x1r3euwt');
-
-            const response = await fetch(`https://api.cloudinary.com/v1_1/ddgmnqwtk/upload`, {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                },
-                body: data,
-            });
-
-            const newData = await response.json();
-
-            return newData.secure_url; // Use secure_url to get the HTTPS URL
+            const newData = await Upload(uri, type, name)
+            return newData
         } catch (error) {
             console.log(error);
             return null;
@@ -260,7 +248,7 @@ const EditPost = ({ route }) => {
             funt={() => {
                 if (notifycontent == t("title_model.post_success")) {
                     navigation.navigate('Main')
-                } else{
+                } else {
                     setIsnotifiy(false)
                 }
             }}

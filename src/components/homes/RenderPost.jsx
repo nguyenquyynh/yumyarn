@@ -1,6 +1,6 @@
 import IconApp from 'components/IconApp';
-import React, {memo, useState} from 'react';
-import {Dimensions, FlatList, Pressable, StyleSheet} from 'react-native';
+import React, { memo, useState } from 'react';
+import { Dimensions, FlatList, Pressable, StyleSheet } from 'react-native';
 import {
   Colors,
   Icon,
@@ -13,13 +13,12 @@ import InteractPost from 'components/commons/InteractPost';
 import { EBI } from 'configs/fonts';
 import { useNavigation } from '@react-navigation/native';
 import RenderVideo from './RenderVideo';
-import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
-import {t} from 'lang';
-import { Avatar } from 'react-native-ui-lib/src/components/avatar'
+import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate';
+import Avatar from 'components/Avatar';
 
 const { width: MAX_WIDTH } = Dimensions.get('window');
 const RenderPost = memo(props => {
-  const {item, handleOpenComment, idUser, openModalFollow} =
+  const { item, handleOpenComment, idUser, openModalFollow } =
     props;
   const navigation = useNavigation();
   const [readmore, setReadmore] = useState(false);
@@ -62,18 +61,18 @@ const RenderPost = memo(props => {
               </Text>
               {item?.repost_by && (
                 <TouchableOpacity onPress={() => { navigation.navigate('OtherProfile', { name: item?.repost_by?.name, _id: item?.repost_by?._id }) }} row centerV>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('OtherProfile', {
-                      name: item?.repost_by?.name,
-                      _id: item?.repost_by?._id,
-                    });
-                  }}
-                  row
-                  centerV>
-                  <Icon marginH-10 assetName="retweet" size={10} />
-                  <Text text80BO>@{item?.repost_by?.tagName}</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate('OtherProfile', {
+                        name: item?.repost_by?.name,
+                        _id: item?.repost_by?._id,
+                      });
+                    }}
+                    row
+                    centerV>
+                    <Icon marginH-10 assetName="retweet" size={10} />
+                    <Text text80BO>@{item?.repost_by?.tagName}</Text>
+                  </TouchableOpacity>
                 </TouchableOpacity>
               )}
             </View>
@@ -127,6 +126,7 @@ const RenderPost = memo(props => {
             navigation.navigate('SearchMap', { defaultlocation: item?.address });
           }}
           text
+          numberOfLines={1}
           text90BO
           marginR-7>
           {address}

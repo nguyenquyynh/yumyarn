@@ -45,7 +45,10 @@
     "choose": "Chọn",
     "buy": "Thanh toán",
     "warning": "Ôi có lỗi xảy ra rồi !!!",
-    "success": "Mọi thứ thật hoàn hảo !!!"
+    "success": "Mọi thứ thật hoàn hảo !!!",
+    "Home": "Trang chủ",
+    "Profile": "Hồ sơ",
+    "Settings": "Cài đặt"
   },
   "wellcome": {
     "greeting": "Chào mừng đến với",
@@ -149,7 +152,9 @@
     "exepctmes": "Cho phép nhận tin nhắn",
     "mesOptions": "Nhận tin nhắn",
     "whosend": "Ai có thể gửi tin nhắn cho bạn",
-    "report": "Danh sách báo cáo"
+    "report": "Danh sách báo cáo",
+    "setting_dice": "Cài đặt tiện ích",
+    "roll" : "Bài viết ngẫu nhiên"
   },
   "home": {
     "welcome": "Xin chào,",

@@ -45,7 +45,10 @@
     "choose": "Choose",
     "buy": "Checkout",
     "warning": "Oops, something went wrong!!!",
-    "success": "Everything is perfect!!!"
+    "success": "Everything is perfect!!!",
+    "Home": "Home",
+    "Profile": "Profile",
+    "Settings": "Settings"
   },
   "wellcome": {
     "greeting": "Welcome to",
@@ -148,7 +151,9 @@
     "exepctmes": "Allow to receive messages",
     "mesOptions": "Receive messages",
     "whosend": "Who can send you messages",
-    "report": "Report list"
+    "report": "Report list",
+    "setting_dice": "Extentions setting",
+    "roll" : "Random post"
   },
   "home": {
     "welcome": "Hello,",
