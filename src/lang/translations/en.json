@@ -214,5 +214,15 @@
     "off": "Off",
     "on": "On",
     "second": "second"
+  },
+  "pack": {
+    "xs": "Small match pack",
+    "sm": "Scented candle pack",
+    "lg": "Firewood pack",
+    "xl": "Campfire pack",
+    "big": "Volcano pack",
+    "limited": "Sun pack",
+    "date": "Date",
+    "code": "Payment code"
   }
 }
