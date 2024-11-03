@@ -15,19 +15,21 @@ import React, {
   useLayoutEffect,
   useState,
 } from 'react';
-import {createReport, createSaved, dePost, getPost} from 'src/hooks/api/post';
+import { createReport, createSaved, dePost, getPost } from 'src/hooks/api/post';
 import ShowComments from 'containers/comment/ShowComments';
 import RenderPost from 'components/homes/RenderPost';
-import {createFollow} from 'src/hooks/api/follow';
+import { createFollow } from 'src/hooks/api/follow';
 import Modals from 'components/BottomSheetApp';
-import {Colors, Icon, TouchableOpacity, Text, View} from 'react-native-ui-lib';
-import {useNavigation} from '@react-navigation/native';
-import {BI} from 'configs/fonts';
-import {t} from 'lang';
-import {ReportModel} from 'src/hooks/api/Model';
+import { Colors, Icon, TouchableOpacity, Text, View } from 'react-native-ui-lib';
+import { useNavigation } from '@react-navigation/native';
+import { BI } from 'configs/fonts';
+import { t } from 'lang';
+import { ReportModel } from 'src/hooks/api/Model';
+import { useDispatch, useSelector } from 'react-redux';
+import { setListPost, updateFullListPost } from 'reducers/home';
 
 const optionReport = [
-  {id: 1, value: 'Nội dung kích động bạo lực mạng.', content: ReportModel.WAR},
+  { id: 1, value: 'Nội dung kích động bạo lực mạng.', content: ReportModel.WAR },
   {
     id: 2,
     value: 'Nội dung chứa hình ảnh nhạy cảm 18+.',
@@ -43,7 +45,7 @@ const optionReport = [
     value: 'Nội dung chia rẽ sắc tộc, tôn giáo.',
     content: ReportModel.RELIGION,
   },
-  {id: 5, value: 'Bài viết chứa từ ngữ thô tục.', content: ReportModel.SUCK},
+  { id: 5, value: 'Bài viết chứa từ ngữ thô tục.', content: ReportModel.SUCK },
   {
     id: 6,
     value: 'Bài viết chứa nội dung không đúng sự thật.',
@@ -52,11 +54,14 @@ const optionReport = [
 ];
 
 const ListPost = props => {
-  const {idUser, scrollY} = props;
+  const { idUser, scrollY } = props;
+  const dispatch = useDispatch()
+  const listPost = useSelector(state => state.home.listPost)
+
   const [open, setOpen] = useState(false);
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [dataPost, setDataPost] = useState([]);
+  // const [dataPost, setDataPost] = useState([]);
   const [page, setPage] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [showmodal, setShowmodal] = useState(false);
@@ -66,6 +71,10 @@ const ListPost = props => {
   const [report, setReport] = useState(false);
   const [end, setEnd] = useState(false);
   const [statusSavePost, setStatusSavePost] = useState(false);
+
+  const setDataPost = (data) => {
+    dispatch(setListPost(data))
+  }
   const getPostData = async (idUser, page) => {
     try {
       const dataRequest = {
@@ -77,18 +86,20 @@ const ListPost = props => {
         if (response.data.length == 0 && page != 1) {
           setEnd(true);
         } else if (page == 1) {
-          setDataPost(response.data);
+          dispatch(setListPost(response.data))
           setPage(page);
         } else {
           if (
             response.data[response.data.length - 1]._id ===
-            dataPost[dataPost.length - 1]._id
+            listPost[listPost.length - 1]._id
           ) {
             return;
           }
-          setDataPost(prev => [...prev, ...response.data]);
+          dispatch(setListPost(response.data))
           setPage(page);
         }
+      } else {
+        setEnd(true);
       }
     } catch (error) {
       console.error(error);
@@ -100,6 +111,7 @@ const ListPost = props => {
 
   const handleLoadMore = async page => {
     if (!isLoading && !end) {
+      console.log("end", end)
       setIsLoading(true);
       await getPostData(idUser, page);
       console.log('đã tải');
@@ -126,23 +138,22 @@ const ListPost = props => {
   const handleFollow = async () => {
     try {
       if (userIdPost) {
-        const followUpdate = dataPost?.map(ele => {
+        const followUpdate = listPost?.map(ele => {
           if (ele.create_by._id == userIdPost) {
-            return {...ele, follow: !ele.follow};
+            return { ...ele, follow: !ele.follow };
           }
           return ele;
         });
-        setDataPost(followUpdate);
+
         const response = await createFollow(idUser, userIdPost);
         if (!response.status) {
-          setDataPost(dataPost);
           ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
         } else {
+          dispatch(updateFullListPost(followUpdate))
           ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
         }
       }
     } catch (error) {
-      setDataPost(dataPost);
       console.log(error);
     }
   };
@@ -153,6 +164,7 @@ const ListPost = props => {
     data,
     statusSavePost,
   ) => {
+    console.log("item", data);
     setPost(data);
     setIsFollow(followIs);
     setUserIdPost(idUserCreatePost);
@@ -175,16 +187,26 @@ const ListPost = props => {
   };
 
   const handlerSave = async () => {
-    const resault = await createSaved({
-      _id: idUser,
-      post: post._id,
-    });
-    if (resault?.status) {
-      ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
-    } else {
-      ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
+    if (userIdPost) {
+      const savePostUpdate = listPost?.map(ele => {
+        if (ele.create_by._id == userIdPost) {
+          return { ...ele, isSaved: !ele.isSaved };
+        }
+        return ele;
+      });
+
+      const resault = await createSaved({
+        _id: idUser,
+        post: post._id,
+      });
+      if (resault?.status) {
+        dispatch(updateFullListPost(savePostUpdate))
+        ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
+      } else {
+        ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
+      }
+      // setStatusSavePost(!statusSavePost)
     }
-    // setStatusSavePost(!statusSavePost)
   };
 
   const handleOpenComment = data => {
@@ -208,8 +230,8 @@ const ListPost = props => {
         showsVerticalScrollIndicator={false}
         style={styles.scrollview}
         scrollEnabled
-        data={dataPost}
-        extraData={dataPost}
+        data={listPost}
+        extraData={listPost}
         onScroll={state => {
           if (scrollY) {
             scrollY.setValue(state.nativeEvent.contentOffset.y);
@@ -218,7 +240,7 @@ const ListPost = props => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        key={({index}) => index}
+        key={({ index }) => index}
         keyExtractor={(_, index) => index.toString()}
         onEndReached={() => {
           handleLoadMore(page + 1);
@@ -226,7 +248,7 @@ const ListPost = props => {
         onEndReachedThreshold={0.6}
         initialNumToRender={5}
         maxToRenderPerBatch={5}
-        renderItem={({item, index}) => (
+        renderItem={({ item, index }) => (
           <RenderPost
             item={item}
             handleOpenComment={handleOpenComment}
@@ -239,7 +261,7 @@ const ListPost = props => {
             <>
               {isLoading && (
                 <ActivityIndicator
-                  style={{marginBottom: 50}}
+                  style={{ marginBottom: 50 }}
                   size="large"
                   color="#0000ff"
                 />
@@ -255,7 +277,7 @@ const ListPost = props => {
           setOpen={setOpen}
           idPost={post?._id}
           setPost={setPost}
-          dataPost={dataPost}
+          dataPost={listPost}
           setDataPost={setDataPost}
         />
       )}
@@ -270,7 +292,7 @@ const ListPost = props => {
               scrollEnabled={false}
               data={optionReport}
               keyExtractor={item => item.id}
-              renderItem={({item, index}) => (
+              renderItem={({ item, index }) => (
                 <TouchableOpacity
                   onPress={() => {
                     handleReport(item);
@@ -282,7 +304,7 @@ const ListPost = props => {
                   centerV
                   paddingV-15
                   paddingH-16
-                  style={{borderBottomWidth: 0.5}}>
+                  style={{ borderBottomWidth: 0.5 }}>
                   <Text text80BO>{item?.value}</Text>
                   <Icon assetName="right_arrow" size={15} />
                 </TouchableOpacity>
@@ -297,7 +319,7 @@ const ListPost = props => {
                 paddingV-x
                 centerV
                 onPress={() => {
-                  navigation.navigate('EditPost', {post: post});
+                  navigation.navigate('EditPost', { post: post });
                   setShowmodal(false);
                 }}>
                 <Icon
@@ -307,7 +329,7 @@ const ListPost = props => {
                   marginH-x
                 />
                 <View>
-                  <Text style={{fontFamily: BI}}>{t('profile.edit')}</Text>
+                  <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
                   <Text color={Colors.gray}>{t('post.edit_d')}</Text>
                 </View>
               </TouchableOpacity>
@@ -328,7 +350,7 @@ const ListPost = props => {
                   marginH-x
                 />
                 <View>
-                  <Text style={{fontFamily: BI}}>
+                  <Text style={{ fontFamily: BI }}>
                     {isFollow ? t('app.following') : t('app.follow')}
                   </Text>
                   <Text color={Colors.gray}>
@@ -355,7 +377,7 @@ const ListPost = props => {
                     marginH-x
                   />
                   <View>
-                    <Text style={{fontFamily: BI}}>{t('post.report')}</Text>
+                    <Text style={{ fontFamily: BI }}>{t('post.report')}</Text>
                     <Text color={Colors.gray}>{t('post.report_d')}</Text>
                   </View>
                 </TouchableOpacity>
@@ -375,7 +397,7 @@ const ListPost = props => {
                 marginH-x
               />
               <View>
-                <Text style={{fontFamily: BI}}>
+                <Text style={{ fontFamily: BI }}>
                   {statusSavePost ? t('post.unsave') : t('post.save')}
                 </Text>
                 {!statusSavePost && (
@@ -401,7 +423,7 @@ const ListPost = props => {
               marginH-x
             />
             <View>
-              <Text style={{fontFamily: BI}}>{t('post.remove')}</Text>
+              <Text style={{ fontFamily: BI }}>{t('post.remove')}</Text>
               <Text color={Colors.gray}>{t('post.remove_d')}</Text>
             </View>
           </TouchableOpacity>
@@ -416,5 +438,5 @@ const ListPost = props => {
 export default memo(ListPost);
 
 const styles = StyleSheet.create({
-  scrollview: {paddingTop: 50},
+  scrollview: { paddingTop: 50 },
 });

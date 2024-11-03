@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height: 40,
     paddingLeft: 10,
-    paddingRight: 25,
+    paddingRight: 55,
     color: 'black',
   },
   colorTextWaring: {
