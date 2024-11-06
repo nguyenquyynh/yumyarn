@@ -1,25 +1,19 @@
 import {
-  ActivityIndicator,
   Animated,
-  FlatList,
-  ScrollView,
   StyleSheet,
 } from 'react-native';
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo } from 'react';
 import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import { useSelector } from 'react-redux';
-import { t } from 'lang';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import ListPost from 'containers/post/ListPost';
 import Avatar from 'components/Avatar';
 
 const Home = () => {
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth.user);
-  const setting = useSelector(state => state.setting);
   const name = auth?.name?.split(' ')[0];
   const idUser = auth._id;
-  const [reload, setReload] = useState(setting?.language)
   //Animated header
   const scrollY = new Animated.Value(0);
   const diffclamp = Animated.diffClamp(scrollY, 0, 50);
@@ -34,17 +28,13 @@ const Home = () => {
     navigation.navigate('Post');
   }
 
-  useEffect(() => {
-    setReload(reload + 1)
-  }, [setting])
-
   return (
     <View flex bg-white>
       <Animated.View
         style={[styles.header, { transform: [{ translateY: tranSlateY }] }]}>
         <View row centerV>
           <Avatar source={{ uri: auth.avatar }} size={40} onPress={() => { }} />
-          <Text style={styles.name}>{t('home.welcome') + ' ' + name}</Text>
+          <Text style={styles.name}>{name}</Text>
           <TouchableOpacity onPress={handlerCreatePost}>
             <Icon assetName="add" size={20} />
           </TouchableOpacity>
