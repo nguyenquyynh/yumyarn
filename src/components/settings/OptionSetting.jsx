@@ -26,8 +26,8 @@ const OptionSetting = ({ navigation, showlanguage }) => {
     ]
 
     return (
-        <ScrollView>
-            {!showlanguage && <View flex marginT-x >
+        <ScrollView scrollEnabled={!showlanguage}>
+            <View flex marginT-x >
                 <View style={styles.over}>
                     <FlatList
                         scrollEnabled={false}
@@ -58,7 +58,7 @@ const OptionSetting = ({ navigation, showlanguage }) => {
                         )}
                     />
                 </View>
-            </View>}
+            </View>
         </ScrollView>
 
     )

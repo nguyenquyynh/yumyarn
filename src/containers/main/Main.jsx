@@ -18,6 +18,7 @@ const Main = () => {
 
     const CustomTabBar = ({ state, descriptors, navigation
     }) => {
+        LayoutAnimation.easeInEaseOut()
         return (
             <View row centerV paddingH-iii style={styles.header}>
                 <Text color={Colors.yellow} style={styles.text} >{t("app.name_app")}</Text>
@@ -33,10 +34,9 @@ const Main = () => {
 
                             if (!isFocused && !event.defaultPrevented) {
                                 navigation.navigate(route.name);
-                                // LayoutAnimation.easeInEaseOut()
+                                LayoutAnimation.easeInEaseOut()
                             }
                         };
-
                         return (
                             <Animated.View key={route.key}>
                                 <TouchableOpacity
