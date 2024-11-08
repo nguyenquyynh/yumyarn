@@ -50,7 +50,8 @@
       "Profile": "个人",
       "Settings": "环境",
       "remove_success": "删除成功",
-      "remove_failed": "删除失败，请重试"
+      "remove_failed": "删除失败，请重试",
+      "success_copy": "复制成功"
     },
     "wellcome": {
       "greeting": "欢迎来到",
@@ -60,7 +61,8 @@
       "help_two": "这是一个长期存在的事实，当读者查看页面布局时，会被可读内容所分散注意力。使用Lorem Ipsum的目的是为了使其字母分布更正常，而不是使用'内容在这里，内容在这里'，使其看起来像可读的英语。"
     },
     "login": {
-      "slogan": "连接朋友，满足热情",
+      "slogan1": "连接朋友,",
+      "slogan2": "满足热情",
       "i_read": "我接受",
       "expired": "登录会话已过期，请重新登录！",
       "register": "您的账户已注册！立即登录",

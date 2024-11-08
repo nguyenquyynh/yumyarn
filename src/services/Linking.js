@@ -1,12 +1,19 @@
 import {Linking} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import Chating from 'containers/chat/Chating';
 
-const NAVIGATION_IDS = ['Main', 'MainChat', 'PostDetail',"OtherProfile"];
+const NAVIGATION_IDS = ['Main', 'MainChat', 'PostDetail', 'OtherProfile'];
 
 const buildDeepLinkFromNotificationData = data => {
   if (!data) {
     Linking.openURL('yumyarn://Main');
+  }
+  const isMatch = data?.includes('https://yumyarn.api.phqmarket.online/');
+  if (isMatch) {
+    Linking.openURL(
+      `yumyarn://${
+        data.split('https://yumyarn.api.phqmarket.online/')[1]
+      }`,
+    );
   }
   Linking.openURL(`yumyarn://${data}`);
 };
@@ -21,7 +28,7 @@ const config = {
 };
 
 const linking = {
-  prefixes: ['yumyarn://'],
+  prefixes: ['yumyarn://', 'https://yumyarn.api.phqmarket.online/'],
   config,
   async getInitialURL() {
     const url = await Linking.getInitialURL();

@@ -23,7 +23,7 @@ const ItemChat = props => {
         <Text text80BO numberOfLines={1}>
           {item.name}
         </Text>
-        <Text style={styles.textGray}>{item.latestMessage}</Text>
+        <Text style={styles.textGray} numberOfLines={2}>{item.latestMessage}</Text>
       </View>
       <View
         style={{

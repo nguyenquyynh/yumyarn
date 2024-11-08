@@ -6,6 +6,7 @@ import RenderOptionModal from './common/RenderOptionModal'
 import { t } from 'lang'
 import { rePost } from 'src/hooks/api/post'
 import { useSelector } from 'react-redux'
+import Clipboard from '@react-native-clipboard/clipboard'
 
 const ShowShareDetailPost = props => {
     const { disable, setDisable, post_id } = props
@@ -13,6 +14,7 @@ const ShowShareDetailPost = props => {
     const handlerCopyLink = () => {
         setDisable(!disable)
         ToastAndroid.show(t("post.share"), ToastAndroid.SHORT)
+        Clipboard.setString(`${process.env.BASEAPI_URL+"share/PostDetail/"+post_id}/`);
     }
     const handlerRePost = async () => {
         setDisable(!disable)

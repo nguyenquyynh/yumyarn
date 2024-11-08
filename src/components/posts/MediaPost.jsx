@@ -1,5 +1,5 @@
 import { Dimensions, Pressable, StyleSheet } from 'react-native'
-import React, { memo, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import Video from 'react-native-video'
 import { Icon, Image, View } from 'react-native-ui-lib'
 
@@ -8,7 +8,7 @@ const MediaPost = ({
 }) => {
     var widthscreen = Dimensions.get('window').width
     var heightscreen = Dimensions.get('window').height
-
+    const refVideo = useRef();
     const [pausevideo, setPausevideo] = useState(true)
     const [scale, setScale] = useState('100%')
 
@@ -35,12 +35,18 @@ const MediaPost = ({
                             onLoad={(naturalSize) => {
                                 const scale_video = (100 / (heightscreen / widthscreen) * (naturalSize.naturalSize.height / naturalSize.naturalSize.width)).toFixed(0) + '%'
                                 setScale(scale_video)
+                                
                             }}
+
                             paused={pausevideo}
                             source={{ uri: data }}
                             style={{ width: '100%', height: scale || '100%' }}
                             resizeMode='cover'
-                            repeat
+                            ref={refVideo}
+                            onEnd={() => {
+                                setPausevideo(true);                      
+                                refVideo?.current?.seek(0);
+                            }}
                             playInBackground={false} />
                         <View center flex absF>
                             {pausevideo && <Icon assetName='play_button' size={50} tintColor='lightgray' />}

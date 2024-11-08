@@ -50,7 +50,8 @@
     "Profile": "Hồ sơ",
     "Settings": "Cài đặt",
     "remove_success" : "Đã xóa",
-    "remove_failed" : "Xóa thất bại vui lòng thử lại"
+    "remove_failed" : "Xóa thất bại vui lòng thử lại",
+    "success_copy": "Sao chép thành công"
   },
   "wellcome": {
     "greeting": "Chào mừng đến với",
@@ -60,7 +61,8 @@
     "help_two": " It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
   },
   "login": {
-    "slogan": "Kết nối bạn bè, thỏa mãn đam mê",
+    "slogan1": "Kết nối bạn bè,",
+    "slogan2": "thỏa mãn đam mê",
     "i_read": "Tôi chấp nhập",
     "expired": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
     "register": "Tài khoảng của bạn đã được đăng kí! Kiếm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",

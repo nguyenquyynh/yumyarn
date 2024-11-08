@@ -3,12 +3,13 @@ import React from 'react'
 import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import TextApp from 'components/commons/TextApp'
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useSelector } from 'react-redux';
 
 const OptionSetting = ({ navigation, showlanguage }) => {
-
+    const user = useSelector(state => state.auth.user._id);
     const handlerClipboard = () => {
         ToastAndroid.show("Liên kế đã thêm vào bộ nhớ tạm !", ToastAndroid.SHORT)
-        Clipboard.setString("Liên kế profile")
+        Clipboard.setString(`${process.env.BASEAPI_URL+"share/OtherProfile/"+user}/`);
     }
     const optionsuser = [
         { id: 1, title: "setting.saved", icon: "crop", funt: () => { navigation.navigate('PostSaved') } },

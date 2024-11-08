@@ -50,7 +50,8 @@
     "Profile": "Profile",
     "Settings": "Settings",
     "remove_success": "Removed successfully",
-    "remove_failed": "Removal failed, please try again"
+    "remove_failed": "Removal failed, please try again",
+    "success_copy": "Copy Success"
   },
   "wellcome": {
     "greeting": "Welcome to",
@@ -60,7 +61,8 @@
     "help_two": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
   },
   "login": {
-    "slogan": "Connect with friends, satisfy your passion",
+    "slogan1": "Connect with friends,",
+    "slogan2": "satisfy your passion",
     "i_read": "I agree",
     "expired": "Login session has expired, please log in again!",
     "register": "Your account has been registered! Log in now",

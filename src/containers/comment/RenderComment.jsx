@@ -1,10 +1,11 @@
+import Clipboard from '@react-native-clipboard/clipboard';
 import {useNavigation} from '@react-navigation/native';
 import Avatar from 'components/Avatar';
 import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import {t} from 'lang';
 import React, {memo} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
-import { Text, TouchableOpacity, View} from 'react-native-ui-lib';
+import {FlatList, StyleSheet, ToastAndroid} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native-ui-lib';
 
 const RenderComment = props => {
   const {
@@ -16,7 +17,7 @@ const RenderComment = props => {
     isCommentMain,
     page,
     isLoadingRecomment,
-    setOpen
+    setOpen,
   } = props;
   const avatar = item?.create_by?.avatar;
   const nameUser = item?.create_by?.name;
@@ -28,25 +29,31 @@ const RenderComment = props => {
     paddingLeft: isCommentMain ? 30 : 0,
   };
   const navigation = useNavigation();
+
+  const handleLongPress = () => {
+    ToastAndroid.show(t('app.success_copy'), ToastAndroid.SHORT);
+    Clipboard.setString(item?.content);
+  };
+
   return (
     <View>
       <View flex marginT-8 row spread>
-        <TouchableOpacity
-          onPress={() =>{
+        <Avatar
+          onPress={() => {
             setOpen(false);
-            navigation.navigate(
-              'OtherProfile',
-              {
-                name: nameUser,
-                _id: item?.create_by?._id,
-              },
-            )
-          }
-          }>
-          <Avatar source={{uri: avatar}} size={isCommentMain ? 35 : 30} />
-        </TouchableOpacity>
+            navigation.navigate('OtherProfile', {
+              name: nameUser,
+              _id: item?.create_by?._id,
+            });
+          }}
+          source={{uri: avatar}}
+          size={isCommentMain ? 35 : 30}
+        />
         <View flex paddingR-15>
-          <View marginL-15 style={Style.backgroundComment}>
+          <TouchableOpacity
+            onLongPress={handleLongPress}
+            marginL-15
+            style={Style.backgroundComment}>
             <Text text80BO numberOfLines={1}>
               {nameUser}{' '}
               {!isCommentMain && (
@@ -58,7 +65,7 @@ const RenderComment = props => {
             <Text marginV-5 text>
               {content}
             </Text>
-          </View>
+          </TouchableOpacity>
 
           <View
             flex
