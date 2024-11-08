@@ -78,7 +78,10 @@ const Login = () => {
                         <Icon assetName='logoapp' size={100} />
                         <Text text40BO color={Colors.yellow} style={styles.shadown}>{t('wellcome.greeting')}</Text>
                         <Text text40BO color={Colors.yellow} style={styles.shadown}>{t('app.name_app')}</Text>
-                        <Text text60L marginT-xx>{t("login.slogan")}</Text>
+                        <View style={{width:'100%', flexWrap: 'wrap', gap: 5}} marginT-xx>
+                            <Text text60L center>{t("login.slogan1")}</Text>
+                            <Text text60L center>{t("login.slogan2")}</Text>
+                        </View>
                     </View>
 
                     <Pressable onPress={() => { setIsShowModal(true) }} >

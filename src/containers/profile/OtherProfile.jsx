@@ -281,36 +281,38 @@ const OtherProfile = ({route}) => {
                     </Text>
                   )}
                 </View>
-                {_id !== auth._id && (
-                  <View row spread width={300} style={styles.view_opaticy}>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
-                      style={[styles.opacity, styles.shadowStyle]}
-                      backgroundColor={'#5790DF'}
-                      padding-10
-                      center
-                      br100
-                      onPress={() => handleCheckPersonFollow(statusFollow)}>
-                      <Text text80H color={Colors.white}>
-                        {!statusFollow
-                          ? t('app.follow')
-                          : t('profile.following')}
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
-                      style={[styles.opacity, styles.shadowStyle]}
-                      backgroundColor={Colors.white}
-                      padding-10
-                      center
-                      br100
-                      onPress={() => {
-                        navigation.navigate('Chating', {friend: dataUser});
-                      }}>
-                      <Text text80H>{t('chat.title')}</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
+                {_id
+                  ? _id !== auth._id
+                  : id !== auth._id && (
+                      <View row spread width={300} style={styles.view_opaticy}>
+                        <TouchableOpacity
+                          activeOpacity={0.6}
+                          style={[styles.opacity, styles.shadowStyle]}
+                          backgroundColor={'#5790DF'}
+                          padding-10
+                          center
+                          br100
+                          onPress={() => handleCheckPersonFollow(statusFollow)}>
+                          <Text text80H color={Colors.white}>
+                            {!statusFollow
+                              ? t('app.follow')
+                              : t('profile.following')}
+                          </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          activeOpacity={0.6}
+                          style={[styles.opacity, styles.shadowStyle]}
+                          backgroundColor={Colors.white}
+                          padding-10
+                          center
+                          br100
+                          onPress={() => {
+                            navigation.navigate('Chating', {friend: dataUser});
+                          }}>
+                          <Text text80H>{t('chat.title')}</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
                 <View
                   marginT-xx
                   br50

@@ -23,6 +23,8 @@ import { useSelector } from 'react-redux';
 import LoadingApp from 'components/commons/LoadingApp';
 import Avatar from 'components/Avatar';
 import { Upload } from 'src/libs/UploadImage';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
 
 const MainPost = ({ route }) => {
   const navigation = useNavigation();
@@ -302,7 +304,20 @@ const MainPost = ({ route }) => {
     )
   };
   if (is_loading) {
-    return <LoadingApp />;
+    return (
+      <View flex>
+            <View flex bg-white >
+                <View flex center>
+                    <LottieView
+                        source={lottie.UpLoading}
+                        autoPlay
+                        loop
+                        style={{ width: 100, height: 100}}
+                    />
+                </View>
+            </View>
+        </View>
+    );
   }
   return (
     <Wapper

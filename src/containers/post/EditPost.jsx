@@ -16,6 +16,8 @@ import { useSelector } from 'react-redux';
 import { B } from 'configs/fonts';
 import LoadingApp from 'components/commons/LoadingApp';
 import Avatar from 'components/Avatar';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
 
 
 const EditPost = ({ route }) => {
@@ -264,7 +266,18 @@ const EditPost = ({ route }) => {
     }
     if (is_loading) {
         return (
-            <LoadingApp />
+            <View flex>
+                <View flex bg-white >
+                    <View flex center>
+                        <LottieView
+                            source={lottie.UpLoading}
+                            autoPlay
+                            loop
+                            style={{ width: 100, height: 100}}
+                        />
+                    </View>
+                </View>
+            </View>
         )
     }
     return (

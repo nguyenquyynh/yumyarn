@@ -1,4 +1,4 @@
-import { StyleSheet, Image, FlatList } from 'react-native'
+import { StyleSheet, Image, FlatList, LayoutAnimation } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
@@ -24,7 +24,8 @@ const MainNotifications = () => {
             return
           }
           setpage(page)
-          setnotification([...notification, ...reponse.data])
+          setnotification([...notification, ...reponse.data]);
+          LayoutAnimation.easeInEaseOut();
         }
       }
     } catch (error) {
@@ -47,6 +48,7 @@ const MainNotifications = () => {
         if (reponse.status) {
           setpage(1)
           setnotification(reponse.data)
+          LayoutAnimation.easeInEaseOut();
         }
       }
     } catch (error) {
@@ -73,11 +75,10 @@ const MainNotifications = () => {
         return "messenger"
 
     }
-    console.log(item.status);
 
     const gotoNavidation = () => {
       if (item.status === 'FOLLOW') navigation.navigate('OtherProfile', { _id: item?.create_by })
-      if (item.status === ('FOLLOW' || 'LIKE')) navigation.navigate('PostDetail', { id: item?.id_post })
+      if (item.status === ('COMMENT' || 'LIKE')) navigation.navigate('PostDetail', { id: item?.id_post })
     }
     return (
       <TouchableOpacity key={item._id} style={styles.notificationContainer} onPress={gotoNavidation}>

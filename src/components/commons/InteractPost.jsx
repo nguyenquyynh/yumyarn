@@ -6,6 +6,7 @@ import numberFormat from 'configs/ui/format';
 import { B } from 'configs/fonts';
 import { t } from 'lang';
 import { rePost } from 'src/hooks/api/post';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const InteractPost = props => {
   const { item, handleOpenComment, countFire, countComment, isFire, idUser } = props;
@@ -46,6 +47,7 @@ const InteractPost = props => {
   }
   const handlerShare = () => {
     ToastAndroid.show(t("post.share"), ToastAndroid.SHORT)
+    Clipboard.setString(`${process.env.BASEAPI_URL+"share/PostDetail/"+item?._id}/`);
   }
   useEffect(() => {
     setFireStatus(isFire);
