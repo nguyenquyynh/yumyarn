@@ -72,10 +72,10 @@ const MainChat = ({route}) => {
           listFriend: response.data,
         });
         if (_id) {
+          navigation.getParent()?.setParams({_id: null});
           navigation.navigate('Chating', {
             friend:  response.data?.find(item => item._id === _id),
           });
-          navigation.getParent()?.setParams({_id: null});
         }
         setPage(0);
       }
