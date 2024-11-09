@@ -11,8 +11,11 @@ import { setting_changelanguage } from 'reducers/setting'
 import TextApp from 'components/commons/TextApp'
 import NotificationModalApp from 'components/commons/NotificationModalApp'
 import Animated from 'react-native-reanimated'
+import { B, R, SBI } from 'configs/fonts'
+import { useNavigation } from '@react-navigation/native'
 
 const Login = () => {
+    const navigation = useNavigation()
     const dishpatch = useDispatch()
     const setting = useSelector(state => state.setting)
     const fcm = useSelector(state => state.fcm);
@@ -21,7 +24,7 @@ const Login = () => {
     const [notifycontent, setNotifycontent] = useState('')
     const [isShowModal, setIsShowModal] = useState(false)
     const [policy, setPolicy] = useState(false)
-    const [lang, setLang] = useState('Language')
+    const [lang, setLang] = useState(0)
 
     const handlerAuthenSignin = async () => {
         if (policy) {
@@ -43,19 +46,18 @@ const Login = () => {
         }
     }
     const language = [
-        { title: 'English', value: 'en', icon: 'english' },
-        { title: 'Vietnamese', value: 'vi', icon: 'vietnam' },
-        { title: 'Chinese', value: 'cn', icon: 'china' },
-        { title: 'French', value: 'fr', icon: 'france' },
-        { title: 'Japanese', value: 'jp', icon: 'japan' },
+        { id: 0, title: 'English', value: 'en', icon: 'english' },
+        { id: 1, title: 'Vietnamese', value: 'vi', icon: 'vietnam' },
+        { id: 2, title: 'Chinese', value: 'cn', icon: 'china' },
+        { id: 3, title: 'Japanese', value: 'jp', icon: 'japan' },
     ]
     const renderItemLanguage = (item) => {
         const handlerChangeLanguage = () => {
             dishpatch(setting_changelanguage(item.value))
-            setLang(item?.title)
+            setLang(item?.id)
             setIsShowModal(false)
         }
-        return (<View row centerV paddingH-x>
+        return (<TouchableOpacity row centerV paddingH-x onPress={handlerChangeLanguage}>
             <View padding-x row flex >
                 <IconApp assetName={item?.icon} size={25} />
                 <Text left marginL-xx text80BO>{item?.title}</Text>
@@ -63,10 +65,9 @@ const Login = () => {
             <View flex right>
                 <Checkbox
                     color={Colors.yellow}
-                    value={item.value == setting.language}
-                    onValueChange={handlerChangeLanguage} />
+                    value={item.value == setting.language} />
             </View>
-        </View>)
+        </TouchableOpacity>)
     }
 
     return (
@@ -75,48 +76,49 @@ const Login = () => {
                 <Image source={{ uri: 'https://images.pexels.com/photos/744780/pexels-photo-744780.jpeg' }} style={styles.bg_image} />
                 <View absB spread centerH padding-xx bg-white style={styles.bg_content}>
                     <View center>
-                        <Icon assetName='logoapp' size={100} />
-                        <Text text40BO color={Colors.yellow} style={styles.shadown}>{t('wellcome.greeting')}</Text>
+                        <View padding-10 style={{ elevation: 100 }}>
+                            <Icon assetName='logoapp' size={100} />
+                        </View>
                         <Text text40BO color={Colors.yellow} style={styles.shadown}>{t('app.name_app')}</Text>
-                        <View style={{width:'100%', flexWrap: 'wrap', gap: 5}} marginT-xx>
-                            <Text text60L center>{t("login.slogan1")}</Text>
-                            <Text text60L center>{t("login.slogan2")}</Text>
+                        <View row style={{ width: '100%', flexWrap: 'wrap', gap: 5 }} marginT-xx>
+                            <TextApp style={styles.slogan} text={"login.slogan1"} />
+                            <TextApp style={styles.slogan} text={"login.slogan2"} />
                         </View>
                     </View>
-
-                    <Pressable onPress={() => { setIsShowModal(true) }} >
+                    <TouchableOpacity style={{ position: 'absolute', top: 20, left: 20 }} onPress={() => { setIsShowModal(true) }} >
                         <View center row>
-                            <Text text70BO>{lang}</Text>
-                            <IconApp assetName={"right_arrow"} size={12} />
+                            <Icon assetName={language[lang].icon} size={25} />
                         </View>
-                    </Pressable>
-                    <Animated.View sharedTransitionTag='btn_auth' style={{ width: 350, alignSelf: 'center' }}>
-                        <TouchableOpacity bg-yellow paddingV-xiii paddingH-xx row br30 centerV spread style={styles.shadown} onPress={handlerAuthenSignin}>
-                            <Icon assetName='google' size={28} />
-                            <View flex center>
-                                <Text color='white' text65BO>{t("login.google")}</Text>
+                    </TouchableOpacity>
+                    <View centerH bottom>
+                        <Animated.View sharedTransitionTag='btn_auth' style={{ width: 350, alignSelf: 'center' }}>
+                            <TouchableOpacity bg-yellow paddingV-xiii paddingH-xx row br30 centerV spread style={styles.shadown} onPress={handlerAuthenSignin}>
+                                <Icon assetName='google' size={28} />
+                                <View flex center>
+                                    <TextApp color='white' size={18} style={{ fontFamily: B }} text={"login.google"} />
+                                </View>
+                            </TouchableOpacity>
+                        </Animated.View>
+                        <View style={styles.viewpolicy} center row margin-20>
+                            <TextApp text={"login.i_read"} />
+                            <TextApp funt={() => navigation.navigate('Policy')} onPress text={"login.policy"} color={Colors.yellow} />
+                            <View marginL-x>
+                                <Checkbox color={Colors.yellow} value={policy} onValueChange={() => { setPolicy(!policy) }} />
                             </View>
-                        </TouchableOpacity>
-                    </Animated.View>
-                    <View style={styles.viewpolicy} center row >
-                        <TextApp text={"login.i_read"} />
-                        <TextApp text={"login.policy"} color={Colors.yellow} />
-                        <View marginL-x>
-                            <Checkbox color={Colors.yellow} value={policy} onValueChange={() => { setPolicy(!policy) }} />
                         </View>
                     </View>
                 </View>
             </View>
             <Modals modalVisible={isShowModal} modalhiden={setIsShowModal}>
                 <View>
-                    <Text color={Colors.yellow} xviiiText text60BO marginB-x style={styles.language}>Select language</Text>
+                    <Text color={Colors.yellow} marginH-10 xviiiText text60BO marginB-x style={styles.language}>Select language</Text>
                     <FlatList
                         data={language}
                         renderItem={({ item }) => renderItemLanguage(item)}
                     />
                 </View>
             </Modals>
-            <NotificationModalApp asseticon={"done"} modalVisible={showNotifi} modalhiden={setShowNotifi} funt={() => { setShowNotifi(false) }} content={notifycontent} title={t("app.success")} />
+            <NotificationModalApp asseticon={"done"} modalVisible={showNotifi} modalhiden={setShowNotifi} funt={() => { setPolicy(true); setShowNotifi(false) }} content={notifycontent} title={t("app.success")} />
         </View>
 
     )
@@ -132,5 +134,6 @@ const styles = StyleSheet.create({
         textShadowColor: 'lightgray',
         textShadowOffset: { width: 4, height: 4 },
         textShadowRadius: 10,
-    }
+    },
+    slogan: { textAlign: 'center', fontSize: 18, fontFamily: SBI }
 })

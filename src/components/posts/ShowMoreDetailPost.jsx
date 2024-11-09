@@ -13,7 +13,7 @@ const ShowMoreDetailPost = props => {
     const { disable, setDisable, create_post, id_post, post } = props
     const navigation = useNavigation()
     const auth = useSelector(state => state.auth.user)
-    const role = auth._id === create_post || post?.repost_by ? 'ME' : 'OTHER'
+    const role = ((auth._id === create_post) || (auth._id === post?.repost_by )) ? 'ME' : 'OTHER'
 
     const handlerFollow = async () => {
         const follow = await createFollow(auth._id, create_post)

@@ -225,7 +225,7 @@ const Personal = () => {
 
     //Modal camera
     const rendermodalCamera = (checkUpdata) => {
-        return (<Modal visible={open_camera} animationType="slide">
+        return (<Modal visible={open_camera} animationType="slide" statusBarTranslucent>
             <CameraApp
                 closeModal={() => setopen_camera(false)}
                 updateListMedia={(medias) => {

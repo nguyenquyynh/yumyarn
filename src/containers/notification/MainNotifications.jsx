@@ -1,10 +1,11 @@
 import { StyleSheet, Image, FlatList, LayoutAnimation } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Icon, Modal, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
 import { getNotiByUser } from 'src/hooks/api/noti'
+import NotificationModalApp from 'components/commons/NotificationModalApp'
 
 
 const MainNotifications = () => {
@@ -13,6 +14,8 @@ const MainNotifications = () => {
   const [refreshing, setrefreshing] = useState(false)
   const [page, setpage] = useState(1)
   const [notification, setnotification] = useState([])
+  const [showNotiAdmin, setShowNotiAdmin] = useState({ status: false, id: null })
+  const [idNotify, setIdNotify] = useState('')
   const getNotifi = async (page) => {
     try {
       setisloading(true)
@@ -78,7 +81,10 @@ const MainNotifications = () => {
 
     const gotoNavidation = () => {
       if (item.status === 'FOLLOW') navigation.navigate('OtherProfile', { _id: item?.create_by })
-      if (item.status === ('COMMENT' || 'LIKE')) navigation.navigate('PostDetail', { id: item?.id_post })
+      if ((item.status === 'COMMENT') || (item.status === 'LIKE')) navigation.navigate('PostDetail', { id: item?.id_post })
+      if (item.status === 'NEW') {
+        setShowNotiAdmin({ status: true, id: item })
+      }
     }
     return (
       <TouchableOpacity key={item._id} style={styles.notificationContainer} onPress={gotoNavidation}>
@@ -90,7 +96,6 @@ const MainNotifications = () => {
           <Text style={styles.userName}>{item.user}</Text>
           <Text style={styles.actionText}>{item.content}</Text>
         </View>
-
       </TouchableOpacity>
     )
   };
@@ -109,6 +114,16 @@ const MainNotifications = () => {
           style={styles.container}
         />
       </View>
+      <Modal visible={showNotiAdmin.status} statusBarTranslucent transparent >
+        <View flex marginH-20 marginV-40 bg-white br30 padding-10 style={{ elevation: 10 }}>
+          <TouchableOpacity style={{ position: 'absolute', top: 20, right: 20 }} onPress={() => { setShowNotiAdmin({ status: false }) }}>
+            <Icon assetName='cancel' size={25} />
+          </TouchableOpacity>
+          <View flex>
+            <Text>{showNotiAdmin?.id?.content}</Text>
+          </View>
+        </View>
+      </Modal>
     </Wapper>
   )
 }

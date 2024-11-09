@@ -3,6 +3,7 @@ import {
   FlatList,
   ImageBackground,
   LayoutAnimation,
+  Pressable,
   ScrollView,
   StyleSheet,
 } from 'react-native';
@@ -11,6 +12,7 @@ import {
   Colors,
   Icon,
   Image,
+  Modal,
   Text,
   TouchableOpacity,
   View,
@@ -25,6 +27,7 @@ import TextApp from 'components/commons/TextApp';
 import OptionSetting from 'components/settings/OptionSetting';
 import { logout } from 'src/hooks/api/profile';
 import Avatar from 'components/Avatar';
+import NotificationModalApp from 'components/commons/NotificationModalApp';
 
 const Setting = () => {
   const auth = useSelector(state => state.auth.user);
@@ -34,6 +37,7 @@ const Setting = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [showlanguage, setshowlanguage] = useState(false);
+  const [showLogout, setshowLogout] = useState(false);
 
   const handlerSignout = async () => {
     await logout(auth?._id)
@@ -44,10 +48,8 @@ const Setting = () => {
   const renderLanguage = (item) => {
     const handlerChangeLanguage = async (key) => {
       if (setting.language === key) return
-      await setshowlanguage(false)
       await dispatch(setting_changelanguage(key))
-      navigation.navigate('Settings')
-      LayoutAnimation.easeInEaseOut()
+      await setshowlanguage(false)
     }
     return (
       <TouchableOpacity
@@ -78,7 +80,7 @@ const Setting = () => {
         <View br100 marginL-x style={{ borderWidth: 2, borderColor: 'white' }}>
           <Avatar source={{ uri: auth.avatar }} size={50} />
         </View>
-        <TouchableOpacity marginR-xx onPress={handlerSignout}>
+        <TouchableOpacity marginR-xx onPress={() => setshowLogout(true)}>
           <Icon assetName="log_out" size={24} />
         </TouchableOpacity>
       </ImageBackground>
@@ -116,6 +118,7 @@ const Setting = () => {
         )}
       </View>
       <OptionSetting navigation={navigation} showlanguage={showlanguage} />
+      <NotificationModalApp asseticon={"dont"} modalVisible={showLogout} modalhiden={setshowLogout} funt={() => { handlerSignout() }} content={t("app.Logout_check")} title={t("app.Logout_check")} />
     </View>
   );
 };

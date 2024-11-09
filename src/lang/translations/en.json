@@ -51,7 +51,10 @@
     "Settings": "Settings",
     "remove_success": "Removed successfully",
     "remove_failed": "Removal failed, please try again",
-    "success_copy": "Copy Success"
+    "success_copy": "Copy Success",
+    "login_success" : "Login successful",
+    "login_error" : "Login failed",
+    "Logout_check" : "Do you want to log out?"
   },
   "wellcome": {
     "greeting": "Welcome to",

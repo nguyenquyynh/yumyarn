@@ -4,6 +4,8 @@ import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import RenderMedia from 'components/commons/RenderMedia';
 import MasonryList from '@react-native-seoul/masonry-list';
 import EmptyScreen from 'components/commons/EmptyScreen';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
 
 const ListMediaProfile = ({ data, loadTimeline, navigation, refressTimeline, load }) => {
     const medias = []
@@ -30,8 +32,12 @@ const ListMediaProfile = ({ data, loadTimeline, navigation, refressTimeline, loa
                             }}>
                                 <RenderMedia item={item.media} i={i} />
                             </TouchableOpacity>
-                        )
-                        }
+                        )}
+                        ListEmptyComponent={() => (
+                            <View flex center height={400}>
+                                <LottieView autoPlay loop={false} source={lottie.Nodata} style={{width: 120, height: 120}}/>
+                                </View>
+                        )}
                     />
                    {load &&  <ActivityIndicator style={{paddingTop: 40}} size={'large'} />}
                 </View>

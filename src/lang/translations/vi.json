@@ -51,7 +51,10 @@
     "Settings": "Cài đặt",
     "remove_success" : "Đã xóa",
     "remove_failed" : "Xóa thất bại vui lòng thử lại",
-    "success_copy": "Sao chép thành công"
+    "success_copy": "Sao chép thành công",
+    "login_success" : "Đăng nhập thành công",
+    "login_error" : "Đăng nhập thất bại",
+    "Logout_check" : "Bạn muốn đăng xuất chứ ?"
   },
   "wellcome": {
     "greeting": "Chào mừng đến với",
@@ -103,7 +106,7 @@
   "title_model": {
     "remove_account": "Bạn có muốn xóa tài khoản không ?",
     "cancel": "Hủy",
-    "ok": "Tôi hiểu",
+    "ok": "Xác nhận",
     "content_remove_account": "Tài khoản bị xóa sẽ vĩnh viễn không thể khôi phục",
     "post_success": "Trải nghiệm của bạn đã được chia sẻ",
     "post_faile": "Trải nghiệm của bạn chưa được chia sẻ",

@@ -195,7 +195,7 @@ const EditPost = ({ route }) => {
     }
     //Modal camera
     const rendermodalCamera = () => {
-        return (<Modal visible={open_camera} animationType="slide">
+        return (<Modal visible={open_camera} animationType="slide" statusBarTranslucent>
             <CameraApp
                 closeModal={() => setopen_camera(false)}
                 updateListMedia={(medias) => {
@@ -218,7 +218,7 @@ const EditPost = ({ route }) => {
     }
     //Modal Library
     const renderModalLibrary = () => {
-        return (<Modal visible={open_library} animationType="slide">
+        return (<Modal visible={open_library} animationType="slide" statusBarTranslucent>
             <ImageAndVideoLibary
                 closeModal={() => setopen_library(false)}
                 updateListMedia={(medias) => {

@@ -51,7 +51,10 @@
       "Settings": "环境",
       "remove_success": "删除成功",
       "remove_failed": "删除失败，请重试",
-      "success_copy": "复制成功"
+      "success_copy": "复制成功",
+      "login_success" : "登录成功",
+    "login_error" : "登录失败",
+    "Logout_check" : "您想退出吗 ？"
     },
     "wellcome": {
       "greeting": "欢迎来到",

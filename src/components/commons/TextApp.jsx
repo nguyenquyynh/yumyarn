@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native'
 import React from 'react'
 import { Translation } from 'react-i18next'
 import { Colors, Text } from 'react-native-ui-lib'
 
 const TextApp = ({
+  funt = () => { },
   style,
   text,
   color,
@@ -12,11 +12,9 @@ const TextApp = ({
 }) => {
   return (
     <Translation>
-      {(t, { i18n }) => <Text title color={color || Colors.black} style={[style, size && { fontSize: size }]}>{t(text)} </Text>}
+      {(t) => <Text onPress={funt} title color={color || Colors.black} style={[style, size && { fontSize: size }]}>{t(text)} </Text>}
     </Translation>
   )
 }
 
 export default TextApp
-
-const styles = StyleSheet.create({})

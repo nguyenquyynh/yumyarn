@@ -38,14 +38,6 @@ const EditProfile = () => {
 
   const [statusConfirmDelete, setStatusConfirmDelete] = useState(false)
 
-  const onRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => {
-      loadTimeline('refress')
-      setRefreshing(false);
-    }, 1000)
-  }
-
   // Hàm show model
   const handlerAddImage = (check) => {
     if (check == "avatar") {
@@ -99,7 +91,7 @@ const EditProfile = () => {
       const body = {
         _id: auth._id,
         name: name || auth.name,
-        tagName: tagName || auth.tagName,
+        tagName: tagName.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '') || auth.tagName.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, ''),
         story: story || auth.story
       }
       const result = await updateInfor(body)
@@ -150,7 +142,7 @@ const EditProfile = () => {
 
   //Modal camera
   const rendermodalCamera = (checkUpdataImg) => {
-    return (<Modal visible={open_camera} animationType="slide">
+    return (<Modal visible={open_camera} animationType="slide" statusBarTranslucent>
       <CameraApp
         closeModal={() => setopen_camera(false)}
         updateListMedia={(medias) => {
@@ -194,7 +186,7 @@ const EditProfile = () => {
 
   //Modal Library
   const renderModalLibrary = (checkUpdataImg) => {
-    return (<Modal visible={open_library} animationType="slide">
+    return (<Modal visible={open_library} animationType="slide" statusBarTranslucent>
       <ImageAndVideoLibary
         closeModal={() => setopen_library(false)}
         updateListMedia={(medias) => {
@@ -244,10 +236,7 @@ const EditProfile = () => {
         </TouchableOpacity>
 
         <ScrollView scrollEnabled={false} style={styles.scroll} showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          onScroll={(state) => handleScroll(state)}
+         
         >
 
           <View centerH>
@@ -281,12 +270,12 @@ const EditProfile = () => {
                 <View row center>
                   <Text style={styles.tagName}>@</Text>
                   <TextInput
-                    value={tagName}
+                    value={tagName?.trim()?.replace(/\s+/g, '')}
                     onChangeText={setTagName}
-                    placeholder={auth.tagName}
                     placeholderTextColor={'black'}
                     multiline={true}
                     style={styles.tagName}
+                    numberOfLines={1}
                   />
                 </View>
                 <View>
