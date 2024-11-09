@@ -21,8 +21,8 @@ const ItemChating = memo(props => {
   return (
     <TouchableOpacity
       marginT-10
-      onPress={() => {
-        setshowTime(!showTime);
+      onPress={async () => {
+        await setshowTime(!showTime);
         LayoutAnimation.easeInEaseOut();
       }}
       onLongPress={handleLongPress}>
@@ -43,9 +43,8 @@ const ItemChating = memo(props => {
           },
         ]}>
         <Text
-          marginT-5
           style={{
-            textAlign: user._id == item.create_by ? 'right' : 'left',
+            textAlign: user._id == item.create_by ? 'left' : 'right',
             color: 'white',
           }}>
           {item.content}

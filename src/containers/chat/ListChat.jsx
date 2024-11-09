@@ -9,7 +9,6 @@ const ListChat = props => {
   const {listMessage, loading, getListMessage, refeshListMessage, page} = props;
   return (
     <View paddingH-20>
-      <Text>Recent Chat</Text>
       <FlatList
         data={listMessage}
         keyExtractor={item => item._id}
