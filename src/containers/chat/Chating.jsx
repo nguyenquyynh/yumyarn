@@ -38,7 +38,7 @@ const Chating = ({route}) => {
 
   const getMessage = async listMessage => {
     try {
-      setIsLoading(true);
+      await setIsLoading(true);
       if (!isLoading && !end) {
         const response = await getOldMessage(
           listMessage?.length > 0
@@ -64,8 +64,7 @@ const Chating = ({route}) => {
             setshowModal(true);
           }
 
-          setlistMessage(prev => [...prev, ...response?.data]);
-          LayoutAnimation.easeInEaseOut();
+          await setlistMessage(prev => [...prev, ...response?.data]);
         }
       }
     } catch (error) {
@@ -212,8 +211,9 @@ const Chating = ({route}) => {
         contentContainerStyle={{
           paddingHorizontal: 20,
         }}
-        onEndReached={() => listMessage.length >= 20 && getMessage(listMessage)}
-        onEndReachedThreshold={0.5}
+        onEndReached={async () =>
+          listMessage.length >= 20 && (await getMessage(listMessage))
+        }
         ListFooterComponent={renderFooter}
         automaticallyAdjustKeyboardInsets
         showsVerticalScrollIndicator={false}
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 20,
     backgroundColor: '#E5E1E1',
-    color:'black'
+    color: 'black',
   },
   containerSend: {
     width: 50,
