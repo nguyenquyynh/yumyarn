@@ -16,12 +16,13 @@ const NotificationModalApp = ({
     props
 }) => {
     return (
-        <View flex absF>{modalVisible &&
-            <View flex bg-tr_black >
-                <Modal
-                    animationType="fade"
-                    transparent={true}
-                    visible={modalVisible}>
+        <Modal
+            statusBarTranslucent
+            animationType="fade"
+            transparent={true}
+            visible={modalVisible}>
+            <View flex absF>{modalVisible &&
+                <View flex bg-tr_black >
                     <Pressable height={'100%'}>
                     </Pressable>
                     <View flex center absF padding-x>
@@ -33,8 +34,11 @@ const NotificationModalApp = ({
                                     <View padding-xx centerH>
                                         <Text center styles={{ textAlign: 'center' }}>{content}</Text>
                                     </View>
-                                    <View centerH row>
-                                        {funt && <TouchableOpacity flex-1 marginV-5 center br10 bg-yellow style={[styles.button_model, {borderColor: Colors.yellow}]} onPress={funt}>
+                                    <View centerV row spread>
+                                        <TouchableOpacity flex-1 marginV-5 center br10 bg-white style={[styles.button_model, { borderColor: Colors.yellow, marginRight: 10}]} onPress={() => modalhiden(false)}>
+                                            <Text text70BO color={Colors.yellow}>{t("title_model.cancel")}</Text>
+                                        </TouchableOpacity>
+                                        {funt && <TouchableOpacity flex-1 marginV-5 center br10 bg-yellow style={[styles.button_model, { borderColor: Colors.yellow, marginLeft: 10}]} onPress={funt}>
                                             <Text text70BO color='white'>{t("title_model.ok")}</Text>
                                         </TouchableOpacity>}
                                     </View>
@@ -42,11 +46,11 @@ const NotificationModalApp = ({
                             )}
                         </View>
                     </View>
-                </Modal>
-            </View>
-        }
-        </View>
 
+                </View>
+            }
+            </View>
+        </Modal>
     )
 }
 export default NotificationModalApp
@@ -60,5 +64,8 @@ const styles = StyleSheet.create({
         padding: 10,
         elevation: 5,
         borderWidth: 1,
+    },
+    viewModal: {
+        width: '90%'
     }
 })

@@ -8,16 +8,16 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import Avatar from 'components/Avatar';
-import {Colors, Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {t} from 'lang';
+import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { t } from 'lang';
 import numberFormat from 'configs/ui/format';
 import ListMediaProfile from 'components/profile/ListMediaProfile';
-import {findUser, getTimeline} from 'src/hooks/api/profile';
-import {BI, I, SBI} from 'configs/fonts';
+import { findUser, getTimeline } from 'src/hooks/api/profile';
+import { BI, I, SBI } from 'configs/fonts';
 import Animated from 'react-native-reanimated';
 import Wapper from 'components/Wapper';
 import {
@@ -26,23 +26,24 @@ import {
   unFollow,
 } from 'src/hooks/api/follow';
 import Modals from 'components/BottomSheetApp';
-import {ReportModel} from 'src/hooks/api/Model';
+import { ReportModel } from 'src/hooks/api/Model';
 import ButtonApp from 'components/ButtonApp';
-import {createReport} from 'src/hooks/api/post';
+import { createReport } from 'src/hooks/api/post';
 import LoadingApp from 'components/commons/LoadingApp';
 import ModalFollowSuccess from 'components/profile/ModalFollowSuccess';
 
 const screenwidth = Dimensions.get('window').width;
 const screenheight = Dimensions.get('window').height;
-const OtherProfile = ({route}) => {
-  const {name, _id, id} = route.params;
+const OtherProfile = ({ route }) => {
+  const { name, _id, id } = route.params;
   const navigation = useNavigation();
   const auth = useSelector(state => state.auth.user);
   const timeout = useRef(null);
 
   const [refreshing, setRefreshing] = useState(false);
   const [data, setdata] = useState([]);
-  const [load, setLoad] = useState(true);
+  const [load, setLoad] = useState(false);
+  const [page, setPage] = useState(1);
   const [dataUser, setDataUser] = useState({});
   const [loadingScreen, setLoadingScreen] = useState(false);
   const [statusFollow, setStatusFollow] = useState(false);
@@ -58,27 +59,41 @@ const OtherProfile = ({route}) => {
         });
         if (refress.status) {
           setdata([...refress.data]);
+          setRefreshing(false)
         }
         break;
 
       default:
+        if (!page) {
+          setLoad(false)
+          break
+        }
         const resault = await getTimeline({
           user: _id ? _id : id,
-          page: Math.ceil(data.length / 10) + 1,
+          page: page + 1,
         });
-
         if (resault.status && resault.data.length > 0) {
           setdata([...data, ...resault.data]);
+          setPage(page + 1)
+          setLoad(false);
+        } else {
+          setPage(null)
+          setLoad(false);
         }
-        setLoad(false);
+
         break;
     }
   }
 
+  useEffect(() => {
+   console.log(page);
+   
+  }, [page])
+  
   const handleScroll = useCallback(event => {
     clearTimeout(timeout.current);
-    const {contentOffset, contentSize} = event.nativeEvent;
-    const {height: windowHeight} = Dimensions.get('window');
+    const { contentOffset, contentSize } = event.nativeEvent;
+    const { height: windowHeight } = Dimensions.get('window');
     if (contentOffset.y + windowHeight > contentSize.height) {
       timeout.current = setTimeout(() => {
         setLoad(true);
@@ -87,12 +102,9 @@ const OtherProfile = ({route}) => {
     }
   });
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      loadTimeline('refress');
-      setRefreshing(false);
-    }, 1000);
+    await loadTimeline('refress');
   };
 
   const handleFollow = async () => {
@@ -162,9 +174,8 @@ const OtherProfile = ({route}) => {
       };
       const result = await findUser(query);
       if (result.status) {
-        console.log(result);
         setDataUser(result.data);
-        navigation.getParent()?.setParams({id: null});
+        navigation.getParent()?.setParams({ id: null });
       }
     } catch (error) {
       console.log('ERROR getIdUser ', error);
@@ -209,7 +220,7 @@ const OtherProfile = ({route}) => {
       ) : (
         <View flex bg-white>
           <ImageBackground
-            style={{width: '100%', height: 210}}
+            style={{ width: '100%', height: 210 }}
             source={{
               uri:
                 dataUser?.coverPhoto ||
@@ -224,7 +235,7 @@ const OtherProfile = ({route}) => {
             }
             onScroll={state => handleScroll(state)}>
             <View centerH paddingT-120>
-              <Animated.View style={[{zIndex: 1}, styles.avatar]}>
+              <Animated.View style={[{ zIndex: 1 }, styles.avatar]}>
                 <Avatar
                   source={{
                     uri: dataUser?.avatar,
@@ -284,39 +295,39 @@ const OtherProfile = ({route}) => {
                 {_id
                   ? _id !== auth._id
                   : id !== auth._id && (
-                      <View row spread width={300} style={styles.view_opaticy}>
-                        <TouchableOpacity
-                          activeOpacity={0.6}
-                          style={[styles.opacity, styles.shadowStyle]}
-                          backgroundColor={'#5790DF'}
-                          padding-10
-                          center
-                          br100
-                          onPress={() => handleCheckPersonFollow(statusFollow)}>
-                          <Text text80H color={Colors.white}>
-                            {!statusFollow
-                              ? t('app.follow')
-                              : t('profile.following')}
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          activeOpacity={0.6}
-                          style={[styles.opacity, styles.shadowStyle]}
-                          backgroundColor={Colors.white}
-                          padding-10
-                          center
-                          br100
-                          onPress={() => {
-                            navigation.navigate('Chating', {friend: dataUser});
-                          }}>
-                          <Text text80H>{t('chat.title')}</Text>
-                        </TouchableOpacity>
-                      </View>
-                    )}
+                    <View row spread width={300} style={styles.view_opaticy}>
+                      <TouchableOpacity
+                        activeOpacity={0.6}
+                        style={[styles.opacity, styles.shadowStyle]}
+                        backgroundColor={'#5790DF'}
+                        padding-10
+                        center
+                        br100
+                        onPress={() => handleCheckPersonFollow(statusFollow)}>
+                        <Text text80H color={Colors.white}>
+                          {!statusFollow
+                            ? t('app.follow')
+                            : t('profile.following')}
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        activeOpacity={0.6}
+                        style={[styles.opacity, styles.shadowStyle]}
+                        backgroundColor={Colors.white}
+                        padding-10
+                        center
+                        br100
+                        onPress={() => {
+                          navigation.navigate('Chating', { friend: dataUser });
+                        }}>
+                        <Text text80H>{t('chat.title')}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
                 <View
                   marginT-xx
                   br50
-                  style={{width: '100%', height: '100%'}}
+                  style={{ width: '100%', minHeight: 400 }}
                   bg-white
                   padding-x>
                   <ListMediaProfile
@@ -343,7 +354,7 @@ const OtherProfile = ({route}) => {
             scrollEnabled={false}
             data={optionReport}
             keyExtractor={item => item.id}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={() => {
                   handleReport(item);
@@ -388,7 +399,7 @@ const styles = StyleSheet.create({
   opacity: {
     width: 130,
   },
-  scroll: {width: '100%', height: '100%', position: 'absolute', bottom: 0},
+  scroll: { width: '100%', height: '100%', position: 'absolute', bottom: 0 },
   background: {
     width: '100%',
     position: 'relative',
@@ -419,7 +430,7 @@ const styles = StyleSheet.create({
   },
   shadowStyle: {
     shadowColor: '#000', // Màu đổ bóng
-    shadowOffset: {width: 0, height: 2}, // Vị trí đổ bóng
+    shadowOffset: { width: 0, height: 2 }, // Vị trí đổ bóng
     shadowOpacity: 0.25, // Độ mờ của đổ bóng
     shadowRadius: 3.84, // Độ lan tỏa của đổ bóng
     elevation: 5, // Độ cao (chỉ cho Android)

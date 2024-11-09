@@ -8,7 +8,7 @@ import lottie from 'configs/ui/lottie';
 
 const ModalFollowSuccess = ({ statusFollowSuccess, onLottieSuccess }) => {
     return (
-        <Modal visible={statusFollowSuccess} animationType='fade' transparent>
+        <Modal visible={statusFollowSuccess} statusBarTranslucent animationType='fade' transparent>
             <View flex centerH centerV>
                <LottieView source={lottie.Success} autoPlay loop={false} style={{width:300, height:300}} onAnimationFinish={onLottieSuccess} />
             </View>

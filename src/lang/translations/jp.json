@@ -49,7 +49,10 @@
     "Home": "いえ",
     "Profile": "プロフ",
     "Settings": "設定",
-    "success_copy": "コピー成功"
+    "success_copy": "コピー成功",
+    "login_success" : "ログインに成功しました",
+    "login_error" : "ログインに失敗しました",
+    "Logout_check" : "ログアウトしますか ?"
   },
   "wellcome": {
     "greeting": "ようこそ",

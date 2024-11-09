@@ -53,6 +53,7 @@ const Modals = ({
       {modalVisible && (
         <View flex bg-tr_black>
           <Modal
+            statusBarTranslucent
             animationType="slide"
             transparent={true}
             visible={modalVisible}>

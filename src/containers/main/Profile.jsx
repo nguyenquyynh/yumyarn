@@ -123,7 +123,7 @@ const Profile = () => {
         source={{
           uri:
             dataUser?.coverPhoto ||
-            'https://cdn.pixabay.com/photo/2020/01/07/16/41/vietnam-4748105_1280.jpg',
+            'https://cdn.pixabay.com/photo/2021/02/12/18/14/wallpaper-6009269_640.png',
         }}
       />
       <ScrollView

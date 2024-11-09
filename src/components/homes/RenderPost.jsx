@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import RenderVideo from './RenderVideo';
 import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate';
 import Avatar from 'components/Avatar';
+import TextApp from 'components/commons/TextApp';
 
 const { width: MAX_WIDTH } = Dimensions.get('window');
 const RenderPost = memo(props => {
@@ -76,9 +77,7 @@ const RenderPost = memo(props => {
                 </TouchableOpacity>
               )}
             </View>
-            <Text xiitext style={{ color: '#BEBEBE' }}>
-              {changeTime(differenceInSeconds)}
-            </Text>
+            <TextApp size={12} style={{ color: '#BEBEBE', lineHeight: 16 }} text={changeTime(differenceInSeconds)}/>
           </View>
         </View>
         <TouchableOpacity

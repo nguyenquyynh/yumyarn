@@ -194,7 +194,7 @@ const MainPost = ({ route }) => {
   //Modal camera
   const rendermodalCamera = () => {
     return (
-      <Modal visible={open_camera} animationType="slide">
+      <Modal visible={open_camera} animationType="slide" statusBarTranslucent>
         <CameraApp
           closeModal={() => setopen_camera(false)}
           updateListMedia={medias => {
@@ -218,7 +218,7 @@ const MainPost = ({ route }) => {
   //Modal Library
   const renderModalLibrary = () => {
     return (
-      <Modal visible={open_library} animationType="slide">
+      <Modal visible={open_library} animationType="slide" statusBarTranslucent>
         <ImageAndVideoLibary
           closeModal={() => setopen_library(false)}
           updateListMedia={medias => {
@@ -265,7 +265,7 @@ const MainPost = ({ route }) => {
   //Model hastag
   const renderHashtag = () => {
     return (
-      <Modal transparent visible={showHashtag} animationType="fade" onRequestClose={() => { setShowHashtag(false) }}>
+      <Modal transparent visible={showHashtag} statusBarTranslucent animationType="fade" onRequestClose={() => { setShowHashtag(false) }}>
         <View style={{ backgroundColor: Colors.tr_black, width: '100%', height: '100%', justifyContent: 'center' }}>
           <TouchableOpacity flex onPress={() => { setShowHashtag(false) }} />
           <View bg-white padding-10 style={{ width: '100%', minHeight: 150, maxHeight: 500 }}>

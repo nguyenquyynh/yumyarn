@@ -2,12 +2,13 @@ import {
   Animated,
   StyleSheet,
 } from 'react-native';
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ListPost from 'containers/post/ListPost';
 import Avatar from 'components/Avatar';
+import { t } from 'lang';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -28,13 +29,18 @@ const Home = () => {
     navigation.navigate('Post');
   }
 
+  const foucus = useIsFocused()
+  useEffect(() => {
+    
+  }, [foucus])
+
   return (
     <View flex bg-white>
       <Animated.View
         style={[styles.header, { transform: [{ translateY: tranSlateY }] }]}>
         <View row centerV>
           <Avatar source={{ uri: auth.avatar }} size={40} onPress={() => { }} />
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name}>{t("home.welcome")}{name}</Text>
           <TouchableOpacity onPress={handlerCreatePost}>
             <Icon assetName="add" size={20} />
           </TouchableOpacity>

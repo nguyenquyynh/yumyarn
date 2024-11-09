@@ -34,7 +34,6 @@ const Main = () => {
 
                             if (!isFocused && !event.defaultPrevented) {
                                 navigation.navigate(route.name);
-                                LayoutAnimation.easeInEaseOut()
                             }
                         };
                         return (
@@ -49,7 +48,7 @@ const Main = () => {
                                     center
                                     onPress={onPress}>
                                     <Icon assetName={route.name} size={15} tintColor={!isFocused ? 'black' : 'white'} marginR-v />
-                                    <TextApp size={14} text={isFocused ? t(`app.${route.name}`) : ''} color={'white'} />
+                                    <TextApp size={14} text={isFocused ? `app.${route.name}` : ''} color={'white'} />
                                 </TouchableOpacity>
                             </Animated.View>
                         );
