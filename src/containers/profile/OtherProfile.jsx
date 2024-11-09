@@ -292,9 +292,9 @@ const OtherProfile = ({ route }) => {
                     </Text>
                   )}
                 </View>
-                {_id
+                {(_id
                   ? _id !== auth._id
-                  : id !== auth._id && (
+                  : id !== auth._id) && (
                     <View row spread width={300} style={styles.view_opaticy}>
                       <TouchableOpacity
                         activeOpacity={0.6}
