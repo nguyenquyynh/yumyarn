@@ -30,10 +30,10 @@ import {t} from 'lang';
 import {Model, ReportModel} from 'src/hooks/api/Model';
 import Modals from 'components/BottomSheetApp';
 import Avatar from 'components/Avatar';
-import Clipboard from '@react-native-clipboard/clipboard';
 
 const PostDetail = ({route}) => {
   const {id, _id} = route.params;
+  
   const heightscreen = Dimensions.get('window').height;
   const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);

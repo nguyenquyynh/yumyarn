@@ -14,6 +14,8 @@ import lottie from 'configs/ui/lottie'
 const Payment = () => {
   const navigation = useNavigation()
   const [data, setData] = useState([])
+  const [page, setPage] = useState(1)
+  const [refeshing, setRefeshing] = useState(false)
 
   const loadHistory = async () => {
     await getHistoryPayment()
@@ -21,6 +23,41 @@ const Payment = () => {
       )
       .catch(err => console.log(err)
       )
+  }
+  const handleLoadPayment = async () => {
+    if (!page) return
+
+    await getHistoryPayment(page + 1)
+      .then(resault => {
+        if (resault?.data?.length <= 0) {
+          setPage(null)
+          return
+        }
+        setData(prev => {
+          return [...resault?.data, ...prev]
+        })
+        setPage(page + 1)
+      }
+      )
+      .catch(err => console.log(err)
+      )
+  }
+  const handleReload = async () => {
+    setRefeshing(true)
+    try {
+      await getHistoryPayment(1)
+      .then(resault => setData(resault.data)
+      )
+      .catch(err => console.log(err)
+      )
+    } catch (error) {
+      console.log(error);
+      
+    } finally {
+      setPage(1)
+      setRefeshing(false)
+    }
+
   }
   useEffect(() => {
     loadHistory()
@@ -50,9 +87,13 @@ const Payment = () => {
     <Wapper renderleft funtleft={() => navigation.goBack()} title={t("setting.payment")}>
       <View flex bg-white>
         <FlatList
+          refreshing={refeshing}
+          onRefresh={handleReload}
+          onEndReachedThreshold={0.5}
+          onEndReached={handleLoadPayment}
           showsVerticalScrollIndicator={false}
           data={data}  // Dữ liệu giao dịch
-          keyExtractor={(item) => item._di}  // Mỗi giao dịch có một key duy nhất
+          keyExtractor={(item) => item._code}
           renderItem={renderTransactionItem}  // Hàm render từng mục
           contentContainerStyle={styles.transactionList}  // Phong cách chung cho danh sách
           ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>

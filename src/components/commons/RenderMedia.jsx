@@ -29,7 +29,7 @@ const RenderMedia = ({ i, item }) => {
         if (item.endsWith('.jpg') || item.endsWith('.png') || item.endsWith('.jpeg') || item.endsWith('.gif') || item.endsWith('.svg')) {
             return (
                 <Image
-                    source={{ uri: item }}
+                    source={{ uri: item || 'https://i.imgur.com/eZLxXda.png' }}
                     style={{ width: '100%', height: i % 3 === 0 ? 230 :  i % 2 === 0 ? 200 : 230}}
                 />
             );

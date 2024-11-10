@@ -29,11 +29,6 @@ const Home = () => {
     navigation.navigate('Post');
   }
 
-  const foucus = useIsFocused()
-  useEffect(() => {
-    
-  }, [foucus])
-
   return (
     <View flex bg-white>
       <Animated.View
