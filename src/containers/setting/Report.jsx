@@ -18,8 +18,10 @@ const Report = () => {
     const [dataPost, setDataPost] = useState([])
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(1)
+    const [refeshing, setRefeshing] = useState(false)
 
     const LoadList = async (page = 1, limit = 10) => {
+        if (!page) return
         const resault = await getReport({ page: page, limit: limit })
         if (resault.status) {
             if (resault.data.length == 0) {
@@ -32,10 +34,20 @@ const Report = () => {
         }
 
     }
-    const handleRefes = async () => {
-        setLoading(true)
-        setPage(1)
-        await LoadList()
+    const handleRefesh = async () => {
+        setRefeshing(true)
+        try {
+            await getReport({ page: 1, limit: 10 }).then(
+                resault => setDataPost(resault.data)
+            )
+            setPage(1)
+        } catch (error) {
+            console.log(error);
+            
+        } finally {
+            setRefeshing(false)
+        }
+       
     }
     useEffect(() => {
         LoadList()
@@ -138,8 +150,6 @@ const Report = () => {
 
                 <View marginB-22 marginT-15 style={styles.borderRadiusSwiper}>
                     <FlatList
-                        refreshing={loading}
-                        onRefresh={handleRefes}
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
                         horizontal
@@ -149,7 +159,7 @@ const Report = () => {
                         renderItem={data => (
                             <Pressable
                                 onPress={() => {
-                                    navigation.navigate('PostDetail', { id: id });
+                                    navigation.navigate('PostDetail', { id: item?.post?._id });
                                 }}
                                 style={{ overflow: 'hidden', borderRadius: 15 }}>
                                 {data.item.endsWith('.mp4') ? (
@@ -223,11 +233,11 @@ const Report = () => {
                 <FlatList
                     showsVerticalScrollIndicator={false}
                     data={dataPost}
+                    refreshing={refeshing}
+                    onRefresh={handleRefesh}
                     extraData={dataPost}
                     key={({ index }) => index}
-                    onEndReached={() => {
-
-                    }}
+                    onEndReached={() => { LoadList(page) }}
                     ListEmptyComponent={() => <View center bg-white style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
                         <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
                     </View>}

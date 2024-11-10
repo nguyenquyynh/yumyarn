@@ -8,9 +8,7 @@ import {
   RefreshControl,
   StyleSheet,
 } from 'react-native';
-import ShowComments from 'containers/comment/ShowComments';
-import Modals from 'components/BottomSheetApp';
-import { Colors, Icon, TouchableOpacity, Text, View, Image } from 'react-native-ui-lib';
+import { Colors, Icon, Text, View, Image } from 'react-native-ui-lib';
 import { useNavigation } from '@react-navigation/native';
 import { BI, EBI } from 'configs/fonts';
 import { t } from 'lang';

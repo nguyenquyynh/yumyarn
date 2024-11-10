@@ -16,7 +16,7 @@ export async function createpost(data) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
@@ -35,7 +35,7 @@ export async function editmypost(data) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
@@ -51,7 +51,7 @@ export async function getPost(dataRequest) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
@@ -67,7 +67,7 @@ export async function watchPost(dataRequest) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
@@ -84,7 +84,7 @@ export async function getTimeOutAdvertisement(dataRequest) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
@@ -138,7 +138,7 @@ export async function rePost(data) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
@@ -155,14 +155,12 @@ export async function dePost(data) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
 export async function createSaved(data) {
-  console.log(data);
-
   try {
     const resault = await AxiosInstance().post(
       `${Model.SAVED}/${SAVED.CREATE}`,
@@ -174,13 +172,12 @@ export async function createSaved(data) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
 
 export async function getPostSaved(data) {
-  console.log(data);
   try {
     const resault = await AxiosInstance().get(`${Model.SAVED}?user=${data.id}&page=${data.page}`)
     if (resault.status) {
@@ -206,7 +203,7 @@ export async function isCheckPost(data) {
       return { status: false, data: resault.data };
     }
   } catch (error) {
-    console.log(error + 'Lỗi');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 }
@@ -228,14 +225,12 @@ export async function getReport(data) {
     const resault = await AxiosInstance().get(`${Model.REPORT}/${ReportModel.ALL}?page=${data?.page}&limit=${data.limit}`);
     return resault
   } catch (error) {
-    console.log(error + ' Lỗi');
+    console.log(error);
     return { status: false, data: error.data };
   }
 }
 
 export async function removeReport(data) {
-  console.log(data);
-
   try {
     const resault = await AxiosInstance().delete(`${Model.REPORT}/${ReportModel.REMOVE}`, { data: data });
     return resault
@@ -245,9 +240,11 @@ export async function removeReport(data) {
   }
 }
 
-export async function getHistoryPayment() {
+export async function getHistoryPayment(page = 1, limit = 10) {
   try {
-    const resault = await AxiosInstance().get(`${Model.ADVERTISEMENT}/history`, null);
+    const resault = await AxiosInstance().get(`${Model.ADVERTISEMENT}/history?page=${page}&limit=${limit}`, null);
+    console.log(resault);
+
     return resault
   } catch (error) {
     console.log(error + ' Lỗi');
@@ -268,8 +265,7 @@ export async function getPostAdvs(page = 1) {
 export async function getRandom() {
   try {
     const resault = await AxiosInstance().get(`${Model.POSTS}/random`, null);
-    console.log(resault.data);
-    
+
     return resault
   } catch (error) {
     console.log(error + ' Lỗi');
