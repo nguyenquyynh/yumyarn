@@ -26,7 +26,7 @@ import { BI } from 'configs/fonts';
 import { t } from 'lang';
 import { ReportModel } from 'src/hooks/api/Model';
 import { useDispatch, useSelector } from 'react-redux';
-import { setListPost, updateFullListPost } from 'reducers/home';
+import { resetListPost, setListPost, updateFullListPost } from 'reducers/home';
 
 const optionReport = [
   { id: 1, value: 'Nội dung kích động bạo lực mạng.', content: ReportModel.WAR },
@@ -86,6 +86,7 @@ const ListPost = props => {
         if (response.data.length == 0 && page != 1) {
           setEnd(true);
         } else if (page == 1) {
+          dispatch(resetListPost())
           dispatch(setListPost(response.data))
           setPage(page);
         } else {
@@ -133,6 +134,7 @@ const ListPost = props => {
 
   useEffect(() => {
     getPostData(idUser, 1);
+    console.log("ssss");
   }, []);
 
   const handleFollow = async () => {
