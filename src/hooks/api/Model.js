@@ -32,7 +32,7 @@ export const USERS = {
   FIND_USER: 'finduser',
   LOGOUT_USER: 'logout',
   UPDATEMESSAGE: 'updateMessage',
- 
+  AUTO_MESS: "updateAutoMess"
 };
 
 export const COMMENT = {

@@ -130,6 +130,22 @@ const messageSetting = async (body) => {
     return { status: false, data: 'Opps! Have a problem' };
   }
 }
+const updateAutoMess = async (body) => {
+  try {
+    const result = await AxiosInstance().post(
+      `${Model.USERS}/${USERS.AUTO_MESS}`,
+      body
+    );
+    if (result.status) {
+      return result;
+    } else {
+      return result;
+    }
+  } catch (error) {
+    console.log(error + 'Lỗi updateAutoMess');
+    return { status: false, data: 'Opps! Have a problem' };
+  }
+}
 
 export {
   findUser,
@@ -139,5 +155,6 @@ export {
   countFollower,
   getTimeline,
   logout,
-  messageSetting
+  messageSetting,
+  updateAutoMess
 };

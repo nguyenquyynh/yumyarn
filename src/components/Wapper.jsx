@@ -45,7 +45,7 @@ const Wapper = ({
           />}
 
         </View>
-        <View flex-15>
+        <View flex-15 bg-white>
           {children}
         </View>
       </View>}

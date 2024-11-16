@@ -3,16 +3,12 @@ import {
   FlatList,
   ImageBackground,
   LayoutAnimation,
-  Pressable,
-  ScrollView,
   StyleSheet,
 } from 'react-native';
 import React, { memo, useEffect, useState } from 'react';
 import {
   Colors,
   Icon,
-  Image,
-  Modal,
   Text,
   TouchableOpacity,
   View,
