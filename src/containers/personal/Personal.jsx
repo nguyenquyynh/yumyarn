@@ -50,7 +50,7 @@ const Personal = () => {
             if (response) {
                 setdataUser(response.data);
             } else {
-                console.log("Error getIdUser");
+                // console.log("Error getIdUser");
             }
         } catch (error) {
             console.log(`Error checkfollower : ${error}`);
@@ -181,7 +181,7 @@ const Personal = () => {
                     setloadingEffect(!loadingEffect)
                 }
             } else {
-                console.log("Upload failed");
+                // console.log("Upload failed");
             }
 
 
@@ -205,7 +205,7 @@ const Personal = () => {
                     setloadingEffect(!loadingEffect)
                 }
             } else {
-                console.log("Upload failed");
+                // console.log("Upload failed");
             }
         } catch (error) {
             console.log(`Error updateCoverPhoto: ${error}`);

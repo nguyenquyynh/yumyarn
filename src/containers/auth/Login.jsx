@@ -1,5 +1,5 @@
 import { Alert, FlatList, ImageBackground, Pressable, StyleSheet, ToastAndroid } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, Colors, Image, Button, Icon, Checkbox, RadioGroup, RadioButton, TouchableOpacity } from 'react-native-ui-lib'
 import { t } from 'lang'
 import IconApp from 'components/IconApp'
@@ -25,6 +25,10 @@ const Login = () => {
     const [isShowModal, setIsShowModal] = useState(false)
     const [policy, setPolicy] = useState(false)
     const [lang, setLang] = useState(0)
+
+    useEffect(() => {
+        setLang(language.findIndex(item => item.value === setting?.language))
+    }, [])
 
     const handlerAuthenSignin = async () => {
         if (policy) {

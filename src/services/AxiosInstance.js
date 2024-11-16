@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { auth_logout } from 'reducers/auth';
 import { store } from 'store/store';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-console.log("store.getState().auth.token",store.getState().auth.token);
 
 const url = process.env.BASEAPI_URL
 const AxiosInstance = (token = '', contentType = 'application/json') => {

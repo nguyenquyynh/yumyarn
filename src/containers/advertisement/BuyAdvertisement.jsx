@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, ToastAndroid } from 'react-native'
+import { Dimensions, FlatList, ScrollView, StyleSheet, ToastAndroid } from 'react-native'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux'
 import { checkoutAdv, getAllAdvertisement, getTimeOutAdvertisement } from 'src/hooks/api/post'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { millisecondsToDate } from 'configs/ui/time'
+import LottieView from 'lottie-react-native'
+import lottie from 'configs/ui/lottie'
 
 const BuyAdvertisement = ({ route }) => {
     const { post } = route.params
@@ -29,8 +31,6 @@ const BuyAdvertisement = ({ route }) => {
 
     useFocusEffect(
         useCallback(() => {
-            console.log("aaaaaaaa");
-            
           return () => getTimeAdvertisement();
         }, [])
       );
@@ -49,8 +49,6 @@ const BuyAdvertisement = ({ route }) => {
         }
     }
     useEffect(() => {
-        console.log("bbbbbbbbb");
-        
         async function getListAdvertisement() {
             const listAdv = await getAllAdvertisement({ token: auth.token })
             if (listAdv.status) {
@@ -92,11 +90,9 @@ const BuyAdvertisement = ({ route }) => {
                             data={listAdvertisement}
                             key={(item) => item._id}
                             renderItem={({ item }) => RenderAdvertisement(item)}
-                            ListEmptyComponent={
-                                <View flex center>
-                                    <Text xviText>No advertisements available</Text>
-                                </View>
-                            }
+                            ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+                            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+                          </View>}
                         />
                     </View>
                 </ScrollView>

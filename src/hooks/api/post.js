@@ -62,6 +62,8 @@ export async function watchPost(dataRequest) {
       `${Model.POSTS}/${POST.WATCH}?u=${dataRequest.u}&p=${dataRequest.p}`,
     );
     if (resault.status) {
+      console.log(resault?.data);
+      
       return { status: true, data: resault.data };
     } else {
       return { status: false, data: resault.data };

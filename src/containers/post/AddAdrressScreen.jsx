@@ -55,9 +55,9 @@ const Adddrressscreen = ({ route }) => {
     }
     //chọn địa điểm marker trên bản đồ
     const handlePoiLocation = (el) => {
-        setSearchData([])
+        // setSearchData([])
         const point = el.nativeEvent
-        console.log(point.coordinate);
+        // console.log(point.coordinate);
 
         if (point?.coordinate) {
             const duration = 500
@@ -67,12 +67,12 @@ const Adddrressscreen = ({ route }) => {
                 latitudeDelta: 0.005,
                 longitudeDelta: 0.005
             })
-            if (this.marker) {
-                this.marker.animateMarkerToCoordinate(
-                    point.coordinate,
-                    duration
-                );
-            }
+            // if (this.marker) {
+            //     this.marker.animateMarkerToCoordinate(
+            //         point.coordinate,
+            //         duration
+            //     );
+            // }
         }
     }
     //Tìm kiếm địa điểm theo địa chỉ
@@ -84,7 +84,7 @@ const Adddrressscreen = ({ route }) => {
         var keysearch = search.trim()
         const locationsearch = `@${loaction.latitude},${loaction.longitude},16z`
         try {
-            const data = await searchLocation(keysearch, locationsearch)
+            const data = await searchLocation(keysearch.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""), locationsearch)
             if (data.length > 0) {
                 const array = []
                 for (const item of data) {

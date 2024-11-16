@@ -112,10 +112,8 @@ const ListPost = props => {
 
   const handleLoadMore = async page => {
     if (!isLoading && !end) {
-      console.log("end", end)
       setIsLoading(true);
       await getPostData(idUser, page);
-      console.log('đã tải');
     }
   };
 
@@ -134,7 +132,6 @@ const ListPost = props => {
 
   useEffect(() => {
     getPostData(idUser, 1);
-    console.log("ssss");
   }, []);
 
   const handleFollow = async () => {
@@ -166,7 +163,6 @@ const ListPost = props => {
     data,
     statusSavePost,
   ) => {
-    console.log("item", data);
     setPost(data);
     setIsFollow(followIs);
     setUserIdPost(idUserCreatePost);

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, {memo, useEffect, useState} from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
   Colors,
   Icon,
@@ -15,25 +15,24 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native-ui-lib';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import MediaPost from 'components/posts/MediaPost';
 import HearDetailPost from 'components/posts/HearDetailPost';
 import numberFormat from 'configs/ui/format';
-import {firePost} from 'src/hooks/api/fire';
-import {useSelector} from 'react-redux';
-import {createReport, createSaved, watchPost} from 'src/hooks/api/post';
-import {EB, EBI, ELI, M} from 'configs/fonts';
+import { firePost } from 'src/hooks/api/fire';
+import { useSelector } from 'react-redux';
+import { createReport, createSaved, watchPost } from 'src/hooks/api/post';
+import { EB, EBI, ELI, M } from 'configs/fonts';
 import ShowComments from 'containers/comment/ShowComments';
 import ShowMoreDetailPost from 'components/posts/ShowMoreDetailPost';
 import ShowShareDetailPost from 'components/posts/ShowShareDetailPost';
-import {t} from 'lang';
-import {Model, ReportModel} from 'src/hooks/api/Model';
+import { t } from 'lang';
+import { Model, ReportModel } from 'src/hooks/api/Model';
 import Modals from 'components/BottomSheetApp';
 import Avatar from 'components/Avatar';
 
-const PostDetail = ({route}) => {
-  const {id, _id} = route.params;
-  
+const PostDetail = ({ route }) => {
+  const { id, _id } = route.params;
   const heightscreen = Dimensions.get('window').height;
   const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);
@@ -51,12 +50,13 @@ const PostDetail = ({route}) => {
       setPost(reponse.data[0]);
       setissaved(reponse.data[0]?.isSaved);
     }
-    navigation.getParent()?.setParams({_id: null});
+    navigation.getParent()?.setParams({ _id: null });
     if (reponse.data.length === 0) {
       ToastAndroid.show(t('post.have_remove'), ToastAndroid.SHORT);
       navigation.goBack();
     }
   };
+
   useEffect(() => {
     getPost({
       u: user._id,
@@ -67,6 +67,9 @@ const PostDetail = ({route}) => {
     setIsfire(post?.isfire);
   }, [post]);
 
+  const handleContact = () => {
+    navigation.navigate("Chating", { friend: post?.create_by })
+  }
   const handleReport = async e => {
     const resault = await createReport({
       id_post: post?._id,
@@ -136,7 +139,7 @@ const PostDetail = ({route}) => {
           setDots(!dots);
         }}
       />
-      <View flex absB padding-x style={{maxHeight: heightscreen / 2}}>
+      <View flex absB padding-x style={{ maxHeight: heightscreen / 2 }}>
         <View flex row marginB-x>
           <Avatar
             source={{
@@ -147,10 +150,9 @@ const PostDetail = ({route}) => {
             size={40}
             onPress={handlerClickAvatar}
           />
-
           <TouchableOpacity onPress={handlerClickAvatar} flex marginL-v>
             <View row centerV>
-              <Text style={{fontFamily: EB}} color="white">
+              <Text style={{ fontFamily: EB }} color="white">
                 {post?.create_by?.name}
               </Text>
               {post?.repost_by && (
@@ -175,7 +177,7 @@ const PostDetail = ({route}) => {
               )}
             </View>
             <Text
-              style={{fontFamily: ELI}}
+              style={{ fontFamily: ELI }}
               text80L
               numberOfLines={1}
               color="white">
@@ -189,9 +191,9 @@ const PostDetail = ({route}) => {
               <Text
                 key={el}
                 onPress={() => {
-                  navigation.navigate('Search', {inputkey: el});
+                  navigation.navigate('Search', { inputkey: el });
                 }}
-                style={{fontFamily: EBI}}
+                style={{ fontFamily: EBI }}
                 color={Colors.yellow}>
                 #{el}{' '}
               </Text>
@@ -201,7 +203,7 @@ const PostDetail = ({route}) => {
         <ScrollView>
           <Text
             text90L
-            style={{fontFamily: M}}
+            style={{ fontFamily: M }}
             color={Colors.white}
             numberOfLines={ismore ? 10000 : 2}
             onPress={() => {
@@ -210,7 +212,10 @@ const PostDetail = ({route}) => {
             {post?.content}
           </Text>
         </ScrollView>
-        <View marginT-x width={'100%'} spread row paddingH-xx>
+        {post?.isVip && <TouchableOpacity marginV-5 padding-5 bg-yellow br30 style={{ borderColor: Colors.yellow, borderWidth: 1 }} onPress={handleContact}>
+          <Text center text70BO color='white'>{t("post.contact")}</Text>
+        </TouchableOpacity>}
+        <View marginT-x paddingV-5 width={'100%'} spread row paddingH-xx>
           <TouchableOpacity row centerV onPress={handlerPressFire}>
             <Icon
               tintColor={!isfire && 'white'}
@@ -254,6 +259,7 @@ const PostDetail = ({route}) => {
             />
           </Pressable>
         </View>
+
       </View>
       <ShowComments
         idPost={post?._id}
@@ -261,8 +267,8 @@ const PostDetail = ({route}) => {
         open={iscomment}
         create_by={post?.create_by}
         dataPost={[]}
-        setDataPost={() => {}}
-        setIdPost={() => {}}
+        setDataPost={() => { }}
+        setIdPost={() => { }}
       />
       <ShowMoreDetailPost
         disable={dots}
@@ -285,7 +291,7 @@ const PostDetail = ({route}) => {
             scrollEnabled={false}
             data={optionReport}
             keyExtractor={item => item._id}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <TouchableOpacity
                 onPress={() => {
                   handleReport(item);
@@ -309,14 +315,14 @@ const PostDetail = ({route}) => {
 export default memo(PostDetail);
 const styles = StyleSheet.create({});
 var optionReport = [
-  {value: 'Nội dung kích động bạo lực mạng.', content: ReportModel.WAR},
-  {value: 'Nội dung chứ hình ảnh nhạy cảm 18+.', content: ReportModel.NFSW},
+  { value: 'Nội dung kích động bạo lực mạng.', content: ReportModel.WAR },
+  { value: 'Nội dung chứ hình ảnh nhạy cảm 18+.', content: ReportModel.NFSW },
   {
     value: 'Bài viết liên quan đển an toàn trẻ dưới vị thành niên.',
     content: ReportModel.KID,
   },
-  {value: 'Nội dung chia rẽ sắc tộc, tôn giáo.', content: ReportModel.RELIGION},
-  {value: 'Bài viết chứa từ ngữ thô tục.', content: ReportModel.SUCK},
+  { value: 'Nội dung chia rẽ sắc tộc, tôn giáo.', content: ReportModel.RELIGION },
+  { value: 'Bài viết chứa từ ngữ thô tục.', content: ReportModel.SUCK },
   {
     value: 'Bài viết chứa nội dung không đúng sự thật',
     content: ReportModel.FAKE,

@@ -1,11 +1,11 @@
 import React from 'react';
-import {View} from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { View } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const ImageAndVideoLibary = (props) => {
-  const {updateListMedia, closeModal} = props
+  const { updateListMedia, closeModal } = props
 
-  const selectMedia =async () => {
+  const selectMedia = async () => {
     let options = {
       mediaType: 'mixed', // 'photo' cho chỉ ảnh, 'video' cho chỉ video, 'mixed' cho cả hai
       selectionLimit: 0,
@@ -14,19 +14,18 @@ const ImageAndVideoLibary = (props) => {
       }
     };
 
-   await  launchImageLibrary(options, (response) => {
+    await launchImageLibrary(options, (response) => {
       if (response.didCancel) {
         console.log('User cancelled media picker');
-        closeModal()
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage);
-        closeModal()
       } else {
         console.log(response.assets);
 
         updateListMedia(response.assets)
-        closeModal()
       }
+      closeModal(false)
+
     });
 
 

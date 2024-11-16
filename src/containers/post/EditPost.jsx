@@ -18,6 +18,7 @@ import LoadingApp from 'components/commons/LoadingApp';
 import Avatar from 'components/Avatar';
 import LottieView from 'lottie-react-native';
 import lottie from 'configs/ui/lottie';
+import { Upload } from 'src/libs/UploadImage';
 
 
 const EditPost = ({ route }) => {
@@ -32,7 +33,7 @@ const EditPost = ({ route }) => {
     const [isnotifiy, setIsnotifiy] = useState(false)
     const [notifycontent, setNotifycontent] = useState("")
     const [notifytitle, setNotifytitle] = useState("")
-    const [images, setImages] = useState(post?.media);
+    const [images, setImages] = useState(post?.media || []);
     const [is_loading, setis_loading] = useState(false);
     const [content, setcontent] = useState(post?.content)
     const [hashtag, sethashtag] = useState('#' + post?.hashtags.join(' #'))
@@ -65,6 +66,8 @@ const EditPost = ({ route }) => {
         const { uri, type, name } = file;
         try {
             const newData = await Upload(uri, type, name)
+            console.log(newData);
+            
             return newData
         } catch (error) {
             console.log(error);
@@ -109,13 +112,19 @@ const EditPost = ({ route }) => {
             setis_loading(true)
             const imageupclound = images.filter(item => typeof item === 'object' && item)
             const imageuporigin = images.filter(item => typeof item === 'string' && item)
-            var validUrls = []
-            if (imageupclound.length > 0) {
+
+            const upImage = async (imageupclound) => {
                 const uploadPromises = imageupclound.map(image => onUploadMedia(image))
                 const uploadedUrls = await Promise.all(uploadPromises);
-                validUrls = uploadedUrls.filter(url => url !== null);
-            }
 
+                console.log("uploadedUrls" , uploadedUrls);
+                
+                return uploadedUrls.filter(url => url !== null);
+            }
+            var validUrls = await upImage(imageupclound)
+
+            console.log("validUrls", validUrls);
+            
             const body = {
                 _id: post?._id,
                 media: [...imageuporigin, ...validUrls],
@@ -142,15 +151,13 @@ const EditPost = ({ route }) => {
                 setNotifycontent(t("title_model.post_faile"))
                 setIsnotifiy(true)
             }
-            setis_loading(false)
         } catch (error) {
             console.log(error)
+
+        } finally {
             setis_loading(false)
         }
     }
-    useEffect(() => {
-
-    }, [images])
 
     // Render item media
     const renderItem = ({ item }) => (
@@ -220,24 +227,28 @@ const EditPost = ({ route }) => {
     const renderModalLibrary = () => {
         return (<Modal visible={open_library} animationType="slide" statusBarTranslucent>
             <ImageAndVideoLibary
-                closeModal={() => setopen_library(false)}
+                closeModal={setopen_library}
                 updateListMedia={(medias) => {
                     if (medias.length > 0) {
-                        medias.forEach(ele => {
+                        const abc = medias.map(ele => {
                             if (ele != null) {
-                                var one_media = {
+                                return {
                                     id: images.length + 1,
                                     type: ele.type,
                                     uri: ele.uri,
                                     name: ele.fileName
                                 }
-
-                                images.push(one_media)
                             }
                         });
-                    }
 
-                    setModelshow(!modelshow)
+                        if (abc) {
+                            setImages(preved => [...preved, ...abc])
+                        }
+
+                    }
+                    setopen_library(false)
+                    setModelshow(false)
+
                 }}
             />
         </Modal>)
@@ -273,7 +284,7 @@ const EditPost = ({ route }) => {
                             source={lottie.UpLoading}
                             autoPlay
                             loop
-                            style={{ width: 100, height: 100}}
+                            style={{ width: 100, height: 100 }}
                         />
                     </View>
                 </View>

@@ -4,6 +4,7 @@ import {
   ToastAndroid,
   ActivityIndicator,
   LayoutAnimation,
+  Dimensions,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Text, View, Image, Button} from 'react-native-ui-lib';
@@ -12,6 +13,8 @@ import {t} from 'lang';
 import {useNavigation} from '@react-navigation/native';
 import UserRender from 'components/searchs/UserRender';
 import {getFollowing} from 'src/hooks/api/follow';
+import lottie from 'configs/ui/lottie';
+import LottieView from 'lottie-react-native';
 
 const FollowingList = ({route}) => {
   // lấy danh sách theo user truyền vào còn kiểm tra có follow hay không theo view
@@ -55,6 +58,9 @@ const FollowingList = ({route}) => {
             keyExtractor={item => item._id} // Mỗi item cần có key duy nhất
             renderItem={({item}) => <UserRender statusView={statusView} item={item.follow_user} />} // Hiển thị từng user
             contentContainerStyle={{paddingVertical: 10}} // Đặt padding cho FlatList
+            ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+          </View>}
           />
         </View>
       )}
