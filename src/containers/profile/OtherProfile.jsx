@@ -212,7 +212,7 @@ const OtherProfile = ({ route }) => {
   return (
     <Wapper
       renderleft
-      funtleft={() => navigation.goBack()}
+      funtleft={() =>_id ? navigation.goBack() : navigation.replace('Main') }
       title={!dataUser ? name : ''}
       customright={customRight}>
       {loadingScreen ? (

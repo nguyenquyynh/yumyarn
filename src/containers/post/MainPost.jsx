@@ -6,40 +6,48 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Wapper from 'components/Wapper';
-import { t } from 'lang';
-import { Colors, Icon, Image, PanningProvider, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import {t} from 'lang';
+import {
+  Colors,
+  Icon,
+  Image,
+  PanningProvider,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native-ui-lib';
 import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
-import { createpost } from 'src/hooks/api/post';
+import {createpost} from 'src/hooks/api/post';
 import CameraApp from 'containers/camera/CameraApp';
 import NotificationModalApp from 'components/commons/NotificationModalApp';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import LoadingApp from 'components/commons/LoadingApp';
 import Avatar from 'components/Avatar';
-import { Upload } from 'src/libs/UploadImage';
+import {Upload} from 'src/libs/UploadImage';
 import LottieView from 'lottie-react-native';
 import lottie from 'configs/ui/lottie';
+import {launchImageLibrary} from 'react-native-image-picker';
 
-const MainPost = ({ route }) => {
+const MainPost = ({route}) => {
   const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);
-  const { address } = route.params || {};
+  const {address} = route.params || {};
   const [modelshow, setModelshow] = useState(false);
   const [open_camera, setopen_camera] = useState(false);
-  const [open_library, setopen_library] = useState(false);
   const [isnotifiy, setIsnotifiy] = useState(false);
   const [notifycontent, setNotifycontent] = useState('');
   const [notifytitle, setNotifytitle] = useState('');
   const [images, setImages] = useState([]);
   const [is_loading, setis_loading] = useState(false);
   const [content, setcontent] = useState('');
-  const [showHashtag, setShowHashtag] = useState(false)
+  const [showHashtag, setShowHashtag] = useState(false);
   const [hashtag, sethashtag] = useState('');
   const [hashtaglist, sethashtaglist] = useState([]);
   const [statusRequest, setStatusRequest] = useState(false);
@@ -68,7 +76,7 @@ const MainPost = ({ route }) => {
   };
 
   const onUploadMedia = async file => {
-    const { uri, type, name } = file;
+    const {uri, type, name} = file;
     try {
       const resault = await Upload(uri, type, name);
       return resault;
@@ -97,14 +105,28 @@ const MainPost = ({ route }) => {
   };
 
   const handleAddHashtag = () => {
-    if (hashtag?.trim()?.replace(/[^a-z0-9]/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')) {
-      sethashtaglist((prev) => [...prev, hashtag.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '')])
-      sethashtag('')
+    if (
+      hashtag
+        ?.trim()
+        ?.replace(/[^a-z0-9]/g, '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+    ) {
+      sethashtaglist(prev => [
+        ...prev,
+        hashtag
+          .trim()
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]/g, ''),
+      ]);
+      sethashtag('');
     }
   };
 
-  const hanldeRemoveHashtag = (tag) => {
-    sethashtaglist(hashtaglist.filter((item) => item != tag))
+  const hanldeRemoveHashtag = tag => {
+    sethashtaglist(hashtaglist.filter(item => item != tag));
   };
 
   const createPost = async () => {
@@ -112,7 +134,7 @@ const MainPost = ({ route }) => {
       setis_loading(true);
       const uploadPromises = images.map(image => onUploadMedia(image));
       const uploadedUrls = await Promise.all(uploadPromises);
-      console.log("uploadedUrls", uploadedUrls);
+      console.log('uploadedUrls', uploadedUrls);
 
       const validUrls = uploadedUrls.filter(url => url !== null);
 
@@ -148,17 +170,17 @@ const MainPost = ({ route }) => {
     }
   };
   // Render item media
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={styles.imageWrapper}>
       {item.uri?.endsWith('.mp4') ? (
         <Video
-          source={{ uri: item.uri }}
+          source={{uri: item.uri}}
           style={styles.imageitem}
           paused
           controls
         />
       ) : (
-        <Image source={{ uri: item.uri }} style={styles.imageitem} />
+        <Image source={{uri: item.uri}} style={styles.imageitem} />
       )}
       <TouchableOpacity
         style={styles.removeIcon}
@@ -182,7 +204,7 @@ const MainPost = ({ route }) => {
           <TouchableOpacity
             centerH
             centerV
-            onPress={() => setopen_library(true)}>
+            onPress={() => selectMedia()}>
             <IconApp assetName={'library'} size={50} />
             <Text style={styles.textlibrary}>{t('app.library')}</Text>
           </TouchableOpacity>
@@ -214,33 +236,40 @@ const MainPost = ({ route }) => {
       </Modal>
     );
   };
-  //Modal Library
-  const renderModalLibrary = () => {
-    return (
-      <Modal visible={open_library} animationType="slide" statusBarTranslucent>
-        <ImageAndVideoLibary
-          closeModal={() => setopen_library(false)}
-          updateListMedia={medias => {
-            if (medias.length > 0) {
-              medias.forEach(ele => {
-                if (ele != null) {
-                  var one_media = {
-                    id: images.length + 1,
-                    type: ele.type,
-                    uri: ele.uri,
-                    name: ele.fileName,
-                  };
 
-                  images.push(one_media);
-                }
-              });
-            }
+  const selectMedia = async () => {
+    let options = {
+      mediaType: 'mixed', // 'photo' cho chỉ ảnh, 'video' cho chỉ video, 'mixed' cho cả hai
+      selectionLimit: 0,
+      storageOptions: {
+        skipBackup: true,
+      },
+    };
 
-            setModelshow(!modelshow);
-          }}
-        />
-      </Modal>
-    );
+    await launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled media picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else {
+        console.log(response.assets);
+
+        response.assets.map(ele => {
+          if (ele != null) {
+            var one_media = {
+              id: images.length + 1,
+              type: ele.type,
+              uri: ele.uri,
+              name: ele.fileName,
+            };
+
+            images.push(one_media);
+          }
+        })
+      }
+    });
+
+    setModelshow(false);
   };
   //Modal notify
   const renderNotification = () => {
@@ -264,26 +293,69 @@ const MainPost = ({ route }) => {
   //Model hastag
   const renderHashtag = () => {
     return (
-      <Modal transparent visible={showHashtag} statusBarTranslucent animationType="fade" onRequestClose={() => { setShowHashtag(false) }}>
-        <View style={{ backgroundColor: Colors.tr_black, width: '100%', height: '100%', justifyContent: 'center' }}>
-          <TouchableOpacity flex onPress={() => { setShowHashtag(false) }} />
-          <View bg-white padding-10 style={{ width: '100%', minHeight: 150, maxHeight: 500 }}>
+      <Modal
+        transparent
+        visible={showHashtag}
+        statusBarTranslucent
+        animationType="fade"
+        onRequestClose={() => {
+          setShowHashtag(false);
+        }}>
+        <View
+          style={{
+            backgroundColor: Colors.tr_black,
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity
+            flex
+            onPress={() => {
+              setShowHashtag(false);
+            }}
+          />
+          <View
+            bg-white
+            padding-10
+            style={{width: '100%', minHeight: 150, maxHeight: 500}}>
             <ScrollView>
-              <View flex style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5 }}>
-                {hashtaglist.map((item) => (
+              <View
+                flex
+                style={{flexDirection: 'row', flexWrap: 'wrap', gap: 5}}>
+                {hashtaglist.map(item => (
                   <View key={item} bg-yellow row centerV paddingH-5 br40>
-                    <Text marginR-5 color={Colors.white} text80BO>{item}</Text>
-                    <TouchableOpacity bg-red br40 onPress={() => hanldeRemoveHashtag(item)}>
-                      <Icon assetName='cancel' size={15} />
+                    <Text marginR-5 color={Colors.white} text80BO>
+                      {item}
+                    </Text>
+                    <TouchableOpacity
+                      bg-red
+                      br40
+                      onPress={() => hanldeRemoveHashtag(item)}>
+                      <Icon assetName="cancel" size={15} />
                     </TouchableOpacity>
                   </View>
                 ))}
               </View>
             </ScrollView>
-            <View style={{ width: '100%' }} br20 row paddingV-5 marginV-5 height={50}>
+            <View
+              style={{width: '100%'}}
+              br20
+              row
+              paddingV-5
+              marginV-5
+              height={50}>
               <TextInput
                 focusable={true}
-                style={{ flex: 5, backgroundColor: 'white', borderRadius: 70, fontWeight: 'bold', fontSize: 12, borderWidth: 1, marginRight: 10, paddingLeft: 10 }}
+                style={{
+                  flex: 5,
+                  backgroundColor: 'white',
+                  borderRadius: 70,
+                  fontWeight: 'bold',
+                  fontSize: 12,
+                  borderWidth: 1,
+                  marginRight: 10,
+                  paddingLeft: 10,
+                }}
                 value={hashtag?.trim()?.replace(/\s+/g, '')}
                 onChangeText={sethashtag}
                 color={Colors.yellow}
@@ -292,30 +364,40 @@ const MainPost = ({ route }) => {
                 placeholderTextColor="black"
                 maxLength={40}
               />
-              <TouchableOpacity flex-1 bg-yellow center br50 onPress={handleAddHashtag}>
-                <Text text90BO>{t("app.add")}</Text>
+              <TouchableOpacity
+                flex-1
+                bg-yellow
+                center
+                br50
+                onPress={handleAddHashtag}>
+                <Text text90BO>{t('app.add')}</Text>
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity flex onPress={() => { setShowHashtag(false) }} />
+          <TouchableOpacity
+            flex
+            onPress={() => {
+              setShowHashtag(false);
+            }}
+          />
         </View>
       </Modal>
-    )
+    );
   };
   if (is_loading) {
     return (
       <View flex>
-            <View flex bg-white >
-                <View flex center>
-                    <LottieView
-                        source={lottie.UpLoading}
-                        autoPlay
-                        loop
-                        style={{ width: 100, height: 100}}
-                    />
-                </View>
-            </View>
+        <View flex bg-white>
+          <View flex center>
+            <LottieView
+              source={lottie.UpLoading}
+              autoPlay
+              loop
+              style={{width: 100, height: 100}}
+            />
+          </View>
         </View>
+      </View>
     );
   }
   return (
@@ -332,7 +414,7 @@ const MainPost = ({ route }) => {
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View row>
-              <Avatar source={{ uri: user?.avatar }} size={40} />
+              <Avatar source={{uri: user?.avatar}} size={40} />
               <View marginL-x>
                 <Text text70BO>{user?.name}</Text>
                 <Text text80T>@{user?.tagName}</Text>
@@ -346,17 +428,31 @@ const MainPost = ({ route }) => {
               placeholderTextColor="black"
               multiline
             />
-            <View flex marginV-10 style={{ flexWrap: 'wrap', flexDirection: 'row', gap: 5 }}>
-              {hashtaglist.map((item) => (
+            <View
+              flex
+              marginV-10
+              style={{flexWrap: 'wrap', flexDirection: 'row', gap: 5}}>
+              {hashtaglist.map(item => (
                 <View bg-yellow row centerV paddingH-5 br40>
-                  <Text marginR-5 color={Colors.white} text80BO>{item}</Text>
-                  <TouchableOpacity bg-red br40 onPress={() => hanldeRemoveHashtag(item)}>
-                    <Icon assetName='cancel' size={15} />
+                  <Text marginR-5 color={Colors.white} text80BO>
+                    {item}
+                  </Text>
+                  <TouchableOpacity
+                    bg-red
+                    br40
+                    onPress={() => hanldeRemoveHashtag(item)}>
+                    <Icon assetName="cancel" size={15} />
                   </TouchableOpacity>
                 </View>
               ))}
               <View>
-                <Text text80BO style={{ borderRadius: 20, paddingHorizontal: 10 }} bg-yellow onPress={() => setShowHashtag(true)}>#Hashtag</Text>
+                <Text
+                  text80BO
+                  style={{borderRadius: 20, paddingHorizontal: 10}}
+                  bg-yellow
+                  onPress={() => setShowHashtag(true)}>
+                  #Hashtag
+                </Text>
               </View>
             </View>
             <FlatList
@@ -370,7 +466,7 @@ const MainPost = ({ route }) => {
           </ScrollView>
         </View>
         <View bg-white style={styles.footer}>
-          <TouchableOpacity style={{ width: '100%' }} onPress={handlerAddImage}>
+          <TouchableOpacity style={{width: '100%'}} onPress={handlerAddImage}>
             <View style={styles.contentlocation}>
               <IconApp assetName={'diaphragm'} size={25} />
               <Text numberOfLines={1} style={styles.textloctation}>
@@ -379,7 +475,7 @@ const MainPost = ({ route }) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ width: '100%' }}
+            style={{width: '100%'}}
             onPress={() => {
               navigation.navigate('Adddrressscreen', {
                 back: 'Post',
@@ -399,7 +495,6 @@ const MainPost = ({ route }) => {
       </View>
       {renderModalPickImage()}
       {rendermodalCamera()}
-      {renderModalLibrary()}
       {renderNotification()}
       {renderHashtag()}
     </Wapper>
@@ -485,7 +580,7 @@ const styles = StyleSheet.create({
   hashtagHint: {
     backgroundColor: 'white',
     elevation: 10,
-    marginVertical: 20
+    marginVertical: 20,
   },
   contentImage: {
     padding: 10,

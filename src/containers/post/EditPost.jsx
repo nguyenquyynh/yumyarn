@@ -18,7 +18,7 @@ import LoadingApp from 'components/commons/LoadingApp';
 import Avatar from 'components/Avatar';
 import LottieView from 'lottie-react-native';
 import lottie from 'configs/ui/lottie';
-import { Upload } from 'src/libs/UploadImage';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 
 const EditPost = ({ route }) => {
@@ -29,7 +29,6 @@ const EditPost = ({ route }) => {
     const [modelshow, setModelshow] = useState(false);
     const [statusAction, setStatusAction] = useState(false)
     const [open_camera, setopen_camera] = useState(false);
-    const [open_library, setopen_library] = useState(false)
     const [isnotifiy, setIsnotifiy] = useState(false)
     const [notifycontent, setNotifycontent] = useState("")
     const [notifytitle, setNotifytitle] = useState("")
@@ -192,7 +191,7 @@ const EditPost = ({ route }) => {
                 <TouchableOpacity
                     centerH
                     centerV
-                    onPress={() => setopen_library(true)}
+                    onPress={() => selectMedia()}
                 >
                     <IconApp assetName={"library"} size={50} />
                     <Text style={styles.textlibrary}>{t("app.library")}</Text>
@@ -223,36 +222,42 @@ const EditPost = ({ route }) => {
             />
         </Modal>)
     }
-    //Modal Library
-    const renderModalLibrary = () => {
-        return (<Modal visible={open_library} animationType="slide" statusBarTranslucent>
-            <ImageAndVideoLibary
-                closeModal={setopen_library}
-                updateListMedia={(medias) => {
-                    if (medias.length > 0) {
-                        const abc = medias.map(ele => {
-                            if (ele != null) {
-                                return {
-                                    id: images.length + 1,
-                                    type: ele.type,
-                                    uri: ele.uri,
-                                    name: ele.fileName
-                                }
-                            }
-                        });
 
-                        if (abc) {
-                            setImages(preved => [...preved, ...abc])
-                        }
-
-                    }
-                    setopen_library(false)
-                    setModelshow(false)
-
-                }}
-            />
-        </Modal>)
-    }
+    const selectMedia = async () => {
+        let options = {
+          mediaType: 'mixed', // 'photo' cho chỉ ảnh, 'video' cho chỉ video, 'mixed' cho cả hai
+          selectionLimit: 0,
+          storageOptions: {
+            skipBackup: true,
+          },
+        };
+    
+        await launchImageLibrary(options, response => {
+          if (response.didCancel) {
+            console.log('User cancelled media picker');
+          } else if (response.errorCode) {
+            console.log('ImagePicker Error: ', response.errorMessage);
+          } else {
+            console.log(response.assets);
+    
+            response.assets.map(ele => {
+              if (ele != null) {
+                var one_media = {
+                  id: images.length + 1,
+                  type: ele.type,
+                  uri: ele.uri,
+                  name: ele.fileName,
+                };
+    
+                images.push(one_media);
+              }
+            })
+          }
+        });
+    
+        setModelshow(false);
+      };
+ 
     //Modal notify
     const renderNotification = () => {
         return (<NotificationModalApp
@@ -366,7 +371,6 @@ const EditPost = ({ route }) => {
             </View>
             {renderModalPickImage()}
             {rendermodalCamera()}
-            {renderModalLibrary()}
             {renderNotification()}
         </Wapper>
     );
