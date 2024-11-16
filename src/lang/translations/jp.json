@@ -95,7 +95,9 @@
     "unFollow_des": "好きでない友達のフォローを解除します",
     "unsave":"保存しない",
     "remove_success": "削除成功",
-    "remove_failed": "削除に失敗しました。もう一度お試しください"
+    "remove_failed": "削除に失敗しました。もう一度お試しください",
+    "unsave_des": "削除に失敗しました。もう一度お試しください",
+    "ads": "スポンサー付き"
   },
   "notification": {
     "title": "通知",

@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, ToastAndroid } from 'react-native';
+import { Alert, Dimensions, Share, StyleSheet, ToastAndroid } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Colors, Icon, Text, Toast, TouchableOpacity, View } from 'react-native-ui-lib';
 import { firePost } from 'src/hooks/api/fire';
@@ -7,20 +7,22 @@ import { B } from 'configs/fonts';
 import { t } from 'lang';
 import { rePost } from 'src/hooks/api/post';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useSelector } from 'react-redux';
 
 const InteractPost = props => {
   const { item, handleOpenComment, countFire, countComment, isFire, idUser } = props;
+  const user = useSelector(state => state.auth?.user)
+  
   const [fireStatus, setFireStatus] = useState(isFire);
   const [countFireStatus, setCountFireStatus] = useState(countFire);
   const [isRePost, setIsRePost] = useState(false)
   const toggleFire = async () => {
     try {
-
       setFireStatus(!fireStatus);
       setCountFireStatus(
         fireStatus ? countFireStatus - 1 : countFireStatus + 1,
       );
-      const response = await firePost(idUser, item._id);
+      const response = await firePost(idUser, item._id, user?.fcm_token);
       if (!response.status) {
         setFireStatus(fireStatus);
         setCountFireStatus(countFireStatus);
@@ -45,8 +47,28 @@ const InteractPost = props => {
       setIsRePost(false)
     }
   }
+  const onShare = async (link) => {
+    try {
+      const result = await Share.share({
+        message:
+          link,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
   const handlerShare = () => {
     ToastAndroid.show(t("post.share"), ToastAndroid.SHORT)
+    onShare(`${process.env.BASEAPI_URL+"share/PostDetail/"+item?._id}/`)
     Clipboard.setString(`${process.env.BASEAPI_URL+"share/PostDetail/"+item?._id}/`);
   }
   useEffect(() => {

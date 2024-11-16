@@ -17,10 +17,10 @@ const Home = () => {
   const idUser = auth._id;
   //Animated header
   const scrollY = new Animated.Value(0);
-  const diffclamp = Animated.diffClamp(scrollY, 0, 50);
+  const diffclamp = Animated.diffClamp(scrollY, 0, 55);
   const tranSlateY = diffclamp.interpolate({
-    inputRange: [0, 50],
-    outputRange: [0, -50],
+    inputRange: [0, 55],
+    outputRange: [0, -55],
   });
   function handlerSearch() {
     navigation.navigate('Search');
@@ -33,7 +33,7 @@ const Home = () => {
     <View flex bg-white>
       <Animated.View
         style={[styles.header, { transform: [{ translateY: tranSlateY }] }]}>
-        <View row centerV>
+        <View row centerV marginT-6>
           <Avatar source={{ uri: auth.avatar }} size={40} onPress={() => { }} />
           <Text style={styles.name}>{t("home.welcome")}{name}</Text>
           <TouchableOpacity onPress={handlerCreatePost}>

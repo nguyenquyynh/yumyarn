@@ -9,7 +9,6 @@ GoogleSignin.configure({
 
 export const signOutGoogle = async () => {
   try {
-    console.log("logout........")
     await GoogleSignin.revokeAccess();
     await GoogleSignin.signOut();
   } catch (error) {
@@ -29,9 +28,6 @@ export const loginGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices()
       const userInfo = await GoogleSignin.signIn()
-      // const token = await GoogleSignin.getTokens()
-      // console.log("userInfo: ", userInfo);
-      // console.log("token: ", token);
 
       return userInfo.data
     } catch (error) {

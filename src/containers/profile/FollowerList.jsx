@@ -1,4 +1,4 @@
-import {StyleSheet, FlatList, ActivityIndicator, LayoutAnimation} from 'react-native';
+import {StyleSheet, FlatList, ActivityIndicator, LayoutAnimation, Dimensions} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native-ui-lib';
 import Wapper from 'components/Wapper';
@@ -6,6 +6,8 @@ import {t} from 'lang';
 import {useNavigation} from '@react-navigation/native';
 import UserRender from '../../components/searchs/UserRender'; // Import component hiển thị từng user
 import {getFollowers, getFollowing} from 'src/hooks/api/follow';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
 
 const FollowerList = ({route}) => {
   // lấy danh sách theo user truyền vào còn kiểm tra có follow hay không theo view
@@ -43,6 +45,9 @@ const FollowerList = ({route}) => {
             keyExtractor={item => item._id} // Mỗi item cần có key duy nhất
             renderItem={({item}) => <UserRender statusView={statusView} item={item.create_by} />} // Hiển thị từng user
             contentContainerStyle={{paddingVertical: 10}} // Đặt padding cho FlatList
+            ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
+            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+          </View>}
           />
         ) : (
           <View flex centerH centerV>

@@ -1,11 +1,14 @@
 import { StyleSheet, Image, FlatList, LayoutAnimation } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Icon, Modal, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Colors, Icon, Modal, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
 import { t } from 'lang'
 import { useNavigation } from '@react-navigation/native'
 import { getNotiByUser } from 'src/hooks/api/noti'
 import NotificationModalApp from 'components/commons/NotificationModalApp'
+import LottieView from 'lottie-react-native'
+import lottie from 'configs/ui/lottie'
+import Avatar from 'components/Avatar'
 
 
 const MainNotifications = () => {
@@ -15,7 +18,6 @@ const MainNotifications = () => {
   const [page, setpage] = useState(1)
   const [notification, setnotification] = useState([])
   const [showNotiAdmin, setShowNotiAdmin] = useState({ status: false, id: null })
-  const [idNotify, setIdNotify] = useState('')
   const getNotifi = async (page) => {
     try {
       setisloading(true)
@@ -94,7 +96,7 @@ const MainNotifications = () => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.userName}>{item.user}</Text>
-          <Text style={styles.actionText}>{item.content}</Text>
+          <Text numberOfLines={2} style={styles.actionText}>{item.content}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -114,14 +116,18 @@ const MainNotifications = () => {
           style={styles.container}
         />
       </View>
-      <Modal visible={showNotiAdmin.status} statusBarTranslucent transparent >
-        <View flex marginH-20 marginV-40 bg-white br30 padding-10 style={{ elevation: 10 }}>
-          <TouchableOpacity style={{ position: 'absolute', top: 20, right: 20 }} onPress={() => { setShowNotiAdmin({ status: false }) }}>
-            <Icon assetName='cancel' size={25} />
-          </TouchableOpacity>
-          <View flex>
-            <Text>{showNotiAdmin?.id?.content}</Text>
+      <Modal visible={showNotiAdmin.status} statusBarTranslucent transparent>
+        <View center marginH-20  marginT-150 bg-white br30 padding-10 style={{ elevation: 20 }}>
+          <View center padding-10>
+            <LottieView  source={lottie.Noti} style={{width: 200, height: 200}} loop autoPlay/>
+            <View padding-10 row>
+              <Text center text50BO>Yumyarn noti</Text>
+            </View>
+            <Text center>{showNotiAdmin?.id?.content}</Text>
           </View>
+          <TouchableOpacity marginT-40 style={{width: '100%'}} centerH br100 marginH-10 padding-10 bg-yellow onPress={() => { setShowNotiAdmin({ status: false }) }}>
+            <Text text65BO color='white'>Allow</Text>
+          </TouchableOpacity>
         </View>
       </Modal>
     </Wapper>

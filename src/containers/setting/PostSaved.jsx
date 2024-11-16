@@ -72,8 +72,6 @@ const PostSaved = (props) => {
     if (!isLoading) {
       setIsLoading(true);
       setPage(page)
-      //  await getPostData(idUser, page); // error khi scroll đến 60% thì chạy hàm này  nhưng khi chỉ mới lưu 1 bài viết thì scroll đã lớn hơn 60% hàm này bị call API liên tục
-      console.log('đã tải');
       setIsLoading(false);
     }
   };
@@ -91,10 +89,8 @@ const PostSaved = (props) => {
     try {
       if (userIdPost) {
         const followUpdate = dataPost?.map(ele => {
-          console.log(ele);
 
           if (ele?.create_by?._id == userIdPost) {
-            console.log(ele.follow);
             return { ...ele, follow: !ele.follow };
           }
 
@@ -104,7 +100,6 @@ const PostSaved = (props) => {
         const response = await createFollow(idUser, userIdPost);
         if (!response.status) {
           setDataPost(dataPost);
-          console.log(response.data);
         }
       } else {
         Alert.alert('Thông báo', 'Không tìm thấy');

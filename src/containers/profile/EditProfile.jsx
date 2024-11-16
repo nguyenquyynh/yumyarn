@@ -75,7 +75,7 @@ const EditProfile = () => {
 
         }
       } else {
-        console.log("Upload failed");
+        // console.log("Upload failed");
       }
     } catch (error) {
       console.log(`Error updateAvatar: ${error}`);
@@ -96,7 +96,7 @@ const EditProfile = () => {
       }
       const result = await updateInfor(body)
       if (result) {
-        console.log("update success")
+        // console.log("update success")
         dispatch(updateInforRedux({
           name: name || auth.name,
           tagName: tagName || auth.tagName,

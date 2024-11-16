@@ -95,7 +95,10 @@
     "save_des":"Lưu bài viết bạn yêu thích",
     "follow_des":"Theo dõi người bạn thích",
     "unFollow_des":"Gỡ theo dõi người bạn không thích",
-    "unsave":"Bỏ lưu bài viết"
+    "unsave":"Bỏ lưu bài viết",
+    "unsave_des": "Xóa bài viết này khỏi danh sách đã lưu",
+    "ads": "Được tài trợ",
+    "contact": "Liên hệ ngay"
   },
   "notification": {
     "title": "Thông báo",

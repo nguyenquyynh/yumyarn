@@ -9,8 +9,27 @@ const OptionSetting = ({ navigation, showlanguage }) => {
     const user = useSelector(state => state.auth.user._id);
     const handlerClipboard = () => {
         ToastAndroid.show("Liên kế đã thêm vào bộ nhớ tạm !", ToastAndroid.SHORT)
-        Clipboard.setString(`${process.env.BASEAPI_URL+"share/OtherProfile/"+user}/`);
+        Clipboard.setString(`${process.env.BASEAPI_URL + "share/OtherProfile/" + user}/`);
     }
+    const onShare = async (link) => {
+        try {
+          const result = await Share.share({
+            message:
+              link,
+          });
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+            } else {
+              // shared
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+          }
+        } catch (error) {
+          Alert.alert(error.message);
+        }
+      };
     const optionsuser = [
         { id: 1, title: "setting.saved", icon: "crop", funt: () => { navigation.navigate('PostSaved') } },
         { id: 5, title: "setting.report", icon: "report", funt: () => { navigation.navigate('Report') } },
@@ -35,12 +54,10 @@ const OptionSetting = ({ navigation, showlanguage }) => {
                         data={optionsuser}
                         key={(item) => item.id}
                         renderItem={({ item }) => (
-                            <View marginB-x >
-                                <TouchableOpacity disabled={showlanguage} padding-x row left onPress={item.funt}>
-                                    <Icon assetName={item.icon} size={25} marginR-x tintColor='black' />
-                                    <TextApp style={styles.title} text={item.title} />
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity marginB-x disabled={showlanguage} padding-x row left onPress={item.funt}>
+                                <Icon assetName={item.icon} size={25} marginR-x tintColor='black' />
+                                <TextApp style={styles.title} text={item.title} />
+                            </TouchableOpacity>
                         )}
                     />
                 </View>
@@ -50,12 +67,10 @@ const OptionSetting = ({ navigation, showlanguage }) => {
                         data={optionssetting}
                         key={(item) => item.id}
                         renderItem={({ item }) => (
-                            <View marginB-x >
-                                <TouchableOpacity disabled={showlanguage} padding-x row left onPress={item.funt}>
-                                    <Icon assetName={item.icon} size={25} marginR-x tintColor='black' />
-                                    <TextApp style={styles.title} text={item.title} />
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity marginB-x disabled={showlanguage} padding-x row left onPress={item.funt}>
+                                <Icon assetName={item.icon} size={25} marginR-x tintColor='black' />
+                                <TextApp style={styles.title} text={item.title} />
+                            </TouchableOpacity>
                         )}
                     />
                 </View>

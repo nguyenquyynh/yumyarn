@@ -127,7 +127,6 @@ const MainPost = ({ route }) => {
         content: content,
       };
       const response = await createpost(body);
-      console.log("response", response);
 
       setStatusRequest(response.status);
       if (response.status) {

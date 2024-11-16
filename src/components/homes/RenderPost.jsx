@@ -77,7 +77,7 @@ const RenderPost = memo(props => {
                 </TouchableOpacity>
               )}
             </View>
-            <TextApp size={12} style={{ color: '#BEBEBE', lineHeight: 16 }} text={changeTime(differenceInSeconds)}/>
+            <TextApp size={12} style={{ color: '#BEBEBE', lineHeight: 16 }} text={item?.isVip ? "post.ads" : changeTime(differenceInSeconds)}/>
           </View>
         </View>
         <TouchableOpacity
@@ -140,6 +140,7 @@ const RenderPost = memo(props => {
           pagingEnabled={true}
           snapToAlignment="center"
           data={listImage}
+          initialNumToRender={1}
           renderItem={data => (
             <Pressable
               onPress={() => {

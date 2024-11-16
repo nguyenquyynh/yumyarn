@@ -1,4 +1,4 @@
-import { StyleSheet, Text, ToastAndroid, View } from 'react-native'
+import { Alert, Share, StyleSheet, Text, ToastAndroid, View } from 'react-native'
 import React, { memo } from 'react'
 import Modals from 'components/BottomSheetApp'
 import { FlatList } from 'react-native-gesture-handler'
@@ -13,9 +13,29 @@ const ShowShareDetailPost = props => {
     const user = useSelector(state => state?.auth?.user)
     const handlerCopyLink = () => {
         setDisable(!disable)
+        onShare(`${process.env.BASEAPI_URL+"share/PostDetail/"+post_id}/`)
         ToastAndroid.show(t("post.share"), ToastAndroid.SHORT)
         Clipboard.setString(`${process.env.BASEAPI_URL+"share/PostDetail/"+post_id}/`);
     }
+    const onShare = async (link) => {
+        try {
+          const result = await Share.share({
+            message:
+              link,
+          });
+          if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+              // shared with activity type of result.activityType
+            } else {
+              // shared
+            }
+          } else if (result.action === Share.dismissedAction) {
+            // dismissed
+          }
+        } catch (error) {
+          Alert.alert(error.message);
+        }
+      };
     const handlerRePost = async () => {
         setDisable(!disable)
         const body = {

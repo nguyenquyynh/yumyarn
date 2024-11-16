@@ -3,7 +3,7 @@ import { Translation } from 'react-i18next'
 import { Colors, Text } from 'react-native-ui-lib'
 
 const TextApp = ({
-  funt = () => { },
+  funt,
   style,
   text,
   color,
