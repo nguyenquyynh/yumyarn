@@ -2,7 +2,6 @@ import {
   ActivityIndicator,
   Dimensions,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
@@ -11,6 +10,7 @@ import {getReComment} from 'src/hooks/api/comment';
 import {useSharedValue, withSpring} from 'react-native-reanimated';
 import {FlatList} from 'react-native-gesture-handler';
 import {t} from 'lang';
+import { Text } from 'react-native-ui-lib';
 
 const CommentSection = ({
   dataComment,
@@ -154,7 +154,7 @@ const CommentSection = ({
       keyExtractor={item => item._id}
       ListEmptyComponent={
         <View style={{width: '100%', alignItems: 'center'}}>
-          <Text>{t('app.firstComment')}</Text>
+          <Text color="black">{t('app.firstComment')}</Text>
         </View>
       }
       ListFooterComponent={() =>

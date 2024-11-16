@@ -84,4 +84,6 @@ Assets.loadAssetsGroup('icons', {
     mailing: require('assets/icon/mailing.png'),
     advertisement: require('assets/icon/advertisement.png'),
     messenger: require('assets/icon/messenger.png'),
+    bot: require('assets/icon/robot.png'),
+    un_bot: require('assets/icon/un_robot.png'),
 })

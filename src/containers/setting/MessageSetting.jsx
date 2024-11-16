@@ -1,21 +1,24 @@
-import {StyleSheet} from 'react-native';
-import React, {useState} from 'react';
-import {Colors, Icon, Text, TouchableOpacity, View} from 'react-native-ui-lib';
+import { LayoutAnimation, ScrollView, StyleSheet, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import Wapper from 'components/Wapper';
-import {t} from 'lang';
-import {useNavigation} from '@react-navigation/native';
+import { t } from 'lang';
+import { useNavigation } from '@react-navigation/native';
 import TextApp from 'components/commons/TextApp';
 import Modals from 'components/BottomSheetApp';
-import {FlatList} from 'react-native-gesture-handler';
-import {messageSetting} from 'src/hooks/api/profile';
-import {useDispatch, useSelector} from 'react-redux';
-import {udpateMessageProfile} from 'reducers/auth';
+import { FlatList } from 'react-native-gesture-handler';
+import { messageSetting, updateAutoMess } from 'src/hooks/api/profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { udpateAutoChat, udpateMessageProfile } from 'reducers/auth';
 
 const MessageSetting = () => {
   const profile = useSelector(state => state.auth.user);
   const socket = useSelector(state => state.fcm.socket);
   const navigation = useNavigation();
+
   const [showModal, setShowModal] = useState(false);
+  const [showAutomes, setShowAutomes] = useState(false);
+  const [automes, setAutomes] = useState(profile?.auto_messages);
   const [seleted, setSeleted] = useState(
     profile?.message_recive_status || 'ALL',
   );
@@ -57,16 +60,39 @@ const MessageSetting = () => {
           }),
         );
       }
+      LayoutAnimation.easeInEaseOut()
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleAutoMes = () => {
+    setShowAutomes(!showAutomes)
+    LayoutAnimation.easeInEaseOut()
+  }
+
+  const handleSavedAutoMess = async () => {
+    if ((automes?.trim().length === 0) || (automes?.trim() == profile?.auto_messages)) {
+      return
+    }
+
+    await updateAutoMess({
+      content_mess: automes
+    }).then(() => {
+      dispatch(udpateAutoChat(automes))
+    }).catch(() => {
+
+    }).finally(() => {
+      setShowAutomes(false)
+    })
+  }
+
   return (
     <Wapper
       renderleft
       funtleft={() => navigation.goBack()}
       title={t('setting.setting_message')}>
-      <View flex bg-white padding-16>
+      <View flex bg-light_grey padding-16>
         <View marginB-x style={styles.over}>
           <TouchableOpacity
             padding-x
@@ -117,6 +143,29 @@ const MessageSetting = () => {
             <Text>{t('messenge.seen_d')}</Text>
           </TouchableOpacity>
         </View>
+        <View marginB-x style={[styles.over]}>
+          <TouchableOpacity
+            padding-x
+            left
+            onPress={handleAutoMes}>
+            <View centerV row>
+              <View flex>
+                <TextApp flex style={styles.title} text={t('messenge.auto_mes')} />
+              </View>
+              <Icon
+                assetName={'bot'}
+                size={25}
+              />
+            </View>
+            <Text>{t('messenge.auto_mes_d')}</Text>
+          </TouchableOpacity>
+          {showAutomes && <View padding-10>
+            <TextInput multiline textAlignVertical='top' textBreakStrategy='simple' style={styles.input} value={automes} onChangeText={setAutomes} />
+            <TouchableOpacity marginT-xx marginV-5 padding-5 bg-yellow br30 style={{ borderColor: Colors.yellow, borderWidth: 1 }} onPress={handleSavedAutoMess}>
+              <Text center text70BO color='white'>{t("post.save")}</Text>
+            </TouchableOpacity>
+          </View>}
+        </View>
       </View>
       <Modals modalVisible={showModal} modalhiden={setShowModal}>
         <View paddingH-16>
@@ -127,7 +176,7 @@ const MessageSetting = () => {
           <FlatList
             data={listoptions}
             key={item => item.id}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 padding-5
                 marginB-10
@@ -173,10 +222,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
   },
+  input: { padding: 10, lineHeight: 20, color: 'black', width: '100%', height: 'auto', borderWidth: 1, borderRadius: 10, backgroundColor: 'white' }
 });
 
 var listoptions = [
-  {id: 1, value: 'ALL', title: 'messenge.people', content: 'messenge.people_d'},
+  { id: 1, value: 'ALL', title: 'messenge.people', content: 'messenge.people_d' },
   {
     id: 2,
     value: 'FRIEND',

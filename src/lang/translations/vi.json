@@ -216,7 +216,9 @@
     "nobody_d" : "Không ai có thể gửi tin nhắn cho bạn",
     "status": "Trạng thái hoạt động",
     "seen": "Trạng thái đọc",
-    "seen_d": "Mọi người có thể biết khi nào bạn đọc tin nhắn của họ, nhưng chỉ biết khi cả bạn và họ đều bật tính năng này"
+    "seen_d": "Mọi người có thể biết khi nào bạn đọc tin nhắn của họ, nhưng chỉ biết khi cả bạn và họ đều bật tính năng này",
+    "auto_mes": "Tin nhắn tự động",
+    "auto_mes_d": "Gửi tin nhắn cho những ai tương tác với bài viết bạn quảng bá một cách tự dộng."
   },
   "error": {
     "reported" : "Báo cào này của bạn đã gửi trước đó vui lòng đợi",
