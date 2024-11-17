@@ -27,19 +27,26 @@ const RenderMedia = ({ i, item }) => {
 
     const renderMedia = () => {
         if (item.endsWith('.jpg') || item.endsWith('.png') || item.endsWith('.jpeg') || item.endsWith('.gif') || item.endsWith('.svg')) {
+            console.log(item);
+
             return (
                 <Image
                     source={{ uri: item || 'https://i.imgur.com/eZLxXda.png' }}
-                    style={{ width: '100%', height: i % 3 === 0 ? 230 :  i % 2 === 0 ? 200 : 230}}
+                    style={{ width: '100%', height: i % 3 === 0 ? 230 : i % 2 === 0 ? 200 : 230 }}
                 />
             );
         } else if (item.endsWith('.mp4')) {
+            console.log(thumbnailUrl);
+
             return (
-                <Image
-                    source={{ uri: thumbnailUrl || 'https://i.imgur.com/eZLxXda.png' }}
-                    style={{ width: '100%', height: i % 3 === 0 ? 230 :  i % 2 === 0 ? 200 : 230}}
-                    resizeMode='cover'
-                />
+                <>
+                    {thumbnailUrl && <Image
+                        source={{ uri: thumbnailUrl || 'https://i.imgur.com/eZLxXda.png' }}
+                        style={{ width: '100%', height: i % 3 === 0 ? 230 : i % 2 === 0 ? 200 : 230 }}
+                        resizeMode='cover'
+                    />}
+                </>
+
             );
         }
         return null;

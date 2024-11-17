@@ -1,24 +1,26 @@
 import {
-  Alert,
+  ActivityIndicator,
+  KeyboardAvoidingView,
   LayoutAnimation,
   StyleSheet,
   TextInput,
 } from 'react-native';
-import React, {memo, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native-ui-lib';
-import IconApp from 'components/IconApp';
+import React, { memo, useState } from 'react';
+import { Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import Modals from 'components/BottomSheetApp';
-import {createComment, getListComment} from 'src/hooks/api/comment';
+import { createComment, getListComment } from 'src/hooks/api/comment';
 import CommentSection from './CommentSection';
-import {t} from 'lang';
-import {useSelector} from 'react-redux';
+import { t } from 'lang';
+import { useSelector } from 'react-redux';
+import { isCleanContent } from 'src/middleware/contentmiddleware';
 
 const ShowComments = props => {
-  const {idPost, setOpen, open, dataPost, setDataPost, setPost} = props;
+  const { idPost, setOpen, open, dataPost, setDataPost, setPost } = props;
   const create_by = useSelector(state => state.auth.user);
   const [dataComment, setDataComment] = useState([]);
   const [writeComment, setWriteComment] = useState('');
   const [parent, setParent] = useState(null);
+  const [disable, setDisable] = useState(false);
   const [MorePage, setMorePage] = useState(true);
   const [openReComment, setOpenReComment] = useState({}); //status xem thêm comment có con
   const [dataReComment, setDataReComment] = useState({}); // các tin nhắn bên trong comment cha
@@ -57,9 +59,11 @@ const ShowComments = props => {
   };
 
   const send = async () => {
+    if (!isCleanContent(writeComment)) return
+    setDisable(true)
     try {
       if (!writeComment.trim() || !create_by._id || !idPost) {
-        Alert.alert('Thông báo', 'Không được bỏ trống ô nhập');
+        return
       } else {
         const body = {
           content: writeComment,
@@ -73,7 +77,7 @@ const ShowComments = props => {
           setWriteComment('');
           const commentUpdate = dataPost?.map(ele => {
             if (ele._id == idPost) {
-              return {...ele, comments: ele.comments + 1};
+              return { ...ele, comments: ele.comments + 1 };
             }
 
             return ele;
@@ -86,7 +90,7 @@ const ShowComments = props => {
                 return prev;
               }
 
-              return {...prev, [result.data.parent]: !prev[result.data.parent]};
+              return { ...prev, [result.data.parent]: !prev[result.data.parent] };
             });
             //hiển thị comment con
             setDataReComment(prev => ({
@@ -94,15 +98,15 @@ const ShowComments = props => {
               [result.data.parent]: [
                 {
                   ...result.data,
-                  create_by: {...create_by},
-                  parent: {_id: parent._id, create_by: {name: parent.name}},
+                  create_by: { ...create_by },
+                  parent: { _id: parent._id, create_by: { name: parent.name } },
                 },
                 ...(prev[result.data.parent] || []),
               ],
             }));
           } else {
             setDataComment([
-              {...result.data, create_by: {...create_by}},
+              { ...result.data, create_by: { ...create_by } },
               ...dataComment,
             ]);
           }
@@ -115,6 +119,8 @@ const ShowComments = props => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setDisable(false)
     }
   };
 
@@ -131,7 +137,43 @@ const ShowComments = props => {
           setPost?.(null);
         }
       }}>
+      <KeyboardAvoidingView>
         <View>
+          <View style={[styles.reponsiveSendComment, { elevation: 10 }]}>
+            {parent && (
+              <View style={{ flexDirection: 'row', width: '100%' }}>
+                <Text text>
+                  {t('app.answering')}: {parent?.create_by?.name}{' '}
+                  <Text
+                    style={styles.colorTextWaring}
+                    onPress={() => setParent(null)}>
+                    {t('app.cancel')}
+                  </Text>
+                </Text>
+              </View>
+            )}
+            <View row spread marginT-5 centerV style={styles.containerInput}>
+              <TextInput
+                textAlignVertical='top'
+                textAlign='left'
+                multiline
+                placeholderTextColor={'black'}
+                style={styles.outLineInput}
+                value={writeComment}
+                editable={!disable}
+                onSubmitEditing={send}
+                onChangeText={text => setWriteComment(text)}
+                placeholder={t('app.writeComment')}
+              />
+              {
+                disable ? <ActivityIndicator size={24} style={styles.styleSend} /> :
+                  <TouchableOpacity onPress={send} style={styles.styleSend}>
+                    <Icon assetName={'send'} size={22} crossOrigin='anonymous' />
+                  </TouchableOpacity>
+              }
+
+            </View>
+          </View>
           <CommentSection
             dataComment={dataComment}
             setParent={setParent}
@@ -146,34 +188,9 @@ const ShowComments = props => {
             setOpen={setOpen}
           />
 
-          <View style={styles.reponsiveSendComment}>
-            {parent && (
-              <View style={{flexDirection: 'row', width: '100%'}}>
-                <Text marginT-5 text>
-                  {t('app.answering')}: {parent?.create_by?.name}{' '}
-                  <Text
-                    style={styles.colorTextWaring}
-                    onPress={() => setParent(null)}>
-                    {t('app.cancel')}
-                  </Text>
-                </Text>
-              </View>
-            )}
-            <View row spread style={styles.containerInput}>
-              <TextInput
-                placeholderTextColor={'black'}
-                style={styles.outLineInput}
-                value={writeComment}
-                onChangeText={text => setWriteComment(text)}
-                placeholder={t('app.writeComment')}
-              />
 
-              <TouchableOpacity onPress={send} style={styles.styleSend}>
-                <IconApp assetName={'send'} size={25} />
-              </TouchableOpacity>
-            </View>
-          </View>
         </View>
+      </KeyboardAvoidingView>
     </Modals>
   );
 };
@@ -181,34 +198,28 @@ const ShowComments = props => {
 export default memo(ShowComments);
 
 const styles = StyleSheet.create({
-  styleSend: {position: 'absolute', top: 7, right: 10, padding: 10},
+  styleSend: { position: 'absolute', right: 10, bottom: 12 },
   containerInput: {
     width: '100%',
     alignItems: 'center',
-    paddingTop: 10,
+    borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'white',
+    paddingLeft: 5,
   },
   outLineInput: {
-    flex: 1,
-    borderRadius: 30,
-    borderColor: 'black',
-    marginBottom: 10,
-    borderWidth: 1,
-    height: 40,
-    paddingLeft: 10,
-    paddingRight: 55,
+    width: '100%',
+    height: 'auto',
+    textAlignVertical: 'center',
+    paddingRight: 40,
     color: 'black',
   },
   colorTextWaring: {
     color: 'red',
   },
   reponsiveSendComment: {
-    position: 'absolute',
     alignSelf: 'center',
-    borderColor: 'black',
-    borderTopWidth: 1,
     paddingHorizontal: 10,
-    width: '100%',
-    backgroundColor:'white',
-    bottom: 0
   },
 });

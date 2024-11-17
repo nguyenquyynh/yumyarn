@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { reverLocation, searchLocation } from 'services/MapService'
 import LottieView from 'lottie-react-native'
 import lottie from 'configs/ui/lottie'
+import { isCleanContent } from 'src/middleware/contentmiddleware'
 
 class innitLocation {
     constructor(latitude, longitude, latitudeDelta, longitudeDelta) {
@@ -77,6 +78,8 @@ const Adddrressscreen = ({ route }) => {
     }
     //Tìm kiếm địa điểm theo địa chỉ
     const handlerSearch = async () => {
+        if (!isCleanContent(search)) return
+
         if (!search) {
             return
         }

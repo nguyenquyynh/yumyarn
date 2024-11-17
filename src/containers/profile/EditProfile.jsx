@@ -18,6 +18,7 @@ import { changeAvatarRedux, changeCoverPhotoRedux, deleteStory, updateInforRedux
 import LoadingApp from 'components/commons/LoadingApp'
 import Avatar from 'components/Avatar';
 import { Upload } from 'src/libs/UploadImage'
+import { isCleanContent } from 'src/middleware/contentmiddleware'
 
 const EditProfile = () => {
   const dispatch = useDispatch();
@@ -49,10 +50,9 @@ const EditProfile = () => {
   };
 
   const onUploadMedia = async (file) => {
-    setloading(true)
     const { uri, type, name } = file
     try {
-      const newData = await Upload( uri, type, name )
+      const newData = await Upload(uri, type, name)
       return newData
     } catch (error) {
       console.log(error);
@@ -86,6 +86,8 @@ const EditProfile = () => {
   }
 
   const updateInforAccount = async (name, tagName, story) => {
+    if (!isCleanContent(name) || !isCleanContent(story) || !isCleanContent(tagName)) return
+
     setloading(true)
     try {
       const body = {
@@ -236,14 +238,14 @@ const EditProfile = () => {
         </TouchableOpacity>
 
         <ScrollView scrollEnabled={false} style={styles.scroll} showsVerticalScrollIndicator={false}
-         
+
         >
 
           <View centerH>
             <Pressable height={120} width={'100%'} backgroundColor='transparent' style={{ zIndex: -1 }} onPress={() => handlerAddImage("coverPhoto")}></Pressable>
             <Animated.View style={{ zIndex: 1 }}>
               <View style={styles.avatar}>
-                <Avatar source={{ uri: auth?.avatar }} size={100} onPress={() => handlerAddImage("avatar")}/>
+                <Avatar source={{ uri: auth?.avatar }} size={100} onPress={() => handlerAddImage("avatar")} />
               </View>
             </Animated.View>
             <View bg-puper style={styles.background}>

@@ -122,7 +122,7 @@ const Login = () => {
                     />
                 </View>
             </Modals>
-            <NotificationModalApp asseticon={"done"} modalVisible={showNotifi} modalhiden={setShowNotifi} funt={() => { setPolicy(true); setShowNotifi(false) }} content={notifycontent} title={t("app.success")} />
+            <NotificationModalApp asseticon={"done"} cancel={false} modalVisible={showNotifi} modalhiden={setShowNotifi} funt={() => { setPolicy(true); setShowNotifi(false) }} content={notifycontent} title={t("app.success")} />
         </View>
 
     )

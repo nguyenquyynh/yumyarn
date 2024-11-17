@@ -34,6 +34,7 @@ import {Upload} from 'src/libs/UploadImage';
 import LottieView from 'lottie-react-native';
 import lottie from 'configs/ui/lottie';
 import {launchImageLibrary} from 'react-native-image-picker';
+import { isCleanContent } from 'src/middleware/contentmiddleware';
 
 const MainPost = ({route}) => {
   const navigation = useNavigation();
@@ -87,6 +88,8 @@ const MainPost = ({route}) => {
   };
 
   const checkCreatePost = async () => {
+    if (!isCleanContent(content)) return
+
     if (content.trim() === '') {
       setNotifytitle(t('title_model.content_error'));
       setNotifycontent(t('title_model.post_faile'));
@@ -105,6 +108,8 @@ const MainPost = ({route}) => {
   };
 
   const handleAddHashtag = () => {
+    if (!isCleanContent(hashtag)) return
+
     if (
       hashtag
         ?.trim()
@@ -130,6 +135,8 @@ const MainPost = ({route}) => {
   };
 
   const createPost = async () => {
+    if (!isCleanContent(content)) return
+
     try {
       setis_loading(true);
       const uploadPromises = images.map(image => onUploadMedia(image));
