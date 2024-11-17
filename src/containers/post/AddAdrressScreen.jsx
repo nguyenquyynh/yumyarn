@@ -55,11 +55,8 @@ const Adddrressscreen = ({ route }) => {
         }
     }
     //chọn địa điểm marker trên bản đồ
-    const handlePoiLocation = (el) => {
-        // setSearchData([])
+    const handlePoiLocation = (el, name) => {
         const point = el.nativeEvent
-        // console.log(point.coordinate);
-
         if (point?.coordinate) {
             const duration = 500
             revversLoacation({
@@ -67,15 +64,11 @@ const Adddrressscreen = ({ route }) => {
                 longitude: point.coordinate.longitude,
                 latitudeDelta: 0.005,
                 longitudeDelta: 0.005
-            })
-            // if (this.marker) {
-            //     this.marker.animateMarkerToCoordinate(
-            //         point.coordinate,
-            //         duration
-            //     );
-            // }
+            }, name)
         }
+        setSearchData(prev => prev.filter((item) => item.name !== name))
     }
+
     //Tìm kiếm địa điểm theo địa chỉ
     const handlerSearch = async () => {
         if (!isCleanContent(search)) return
@@ -130,6 +123,21 @@ const Adddrressscreen = ({ route }) => {
         </TouchableOpacity>)
     }
 
+    const handlePointClick = (el) => {
+        // setSearchData([])
+        const point = el.nativeEvent
+        if (point?.coordinate) {
+            const duration = 500
+            revversLoacation({
+                latitude: point.coordinate.latitude,
+                longitude: point.coordinate.longitude,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005
+            }, point.name)
+        }
+
+    }
+
     return (
         <View flex>
             <View flex style={StyleSheet.absoluteFillObject}>
@@ -146,6 +154,7 @@ const Adddrressscreen = ({ route }) => {
                     scrollDuringRotateOrZoomEnabled
                     showsUserLocation={true}
                     onPress={handlePoiLocation}
+                    onPoiClick={handlePointClick}
                     provider='google'
                 >
                     {marker && <MarkerAnimated
