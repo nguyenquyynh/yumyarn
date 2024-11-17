@@ -1,15 +1,15 @@
-import {Alert, StyleSheet} from 'react-native';
-import React, {useEffect, useLayoutEffect, useState} from 'react';
-import {View} from 'react-native-ui-lib';
+import { Alert, StyleSheet } from 'react-native';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { Text, View } from 'react-native-ui-lib';
 import Wapper from 'components/Wapper';
-import {t} from 'lang';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { t } from 'lang';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import FriendChat from './FriendChat';
-import {useSelector} from 'react-redux';
-import {getFriend, getListFriendMessage} from 'src/hooks/api/message';
+import { useSelector } from 'react-redux';
+import { getFriend, getListFriendMessage } from 'src/hooks/api/message';
 import ListChat from './ListChat';
 
-const MainChat = ({route}) => {
+const MainChat = ({ route }) => {
   const navigation = useNavigation();
   const userId = useSelector(state => state.auth.user._id);
   const socket = useSelector(state => state.fcm.socket);
@@ -19,7 +19,7 @@ const MainChat = ({route}) => {
   const [page, setPage] = useState(0);
   const [endFriend, setEndFriend] = useState(false);
   const [endMessage, setEndMessage] = useState(false);
-  const {_id} = route.params;
+  const { _id } = route.params;
   const routes = useRoute();
   const getListFriend = async () => {
     try {
@@ -72,9 +72,9 @@ const MainChat = ({route}) => {
           listFriend: response.data,
         });
         if (_id) {
-          navigation.getParent()?.setParams({_id: null});
+          navigation.getParent()?.setParams({ _id: null });
           navigation.navigate('Chating', {
-            friend:  response.data?.find(item => item._id === _id),
+            friend: response.data?.find(item => item._id === _id),
           });
         }
         setPage(0);
@@ -86,36 +86,40 @@ const MainChat = ({route}) => {
     }
   };
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     getListFriend();
     refeshListMessage();
-  }, []);
+  }, []))
 
-  useEffect(() => {
-    socket.on('getOnlineFriend', data => {
-      setListFriend(data);
-    });
-    socket.on('getOnlineMessage', data => {
-      setListMessage(data);
-    });
+  // useEffect(() => {
+  //   socket.on('getOnlineFriend', data => {
+  //     setListFriend(data);
+  //   });
+  //   socket.on('getOnlineMessage', data => {
+  //     setListMessage(data);
+  //   });
 
-    socket.on('refesh_message', () => {
-      refeshListMessage();
-    });
+  //   socket.on('refesh_message', () => {
+  //     refeshListMessage();
+  //   });
 
-    return () => {
-      socket.off('getOnlineFriend');
-      socket.off('getOnlineMessage');
-      socket.off('refesh_message');
-    };
-  }, []);
+  //   return () => {
+  //     socket.off('getOnlineFriend');
+  //     socket.off('getOnlineMessage');
+  //     socket.off('refesh_message');
+  //   };
+  // }, []);
   return (
     <Wapper
       renderleft
       funtleft={() => navigation.navigate('Main')}
       title={t('chat.title')}>
       <View flex bg-white gap-8>
+        {!socket && <View padding bg-red50>
+          <Text center>{t("app.discconect")}</Text>
+        </View>}
         <FriendChat listFriend={listFriend} loading={loading} />
+
         <ListChat
           listMessage={listMessage}
           loading={loading}

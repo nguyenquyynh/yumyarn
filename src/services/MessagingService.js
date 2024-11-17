@@ -73,7 +73,7 @@ const notifyApp = async gotoLink => {
   // });
 
   messaging().onMessage(async remoteMessage => {
-    console.log('Message hanlde open', remoteMessage);
+    // console.log('Message hanlde open', remoteMessage);
     viewNotify(remoteMessage);
   });
 };

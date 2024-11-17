@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 import { reverLocation, searchLocation } from 'services/MapService'
 import LottieView from 'lottie-react-native'
 import lottie from 'configs/ui/lottie'
+import { isCleanContent } from 'src/middleware/contentmiddleware'
 
 class innitLocation {
     constructor(latitude, longitude, latitudeDelta, longitudeDelta) {
@@ -46,15 +47,14 @@ const SearchMap = ({ route }) => {
         })
     }
     // chuyển về địa chỉ dạng chữ từ location
-    const revversLoacation = async (loaction) => {
+    const revversLoacation = async (loaction, name) => {
         const data = await reverLocation(loaction)
         if (data.items?.[0]) {
-            setMarker({ ...loaction, name: data.items[0]?.address?.label })
+            setMarker({ ...loaction, name: name ? ` ${name}  ${data.items[0]?.address?.label}` : data.items[0]?.address?.label })
         }
     }
     //chọn địa điểm marker trên bản đồ
-    const handlePoiLocation = (el) => {
-        setSearchData([])
+    const handlePoiLocation = (el, name) => {
         const point = el.nativeEvent
         if (point?.coordinate) {
             const duration = 500
@@ -63,18 +63,13 @@ const SearchMap = ({ route }) => {
                 longitude: point.coordinate.longitude,
                 latitudeDelta: 0.005,
                 longitudeDelta: 0.005
-            })
-            if (this.marker) {
-                this.marker.animateMarkerToCoordinate(
-                    point.coordinate,
-                    duration
-                );
-            }
+            }, name)
         }
+        setSearchData(prev => prev.filter((item) => item.name !== name))
     }
     //Tìm kiếm địa điểm theo địa chỉ
     const handlerSearch = async () => {
-        if (!search) {
+        if (!search || !isCleanContent(search)) {
             return
         }
         setLoading(true)
@@ -123,6 +118,20 @@ const SearchMap = ({ route }) => {
             <IconApp assetName={"location"} size={25} />
         </TouchableOpacity>)
     }
+    const handlePointClick = (el) => {
+        // setSearchData([])
+        const point = el.nativeEvent
+        if (point?.coordinate) {
+            const duration = 500
+            revversLoacation({
+                latitude: point.coordinate.latitude,
+                longitude: point.coordinate.longitude,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005
+            }, point.name)
+        }
+
+    }
 
     return (
         <View flex>
@@ -135,6 +144,7 @@ const SearchMap = ({ route }) => {
                     moveOnMarkerPress
                     showsUserLocation={true}
                     onPress={handlePoiLocation}
+                    onPoiClick={handlePointClick}
                     provider='google'
                 >
                     {marker && <MarkerAnimated
@@ -147,12 +157,13 @@ const SearchMap = ({ route }) => {
                             latitude: element.latitude,
                             longitude: element.longitude,
                         }
+
                         return (<MarkerAnimated
                             key={element.longitude}
                             ref={marker => { this.marker = marker }}
                             coordinate={crood}
-                            onPress={() => {
-
+                            onPress={(e) => {
+                                setMarker({...defaultlocation, name: (element?.name + " " + element?.address), ...element})
                             }}
                         >{pointLocation(element)}</MarkerAnimated>)
                     }) : null}
@@ -169,7 +180,7 @@ const SearchMap = ({ route }) => {
                             <View flex>
                                 <TextInput
                                     placeholderTextColor={'black'}
-                                    style={{color: 'black'}}
+                                    style={{ color: 'black' }}
                                     placeholder={t("app.search")}
                                     value={search}
                                     onChangeText={setSearch} />

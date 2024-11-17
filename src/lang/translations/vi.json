@@ -11,7 +11,7 @@
     "search": "Tìm kiếm",
     "yumyarn_id": "YumYarn ID",
     "address": "Địa chỉ",
-    "phone": "SĐT",
+    "phone": "Số điện thoại",
     "email": "Email",
     "name": "Tên",
     "inta": "Instagram",
@@ -54,7 +54,8 @@
     "success_copy": "Sao chép thành công",
     "login_success" : "Đăng nhập thành công",
     "login_error" : "Đăng nhập thất bại",
-    "Logout_check" : "Bạn muốn đăng xuất chứ ?"
+    "Logout_check" : "Bạn muốn đăng xuất chứ ?",
+    "discconect" : "Mất kết nối"
   },
   "wellcome": {
     "greeting": "Chào mừng đến với",
@@ -66,10 +67,10 @@
   "login": {
     "slogan1": "Kết nối bạn bè,",
     "slogan2": "thỏa mãn đam mê",
-    "i_read": "Tôi chấp nhập",
+    "i_read": "Tôi chấp nhận ",
     "expired": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
-    "register": "Tài khoảng của bạn đã được đăng kí! Kiếm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
-    "verify": "Kiếm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
+    "register": "Tài khoảng của bạn đã được đăng kí! Kiểm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
+    "verify": "Kiểm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
     "policy": "chính sách bảo mật",
     "google": "Đăng nhập với Google",
     "agree" : "Bạn phải đồng ý với chính sách của chúng tôi để tiếp tục truy cập !"
@@ -223,7 +224,8 @@
   "error": {
     "reported" : "Báo cào này của bạn đã gửi trước đó vui lòng đợi",
     "reporting": "Chúng tôi sẽ xem xét báo cáo của bạn.",
-    "missinput": "Thiếu dữ liệu để xử lý."
+    "missinput": "Thiếu dữ liệu để xử lý.",
+    "bad_words" : "Nội dung chứa từ ngữ không phù hợp."
   },
   "camera":{
     "off":"Tắt",

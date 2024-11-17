@@ -28,9 +28,8 @@ const MainNotifications = () => {
             setpage(null)
             return
           }
-          setpage(page)
           setnotification([...notification, ...reponse.data]);
-          LayoutAnimation.easeInEaseOut();
+          setpage(page)
         }
       }
     } catch (error) {
@@ -52,12 +51,11 @@ const MainNotifications = () => {
         const reponse = await getNotiByUser(1);
         if (reponse.status) {
           setpage(1)
-          setnotification(reponse.data)
-          LayoutAnimation.easeInEaseOut();
+          setnotification([...reponse.data])
         }
       }
     } catch (error) {
-
+      return
     } finally {
       setrefreshing(false)
     }
@@ -110,22 +108,22 @@ const MainNotifications = () => {
           onRefresh={handleRefes}
           data={notification}
           onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.2}
           renderItem={({ item }) => <NotificationItem item={item} />}
           keyExtractor={(item) => item.id}
           style={styles.container}
         />
       </View>
       <Modal visible={showNotiAdmin.status} statusBarTranslucent transparent>
-        <View center marginH-20  marginT-150 bg-white br30 padding-10 style={{ elevation: 20 }}>
+        <View center marginH-20 marginT-150 bg-white br30 padding-10 style={{ elevation: 20 }}>
           <View center padding-10>
-            <LottieView  source={lottie.Noti} style={{width: 200, height: 200}} loop autoPlay/>
+            <LottieView source={lottie.Noti} style={{ width: 200, height: 200 }} loop autoPlay />
             <View padding-10 row>
               <Text center text50BO>Yumyarn noti</Text>
             </View>
             <Text center>{showNotiAdmin?.id?.content}</Text>
           </View>
-          <TouchableOpacity marginT-40 style={{width: '100%'}} centerH br100 marginH-10 padding-10 bg-yellow onPress={() => { setShowNotiAdmin({ status: false }) }}>
+          <TouchableOpacity marginT-40 style={{ width: '100%' }} centerH br100 marginH-10 padding-10 bg-yellow onPress={() => { setShowNotiAdmin({ status: false }) }}>
             <Text text65BO color='white'>Allow</Text>
           </TouchableOpacity>
         </View>

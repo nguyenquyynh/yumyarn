@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { history_addsearch } from 'reducers/search'
 import { search_post, search_user } from 'src/hooks/api/search'
 import { removeSpecialCharacters } from 'src/libs/InputValidate'
+import { isCleanContent } from 'src/middleware/contentmiddleware'
 
 const SearchMain = ({ route }) => {
     const navigation = useNavigation()
@@ -20,6 +21,8 @@ const SearchMain = ({ route }) => {
     const [data_search, setData_search] = useState()
 
     const hanlderSearch = async () => {
+        if (!isCleanContent(keyword)) return
+
         if (removeSpecialCharacters(keyword).trim().length > 0) {
             dispatch(history_addsearch(removeSpecialCharacters(keyword)))
             const resault_post = await search_post(removeSpecialCharacters(keyword), 1)

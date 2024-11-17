@@ -38,13 +38,13 @@ const ItemChating = memo(props => {
             backgroundColor: user._id == item.create_by ? '#4C4C4C' : '#F8C630',
             alignItems: user._id == item.create_by ? 'flex-end' : 'flex-start',
             alignSelf: user._id == item.create_by ? 'flex-end' : 'flex-start',
-            borderTopEndRadius: user._id == item.create_by ? 0 : 30,
-            borderTopStartRadius: user._id == item.create_by ? 30 : 0,
+            borderTopEndRadius: user._id == item.create_by ? 0 : 20,
+            borderTopStartRadius: user._id == item.create_by ? 20 : 0,
           },
         ]}>
         <Text
           style={{
-            textAlign: user._id == item.create_by ? 'left' : 'right',
+            textAlign: 'left',
             color: 'white',
           }}>
           {item.content}
@@ -67,8 +67,8 @@ const ItemChating = memo(props => {
 const styles = StyleSheet.create({
   container: {
     maxWidth: 260,
-    borderBottomEndRadius: 30,
-    borderBottomStartRadius: 30,
+    borderBottomEndRadius: 20,
+    borderBottomStartRadius: 20,
     padding: 10,
   },
 });

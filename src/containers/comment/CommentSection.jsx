@@ -126,7 +126,7 @@ const CommentSection = ({
       ? MAX_HEIGHT * 0.6
       : MAX_HEIGHT * 0.4,
     paddingHorizontal: 10,
-    marginBottom: 80,
+    marginBottom: 10,
   };
 
   return (

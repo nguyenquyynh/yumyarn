@@ -12,6 +12,7 @@ const NotificationModalApp = ({
     title,
     content,
     funt,
+    cancel = true,
     children,
     props
 }) => {
@@ -35,9 +36,9 @@ const NotificationModalApp = ({
                                         <Text center styles={{ textAlign: 'center' }}>{content}</Text>
                                     </View>
                                     <View centerV row spread>
-                                        <TouchableOpacity flex-1 marginV-5 center br10 bg-white style={[styles.button_model, { borderColor: Colors.yellow, marginRight: 10}]} onPress={() => modalhiden(false)}>
+                                        {cancel && <TouchableOpacity flex-1 marginV-5 center br10 bg-white style={[styles.button_model, { borderColor: Colors.yellow, marginRight: 10}]} onPress={() => modalhiden(false)}>
                                             <Text text70BO color={Colors.yellow}>{t("title_model.cancel")}</Text>
-                                        </TouchableOpacity>
+                                        </TouchableOpacity>}
                                         {funt && <TouchableOpacity flex-1 marginV-5 center br10 bg-yellow style={[styles.button_model, { borderColor: Colors.yellow, marginLeft: 10}]} onPress={funt}>
                                             <Text text70BO color='white'>{t("title_model.ok")}</Text>
                                         </TouchableOpacity>}

@@ -1,11 +1,11 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Avatar from 'components/Avatar';
-import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
-import {t} from 'lang';
-import React, {memo} from 'react';
-import {FlatList, StyleSheet, ToastAndroid} from 'react-native';
-import {Text, TouchableOpacity, View} from 'react-native-ui-lib';
+import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate';
+import { t } from 'lang';
+import React, { memo, useState } from 'react';
+import { FlatList, StyleSheet, ToastAndroid } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native-ui-lib';
 
 const RenderComment = props => {
   const {
@@ -29,6 +29,7 @@ const RenderComment = props => {
     paddingLeft: isCommentMain ? 30 : 0,
   };
   const navigation = useNavigation();
+  const [more, setMore] = useState(false)
 
   const handleLongPress = () => {
     ToastAndroid.show(t('app.success_copy'), ToastAndroid.SHORT);
@@ -46,12 +47,11 @@ const RenderComment = props => {
               _id: item?.create_by?._id,
             });
           }}
-          source={{uri: avatar}}
+          source={{ uri: avatar }}
           size={isCommentMain ? 35 : 30}
         />
         <View flex paddingR-15>
-          <TouchableOpacity
-            onLongPress={handleLongPress}
+          <View
             marginL-15
             style={Style.backgroundComment}>
             <Text text80BO numberOfLines={1}>
@@ -62,18 +62,19 @@ const RenderComment = props => {
                 </Text>
               )}
             </Text>
-            <Text marginV-5 text>
-              {content}
-            </Text>
-          </TouchableOpacity>
-
+            <TouchableOpacity onPress={() => { setMore(!more) }} onLongPress={handleLongPress}>
+              <Text marginV-5 text numberOfLines={more ? 10000 : 3}>
+                {content}
+              </Text>
+            </TouchableOpacity>
+          </View>
           <View
             flex
             row
             marginT-5
             marginL-15
             gap-20
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text>{changeTime(create_at)}</Text>
             <TouchableOpacity onPress={() => handleReComment(item)}>
               <Text>{t('app.feedback')}</Text>
@@ -102,7 +103,7 @@ const RenderComment = props => {
           style={paddingRecomment}
           scrollEnabled={false}
           data={dataReComment[item._id] || []}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <RenderComment
               item={item}
               openReComment={openReComment}

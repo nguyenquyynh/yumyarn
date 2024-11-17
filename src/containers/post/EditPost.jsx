@@ -7,28 +7,30 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Wapper from 'components/Wapper';
-import {t} from 'lang';
-import {Colors, Image, Text, TouchableOpacity, View} from 'react-native-ui-lib';
+import { t } from 'lang';
+import { Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
 import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Video from 'react-native-video';
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
-import {editmypost} from 'src/hooks/api/post';
+import { editmypost } from 'src/hooks/api/post';
 import CameraApp from 'containers/camera/CameraApp';
 import NotificationModalApp from 'components/commons/NotificationModalApp';
-import {useSelector} from 'react-redux';
-import {B} from 'configs/fonts';
+import { useSelector } from 'react-redux';
+import { B } from 'configs/fonts';
 import LoadingApp from 'components/commons/LoadingApp';
 import Avatar from 'components/Avatar';
 import LottieView from 'lottie-react-native';
 import lottie from 'configs/ui/lottie';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { isCleanContent } from 'src/middleware/contentmiddleware';
+import { Upload } from 'src/libs/UploadImage';
 
-const EditPost = ({route}) => {
+const EditPost = ({ route }) => {
   const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);
   const [post, setpost] = useState(route.params.post);
@@ -42,14 +44,16 @@ const EditPost = ({route}) => {
   const [images, setImages] = useState(post?.media || []);
   const [is_loading, setis_loading] = useState(false);
   const [content, setcontent] = useState(post?.content);
-  const [hashtag, sethashtag] = useState('#' + post?.hashtags.join(' #'));
+  const [hashtag, sethashtag] = useState('');
+  const [showHashtag, setShowHashtag] = useState(false);
+  const [hashtaglist, sethashtaglist] = useState(post?.hashtags || []);
 
   // Hàm xóa ảnh
   const handleRemoveImage = item => {
     setImages(images.filter(image => image !== item));
   };
 
-  // Hàm show model
+  // Hàm show model 
   const handlerAddImage = () => {
     setModelshow(true);
   };
@@ -69,7 +73,7 @@ const EditPost = ({route}) => {
   };
 
   const onUploadMedia = async file => {
-    const {uri, type, name} = file;
+    const { uri, type, name } = file;
     try {
       const newData = await Upload(uri, type, name);
       console.log(newData);
@@ -82,6 +86,8 @@ const EditPost = ({route}) => {
   };
 
   const checkCreatePost = async () => {
+    if (!isCleanContent(content)) return
+
     if (content.trim() === '') {
       setNotifytitle(t('title_model.content_error'));
       setNotifycontent(t('title_model.post_faile'));
@@ -110,12 +116,44 @@ const EditPost = ({route}) => {
     return result;
   };
 
+  const handleAddHashtag = () => {
+    if (!isCleanContent(hashtag)) return
+
+    if (
+      hashtag
+        ?.trim()
+        ?.replace(/[^a-z0-9]/g, '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+    ) {
+      sethashtaglist(prev => [
+        ...prev,
+        hashtag
+          .trim()
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]/g, ''),
+      ]);
+      sethashtag('');
+    }
+  };
+
+  const hanldeRemoveHashtag = tag => {
+    sethashtaglist(hashtaglist.filter(item => item != tag));
+  };
+
   const editPost = async () => {
+    if (!isCleanContent(content)) return
+
     try {
       setis_loading(true);
       const imageupclound = images.filter(
         item => typeof item === 'object' && item,
       );
+
+      console.log(imageupclound);
+      
       const imageuporigin = images.filter(
         item => typeof item === 'string' && item,
       );
@@ -140,9 +178,12 @@ const EditPost = ({route}) => {
           detail: address.name || address.detail,
         },
         create_by: user?._id,
-        hashtags: extractHashtags(hashtag),
+        hashtags: hashtaglist,
         content: content,
       };
+
+      console.log(body);
+      
 
       const response = await editmypost(body);
       setStatusAction(response.status);
@@ -167,23 +208,23 @@ const EditPost = ({route}) => {
   };
 
   // Render item media
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <View style={styles.imageWrapper}>
       {item?.uri ? (
         item?.uri?.endsWith('.mp4') ? (
           <Video
-            source={{uri: item.uri || item}}
+            source={{ uri: item.uri || item }}
             style={styles.imageitem}
             paused
             controls
           />
         ) : (
-          <Image source={{uri: item.uri || item}} style={styles.imageitem} />
+          <Image source={{ uri: item.uri || item }} style={styles.imageitem} />
         )
       ) : item?.endsWith('.mp4') ? (
-        <Video source={{uri: item}} style={styles.imageitem} paused controls />
+        <Video source={{ uri: item }} style={styles.imageitem} paused controls />
       ) : (
-        <Image source={{uri: item}} style={styles.imageitem} />
+        <Image source={{ uri: item }} style={styles.imageitem} />
       )}
       <TouchableOpacity
         style={styles.removeIcon}
@@ -307,13 +348,106 @@ const EditPost = ({route}) => {
               source={lottie.UpLoading}
               autoPlay
               loop
-              style={{width: 100, height: 100}}
+              style={{ width: 100, height: 100 }}
             />
           </View>
         </View>
       </View>
     );
   }
+  const renderHashtag = () => {
+    return (
+      <Modal
+        transparent
+        visible={showHashtag}
+        statusBarTranslucent
+        animationType="fade"
+        onRequestClose={() => {
+          setShowHashtag(false);
+        }}>
+        <View
+          style={{
+            backgroundColor: Colors.tr_black,
+            width: '100%',
+            height: '100%',
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity
+            flex
+            onPress={() => {
+              setShowHashtag(false);
+            }}
+          />
+          <View
+            bg-white
+            padding-10
+            style={{width: '100%', minHeight: 150, maxHeight: 500}}>
+            <ScrollView>
+              <View
+                flex
+                style={{flexDirection: 'row', flexWrap: 'wrap', gap: 5}}>
+                {hashtaglist.map(item => (
+                  <View key={item} bg-yellow row centerV paddingH-5 br40>
+                    <Text marginR-5 color={Colors.white} text80BO>
+                      {item}
+                    </Text>
+                    <TouchableOpacity
+                      bg-red
+                      br40
+                      onPress={() => hanldeRemoveHashtag(item)}>
+                      <Icon assetName="cancel" size={15} />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </View>
+            </ScrollView>
+            <View
+              style={{width: '100%'}}
+              br20
+              row
+              paddingV-5
+              marginV-5
+              height={50}>
+              <TextInput
+                focusable={true}
+                style={{
+                  flex: 5,
+                  backgroundColor: 'white',
+                  borderRadius: 70,
+                  fontWeight: 'bold',
+                  fontSize: 12,
+                  borderWidth: 1,
+                  marginRight: 10,
+                  paddingLeft: 10,
+                }}
+                value={hashtag?.trim()?.replace(/\s+/g, '')}
+                onChangeText={sethashtag}
+                color={Colors.yellow}
+                onEndEditing={handleAddHashtag}
+                placeholder={t('create_post.hashtag_hint')}
+                placeholderTextColor="black"
+                maxLength={40}
+              />
+              <TouchableOpacity
+                flex-1
+                bg-yellow
+                center
+                br50
+                onPress={handleAddHashtag}>
+                <Text text90BO>{t('app.add')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity
+            flex
+            onPress={() => {
+              setShowHashtag(false);
+            }}
+          />
+        </View>
+      </Modal>
+    );
+  };
   return (
     <Wapper
       gadient
@@ -328,7 +462,7 @@ const EditPost = ({route}) => {
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View row>
-              <Avatar source={{uri: user?.avatar}} size={40} />
+              <Avatar source={{ uri: user?.avatar }} size={40} />
               <View marginL-x>
                 <Text text70BO>{user?.name}</Text>
                 <Text text80T>@{user?.tagName}</Text>
@@ -342,34 +476,45 @@ const EditPost = ({route}) => {
               placeholderTextColor="black"
               multiline
             />
-            <TextInput
-              placeholderTextColor={'black'}
-              value={hashtag}
-              onChangeText={sethashtag}
-              style={[{color: Colors.orange}, styles.hashtagHint]}
-              placeholder={t('create_post.hashtag_hint')}
-              onFocus={() => {
-                if (!hashtag) {
-                  sethashtag('#');
-                }
-              }}
-              onKeyPress={onHashtagPress}
-              multiline
+            <View
+              flex
+              marginV-10
+              style={{flexWrap: 'wrap', flexDirection: 'row', gap: 5}}>
+              {hashtaglist.map(item => (
+                <View bg-yellow row centerV paddingH-5 br40>
+                  <Text marginR-5 color={Colors.white} text80BO>
+                    {item}
+                  </Text>
+                  <TouchableOpacity
+                    bg-red
+                    br40
+                    onPress={() => hanldeRemoveHashtag(item)}>
+                    <Icon assetName="cancel" size={15} />
+                  </TouchableOpacity>
+                </View>
+              ))}
+              <View>
+                <Text
+                  text80BO
+                  style={{borderRadius: 20, paddingHorizontal: 10}}
+                  bg-yellow
+                  onPress={() => setShowHashtag(true)}>
+                  #Hashtag
+                </Text>
+              </View>
+            </View>
+            <FlatList
+              scrollEnabled={false}
+              style={styles.imageListContainer}
+              data={images}
+              showsVerticalScrollIndicator={false}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
             />
-            {images?.length > 0 && (
-              <FlatList
-                scrollEnabled={false}
-                style={styles.imageListContainer}
-                data={images}
-                showsVerticalScrollIndicator={false}
-                renderItem={renderItem}
-                keyExtractor={item => item?.id || item}
-              />
-            )}
           </ScrollView>
         </View>
         <View bg-white style={styles.footer}>
-          <TouchableOpacity style={{width: '100%'}} onPress={handlerAddImage}>
+          <TouchableOpacity style={{ width: '100%' }} onPress={handlerAddImage}>
             <View style={styles.contentlocation}>
               <IconApp assetName={'diaphragm'} size={25} />
               <Text numberOfLines={1} style={styles.textloctation}>
@@ -378,7 +523,7 @@ const EditPost = ({route}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             onPress={() => {
               navigation.navigate('Adddrressscreen', {
                 back: 'EditPost',
@@ -399,6 +544,8 @@ const EditPost = ({route}) => {
       {renderModalPickImage()}
       {rendermodalCamera()}
       {renderNotification()}
+      {renderHashtag()}
+
     </Wapper>
   );
 };
