@@ -1,41 +1,37 @@
-import { ActivityIndicator, Dimensions, Image, ImageBackground, Modal, Pressable, RefreshControl, ScrollView, StyleSheet, TextInput } from 'react-native'
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { Image, Modal, ScrollView, StyleSheet, TextInput } from 'react-native'
+import React, { useState } from 'react'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { t } from 'lang'
-import numberFormat from 'configs/ui/format'
-import ListMediaProfile from 'components/profile/ListMediaProfile'
-import { changeAvatar, changeCoverPhoto, getTimeline, updateInfor } from 'src/hooks/api/profile'
+import { changeAvatar, changeCoverPhoto, updateInfor } from 'src/hooks/api/profile'
 import Modals from 'components/BottomSheetApp'
-import { BI, I, SBI } from 'configs/fonts'
-import Animated from 'react-native-reanimated'
-import Wapper from 'components/Wapper'
+
 import IconApp from 'components/IconApp'
 import CameraApp from 'containers/camera/CameraApp'
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary'
 import { changeAvatarRedux, changeCoverPhotoRedux, deleteStory, updateInforRedux } from 'reducers/auth'
 import LoadingApp from 'components/commons/LoadingApp'
-import Avatar from 'components/Avatar';
 import { Upload } from 'src/libs/UploadImage'
 import { isCleanContent } from 'src/middleware/contentmiddleware'
+import { Camera, ChevronLeft } from 'lucide-react-native'
 
-const EditProfile = () => {
+export default function EditProfile() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const auth = useSelector(state => state.auth.user);
   const [loading, setloading] = useState(false)
-  const [refreshing, setRefreshing] = useState(false);
   const [modelshow, setModelshow] = useState(false);
   const [checkUpdataImg, setCheckUpdataImg] = useState();
 
   const [open_library, setopen_library] = useState(false);
   const [open_camera, setopen_camera] = useState(false);
 
+  const auth = useSelector(state => state.auth.user)
+  const [coverImage, setCoverImage] = useState(auth?.coverPhoto)
+  const [profileImage, setProfileImage] = useState(auth?.avatar)
   const [name, setName] = useState(auth?.name)
-  const [tagName, setTagName] = useState(auth?.tagName)
+  const [tagname, setTagname] = useState(auth?.tagName)
   const [story, setStory] = useState(auth?.story)
-  const [statusStory, setStatusStory] = useState(false)
 
   const [statusConfirmDelete, setStatusConfirmDelete] = useState(false)
 
@@ -72,10 +68,10 @@ const EditProfile = () => {
         const result = await changeAvatar(body)
         if (result.status) {
           dispatch(changeAvatarRedux(uploadedUrl))
-
+          setProfileImage(uploadedUrl)
         }
       } else {
-        // console.log("Upload failed");
+        console.log("Upload failed");
       }
     } catch (error) {
       console.log(`Error updateAvatar: ${error}`);
@@ -108,7 +104,6 @@ const EditProfile = () => {
           dispatch(deleteStory())
           setStatusConfirmDelete(false)
         }
-        navigation.goBack();
       }
     } catch (error) {
       console.log(`Error updateInforAccount: ${error}`);
@@ -130,6 +125,7 @@ const EditProfile = () => {
         const result = await changeCoverPhoto(body)
         if (result.status) {
           dispatch(changeCoverPhotoRedux(uploadedUrl))
+          setCoverImage(uploadedUrl)
         }
       } else {
         console.log("Upload failed");
@@ -156,7 +152,6 @@ const EditProfile = () => {
               uri: "file://" + medias.path,
               name: filename
             }
-            console.log(checkUpdataImg)
             checkUpdataImg ? updateAvatar(one_media) : updateCoverPhoto(one_media)
           }
           setModelshow(!modelshow)
@@ -211,136 +206,159 @@ const EditProfile = () => {
     </Modal>)
   }
 
-  const rightButton = () => {
-    return (
-      <TouchableOpacity bg-yellow br60 onPress={() => updateInforAccount(name, tagName, story)} paddingH-xv paddingV-v>
-        <Text text80BO color='white'>
-          {t("app.done")}
-        </Text>
-      </TouchableOpacity>
-    )
-  }
-
-  useEffect(() => {
-    if (auth.story) {
-      setStatusStory(true)
-    }
-  }, [])
-
   if (loading) {
     return <LoadingApp />
   }
   return (
-    <Wapper renderleft funtleft={() => navigation.goBack()} title={t("profile.edit_profile")} customright={rightButton}>
-      <View flex bg-white>
-        <TouchableOpacity>
-          <Image style={{ height: 210 }} source={{ uri: auth?.coverPhoto || 'https://cdn.pixabay.com/photo/2020/01/07/16/41/vietnam-4748105_1280.jpg' }} />
-        </TouchableOpacity>
-
-        <ScrollView scrollEnabled={false} style={styles.scroll} showsVerticalScrollIndicator={false}
-
-        >
-
-          <View centerH>
-            <Pressable height={120} width={'100%'} backgroundColor='transparent' style={{ zIndex: -1 }} onPress={() => handlerAddImage("coverPhoto")}></Pressable>
-            <Animated.View style={{ zIndex: 1 }}>
-              <View style={styles.avatar}>
-                <Avatar source={{ uri: auth?.avatar }} size={100} onPress={() => handlerAddImage("avatar")} />
-              </View>
-            </Animated.View>
-            <View bg-puper style={styles.background}>
-              <View row spread padding-x>
-                <TouchableOpacity flex center onPress={() => navigation.navigate('FollowerList')} >
-                  <Text text70BO style={styles.numbercard}>{numberFormat(auth.follower)}</Text>
-                  <Text ixtext style={styles.numbercard}>{t("profile.followers")}</Text>
-                </TouchableOpacity>
-                <View flex />
-                <TouchableOpacity flex center onPress={() => navigation.navigate('FollowerList')} >
-                  <Text text70BO style={styles.numbercard}>{numberFormat(auth.following)}</Text>
-                  <Text ixtext style={styles.numbercard}>{t("profile.following")}</Text>
-                </TouchableOpacity>
-              </View>
-              <View paddingH-l centerH height={600} >
-                <TextInput
-                  value={name}
-                  onChangeText={setName}
-                  placeholder={auth.name}
-                  placeholderTextColor={'black'}
-                  multiline={true}
-                  style={styles.name}
-                />
-                <View row center>
-                  <Text style={styles.tagName}>@</Text>
-                  <TextInput
-                    value={tagName?.trim()?.replace(/\s+/g, '')}
-                    onChangeText={setTagName}
-                    placeholderTextColor={'black'}
-                    multiline={true}
-                    style={styles.tagName}
-                    numberOfLines={1}
-                  />
-                </View>
-                <View>
-                  <TextInput
-                    value={story}
-                    onChangeText={setStory}
-                    style={styles.story}
-                    multiline={true}
-                    placeholderTextColor={'black'}
-                    textAlignVertical={'center'}
-                    placeholder={statusStory ? auth.story : "Tạo ghi chú mới"}
-                  />
-                </View>
-              </View>
-            </View>
+    <>
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <Image
+            source={{ uri: coverImage }}
+            style={styles.coverImage}
+          />
+          <TouchableOpacity br20 bg-tr_black padding-5
+            style={{ position: 'absolute', top: 40, left: 20 }}
+            onPress={() => navigation.goBack()}
+          >
+            <ChevronLeft size={25} color={Colors.yellow} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.editCoverButton} onPress={() => handlerAddImage("coverPhoto")}>
+            <Camera color="#FFFFFF" size={24} />
+          </TouchableOpacity>
+          <View style={styles.profileImageContainer}>
+            <Image
+              source={{ uri: profileImage }}
+              style={styles.profileImage}
+            />
+            <TouchableOpacity style={styles.editProfileImageButton} onPress={() => handlerAddImage("avatar")}>
+              <Camera color="#FFFFFF" size={20} />
+            </TouchableOpacity>
           </View>
-        </ScrollView>
-        {renderModalPickImage()}
-        {rendermodalCamera(checkUpdataImg)}
-        {renderModalLibrary(checkUpdataImg)}
-      </View>
-    </Wapper>
+        </View>
+
+        <View style={styles.form}>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Tên</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              placeholder="Nhập tên của bạn"
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Tagname</Text>
+            <TextInput
+              style={styles.input}
+              value={tagname}
+              onChangeText={setTagname}
+              placeholder="Nhập tagname của bạn"
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Story</Text>
+            <TextInput
+              style={[styles.input, styles.storyInput]}
+              value={story}
+              onChangeText={setStory}
+              placeholder="Chia sẻ câu chuyện của bạn"
+              multiline
+            />
+          </View>
+
+          <TouchableOpacity style={styles.submitButton} onPress={() => updateInforAccount(name, tagname, story)}>
+            <Text style={styles.submitButtonText}>Lưu thay đổi</Text>
+          </TouchableOpacity>
+        </View>
+
+      </ScrollView>
+      {renderModalPickImage()}
+      {rendermodalCamera(checkUpdataImg)}
+      {renderModalLibrary(checkUpdataImg)}
+    </>
   )
 }
 
-export default EditProfile
 
 const styles = StyleSheet.create({
-  scroll: { width: '100%', height: '100%', position: "absolute" },
-  background: {
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    height: 200,
+  },
+  coverImage: {
     width: '100%',
-    position: 'relative',
-    top: -50,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
+    height: 200,
   },
-  avatar: {
-    borderColor: 'white',
+  editCoverButton: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 20,
+    padding: 8,
+  },
+  profileImageContainer: {
+    position: 'absolute',
+    bottom: -50,
+    left: 20,
+    borderRadius: 75,
     borderWidth: 3,
-    borderRadius: 360
+    borderColor: '#FFFFFF',
   },
-  tagName: {
-    fontFamily: BI,
-    padding: 0,
-    fontSize: 14,
-    color: 'black',
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
-  name: {
-    fontFamily: BI,
-    padding: 0,
-    fontSize: 18,
-    width: 300,
-    color: 'black',
-    textAlign: 'center'
+  editProfileImageButton: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius: 15,
+    padding: 6,
   },
-  story: {
-    fontFamily: I,
-    color: 'black',
-    textAlign: 'center',
-    width: 350,
+  form: {
+    marginTop: 60,
+    paddingHorizontal: 20,
   },
-  numbercard: {
-    fontFamily: SBI,
-    color: 'black',
+  inputGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#000000',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#CCCCCC',
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+    color: 'black'
+  },
+  storyInput: {
+    minHeight: 100,
+    textAlignVertical: 'top',
+  },
+  submitButton: {
+    backgroundColor: '#F8C630',
+    padding: 15,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  submitButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 })

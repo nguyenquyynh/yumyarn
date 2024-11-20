@@ -5,6 +5,7 @@ import {
   Colors,
   Icon,
   Image,
+  Modal,
   Text,
   TouchableOpacity,
   View,
@@ -77,7 +78,7 @@ const RenderPost = memo(props => {
                 </TouchableOpacity>
               )}
             </View>
-            <TextApp size={12} style={{ color: '#BEBEBE', lineHeight: 16 }} text={item?.isVip ? "post.ads" : changeTime(differenceInSeconds)}/>
+            <TextApp size={12} style={{ color: '#BEBEBE', lineHeight: 16 }} text={item?.isVip ? "post.ads" : changeTime(differenceInSeconds)} />
           </View>
         </View>
         <TouchableOpacity
@@ -144,7 +145,7 @@ const RenderPost = memo(props => {
           renderItem={data => (
             <Pressable
               onPress={() => {
-                navigation.navigate('PostDetail', { id: id });
+                navigation.navigate('PostDetail', { id: id, defaultdata: item });
               }}
               style={{ overflow: 'hidden', borderRadius: 15 }}>
               {data.item.endsWith('.mp4') ? (
@@ -170,6 +171,24 @@ const RenderPost = memo(props => {
         isFire={isFire}
         idUser={idUser}
       />
+      {/* <Modal visible={true} >
+      <NotificationModalApp modalhiden={setShownoti} modalVisible={shownoti} funt={handlerRemove} asseticon={'dont'} content={t('title_model.content_remove_post')} title={t('title_model.remove_post')} />
+      const handlerRemove = async () => {
+    const body = {
+      u: user?._id,
+      p: id ? id : _id
+    }
+    const resault = await dePost(body)
+    if (resault.status) {
+      ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+    } else {
+      ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+    }
+
+    navigation.goBack()
+  }
+      </Modal> */}
+
     </View>
 
   );

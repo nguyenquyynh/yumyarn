@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Image } from 'react-native'
+import { Dimensions, StyleSheet, Image, ActivityIndicator } from 'react-native'
 import React, { memo, useEffect, useState } from 'react'
 import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import numberFormat from 'configs/ui/format';
@@ -6,10 +6,13 @@ import { millisecondsToDate } from 'configs/ui/time';
 import { useNavigation } from '@react-navigation/native';
 import { createThumbnail } from 'react-native-create-thumbnail';
 import Avatar from 'components/Avatar';
+import { DEFAULT } from 'src/data/default';
 
 const PostRender = ({ item }) => {
     const navigation = useNavigation()
     const [urlThumbnail, setUrlThumbnail] = useState('')
+    const [load, setLoad] = useState(true);
+
     const screenwith = Dimensions.get('window').width < Dimensions.get('window').height ? Dimensions.get('window').width : Dimensions.get('window').height;
     itemstyle = {
         width: '49%',
@@ -39,18 +42,32 @@ const PostRender = ({ item }) => {
         const first = item?.media?.[0]
         if (first.endsWith('.jpg' || '.png' || '.jpeg' || '.gif' || '.svg')) {
             return (
-                <Image source={{ uri: first }} style={styles.media} />
+                <>
+                    <Image source={{ uri: first || DEFAULT.IMAGE }} style={styles.media} onLoad={() => setLoad(true)}
+                        onLoadEnd={() =>
+                            setLoad(false)} />
+                    {load && <View bg-yellow center style={{ width: '100%', height: '100%', position: 'absolute', zIndex: 2 }}>
+                        <ActivityIndicator color={'#FFFFFF'} size={25} />
+                    </View>}
+                </>
             )
         } else if (first.endsWith('.mp4')) {
             return (
-                <Image source={{ uri: urlThumbnail || 'https://i.imgur.com/eZLxXda.png' }} style={styles.media} />
+                <>
+                    <Image source={{ uri: urlThumbnail || DEFAULT.IMAGE }} style={styles.media} onLoad={() => setLoad(true)}
+                        onLoadEnd={() =>
+                            setLoad(false)} />
+                    {load && <View bg-yellow center style={{ width: '100%', height: '100%', position: 'absolute', zIndex: 2 }}>
+                        <ActivityIndicator color={'#FFFFFF'} size={25} />
+                    </View>}
+                </>
             )
         }
     }
     return (
         <View bg-white marginT-x style={itemstyle}>
             <View flex-5 style={styles.videoBorder}>
-                <TouchableOpacity flex onPress={() => navigation.navigate('PostDetail', { id: item._id })}>
+                <TouchableOpacity flex onPress={() => navigation.navigate('PostDetail', { id: item._id, defaultdata: item })}>
                     {item && renderMedia(item)}
                 </TouchableOpacity>
                 <View absB style={{ width: '100%', height: '20%' }} row padding-v spread>

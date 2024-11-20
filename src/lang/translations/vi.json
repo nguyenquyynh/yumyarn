@@ -109,9 +109,11 @@
   },
   "title_model": {
     "remove_account": "Bạn có muốn xóa tài khoản không ?",
+    "remove_post": "Bạn có muốn xóa bài viết này không ?",
     "cancel": "Hủy",
     "ok": "Xác nhận",
-    "content_remove_account": "Tài khoản bị xóa sẽ vĩnh viễn không thể khôi phục",
+    "content_remove_account": "Tài khoản bị xóa sẽ vĩnh viễn không thể khôi phục !",
+    "content_remove_post": "Bài viết bị xóa sẽ vĩnh viễn không thể khôi phục !",
     "post_success": "Trải nghiệm của bạn đã được chia sẻ",
     "post_faile": "Trải nghiệm của bạn chưa được chia sẻ",
     "success": "Thành công",
@@ -129,7 +131,9 @@
     "social_media": "Mạng xã hội",
     "post": "Bạn đang nghĩ gì",
     "edit": "Chỉnh sửa",
-    "edit_description": "Thay đổi thông tin cá nhân được hiển thị."
+    "edit_description": "Thay đổi thông tin cá nhân được hiển thị.",
+    "near_post": "Bài đăng gần đây",
+    "end_list": "Bạn đã xem hết nội dung"
   },
   "create_post": {
     "title": "Tạo bài viết",

@@ -9,6 +9,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import ListPost from 'containers/post/ListPost';
 import Avatar from 'components/Avatar';
 import { t } from 'lang';
+import TextApp from 'components/commons/TextApp';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -35,7 +36,7 @@ const Home = () => {
         style={[styles.header, { transform: [{ translateY: tranSlateY }] }]}>
         <View row centerV marginT-6>
           <Avatar source={{ uri: auth.avatar }} size={40} onPress={() => { }} />
-          <Text style={styles.name}>{t("home.welcome")}{name}</Text>
+          <TextApp style={[styles.name, { marginLeft: 5}]} text={`home.welcome`}/><Text style={[styles.name, {marginRight: 5}]}>{name}</Text>
           <TouchableOpacity onPress={handlerCreatePost}>
             <Icon assetName="add" size={20} />
           </TouchableOpacity>
@@ -68,7 +69,7 @@ export default memo(Home);
 
 const styles = StyleSheet.create({
   name: {
-    marginHorizontal: 10,
+    
     fontFamily: 'Inter-SemiBoldItalic',
     fontSize: 16,
   },

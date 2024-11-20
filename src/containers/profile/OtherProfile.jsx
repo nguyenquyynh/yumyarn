@@ -1,39 +1,31 @@
+import React, { memo, useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
   FlatList,
-  ImageBackground,
-  RefreshControl,
   ScrollView,
   StyleSheet,
+  RefreshControl,
   ToastAndroid,
 } from 'react-native';
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import Avatar from 'components/Avatar';
-import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { Image, Text, View, TouchableOpacity, Colors, Icon } from 'react-native-ui-lib';
+import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import Avatar from 'components/Avatar';
+import { getTimeline, findUser } from 'src/hooks/api/profile';
 import { t } from 'lang';
 import numberFormat from 'configs/ui/format';
-import ListMediaProfile from 'components/profile/ListMediaProfile';
-import { findUser, getTimeline } from 'src/hooks/api/profile';
-import { BI, I, SBI } from 'configs/fonts';
-import Animated from 'react-native-reanimated';
-import Wapper from 'components/Wapper';
-import {
-  checkFollowerProfile,
-  createFollow,
-  unFollow,
-} from 'src/hooks/api/follow';
-import Modals from 'components/BottomSheetApp';
+import { Edit, Users, ImageUp, UserCheck, UserPlus, MessageCircle, Flag, Backpack, ChevronLeft } from 'lucide-react-native';
+import RenderMedia from 'components/commons/RenderMedia';
+import TextApp from 'components/commons/TextApp';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
 import { ReportModel } from 'src/hooks/api/Model';
-import ButtonApp from 'components/ButtonApp';
+import Modals from 'components/BottomSheetApp';
+import { DEFAULT } from 'src/data/default';
+import { checkFollowerProfile, createFollow, unFollow } from 'src/hooks/api/follow';
 import { createReport } from 'src/hooks/api/post';
-import LoadingApp from 'components/commons/LoadingApp';
-import ModalFollowSuccess from 'components/profile/ModalFollowSuccess';
 
-const screenwidth = Dimensions.get('window').width;
-const screenheight = Dimensions.get('window').height;
 const OtherProfile = ({ route }) => {
   const { name, _id, id } = route.params;
   const navigation = useNavigation();
@@ -42,13 +34,11 @@ const OtherProfile = ({ route }) => {
 
   const [refreshing, setRefreshing] = useState(false);
   const [data, setdata] = useState([]);
-  const [load, setLoad] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [dataUser, setDataUser] = useState({});
-  const [loadingScreen, setLoadingScreen] = useState(false);
   const [statusFollow, setStatusFollow] = useState(false);
   const [report, setReport] = useState(false);
-  const [statusFollowSuccess, setFollowSuccess] = useState(false);
 
   async function loadTimeline(option) {
     switch (option) {
@@ -58,14 +48,14 @@ const OtherProfile = ({ route }) => {
           page: 1,
         });
         if (refress.status) {
-          setdata([...refress.data]);
+          setdata(refress.data);
+          setPage(1)
           setRefreshing(false)
         }
         break;
 
       default:
         if (!page) {
-          setLoad(false)
           break
         }
         const resault = await getTimeline({
@@ -73,46 +63,37 @@ const OtherProfile = ({ route }) => {
           page: page + 1,
         });
         if (resault.status && resault.data.length > 0) {
-          setdata([...data, ...resault.data]);
+          setdata(pver => [...pver, ...resault.data]);
           setPage(page + 1)
-          setLoad(false);
         } else {
+          setdata(pver => [...pver, ...resault.data]);
           setPage(null)
-          setLoad(false);
         }
-
+        setLoading(false)
         break;
     }
   }
 
-  useEffect(() => {
-   console.log(page);
-   
-  }, [page])
-  
   const handleScroll = useCallback(event => {
     clearTimeout(timeout.current);
     const { contentOffset, contentSize } = event.nativeEvent;
     const { height: windowHeight } = Dimensions.get('window');
-    if (contentOffset.y + windowHeight > contentSize.height) {
+
+    if (contentOffset.y + windowHeight > contentSize.height - 100) {
+      if (!page) return;
+      
       timeout.current = setTimeout(() => {
-        setLoad(true);
+        setLoading(true)
         loadTimeline();
       }, 1000);
     }
-  });
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await loadTimeline('refress');
-  };
+  }, [page]);
 
   const handleFollow = async () => {
     try {
       const result = await createFollow(auth._id, _id ? _id : id);
       if (result.status) {
         setStatusFollow(true);
-        setFollowSuccess(true);
       }
     } catch (error) {
       console.log('ERROR getIdUser ', error);
@@ -132,6 +113,18 @@ const OtherProfile = ({ route }) => {
     } catch (error) {
       console.log('ERROR getIdUser ', error);
     }
+  };
+
+  // Handle refresh
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await loadTimeline('refress');
+      await getIdUser()
+    } catch (error) {
+      console.log(error);
+
+    } finally { setRefreshing(false) }
   };
 
   const checkFollower = async () => {
@@ -159,12 +152,14 @@ const OtherProfile = ({ route }) => {
       ToastAndroid.show(t(resault?.data), ToastAndroid.SHORT);
     }
   };
+
   const handleCheckPersonFollow = async statusFollow => {
     if (statusFollow) {
       await handleUnFollow();
     } else {
       await handleFollow();
     }
+    getIdUser()
   };
 
   const getIdUser = async () => {
@@ -182,169 +177,118 @@ const OtherProfile = ({ route }) => {
     }
   };
 
-  const customRight = () => {
-    if (auth?._id !== _id ? _id : id) {
-      return (
-        <ButtonApp
-          title={t('post.report')}
-          onclick={() => {
-            setReport(true);
-          }}
-        />
-      );
-    }
-  };
-
-  const onLottieSuccess = () => {
-    setFollowSuccess(false);
-  };
   useEffect(() => {
     const fetchData = async () => {
-      setLoadingScreen(true);
+      setLoading(true);
       await getIdUser();
       await checkFollower();
       await loadTimeline('refress');
-      setLoadingScreen(false);
+      setLoading(false);
     };
     fetchData();
   }, [name, _id, id]);
 
+  const filterDataNoDuplicate = (list) => {
+    return list.reduce((acc, current) => {
+      // Kiểm tra xem _id đã có trong Set chưa
+      if (!acc.ids.has(current._id)) {
+        acc.ids.add(current._id);
+        acc.result.push(current);
+      }
+      return acc;
+    }, { ids: new Set(), result: [] }).result
+  }
+
   return (
-    <Wapper
-      renderleft
-      funtleft={() =>_id ? navigation.goBack() : navigation.replace('Main') }
-      title={!dataUser ? name : ''}
-      customright={customRight}>
-      {loadingScreen ? (
-        <LoadingApp loading={loadingScreen} />
-      ) : (
-        <View flex bg-white>
-          <ImageBackground
-            style={{ width: '100%', height: 210 }}
-            source={{
-              uri:
-                dataUser?.coverPhoto ||
-                'https://cdn.pixabay.com/photo/2024/09/25/15/53/japan-9074037_1280.jpg',
-            }}
-          />
-          <ScrollView
-            style={styles.scroll}
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            onScroll={state => handleScroll(state)}>
-            <View centerH paddingT-120>
-              <Animated.View style={[{ zIndex: 1 }, styles.avatar]}>
-                <Avatar
-                  source={{
-                    uri: dataUser?.avatar,
-                  }}
-                  size={100}
-                />
-              </Animated.View>
-              <View bg-puper style={styles.background}>
-                <View row spread padding-x>
-                  <TouchableOpacity
-                    flex
-                    center
-                    onPress={() =>
-                      navigation.navigate('FollowerList', {
-                        user: _id ? _id : id,
-                        statusView: false,
-                      })
-                    }>
-                    <Text text70BO style={styles.numbercard}>
-                      {numberFormat(dataUser.count_followers)}
-                    </Text>
-                    <Text ixtext style={styles.numbercard}>
-                      {t('profile.followers')}
-                    </Text>
-                  </TouchableOpacity>
-                  <View flex />
-                  <TouchableOpacity
-                    flex
-                    center
-                    onPress={() =>
-                      navigation.navigate('FollowingList', {
-                        user: _id ? _id : id,
-                        statusView: false,
-                      })
-                    }>
-                    <Text text70BO style={styles.numbercard}>
-                      {numberFormat(dataUser?.count_following)}
-                    </Text>
-                    <Text ixtext style={styles.numbercard}>
-                      {t('profile.following')}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View paddingH-l centerH>
-                  <Text xviiiText style={styles.name}>
-                    {dataUser.name}
-                  </Text>
-                  <Text marginB-xv style={styles.name}>
-                    @{dataUser.tagName}
-                  </Text>
-                  {dataUser.story && (
-                    <Text xivtext marginB-20 style={styles.story}>
-                      {dataUser.story}
-                    </Text>
-                  )}
-                </View>
-                {(_id
-                  ? _id !== auth._id
-                  : id !== auth._id) && (
-                    <View row spread width={300} style={styles.view_opaticy}>
-                      <TouchableOpacity
-                        activeOpacity={0.6}
-                        style={[styles.opacity, styles.shadowStyle]}
-                        backgroundColor={'#5790DF'}
-                        padding-10
-                        center
-                        br100
-                        onPress={() => handleCheckPersonFollow(statusFollow)}>
-                        <Text text80H color={Colors.white}>
-                          {!statusFollow
-                            ? t('app.follow')
-                            : t('profile.following')}
-                        </Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        activeOpacity={0.6}
-                        style={[styles.opacity, styles.shadowStyle]}
-                        backgroundColor={Colors.white}
-                        padding-10
-                        center
-                        br100
-                        onPress={() => {
-                          navigation.navigate('Chating', { friend: dataUser });
-                        }}>
-                        <Text text80H>{t('chat.title')}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                <View
-                  marginT-xx
-                  br50
-                  style={{ width: '100%', minHeight: 400 }}
-                  bg-white
-                  padding-x>
-                  <ListMediaProfile
-                    data={data}
-                    loadTimeline={loadTimeline}
-                    load={load}
-                    navigation={navigation}
-                    refressTimeline={() => {
-                      loadTimeline('refress');
-                    }}
-                  />
-                </View>
-              </View>
-            </View>
-          </ScrollView>
+    <ScrollView style={styles.container} onScroll={state => handleScroll(state)} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />} showsVerticalScrollIndicator={false}>
+      <View style={styles.header}>
+        <Image source={{ uri: dataUser?.coverPhoto || DEFAULT.COVER_PHOTO }} style={styles.coverImage} />
+        <View row>
+          <Avatar size={100} source={{ uri: dataUser?.avatar }} style={styles.profileImage} />
+          <View marginL-130 padding-5>
+            <Text text65BO color={Colors.yellow}>{dataUser?.name}</Text>
+            <Text>@{dataUser?.tagName}</Text>
+          </View>
         </View>
-      )}
+        <TouchableOpacity br20 bg-tr_black padding-5
+          style={{ position: 'absolute', top: 40, left: 20 }}
+          onPress={() => _id ? navigation.goBack() : navigation.replace('Main')}
+        >
+          <ChevronLeft size={25} color={Colors.yellow} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.userInfo} marginV-5>
+        <Text style={styles.userStory}>{dataUser.story}</Text>
+      </View>
+      {(auth?._id !== _id || auth?.id !== id) && <View style={styles.actionButtons}>
+        <TouchableOpacity style={styles.actionButton} onPress={() => handleCheckPersonFollow(statusFollow)}>
+          {statusFollow ? (
+            <UserCheck color="#FFFFFF" size={24} />
+          ) : (
+            <UserPlus color="#FFFFFF" size={24} />
+          )}
+          <Text style={styles.actionButtonText}>
+            {statusFollow ? t("app.following") : t("app.follow")}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton}
+          onPress={() => {
+            navigation.navigate('Chating', { friend: dataUser });
+          }}>
+          <MessageCircle color="#FFFFFF" size={24} />
+          <Text style={styles.actionButtonText}>{t("chat.title")}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.actionButton, styles.reportButton]} onPress={() => setReport(true)}>
+          <Flag color="#000000" size={24} />
+        </TouchableOpacity>
+      </View>}
+      <View style={styles.statsContainer}>
+        <TouchableOpacity flex-1
+          style={styles.statItem}
+          onPress={() => navigation.navigate('FollowerList', { user: dataUser._id, statusView: false })}
+        >
+          <Users color="#000000" size={24} />
+          <Text style={styles.statNumber}>{numberFormat(dataUser.count_followers)}</Text>
+          <TextApp style={styles.statLabel} text={'profile.followers'} />
+        </TouchableOpacity>
+        <TouchableOpacity flex-1
+          style={styles.statItem}
+          onPress={() => navigation.navigate('FollowingList', { user: dataUser._id, statusView: true })}
+        >
+          <Users color="#000000" size={24} />
+          <Text style={styles.statNumber}>{numberFormat(dataUser.count_following)}</Text>
+          <TextApp style={styles.statLabel} text={'profile.following'} />
+        </TouchableOpacity>
+        <TouchableOpacity flex-1 style={styles.statItem}>
+          <ImageUp color="#000000" size={24} />
+          <Text style={styles.statNumber}>{numberFormat(dataUser.count_post)}</Text>
+          <TextApp style={styles.statLabel} text={'profile.postting'} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.postsContainer}>
+        <Text style={styles.sectionTitle}>{t("profile.near_post")}</Text>
+        <FlatList
+          data={filterDataNoDuplicate(data)}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.postImage} onPress={() => {
+              navigation.navigate('PostDetail', { id: item._id })
+            }}>
+              <RenderMedia item={item?.media[0]} i={item?._id} />
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item._id}
+          numColumns={3}
+          scrollEnabled={false}
+          ListFooterComponent={() => <View padding-10>
+            {loading ? <ActivityIndicator size={30} /> : !page && <TextApp style={{ fontSize: 14, textAlign: 'center' }} text={'profile.end_list'} />}
+          </View>}
+          ListEmptyComponent={() => <View flex center marginT-50>
+            {(!data.length && !page) && <LottieView autoPlay loop source={lottie.Nodata} style={{ width: 100, height: 100 }} />}
+          </View>}
+        />
+      </View>
       <Modals modalhiden={setReport} modalVisible={report}>
         <View>
           <Text center margin-10 text80BO>
@@ -372,68 +316,108 @@ const OtherProfile = ({ route }) => {
           />
         </View>
       </Modals>
-      {statusFollowSuccess && (
-        <View
-          style={{
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            height: screenheight,
-            width: screenwidth,
-            position: 'absolute',
-          }}>
-          <ModalFollowSuccess
-            statusFollowSuccess={statusFollowSuccess}
-            onLottieSuccess={onLottieSuccess}
-          />
-        </View>
-      )}
-    </Wapper>
+    </ScrollView>
   );
 };
 
 export default OtherProfile;
 
 const styles = StyleSheet.create({
-  view_opaticy: {
-    alignSelf: 'center',
-  },
-  opacity: {
-    width: 130,
-  },
-  scroll: { width: '100%', height: '100%', position: 'absolute', bottom: 0 },
-  background: {
-    width: '100%',
-    position: 'relative',
-    top: -50,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-  },
-  avatar: {
-    borderColor: 'white',
-    borderWidth: 3,
-    borderRadius: 360,
-  },
-  name: {
-    fontFamily: BI,
-  },
-  story: {
-    fontFamily: I,
-    textAlign: 'center',
-  },
-  numbercard: {
-    fontFamily: SBI,
-    color: 'black',
-  },
-  loadingContainer: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  header: {
+    height: 250,
+  },
+  coverImage: {
+    width: '100%',
+    height: 200,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'cover',
+    position: 'absolute',
+    bottom: 0,
+    left: 20,
+    borderRadius: 75,
+    borderWidth: 3,
+    borderColor: '#FFFFFF',
+  },
+  userInfo: {
+    marginHorizontal: 17,
+    alignItems: 'left',
+  },
+  userStory: {
+    fontSize: 15,
+    color: '#000000',
+    marginTop: 20,
+    textAlign: 'left',
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#F8C630',
+    paddingVertical: 10,
+  },
+  statItem: {
     alignItems: 'center',
   },
-  shadowStyle: {
-    shadowColor: '#000', // Màu đổ bóng
-    shadowOffset: { width: 0, height: 2 }, // Vị trí đổ bóng
-    shadowOpacity: 0.25, // Độ mờ của đổ bóng
-    shadowRadius: 3.84, // Độ lan tỏa của đổ bóng
-    elevation: 5, // Độ cao (chỉ cho Android)
+  statNumber: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#000000',
+    marginTop: 5,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#000000',
+  },
+  postsContainer: {
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000000',
+    marginBottom: 10,
+  },
+  postImage: {
+    width: '33%',
+    aspectRatio: 1,
+    margin: 1,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: 20,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8C630',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  actionButtonText: {
+    color: '#FFFFFF',
+    marginLeft: 5,
+    fontWeight: 'bold',
+  },
+  reportButton: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#000000',
+  },
+  reportButtonText: {
+    color: '#000000',
   },
 });
 

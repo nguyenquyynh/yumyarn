@@ -21,7 +21,7 @@ import HearDetailPost from 'components/posts/HearDetailPost';
 import numberFormat from 'configs/ui/format';
 import { firePost } from 'src/hooks/api/fire';
 import { useSelector } from 'react-redux';
-import { createReport, createSaved, watchPost } from 'src/hooks/api/post';
+import { createReport, createSaved, dePost, watchPost } from 'src/hooks/api/post';
 import { EB, EBI, ELI, M } from 'configs/fonts';
 import ShowComments from 'containers/comment/ShowComments';
 import ShowMoreDetailPost from 'components/posts/ShowMoreDetailPost';
@@ -30,13 +30,15 @@ import { t } from 'lang';
 import { Model, ReportModel } from 'src/hooks/api/Model';
 import Modals from 'components/BottomSheetApp';
 import Avatar from 'components/Avatar';
+import NotificationModalApp from 'components/commons/NotificationModalApp';
 
 const PostDetail = ({ route }) => {
-  const { id, _id } = route.params;
+  const { id, _id, defaultdata } = route.params;
+
   const heightscreen = Dimensions.get('window').height;
   const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState(defaultdata);
   const [isfire, setIsfire] = useState(false);
   const [iscomment, setiscomment] = useState(false);
   const [ismore, setIsmore] = useState(false);
@@ -44,6 +46,8 @@ const PostDetail = ({ route }) => {
   const [issaved, setissaved] = useState(false);
   const [isshare, setIsshare] = useState(false);
   const [report, setReport] = useState(false);
+  const [shownoti, setShownoti] = useState(false)
+
   const getPost = async query => {
     const reponse = await watchPost(query);
     if (reponse.status) {
@@ -56,6 +60,21 @@ const PostDetail = ({ route }) => {
       navigation.goBack();
     }
   };
+
+  const handlerRemove = async () => {
+    const body = {
+      u: user?._id,
+      p: id ? id : _id
+    }
+    const resault = await dePost(body)
+    if (resault.status) {
+      ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
+    } else {
+      ToastAndroid.show(t("app.warning"), ToastAndroid.SHORT)
+    }
+
+    navigation.goBack()
+  }
 
   useEffect(() => {
     getPost({
@@ -261,7 +280,8 @@ const PostDetail = ({ route }) => {
         </View>
 
       </View>
-      <ShowComments
+      <NotificationModalApp modalhiden={setShownoti} modalVisible={shownoti} funt={handlerRemove} asseticon={'dont'} content={t('title_model.content_remove_post')} title={t('title_model.remove_post')} />
+      {post && <ShowComments
         idPost={post?._id}
         setOpen={setiscomment}
         open={iscomment}
@@ -269,19 +289,20 @@ const PostDetail = ({ route }) => {
         dataPost={[]}
         setDataPost={() => { }}
         setIdPost={() => { }}
-      />
-      <ShowMoreDetailPost
+      />}
+      {post && <ShowMoreDetailPost
         disable={dots}
         setDisable={setDots}
         create_post={post?.create_by?._id}
         id_post={post?._id}
         post={post}
-      />
-      <ShowShareDetailPost
+        setShownoti={() => setShownoti(true)}
+      />}
+      { post && <ShowShareDetailPost
         disable={isshare}
         setDisable={setIsshare}
         post_id={post?._id}
-      />
+      />}
       <Modals modalhiden={setReport} modalVisible={report}>
         <View>
           <Text center margin-10 text80BO>

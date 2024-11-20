@@ -8,11 +8,12 @@ import { t } from 'lang';
 import { rePost } from 'src/hooks/api/post';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useSelector } from 'react-redux';
+import TextApp from './TextApp';
 
 const InteractPost = props => {
   const { item, handleOpenComment, countFire, countComment, isFire, idUser } = props;
   const user = useSelector(state => state.auth?.user)
-  
+
   const [fireStatus, setFireStatus] = useState(isFire);
   const [countFireStatus, setCountFireStatus] = useState(countFire);
   const [isRePost, setIsRePost] = useState(false)
@@ -68,8 +69,8 @@ const InteractPost = props => {
   };
   const handlerShare = () => {
     ToastAndroid.show(t("post.share"), ToastAndroid.SHORT)
-    onShare(`${process.env.BASEAPI_URL+"share/PostDetail/"+item?._id}/`)
-    Clipboard.setString(`${process.env.BASEAPI_URL+"share/PostDetail/"+item?._id}/`);
+    onShare(`${process.env.BASEAPI_URL + "share/PostDetail/" + item?._id}/`)
+    Clipboard.setString(`${process.env.BASEAPI_URL + "share/PostDetail/" + item?._id}/`);
   }
   useEffect(() => {
     setFireStatus(isFire);
@@ -89,11 +90,11 @@ const InteractPost = props => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.containerClick} onPress={() => { setIsRePost(true) }}>
         <Icon assetName="retweet" size={20} />
-        <Text style={styles.text}>{t('home.repost')}</Text>
+        <TextApp style={styles.text} text={'home.repost'} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.containerClick} onPress={handlerShare}>
         <Icon assetName="send_white" size={20} />
-        <Text style={styles.text}>{t('home.share')}</Text>
+        <TextApp style={styles.text} text={'home.share'} />
       </TouchableOpacity>
       {
         isRePost && <View absF row br100 flex bg-white style={{ overflow: 'hidden' }}>

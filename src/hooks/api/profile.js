@@ -77,7 +77,7 @@ const getTimeline = async body => {
       return {status: false, data: result.data};
     }
   } catch (error) {
-    console.log(error + 'Lỗi getPost');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 };
@@ -93,7 +93,7 @@ const findUser = async query => {
       return {status: false, data: result.data};
     }
   } catch (error) {
-    console.log(error + 'Lỗi getPost');
+    console.log(error);
     return { status: false, data: 'Opps ! Have a problem' };
   }
 };
