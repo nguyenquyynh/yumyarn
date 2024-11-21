@@ -7,11 +7,11 @@ const buildDeepLinkFromNotificationData = data => {
   if (!data) {
     Linking.openURL('yumyarn://Main');
   }
-  const isMatch = data?.includes('https://yumyarn.api.phqmarket.online/');
+  const isMatch = data?.includes('https://yumyarn.api.newonlineee.xyz/');
   if (isMatch) {
     Linking.openURL(
       `yumyarn://${
-        data.split('https://yumyarn.api.phqmarket.online/')[1]
+        data.split('https://yumyarn.api.newonlineee.xyz/')[1]
       }`,
     );
   }
@@ -28,7 +28,7 @@ const config = {
 };
 
 const linking = {
-  prefixes: ['yumyarn://', 'https://yumyarn.api.phqmarket.online/'],
+  prefixes: ['yumyarn://', 'https://yumyarn.api.newonlineee.xyz/'],
   config,
   async getInitialURL() {
     const url = await Linking.getInitialURL();

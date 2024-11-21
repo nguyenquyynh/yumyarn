@@ -35,7 +35,7 @@
         <category android:name="android.intent.category.BROWSABLE" />
 
         <data android:scheme="https" />
-        <data android:host="yumyarn.api.phqmarket.online" />
+        <data android:host="yumyarn.api.newonlineee.xyz" />
       </intent-filter>
     </activity>
   </application>
