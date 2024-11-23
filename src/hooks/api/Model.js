@@ -57,6 +57,7 @@ export const POST = {
   EDIT: 'edit',
   REPOST: 're',
   REMOVE: 'de',
+  SEARCHLOCATION: 'locationmap'
 };
 
 export const SUGGEST = {

@@ -1,7 +1,7 @@
-import { Keyboard, StyleSheet, TextInput } from 'react-native'
+import { FlatList, Keyboard, StyleSheet, TextInput } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import MapView, { AnimatedRegion, MarkerAnimated } from 'react-native-maps'
-import { Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
+import { Avatar, Colors, Icon, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import { t } from 'lang'
 import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
@@ -10,6 +10,10 @@ import { reverLocation, searchLocation } from 'services/MapService'
 import LottieView from 'lottie-react-native'
 import lottie from 'configs/ui/lottie'
 import { isCleanContent } from 'src/middleware/contentmiddleware'
+import numberFormat from 'configs/ui/format'
+import { LocateFixed, PanelBottomClose, Radar, Star, UtensilsCrossed } from 'lucide-react-native'
+import { getlocationpost } from 'src/hooks/api/search'
+import RenderMedia from 'components/commons/RenderMedia'
 
 class innitLocation {
     constructor(latitude, longitude, latitudeDelta, longitudeDelta) {
@@ -36,29 +40,57 @@ const Adddrressscreen = ({ route }) => {
     const [search, setSearch] = useState(defaultlocation?.detail)
     const [searchData, setSearchData] = useState([])
     const [loading, setLoading] = useState(false)
+    const [nearhData, setNearData] = useState([])
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const flatListRef = useRef(null);
 
     useEffect(() => {
         if (!route.params?.defaultlocation) getGeolocation()
     }, [])
-    
+
     //Lấy vị trí nguời dùng
     const getGeolocation = () => {
         Geolocation.getCurrentPosition(location => {
             setloaction(new innitLocation(location.coords.latitude, location.coords.longitude, 0.005, 0.005))
         })
     }
+    //Lấy bài viết gần đây
+    const getNearPosts = async () => {
+        if (nearhData.length !== 0) {
+            setNearData([])
+            return
+        }
+
+        setLoading(true)
+        setSearchData([])
+        try {
+            const data = await getlocationpost(marker.latitude, marker.longitude)
+            if (data.status) {
+                setNearData(data.data)
+            }
+        } catch (error) {
+
+        } finally {
+            setLoading(false)
+        }
+
+    }
+    //làm sạch dũ liệu tìm kiếm
+    const handleClear = () => {
+        setSearch('')
+        setSearchData([])
+    }
     // chuyển về địa chỉ dạng chữ từ location
-    const revversLoacation = async (loaction) => {
+    const revversLoacation = async (loaction, name) => {
         const data = await reverLocation(loaction)
         if (data.items?.[0]) {
-            setMarker({ ...loaction, name: data.items[0]?.address?.label })
+            setMarker({ ...loaction, name: name ? ` ${name}  ${data.items[0]?.address?.label}` : data.items[0]?.address?.label })
         }
     }
     //chọn địa điểm marker trên bản đồ
     const handlePoiLocation = (el, name) => {
         const point = el.nativeEvent
         if (point?.coordinate) {
-            const duration = 500
             revversLoacation({
                 latitude: point.coordinate.latitude,
                 longitude: point.coordinate.longitude,
@@ -71,11 +103,9 @@ const Adddrressscreen = ({ route }) => {
 
     //Tìm kiếm địa điểm theo địa chỉ
     const handlerSearch = async () => {
-        if (!isCleanContent(search)) return
+        if (!search || !isCleanContent(search)) return;
 
-        if (!search) {
-            return
-        }
+        setNearData([])
         setLoading(true)
         var keysearch = search.trim()
         const locationsearch = `@${loaction.latitude},${loaction.longitude},16z`
@@ -117,17 +147,23 @@ const Adddrressscreen = ({ route }) => {
     })
     // render địa điểm tìm kiếm
     const pointLocation = (item) => {
-        return (<TouchableOpacity center style={{ width: 150 }}>
-            <Text text100BO numberOfLines={2}>{item?.name || item?.detail}</Text>
-            <IconApp assetName={"location"} size={25} />
+        return (<TouchableOpacity row center bg-white br30 padding-5 marginL-50>
+            <IconApp assetName={"location"} size={20} />
+            <Text style={{ width: 50 }} text100BO numberOfLines={2}>{item?.name || item?.detail}</Text>
         </TouchableOpacity>)
     }
-
+    // render bài viêts gần đây
+    const postNear = (item) => {
+        return (
+            <TouchableOpacity br30 row center style={{ backgroundColor: item?.isVip ? Colors.yellow : 'white' }} padding-5>
+                <UtensilsCrossed size={15} color={Colors.red} />
+                <Text marginL-4>{numberFormat(item?.fire)}</Text>
+            </TouchableOpacity>)
+    }
     const handlePointClick = (el) => {
         // setSearchData([])
         const point = el.nativeEvent
         if (point?.coordinate) {
-            const duration = 500
             revversLoacation({
                 latitude: point.coordinate.latitude,
                 longitude: point.coordinate.longitude,
@@ -137,6 +173,40 @@ const Adddrressscreen = ({ route }) => {
         }
 
     }
+    const renderPost = ({ item }) => {
+        return (
+            <View bg-white br30 padding-10 margin-5 style={{ width: 350, overflow: 'hidden' }}>
+                <TouchableOpacity row height={30} onPress={() => navigation.navigate('PostDetail', { id: item?._id, defaultdata: item })}>
+                    <View flex-8 row centerV>
+                        <Avatar size={30} source={{ uri: item?.create_by?.avatar }} />
+                        <Text marginL-10 text80BO>{item?.create_by?.name}</Text>
+                    </View>
+                    {item?.isVip && <Star color={Colors.yellow} />}
+                </TouchableOpacity>
+                <Text margin-5 numberOfLines={1}>{item?.content}</Text>
+                <View br20 style={{ overflow: 'hidden' }} >
+                    <RenderMedia item={item?.media[0]} />
+                </View>
+            </View>
+        )
+    }
+    const viewabilityConfig = {
+        itemVisiblePercentThreshold: 50 // Item được coi là hiển thị khi 50% của nó nằm trong viewport
+    };
+    const onViewableItemsChanged = ({ viewableItems }) => {
+        if (viewableItems.length > 0) {
+            setCurrentIndex(viewableItems[0].index);
+        }
+    };
+    const scrollToIndex = (index) => {
+        if (flatListRef.current) {
+            flatListRef.current.scrollToIndex({ animated: true, index });
+        }
+    }
+    useEffect(() => {
+        console.log(currentIndex);
+
+    }, [currentIndex])
 
     return (
         <View flex>
@@ -147,10 +217,6 @@ const Adddrressscreen = ({ route }) => {
                     region={loaction}
                     showsMyLocationButton={false}
                     moveOnMarkerPress
-                    onMarkerSelect={(e) => {
-                        console.log(e.target);
-                        
-                    }}
                     scrollDuringRotateOrZoomEnabled
                     showsUserLocation={true}
                     onPress={handlePoiLocation}
@@ -168,14 +234,32 @@ const Adddrressscreen = ({ route }) => {
                             longitude: element.longitude,
                         }
                         return (<MarkerAnimated
-                            
+
                             key={element.longitude}
                             ref={marker => { this.marker = marker }}
                             coordinate={crood}
                             onPress={() => {
-                                setMarker({...defaultlocation, name: (element?.name + " " + element?.address), ...element})
+                                setMarker({ ...defaultlocation, name: (element?.name + " " + element?.address), ...element })
                             }}
                         >{pointLocation(element)}</MarkerAnimated>)
+                    }) : null}
+                    {nearhData.length ? nearhData.map(element => {
+                        const crood = {
+                            latitude: element.address.latitude,
+                            longitude: element.address.longitude,
+                        }
+
+                        return (<MarkerAnimated
+                            style={{ zIndex: 2 }}
+                            key={element._id}
+                            ref={marker => { this.marker = marker }}
+                            coordinate={crood}
+                            onPress={(e) => {
+                                const index = nearhData.findIndex((item) => item?._id === element?._id)
+                                scrollToIndex(index)
+                                setMarker({ name: element?.address?.detail, ...element?.address })
+                            }}
+                        >{postNear(element)}</MarkerAnimated>)
                     }) : null}
                 </MapView>
                 {/* Top */}
@@ -189,16 +273,20 @@ const Adddrressscreen = ({ route }) => {
                         <View centerV flex row bg-white br50 paddingL-x style={styles.shadow}>
                             <View flex>
                                 <TextInput
-                                onSubmitEditing={handlerSearch}
+                                    onSubmitEditing={handlerSearch}
                                     placeholderTextColor={'black'}
-                                    style={{color: 'black'}}
+                                    style={{ color: 'black' }}
                                     placeholder={t("app.search")}
                                     value={search}
                                     onChangeText={setSearch} />
                             </View>
-                            <TouchableOpacity margin-x center onPress={handlerSearch}>
+                            {searchData.length === 0 ? <TouchableOpacity margin-x center onPress={handlerSearch}>
                                 <IconApp size={25} assetName={'search'} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> :
+                                <TouchableOpacity margin-x center onPress={handleClear}>
+                                    <IconApp size={25} assetName={'cancel'} />
+                                </TouchableOpacity>
+                            }
                         </View>
                         <View bottom margin-v>
                             <TouchableOpacity br40 disabled={marker?.detail !== null ? false : true} bg-yellow padding-x onPress={() => {
@@ -210,11 +298,37 @@ const Adddrressscreen = ({ route }) => {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <TouchableOpacity style={{ width: 42 }} center marginT-x bg-white padding-x br20 onPress={getGeolocation}>
-                        <Icon size={22} assetName={"gps"} tintColor={Colors.yellow} />
-                    </TouchableOpacity>
+
                 </View>
             </View>
+            <View width={42} style={styles.viewrightbutton}>
+                <TouchableOpacity style={{ width: 42 }} center marginT-x bg-tr_black padding-x br20 onPress={getGeolocation}>
+                    <LocateFixed color={Colors.yellow} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ width: 42 }} center marginT-x bg-tr_black padding-x br20 onPress={getNearPosts}>
+                    {nearhData.length !== 0 ? <PanelBottomClose color={'white'} /> : <Radar color={Colors.yellow} />}
+                </TouchableOpacity>
+            </View>
+            {nearhData.length !== 0 &&
+                <View absB flex bg-tr_black centerH height={250} style={styles.width100}>
+                    <FlatList style={styles.width100}
+                        getItemLayout={(data, index) => (
+                            { length: 360, offset: 360 * index, index }
+                        )}
+                        ref={flatListRef}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal
+                        pagingEnabled={true}
+                        snapToAlignment="center"
+                        data={nearhData}
+                        initialNumToRender={1}
+                        renderItem={(item) => renderPost(item)}
+                        onViewableItemsChanged={onViewableItemsChanged}
+                        viewabilityConfig={viewabilityConfig}
+                    />
+                </View>
+            }
             {loading &&
                 <View absF flex center bg-tr_black>
                     <LottieView loop autoPlay source={lottie.Search_location} style={{ width: 250, height: 250 }} />
@@ -237,4 +351,10 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 10,
     },
+    button: {
+        backgroundColor: Colors.yellow
+    },
+    loading: { width: 250, height: 250 },
+    width100: { width: '100%' },
+    viewrightbutton: { position: 'absolute', right: 10, top: 90 }
 })

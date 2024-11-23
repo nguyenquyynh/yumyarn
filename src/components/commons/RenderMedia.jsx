@@ -41,6 +41,7 @@ const RenderMedia = ({ i, item }) => {
                     onLoadEnd={() => setLoad(null)}
                     source={{ uri: item || DEFAULT.IMAGE }}
                     style={{ width: '100%', height: '100%' }}
+                    resizeMode='cover'
                 />
                 {load !== null && <View bg-yellow center style={{ width: '100%', height: '100%', position: 'absolute', zIndex: 2 }}>
                     <ActivityIndicator color={'#FFFFFF'} size={25} />
