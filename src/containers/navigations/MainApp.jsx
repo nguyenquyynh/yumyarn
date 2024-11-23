@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AddAdrressScreen from 'containers/post/AddAdrressScreen';
 import MainPost from 'containers/post/MainPost';
@@ -30,21 +30,24 @@ import {AppState, Linking, ToastAndroid} from 'react-native';
 import Report from 'containers/setting/Report';
 import ShakeDetection from 'containers/orther/ShakeScreen';
 import Extentions from 'containers/setting/Extentions';
+import {useFocusEffect} from '@react-navigation/native';
 
 const MainApp = () => {
   const Stack = createNativeStackNavigator();
   const fcm = useSelector(state => state.fcm);
   const auth = useSelector(state => state.auth);
   const appState = useRef(AppState.currentState);
+  useFocusEffect(
+    useCallback(() => {
+      if (fcm.socket) {
+        fcm.socket.emit('newOnlUser', {
+          id: auth.user._id,
+        });
+      }
+    }, []),
+  );
+
   useEffect(() => {
-    if (fcm.socket) {
-      fcm.socket.emit('newOnlUser', {
-        id: auth.user._id,
-        message_recive_status: auth?.user?.message_recive_status,
-        message_active_status: auth?.user?.message_active_status,
-        message_reading_status: auth?.user?.message_reading_status,
-      });
-    }
     const subscription = AppState.addEventListener('change', nextAppState => {
       if (
         appState.current.match(/inactive|background/) &&
@@ -53,9 +56,6 @@ const MainApp = () => {
         if (fcm.socket) {
           fcm.socket.emit('newOnlUser', {
             id: auth.user._id,
-            message_recive_status: auth?.user?.message_recive_status,
-            message_active_status: auth?.user?.message_active_status,
-            message_reading_status: auth?.user?.message_reading_status,
           });
         }
       }
@@ -66,7 +66,7 @@ const MainApp = () => {
       subscription.remove();
     };
   }, [fcm]);
-  
+
   return (
     <Stack.Navigator
       screenOptions={{

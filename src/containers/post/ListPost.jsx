@@ -1,93 +1,98 @@
 import {
   ActivityIndicator,
-  Alert,
-  Animated,
   FlatList,
-  LayoutAnimation,
   RefreshControl,
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
-import { createReport, createSaved, dePost, getPost } from 'src/hooks/api/post';
-import ShowComments from 'containers/comment/ShowComments';
+import React, {memo, useEffect, useRef, useState} from 'react';
+import {createReport, createSaved, dePost, getPost} from 'src/hooks/api/post';
 import RenderPost from 'components/homes/RenderPost';
-import { createFollow } from 'src/hooks/api/follow';
-import Modals from 'components/BottomSheetApp';
-import { Colors, Icon, TouchableOpacity, Text, View } from 'react-native-ui-lib';
-import { useNavigation } from '@react-navigation/native';
-import { BI } from 'configs/fonts';
-import { t } from 'lang';
-import { ReportModel } from 'src/hooks/api/Model';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetListPost, setListPost, updateFullListPost } from 'reducers/home';
-
-const optionReport = [
-  { id: 1, value: 'Nội dung kích động bạo lực mạng.', content: ReportModel.WAR },
-  {
-    id: 2,
-    value: 'Nội dung chứa hình ảnh nhạy cảm 18+.',
-    content: ReportModel.NFSW,
-  },
-  {
-    id: 3,
-    value: 'Bài viết liên quan đến an toàn trẻ dưới vị thành niên.',
-    content: ReportModel.KID,
-  },
-  {
-    id: 4,
-    value: 'Nội dung chia rẽ sắc tộc, tôn giáo.',
-    content: ReportModel.RELIGION,
-  },
-  { id: 5, value: 'Bài viết chứa từ ngữ thô tục.', content: ReportModel.SUCK },
-  {
-    id: 6,
-    value: 'Bài viết chứa nội dung không đúng sự thật.',
-    content: ReportModel.FAKE,
-  },
-];
+import {createFollow} from 'src/hooks/api/follow';
+import {View} from 'react-native-ui-lib';
+import {t} from 'lang';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetListPost, setListPost, updateFullListPost} from 'reducers/home';
+import { useIsFocused } from '@react-navigation/native';
 
 const ListPost = props => {
-  const { idUser, scrollY } = props;
-  const dispatch = useDispatch()
-  const listPost = useSelector(state => state.home.listPost)
-
-  const [open, setOpen] = useState(false);
-  const [post, setPost] = useState(null);
+  const {idUser, scrollY} = props;
+  const dispatch = useDispatch();
+  const listPost = useSelector(state => state.home.listPost);
   const [isLoading, setIsLoading] = useState(false);
   // const [dataPost, setDataPost] = useState([]);
   const [page, setPage] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
-  const [showmodal, setShowmodal] = useState(false);
-  const navigation = useNavigation();
-  const [userIdPost, setUserIdPost] = useState(null);
-  const [isFollow, setIsFollow] = useState(false);
-  const [report, setReport] = useState(false);
   const [end, setEnd] = useState(false);
-  const [statusSavePost, setStatusSavePost] = useState(false);
+  const [activeItems, setActiveItems] = useState([]); // Lưu trữ ID các item đang hiển thị
+  const flatListRef = useRef(null);
+  const isFocused = useIsFocused();
+  const socket = useSelector(state => state.fcm.socket);
+  const getItemLayout = (data, index) => ({
+    length: 400, // chiều cao của mỗi item
+    offset: 400 * index, // offset của mỗi item
+    index,
+  });
+  const sentItems = useRef(new Set());
 
-  const setDataPost = (data) => {
-    dispatch(setListPost(data))
-  }
+  const handleScroll = (event) => {
+    const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+    const visibleItems = [];
+    const windowHeight = layoutMeasurement.height;
+    const contentHeight = contentSize.height;
+    const offsetY = contentOffset.y;
+    if (scrollY) {
+      scrollY.setValue(offsetY);
+    }
+    for (let i = 0; i < listPost.length; i++) {
+      const itemHeight = 100;
+      const itemTop = i * itemHeight;
+      const itemBottom = itemTop + itemHeight;
+
+      if (itemTop < offsetY + windowHeight && itemBottom > offsetY) {
+        visibleItems.push(listPost[i]._id);
+      }
+    }
+    setActiveItems(visibleItems);
+  };
+
+  useEffect(() => {
+    let intervalId;
+    if(isFocused){
+      intervalId = setInterval(() => {
+        activeItems.forEach(async (itemId) => {
+          try{
+            if (!sentItems.current.has(itemId)) {
+              sentItems.current.add(itemId);
+              socket.emit("seenPost", { _id: idUser, idPost: itemId });
+            }
+          }catch(error){
+            console.error('Error sending request', error)
+          }
+        });
+      }, 4000);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [activeItems,isFocused]);
+
+  const setDataPost = data => {
+    dispatch(setListPost(data));
+  };
   const getPostData = async (idUser, page) => {
     try {
       const dataRequest = {
         id: idUser,
         page: page,
+        startingPoint : page == 1 ? null : listPost[listPost.length - 1]?._id
       };
       const response = await getPost(dataRequest);
       if (response.status) {
         if (response.data.length == 0 && page != 1) {
           setEnd(true);
         } else if (page == 1) {
-          dispatch(resetListPost())
-          dispatch(setListPost(response.data))
+          dispatch(resetListPost());
+          dispatch(setListPost(response.data));
           setPage(page);
         } else {
           if (
@@ -96,7 +101,7 @@ const ListPost = props => {
           ) {
             return;
           }
-          dispatch(setListPost(response.data))
+          dispatch(setListPost(response.data));
           setPage(page);
         }
       } else {
@@ -124,22 +129,15 @@ const ListPost = props => {
   };
 
   useEffect(() => {
-    if (!showmodal) {
-      setReport(false);
-      LayoutAnimation.easeInEaseOut();
-    }
-  }, [showmodal]);
-
-  useEffect(() => {
     getPostData(idUser, 1);
   }, []);
 
-  const handleFollow = async () => {
+  const handleFollow = async (userIdPost) => {
     try {
       if (userIdPost) {
         const followUpdate = listPost?.map(ele => {
           if (ele.create_by._id == userIdPost) {
-            return { ...ele, follow: !ele.follow };
+            return {...ele, follow: !ele.follow};
           }
           return ele;
         });
@@ -148,7 +146,7 @@ const ListPost = props => {
         if (!response.status) {
           ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
         } else {
-          dispatch(updateFullListPost(followUpdate))
+          dispatch(updateFullListPost(followUpdate));
           ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
         }
       }
@@ -157,23 +155,10 @@ const ListPost = props => {
     }
   };
 
-  const openModalFollow = (
-    idUserCreatePost,
-    followIs,
-    data,
-    statusSavePost,
-  ) => {
-    setPost(data);
-    setIsFollow(followIs);
-    setUserIdPost(idUserCreatePost);
-    setStatusSavePost(statusSavePost);
-    setShowmodal(true);
-  };
-
-  const handlerRemove = async () => {
+  const handlerRemove = async postId => {
     const body = {
       u: idUser,
-      p: post._id,
+      p: postId,
     };
 
     const resault = await dePost(body);
@@ -184,21 +169,21 @@ const ListPost = props => {
     }
   };
 
-  const handlerSave = async () => {
+  const handlerSave = async (userIdPost, postId) => {
     if (userIdPost) {
       const savePostUpdate = listPost?.map(ele => {
         if (ele.create_by._id == userIdPost) {
-          return { ...ele, isSaved: !ele.isSaved };
+          return {...ele, isSaved: !ele.isSaved};
         }
         return ele;
       });
 
       const resault = await createSaved({
         _id: idUser,
-        post: post._id,
+        post: postId,
       });
       if (resault?.status) {
-        dispatch(updateFullListPost(savePostUpdate))
+        dispatch(updateFullListPost(savePostUpdate));
         ToastAndroid.show(t('app.success'), ToastAndroid.SHORT);
       } else {
         ToastAndroid.show(t('app.warning'), ToastAndroid.SHORT);
@@ -207,13 +192,9 @@ const ListPost = props => {
     }
   };
 
-  const handleOpenComment = data => {
-    setPost(data);
-    setOpen(true);
-  };
-  const handleReport = async e => {
+  const handleReport = async (e, postId) => {
     const resault = await createReport({
-      id_post: post?._id,
+      id_post: postId,
       content: e.content,
     });
     if (resault?.status) {
@@ -227,18 +208,15 @@ const ListPost = props => {
       <FlatList
         showsVerticalScrollIndicator={false}
         style={styles.scrollview}
-        scrollEnabled
         data={listPost}
         extraData={listPost}
-        onScroll={state => {
-          if (scrollY) {
-            scrollY.setValue(state.nativeEvent.contentOffset.y);
-          }
-        }}
+        ref={flatListRef}
+        getItemLayout={getItemLayout}
+        onScroll={handleScroll}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        key={({ index }) => index}
+        key={({index}) => index}
         keyExtractor={(_, index) => index.toString()}
         onEndReached={() => {
           handleLoadMore(page + 1);
@@ -246,12 +224,16 @@ const ListPost = props => {
         onEndReachedThreshold={0.6}
         initialNumToRender={5}
         maxToRenderPerBatch={5}
-        renderItem={({ item, index }) => (
+        renderItem={({item, index}) => (
           <RenderPost
             item={item}
-            handleOpenComment={handleOpenComment}
             idUser={idUser}
-            openModalFollow={openModalFollow}
+            listPost={listPost}
+            setDataPost={setDataPost}
+            handlerSave={handlerSave}
+            handleReport={handleReport}
+            handlerRemove={handlerRemove}
+            handleFollow={handleFollow}
           />
         )}
         ListFooterComponent={() => {
@@ -259,7 +241,7 @@ const ListPost = props => {
             <>
               {isLoading && (
                 <ActivityIndicator
-                  style={{ marginBottom: 50 }}
+                  style={{marginBottom: 50}}
                   size="large"
                   color="#0000ff"
                 />
@@ -269,166 +251,6 @@ const ListPost = props => {
           );
         }}
       />
-      {post?._id && (
-        <ShowComments
-          open={open}
-          setOpen={setOpen}
-          idPost={post?._id}
-          setPost={setPost}
-          dataPost={listPost}
-          setDataPost={setDataPost}
-        />
-      )}
-
-      <Modals modalhiden={setShowmodal} modalVisible={showmodal}>
-        {report ? (
-          <View>
-            <Text center margin-10 text80BO>
-              {t('post.report_d')}
-            </Text>
-            <FlatList
-              scrollEnabled={false}
-              data={optionReport}
-              keyExtractor={item => item.id}
-              renderItem={({ item, index }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    handleReport(item);
-                    setReport(false);
-                    LayoutAnimation.easeInEaseOut();
-                  }}
-                  spread
-                  row
-                  centerV
-                  paddingV-15
-                  paddingH-16
-                  style={{ borderBottomWidth: 0.5 }}>
-                  <Text text80BO>{item?.value}</Text>
-                  <Icon assetName="right_arrow" size={15} />
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        ) : (
-          <View>
-            {idUser === userIdPost && (
-              <TouchableOpacity
-                row
-                paddingV-x
-                centerV
-                onPress={() => {
-                  navigation.navigate('EditPost', { post: post });
-                  setShowmodal(false);
-                }}>
-                <Icon
-                  assetName="edit"
-                  size={33}
-                  tintColor={Colors.yellow}
-                  marginH-x
-                />
-                <View>
-                  <Text style={{ fontFamily: BI }}>{t('profile.edit')}</Text>
-                  <Text color={Colors.gray}>{t('post.edit_d')}</Text>
-                </View>
-              </TouchableOpacity>
-            )}
-            {idUser !== userIdPost && (
-              <TouchableOpacity
-                row
-                paddingV-x
-                centerV
-                onPress={() => {
-                  setShowmodal(false);
-                  handleFollow();
-                }}>
-                <Icon
-                  assetName={isFollow ? 'cancle_follow' : 'check_follow'}
-                  size={33}
-                  // tintColor={Colors.yellow}
-                  marginH-x
-                />
-                <View>
-                  <Text style={{ fontFamily: BI }}>
-                    {isFollow ? t('app.following') : t('app.follow')}
-                  </Text>
-                  <Text color={Colors.gray}>
-                    {' '}
-                    {isFollow ? t('post.unFollow_des') : t('post.follow_des')}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )}
-            {idUser !== post?.create_by?._id &&
-              idUser !== post?.repost_by?._id && (
-                <TouchableOpacity
-                  row
-                  paddingV-x
-                  centerV
-                  onPress={() => {
-                    setReport(true);
-                    LayoutAnimation.easeInEaseOut();
-                  }}>
-                  <Icon
-                    assetName="flag"
-                    size={33}
-                    tintColor={Colors.yellow}
-                    marginH-x
-                  />
-                  <View>
-                    <Text style={{ fontFamily: BI }}>{t('post.report')}</Text>
-                    <Text color={Colors.gray}>{t('post.report_d')}</Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-            <TouchableOpacity
-              row
-              paddingV-x
-              centerV
-              onPress={() => {
-                setShowmodal(false);
-                handlerSave();
-              }}>
-              <Icon
-                assetName="bookmark"
-                size={33}
-                tintColor={Colors.yellow}
-                marginH-x
-              />
-              <View>
-                <Text style={{ fontFamily: BI }}>
-                  {statusSavePost ? t('post.unsave') : t('post.save')}
-                </Text>
-                {!statusSavePost && (
-                  <Text color={Colors.gray}>{t('post.save_des')}</Text>
-                )}
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
-        {idUser === userIdPost ? (
-          <TouchableOpacity
-            row
-            paddingV-x
-            centerV
-            onPress={() => {
-              setShowmodal(false);
-              handlerRemove();
-            }}>
-            <Icon
-              assetName="remove"
-              size={33}
-              tintColor={Colors.yellow}
-              marginH-x
-            />
-            <View>
-              <Text style={{ fontFamily: BI }}>{t('post.remove')}</Text>
-              <Text color={Colors.gray}>{t('post.remove_d')}</Text>
-            </View>
-          </TouchableOpacity>
-        ) : (
-          <></>
-        )}
-      </Modals>
     </>
   );
 };
@@ -436,5 +258,5 @@ const ListPost = props => {
 export default memo(ListPost);
 
 const styles = StyleSheet.create({
-  scrollview: { paddingTop: 50 },
+  scrollview: {paddingTop: 50},
 });

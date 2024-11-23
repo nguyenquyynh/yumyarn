@@ -20,7 +20,6 @@ const MainChat = ({ route }) => {
   const [endFriend, setEndFriend] = useState(false);
   const [endMessage, setEndMessage] = useState(false);
   const { _id } = route.params;
-  const routes = useRoute();
   const getListFriend = async () => {
     try {
       if (!endFriend) {
@@ -76,6 +75,7 @@ const MainChat = ({ route }) => {
           navigation.navigate('Chating', {
             friend: response.data?.find(item => item._id === _id),
           });
+          navigation.getParent()?.setParams({ _id: null });
         }
         setPage(0);
       }
