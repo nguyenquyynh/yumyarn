@@ -275,7 +275,7 @@ const RenderPost = memo(props => {
                 centerV
                 onPress={() => {
                   navigation.navigate('EditPost', {post: post});
-                  setShowmodal(false);
+                  setOpenFollow(false);
                 }}>
                 <Icon
                   assetName="edit"
@@ -295,7 +295,7 @@ const RenderPost = memo(props => {
                 paddingV-x
                 centerV
                 onPress={() => {
-                  setShowmodal(false);
+                  setOpenFollow(false);
                   handleFollow(userIdPost);
                 }}>
                 <Icon
@@ -342,7 +342,7 @@ const RenderPost = memo(props => {
               paddingV-x
               centerV
               onPress={() => {
-                setShowmodal(false);
+                setOpenFollow(false);
                 handlerSave(userIdPost, id);
               }}>
               <Icon
@@ -368,7 +368,7 @@ const RenderPost = memo(props => {
             paddingV-x
             centerV
             onPress={() => {
-              setShowmodal(false);
+              setOpenFollow(false);
               handlerRemove(id);
             }}>
             <Icon
