@@ -41,6 +41,7 @@ const ListPost = props => {
     const windowHeight = layoutMeasurement.height;
     const contentHeight = contentSize.height;
     const offsetY = contentOffset.y;
+    console.log(offsetY)
     if (scrollY) {
       scrollY.setValue(offsetY);
     }
