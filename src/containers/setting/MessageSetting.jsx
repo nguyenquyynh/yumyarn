@@ -40,18 +40,18 @@ const MessageSetting = () => {
       };
       const response = await messageSetting(body);
       if (response.status) {
+        socket.emit('updateMessageSetting', {
+          _id: profile._id,
+          message_recive_status: response?.data?.message_recive_status,
+          message_active_status: response?.data?.message_active_status,
+          message_reading_status: response?.data?.message_reading_status,
+        });
         if (response.data.message_recive_status != seleted)
           setSeleted(response.data.message_recive_status);
         if (response.data.message_active_status != status)
           setStatus(response.data.message_active_status);
         if (response.data.message_reading_status != seenstatus)
           setSeenStatus(response.data.message_reading_status);
-        socket.emit('newOnlUser', {
-          id: profile._id,
-          message_recive_status: response?.data?.message_recive_status,
-          message_active_status: response?.data?.message_active_status,
-          message_reading_status: response?.data?.message_reading_status,
-        });
         dispatch(
           udpateMessageProfile({
             message_recive_status: response.data.message_recive_status,
@@ -63,6 +63,8 @@ const MessageSetting = () => {
       LayoutAnimation.easeInEaseOut()
     } catch (error) {
       console.log(error);
+    }finally {
+      setShowModal(false)
     }
   };
 

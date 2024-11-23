@@ -42,7 +42,7 @@ export async function editmypost(data) {
 export async function getPost(dataRequest) {
   try {
     const resault = await AxiosInstance().get(
-      `${Model.POSTS}/${POST.FEED}?create_by=${dataRequest.id}&page=${dataRequest.page}`,
+      `${Model.POSTS}/${POST.FEED}?create_by=${dataRequest.id}&page=${dataRequest.page}&startingPoint=${dataRequest.startingPoint}`,
     );
 
     if (resault.status) {

@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import { isCleanContent } from 'src/middleware/contentmiddleware';
 
 const ShowComments = props => {
-  const { idPost, setOpen, open, dataPost, setDataPost, setPost } = props;
+  const { idPost, setOpen, open, dataPost, setDataPost } = props;
   const create_by = useSelector(state => state.auth.user);
   const [dataComment, setDataComment] = useState([]);
   const [writeComment, setWriteComment] = useState('');
@@ -134,7 +134,6 @@ const ShowComments = props => {
           setParent(null);
           setMorePage(true);
           setWriteComment('');
-          setPost?.(null);
         }
       }}>
       <KeyboardAvoidingView>

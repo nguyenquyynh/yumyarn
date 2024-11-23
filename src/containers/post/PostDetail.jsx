@@ -37,6 +37,7 @@ const PostDetail = ({ route }) => {
 
   const heightscreen = Dimensions.get('window').height;
   const navigation = useNavigation();
+  const socket = useSelector(state => state.fcm.socket);
   const user = useSelector(state => state.auth.user);
   const [post, setPost] = useState(defaultdata);
   const [isfire, setIsfire] = useState(false);
@@ -53,6 +54,7 @@ const PostDetail = ({ route }) => {
     if (reponse.status) {
       setPost(reponse.data[0]);
       setissaved(reponse.data[0]?.isSaved);
+      socket.emit("seenPost", {_id: user._id, idPost :post._id})
     }
     navigation.getParent()?.setParams({ _id: null });
     if (reponse.data.length === 0) {

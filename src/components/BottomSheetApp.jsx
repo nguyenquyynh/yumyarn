@@ -49,14 +49,14 @@ const Modals = ({
   }, [modalVisible]);
 
   return (
-    <View flex absF>
-      {modalVisible && (
-        <View flex bg-tr_black>
-          <Modal
-            statusBarTranslucent
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}>
+    <Modal
+      statusBarTranslucent
+      animationType="fade"
+      transparent={true}
+      visible={modalVisible}>
+      <View flex absF>
+        {modalVisible && (
+          <View flex bg-tr_black>
             <GestureHandlerRootView style={styles.container}>
               <GestureDetector gesture={pan}>
                 <Animated.View style={[styles.containerCotent, animatedStyles]}>
@@ -81,10 +81,10 @@ const Modals = ({
                 </Animated.View>
               </GestureDetector>
             </GestureHandlerRootView>
-          </Modal>
-        </View>
-      )}
-    </View>
+          </View>
+        )}
+      </View>
+    </Modal>
   );
 };
 
