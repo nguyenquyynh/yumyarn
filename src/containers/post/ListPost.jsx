@@ -37,45 +37,47 @@ const ListPost = props => {
 
   const handleScroll = (event) => {
     const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+
     const visibleItems = [];
     const windowHeight = layoutMeasurement.height;
     const contentHeight = contentSize.height;
     const offsetY = contentOffset.y;
-    console.log(offsetY)
     if (scrollY) {
       scrollY.setValue(offsetY);
     }
-    for (let i = 0; i < listPost.length; i++) {
-      const itemHeight = 100;
-      const itemTop = i * itemHeight;
-      const itemBottom = itemTop + itemHeight;
+    // for (let i = 0; i < listPost.length; i++) {
+    //   const itemHeight = 400;
+    //   const itemTop = i * itemHeight;
+    //   const itemBottom = itemTop + itemHeight;
 
-      if (itemTop < offsetY + windowHeight && itemBottom > offsetY) {
-        visibleItems.push(listPost[i]._id);
-      }
-    }
-    setActiveItems(visibleItems);
+    //   if (itemTop < offsetY + windowHeight && itemBottom > offsetY) {
+    //     visibleItems.push(listPost[i]._id);
+    //   }
+    // }
+    // setActiveItems(visibleItems);
   };
 
-  useEffect(() => {
-    let intervalId;
-    if(isFocused){
-      intervalId = setInterval(() => {
-        activeItems.forEach(async (itemId) => {
-          try{
-            if (!sentItems.current.has(itemId)) {
-              sentItems.current.add(itemId);
-              socket.emit("seenPost", { _id: idUser, idPost: itemId });
-            }
-          }catch(error){
-            console.error('Error sending request', error)
-          }
-        });
-      }, 4000);
-    }
+  // useEffect(() => {
+  //   let intervalId;
+  //   if(isFocused){
+  //     intervalId = setInterval(() => {
+  //       activeItems.forEach(async (itemId) => {
+  //         try{
+  //           if (!sentItems.current.has(itemId)) {
+  //             sentItems.current.add(itemId);
+  //             console.log(idUser)
+  //             console.log(itemId)
+  //             socket.emit("seenPost", { _id: idUser, idPost: itemId });
+  //           }
+  //         }catch(error){
+  //           console.error('Error sending request', error)
+  //         }
+  //       });
+  //     }, 4000);
+  //   }
 
-    return () => clearInterval(intervalId);
-  }, [activeItems,isFocused]);
+  //   return () => clearInterval(intervalId);
+  // }, [activeItems,isFocused]);
 
   const setDataPost = data => {
     dispatch(setListPost(data));
@@ -212,7 +214,7 @@ const ListPost = props => {
         data={listPost}
         extraData={listPost}
         ref={flatListRef}
-        getItemLayout={getItemLayout}
+        // getItemLayout={getItemLayout}
         onScroll={handleScroll}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
