@@ -31,4 +31,14 @@ const search_user = async (keyword, page, user) => {
     }
 }
 
-export { get_suggest, search_post, search_user }
+const getlocationpost = async (latitude, longtitude) => {
+    try {
+        const resault = await AxiosInstance().get(`${Model.POSTS}/${POST.SEARCHLOCATION}?latitude=${latitude}&longtitude=${longtitude}`, null)
+        return resault
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
+
+export { get_suggest, search_post, search_user, getlocationpost }

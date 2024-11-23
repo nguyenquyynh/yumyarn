@@ -36,6 +36,8 @@ export const searchLocation = async (keysearch, location) => {
             .then(data => data)
             .catch(error => console.error(error));
 
+        console.log(data);
+        
         return data
     } catch (error) {
         console.error("mmmmmmmmmmmm", error);
