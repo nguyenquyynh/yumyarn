@@ -274,7 +274,7 @@ const RenderPost = memo(props => {
                 paddingV-x
                 centerV
                 onPress={() => {
-                  navigation.navigate('EditPost', {post: post});
+                  navigation.navigate('EditPost', {post: item});
                   setOpenFollow(false);
                 }}>
                 <Icon
