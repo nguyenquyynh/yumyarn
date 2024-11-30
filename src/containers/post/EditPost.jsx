@@ -6,6 +6,7 @@ import {
   StatusBar,
   StyleSheet,
   TextInput,
+  ToastAndroid,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Wapper from 'components/Wapper';
@@ -117,24 +118,15 @@ const EditPost = ({ route }) => {
   };
 
   const handleAddHashtag = () => {
-    if (!isCleanContent(hashtag)) return
+    if (!isCleanContent(hashtag)) return;
+    const key = validateHashtag(hashtag)
+    if (hashtaglist.findIndex((item) => item === key) > -1) {
+      ToastAndroid.show(t("error.duplicatetag"), ToastAndroid.SHORT)
+      return;
+    }
 
-    if (
-      hashtag
-        ?.trim()
-        ?.replace(/[^a-z0-9]/g, '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-    ) {
-      sethashtaglist(prev => [
-        ...prev,
-        hashtag
-          .trim()
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/[^a-z0-9]/g, ''),
-      ]);
+    if (key) {
+      sethashtaglist(prev => [...prev, key]);
       sethashtag('');
     }
   };
@@ -153,7 +145,7 @@ const EditPost = ({ route }) => {
       );
 
       console.log(imageupclound);
-      
+
       const imageuporigin = images.filter(
         item => typeof item === 'string' && item,
       );
@@ -183,7 +175,7 @@ const EditPost = ({ route }) => {
       };
 
       console.log(body);
-      
+
 
       const response = await editmypost(body);
       setStatusAction(response.status);
@@ -334,11 +326,6 @@ const EditPost = ({ route }) => {
       />
     );
   };
-  const onHashtagPress = e => {
-    if (e.nativeEvent.key == ' ') {
-      sethashtag(hashtag + '#');
-    }
-  };
   if (is_loading) {
     return (
       <View flex>
@@ -381,11 +368,11 @@ const EditPost = ({ route }) => {
           <View
             bg-white
             padding-10
-            style={{width: '100%', minHeight: 150, maxHeight: 500}}>
+            style={{ width: '100%', minHeight: 150, maxHeight: 500 }}>
             <ScrollView>
               <View
                 flex
-                style={{flexDirection: 'row', flexWrap: 'wrap', gap: 5}}>
+                style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5 }}>
                 {hashtaglist.map(item => (
                   <View key={item} bg-yellow row centerV paddingH-5 br40>
                     <Text marginR-5 color={Colors.white} text80BO>
@@ -402,7 +389,7 @@ const EditPost = ({ route }) => {
               </View>
             </ScrollView>
             <View
-              style={{width: '100%'}}
+              style={{ width: '100%' }}
               br20
               row
               paddingV-5
@@ -479,7 +466,7 @@ const EditPost = ({ route }) => {
             <View
               flex
               marginV-10
-              style={{flexWrap: 'wrap', flexDirection: 'row', gap: 5}}>
+              style={{ flexWrap: 'wrap', flexDirection: 'row', gap: 5 }}>
               {hashtaglist.map(item => (
                 <View bg-yellow row centerV paddingH-5 br40>
                   <Text marginR-5 color={Colors.white} text80BO>
@@ -496,7 +483,7 @@ const EditPost = ({ route }) => {
               <View>
                 <Text
                   text80BO
-                  style={{borderRadius: 20, paddingHorizontal: 10}}
+                  style={{ borderRadius: 20, paddingHorizontal: 10 }}
                   bg-yellow
                   onPress={() => setShowHashtag(true)}>
                   #Hashtag

@@ -31,7 +31,7 @@ const FollowerList = ({route}) => {
   };
   useEffect(() => {
     getDataFollowers();
-  }, []);
+  }, [user]);
 
   return (
     <Wapper

@@ -5,28 +5,27 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, {memo, useEffect, useRef, useState} from 'react';
-import {createReport, createSaved, dePost, getPost} from 'src/hooks/api/post';
+import React, { memo, useEffect, useRef, useState } from 'react';
+import { createReport, createSaved, dePost, getPost } from 'src/hooks/api/post';
 import RenderPost from 'components/homes/RenderPost';
-import {createFollow} from 'src/hooks/api/follow';
-import {View} from 'react-native-ui-lib';
-import {t} from 'lang';
-import {useDispatch, useSelector} from 'react-redux';
-import {resetListPost, setListPost, updateFullListPost} from 'reducers/home';
+import { createFollow } from 'src/hooks/api/follow';
+import { View } from 'react-native-ui-lib';
+import { t } from 'lang';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetListPost, setListPost, updateFullListPost } from 'reducers/home';
 import { useIsFocused } from '@react-navigation/native';
 
 const ListPost = props => {
-  const {idUser, scrollY} = props;
+  const { idUser, scrollY, gotoDetail } = props;
   const dispatch = useDispatch();
   const listPost = useSelector(state => state.home.listPost);
   const [isLoading, setIsLoading] = useState(false);
   // const [dataPost, setDataPost] = useState([]);
+  // const [viewedItems, setViewedItems] = useState({});
   const [page, setPage] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [end, setEnd] = useState(false);
-  const [activeItems, setActiveItems] = useState([]); // Lưu trữ ID các item đang hiển thị
   const flatListRef = useRef(null);
-  const isFocused = useIsFocused();
   const socket = useSelector(state => state.fcm.socket);
   const getItemLayout = (data, index) => ({
     length: 400, // chiều cao của mỗi item
@@ -87,7 +86,7 @@ const ListPost = props => {
       const dataRequest = {
         id: idUser,
         page: page,
-        startingPoint : page == 1 ? null : listPost[listPost.length - 1]?._id
+        startingPoint: page == 1 ? null : listPost[listPost.length - 1]?._id
       };
       const response = await getPost(dataRequest);
       if (response.status) {
@@ -140,7 +139,7 @@ const ListPost = props => {
       if (userIdPost) {
         const followUpdate = listPost?.map(ele => {
           if (ele.create_by._id == userIdPost) {
-            return {...ele, follow: !ele.follow};
+            return { ...ele, follow: !ele.follow };
           }
           return ele;
         });
@@ -176,7 +175,7 @@ const ListPost = props => {
     if (userIdPost) {
       const savePostUpdate = listPost?.map(ele => {
         if (ele.create_by._id == userIdPost) {
-          return {...ele, isSaved: !ele.isSaved};
+          return { ...ele, isSaved: !ele.isSaved };
         }
         return ele;
       });
@@ -206,6 +205,23 @@ const ListPost = props => {
       ToastAndroid.show(t(resault?.data), ToastAndroid.SHORT);
     }
   };
+  const viewabilityConfig = useRef({
+    waitForInteraction: true,
+    itemVisiblePercentThreshold: 99, // Hình ảnh được coi là đã xem khi 50% hiển thị trên màn hình
+    minimumViewTimeMillis: 10000,
+  }).current;
+
+  const onViewableItemsChanged = useRef(({ viewableItems, changed }) => {
+    changed.forEach(item => {
+      const key = item.key;
+      // && !viewedItems[key]
+      if (item) {
+        // setViewedItems(prevState => ({ ...prevState, [key]: true }));
+        // console.log(viewableItems);
+        // Thực hiện hành động khác khi ảnh được xem đủ 3 giây
+      }
+    });
+  }).current;
   return (
     <>
       <FlatList
@@ -219,7 +235,7 @@ const ListPost = props => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        key={({index}) => index}
+        key={({ index }) => index}
         keyExtractor={(_, index) => index.toString()}
         onEndReached={() => {
           handleLoadMore(page + 1);
@@ -227,24 +243,32 @@ const ListPost = props => {
         onEndReachedThreshold={0.6}
         initialNumToRender={5}
         maxToRenderPerBatch={5}
-        renderItem={({item, index}) => (
-          <RenderPost
-            item={item}
-            idUser={idUser}
-            listPost={listPost}
-            setDataPost={setDataPost}
-            handlerSave={handlerSave}
-            handleReport={handleReport}
-            handlerRemove={handlerRemove}
-            handleFollow={handleFollow}
-          />
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={onViewableItemsChanged}
+        renderItem={({ item, index }) => (
+          <View onLayout={(event) => {
+            // You might need onLayout to ensure accurate viewability calculations
+          }}>
+            <RenderPost
+              item={item}
+              idUser={idUser}
+              listPost={listPost}
+              setDataPost={setDataPost}
+              handlerSave={handlerSave}
+              handleReport={handleReport}
+              handlerRemove={handlerRemove}
+              handleFollow={handleFollow}
+              gotoDetail={gotoDetail}
+            />
+          </View>
+
         )}
         ListFooterComponent={() => {
           return (
             <>
               {isLoading && (
                 <ActivityIndicator
-                  style={{marginBottom: 50}}
+                  style={{ marginBottom: 50 }}
                   size="large"
                   color="#0000ff"
                 />
@@ -261,5 +285,5 @@ const ListPost = props => {
 export default memo(ListPost);
 
 const styles = StyleSheet.create({
-  scrollview: {paddingTop: 50},
+  scrollview: { paddingTop: 50 },
 });

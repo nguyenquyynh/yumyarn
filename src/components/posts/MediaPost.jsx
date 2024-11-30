@@ -3,9 +3,7 @@ import React, { memo, useRef, useState } from 'react'
 import Video from 'react-native-video'
 import { Icon, Image, View } from 'react-native-ui-lib'
 
-const MediaPost = ({
-    data
-}) => {
+const MediaPost = ({ data }) => {
     var widthscreen = Dimensions.get('window').width
     var heightscreen = Dimensions.get('window').height
     const refVideo = useRef();
@@ -23,9 +21,16 @@ const MediaPost = ({
                 const heightPercentage = (100 / (heightscreen / widthscreen) * (height / width)).toFixed(0) + '%';
                 setScale(heightPercentage)
             });
-            return (
-                <Image source={{ uri: first }} style={[styles.media, heightscreen > widthscreen ? { width: '100%', height: scale || '100%' } : { width: scale || '100%', height: '100%' }]} />
-            );
+            if (heightscreen >= widthscreen) {
+                return (
+                    <Image source={{ uri: first }} style={[styles.media, { width: '100%', height: scale }]} />
+                );
+            } else {
+                return (
+                    <Image source={{ uri: first }} style={[styles.media, { width: scale, height: '100%' }]} />
+                );
+            }
+
 
         } else if (first.endsWith('.mp4')) {
             return (
@@ -35,16 +40,16 @@ const MediaPost = ({
                             onLoad={(naturalSize) => {
                                 const scale_video = (100 / (heightscreen / widthscreen) * (naturalSize.naturalSize.height / naturalSize.naturalSize.width)).toFixed(0) + '%'
                                 setScale(scale_video)
-                                
+
                             }}
 
                             paused={pausevideo}
                             source={{ uri: data }}
-                            style={{ width: '100%', height: scale || '100%' }}
+                            style={{ width: '100%', height: scale }}
                             resizeMode='cover'
                             ref={refVideo}
                             onEnd={() => {
-                                setPausevideo(true);                      
+                                setPausevideo(true);
                                 refVideo?.current?.seek(0);
                             }}
                             playInBackground={false} />
@@ -67,7 +72,6 @@ export default memo(MediaPost)
 
 const styles = StyleSheet.create({
     media: {
-        width: '100%',
         borderRadius: 10,
         overflow: 'hidden',
     },

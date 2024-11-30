@@ -21,8 +21,6 @@ export async function createpost(data) {
   }
 }
 export async function editmypost(data) {
-  console.log(data);
-
   try {
     const resault = await AxiosInstance().put(
       `${Model.POSTS}/${POST.EDIT}`,
@@ -62,8 +60,6 @@ export async function watchPost(dataRequest) {
       `${Model.POSTS}/${POST.WATCH}?u=${dataRequest.u}&p=${dataRequest.p}`,
     );
     if (resault.status) {
-      console.log(resault?.data);
-      
       return { status: true, data: resault.data };
     } else {
       return { status: false, data: resault.data };
@@ -116,7 +112,6 @@ export async function checkoutAdv(dataRequest) {
       dataRequest.body,
     );
     await isTokenExpired(resault.statuscode);
-    console.log(resault);
     if (resault.status) {
       return { status: true, data: resault.data };
     } else {

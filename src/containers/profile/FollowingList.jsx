@@ -19,6 +19,7 @@ import LottieView from 'lottie-react-native';
 const FollowingList = ({route}) => {
   // lấy danh sách theo user truyền vào còn kiểm tra có follow hay không theo view
   const {user, statusView} = route?.params || '';
+  
   const navigation = useNavigation();
   const [followersData, setFollowersData] = useState([]);
 
@@ -38,7 +39,7 @@ const FollowingList = ({route}) => {
 
   useEffect(() => {
     getDataFollowing();
-  }, []);
+  }, [user]);
 
   return (
     <Wapper

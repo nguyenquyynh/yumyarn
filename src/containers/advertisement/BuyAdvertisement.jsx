@@ -26,15 +26,15 @@ const BuyAdvertisement = ({ route }) => {
         })
         if (timeoutAdvertisement.status) {
             setviptime(`${millisecondsToDate(timeoutAdvertisement.data.start_vip)} -> ${millisecondsToDate(timeoutAdvertisement.data.end_vip)}`)
-        } else setviptime("Bạn chưa quảng bá bài viết này")
+        } else setviptime(t("pack.dint_buy"))
     }
 
     useFocusEffect(
         useCallback(() => {
-          return () => getTimeAdvertisement();
-        }, [])
-      );
-    
+            return () => getTimeAdvertisement();
+        })
+    );
+
 
     const handlerCheckout = async () => {
         const resault = await checkoutAdv({
@@ -58,8 +58,8 @@ const BuyAdvertisement = ({ route }) => {
         getTimeAdvertisement()
         getListAdvertisement()
     }, [])
-    
-    
+
+
 
     const RenderAdvertisement = (item) => {
         return (
@@ -84,15 +84,34 @@ const BuyAdvertisement = ({ route }) => {
             <View flex bg-gray >
                 <ScrollView style={{ flex: 1, backgroundColor: 'white', marginBottom: 10 }}>
                     <View flex bg-white paddingB-xx >
-                        <Text flex marginL-xx xviText marginB-xxx style={{ fontFamily: I }}>{viptime}</Text>
+                        <Text flex marginL-xx xviText marginB-10>{viptime}</Text>
+                        <View paddingH-20 marginB-xxx>
+                            <Text text65BO>{t("pack.benetfit")}</Text>
+                            <View style={styles.rim}>
+                                <Icon assetName='dot' style={styles.ciercle} />
+                                <Text text80BO>{t("pack.top_post")}</Text>
+                            </View>
+                            <View style={styles.rim}>
+                                <Icon assetName='dot' style={styles.ciercle} />
+                                <Text text80BO>{t("pack.auto_review")}</Text>
+                            </View>
+                            <View style={styles.rim}>
+                                <Icon assetName='dot' style={styles.ciercle} />
+                                <Text text80BO>{t("pack.donate")}</Text>
+                            </View>
+                            <View style={styles.rim}>
+                                <Icon assetName='dot' style={styles.ciercle} />
+                                <Text text80BO>{t("pack.follow")}</Text>
+                            </View>
+                        </View>
                         <FlatList
                             scrollEnabled={false}
                             data={listAdvertisement}
                             key={(item) => item._id}
                             renderItem={({ item }) => RenderAdvertisement(item)}
                             ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
-                            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
-                          </View>}
+                                <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+                            </View>}
                         />
                     </View>
                 </ScrollView>
@@ -104,7 +123,7 @@ const BuyAdvertisement = ({ route }) => {
                         if (AdvSelect) {
                             handlerCheckout()
                         } else {
-                            ToastAndroid.show("Chọn gói thời gian bạn muốn !", ToastAndroid.SHORT)
+                            ToastAndroid.show(t("pack.not_chosse"), ToastAndroid.SHORT)
                         }
                     }}>
                         <Text style={styles.TextB} color={Colors.white}>{AdvSelect == null ? t("app.choose") : t("app.buy")}</Text>
@@ -132,5 +151,15 @@ const styles = StyleSheet.create({
     },
     TextB: {
         fontFamily: B,
+    },
+    rim: {
+        marginTop: 20,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    ciercle: {
+        width: 10,
+        height: 10,
+        marginRight: 10
     }
 })

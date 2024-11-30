@@ -4,7 +4,7 @@ export const searchLocation = async (keysearch, location) => {
         const options = {
             method: 'GET',
             headers: {
-                'x-api-key': '534e01af-2c9b-49b5-9579-580c459e5f9f',
+                'x-api-key': '6d1a90ca-1e57-48f5-8144-a5226c799308',
                 'Content-Type': 'application/json'
             }
         };
@@ -19,6 +19,8 @@ export const searchLocation = async (keysearch, location) => {
             return fetch(url, options)
                 .then(response => {
                     if (!response.ok) {
+                        console.log(response);
+                        
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
                     return response.json();
@@ -36,8 +38,6 @@ export const searchLocation = async (keysearch, location) => {
             .then(data => data)
             .catch(error => console.error(error));
 
-        console.log(data);
-        
         return data
     } catch (error) {
         console.error("mmmmmmmmmmmm", error);

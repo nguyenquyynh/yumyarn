@@ -3,15 +3,15 @@ import React from 'react';
 import { Image, TouchableOpacity, View } from 'react-native-ui-lib';
 import { DEFAULT } from 'src/data/default';
 
-const Avatar = ({ source, size , onPress, style }) => {
+const Avatar = ({ source, size, onPress, style }) => {
     return (
         <View>
             <TouchableOpacity onPress={onPress} height={size} width={size} style={[style, styles.over, { borderRadius: 360 }]}>
-            <Image
-                style={[styles.image, { width: size, height: size }]}
-                source={{ uri: source?.uri || DEFAULT.AVATAR }}
-            />
-        </TouchableOpacity>
+                <Image
+                    style={[styles.image, { width: size, height: size }]}
+                    source={{ uri: source?.uri || DEFAULT.AVATAR }}
+                />
+            </TouchableOpacity>
         </View>
     );
 };

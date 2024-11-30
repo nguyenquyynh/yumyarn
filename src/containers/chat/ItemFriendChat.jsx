@@ -12,10 +12,9 @@ const ItemFriendChat = props => {
   const user = useSelector(state => state.auth.user);
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Chating', {friend: item})}
       style={styles.container}>
       <View style={styles.outlineImage}>
-        <Avatar source={{uri: item?.avatar}} size={70}/>
+        <Avatar source={{uri: item?.avatar}} size={50} onPress={() => navigation.navigate('Chating', {friend: item})}/>
         {item?.isOnline &&
           item?.message_active_status &&
           user?.message_active_status && <CustomCirlceOnline />}

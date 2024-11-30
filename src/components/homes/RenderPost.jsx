@@ -62,7 +62,8 @@ const RenderPost = memo(props => {
     handlerSave,
     handleReport,
     handlerRemove,
-    handleFollow
+    handleFollow,
+    gotoDetail
   } = props;
   const navigation = useNavigation();
   const [readmore, setReadmore] = useState(false);
@@ -202,7 +203,9 @@ const RenderPost = memo(props => {
           renderItem={data => (
             <Pressable
               onPress={() => {
-                navigation.navigate('PostDetail', {id: id, defaultdata: item});
+                if (gotoDetail) {
+                  gotoDetail({id: id, defaultdata: item})
+                } else navigation.navigate('PostDetail', {id: id, defaultdata: item});
               }}
               style={{overflow: 'hidden', borderRadius: 15}}>
               {data.item.endsWith('.mp4') ? (

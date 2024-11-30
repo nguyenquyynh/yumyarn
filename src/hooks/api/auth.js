@@ -24,14 +24,16 @@ export async function userLogin(fcmtoken) {
                 return { status: false, data: t("login.verify") }
             }
             if (resault.data.value === 'BLOCK') {
-                return { status: false, data: 'You account was block !!' }
+                return { status: false, data: t("login.block") }
             }
         } else {
+            console.log(resault.data.data);
+            
             return { status: false, data: resault.data.data }
         }
 
     } catch (error) {
-        return { status: false, data: 'Opps ! Have a problem' };
+        return { status: false, data: t("login.error") };
     }
 
 }

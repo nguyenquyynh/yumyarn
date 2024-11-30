@@ -31,6 +31,7 @@ import { Model, ReportModel } from 'src/hooks/api/Model';
 import Modals from 'components/BottomSheetApp';
 import Avatar from 'components/Avatar';
 import NotificationModalApp from 'components/commons/NotificationModalApp';
+import LinearGradient from 'react-native-linear-gradient';
 
 const PostDetail = ({ route }) => {
   const { id, _id, defaultdata } = route.params;
@@ -54,7 +55,7 @@ const PostDetail = ({ route }) => {
     if (reponse.status) {
       setPost(reponse.data[0]);
       setissaved(reponse.data[0]?.isSaved);
-      socket.emit("seenPost", {_id: user._id, idPost :post._id})
+      socket.emit("seenPost", { _id: user._id, idPost: post._id })
     }
     navigation.getParent()?.setParams({ _id: null });
     if (reponse.data.length === 0) {
@@ -136,6 +137,7 @@ const PostDetail = ({ route }) => {
     <View flex right>
       {post ? (
         <FlatList
+          style={{ width: '100%', height: '100%', backgroundColor: 'red' }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           horizontal
@@ -160,14 +162,13 @@ const PostDetail = ({ route }) => {
           setDots(!dots);
         }}
       />
-      <View flex absB padding-x style={{ maxHeight: heightscreen / 2 }}>
+      <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 0, y: 0 }}
+        locations={[0, 0.5, 1]}
+        colors={['black', Colors.tr_black, Colors.transparent]}
+        style={{ flex: 1, width: '100%', position: 'absolute', bottom: 0, padding: 10, maxHeight: heightscreen / 2 }}>
         <View flex row marginB-x>
           <Avatar
-            source={{
-              uri: post
-                ? post?.create_by?.avatar
-                : 'https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_1280.png',
-            }}
+            source={{ uri: post?.create_by?.avatar }}
             size={40}
             onPress={handlerClickAvatar}
           />
@@ -221,12 +222,28 @@ const PostDetail = ({ route }) => {
             ))}
           </View>
         )}
-        <ScrollView>
+        {post?.address &&
+          <View row top centerV>
+            <Icon assetName="location" size={12} marginR-v />
+            <Text
+              onPress={() => {
+                navigation.navigate('SearchMap', { defaultlocation: post?.address });
+              }}
+              text
+              numberOfLines={1}
+              text90BO
+              color='red'
+              marginR-7>
+              {post?.address?.detail}
+            </Text>
+          </View>
+        }
+        <ScrollView style={{marginVertical: 10}}>
           <Text
             text90L
             style={{ fontFamily: M }}
             color={Colors.white}
-            numberOfLines={ismore ? 10000 : 2}
+            numberOfLines={ismore ? 10000 : 3}
             onPress={() => {
               setIsmore(!ismore);
             }}>
@@ -281,7 +298,7 @@ const PostDetail = ({ route }) => {
           </Pressable>
         </View>
 
-      </View>
+      </LinearGradient>
       <NotificationModalApp modalhiden={setShownoti} modalVisible={shownoti} funt={handlerRemove} asseticon={'dont'} content={t('title_model.content_remove_post')} title={t('title_model.remove_post')} />
       {post && <ShowComments
         idPost={post?._id}
@@ -300,7 +317,7 @@ const PostDetail = ({ route }) => {
         post={post}
         setShownoti={() => setShownoti(true)}
       />}
-      { post && <ShowShareDetailPost
+      {post && <ShowShareDetailPost
         disable={isshare}
         setDisable={setIsshare}
         post_id={post?._id}
