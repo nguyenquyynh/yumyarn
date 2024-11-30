@@ -159,7 +159,7 @@ const Report = () => {
                         renderItem={data => (
                             <Pressable
                                 onPress={() => {
-                                    navigation.navigate('PostDetail', { id: item?.post?._id });
+                                    navigation.navigate('PostDetail', { id: item?.post?._id, defaultdata: item?.post });
                                 }}
                                 style={{ overflow: 'hidden', borderRadius: 15 }}>
                                 {data.item.endsWith('.mp4') ? (

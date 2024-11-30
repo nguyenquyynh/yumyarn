@@ -81,7 +81,7 @@ const OtherProfile = ({ route }) => {
 
     if (contentOffset.y + windowHeight > contentSize.height - 100) {
       if (!page) return;
-      
+
       timeout.current = setTimeout(() => {
         setLoading(true)
         loadTimeline();
@@ -273,7 +273,7 @@ const OtherProfile = ({ route }) => {
           data={filterDataNoDuplicate(data)}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.postImage} onPress={() => {
-              navigation.navigate('PostDetail', { id: item._id })
+              navigation.navigate('PostDetail', { id: item._id, defaultdata: item })
             }}>
               <RenderMedia item={item?.media[0]} i={item?._id} />
             </TouchableOpacity>

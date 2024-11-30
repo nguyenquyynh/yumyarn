@@ -1,4 +1,4 @@
-import { StyleSheet, Image, FlatList, LayoutAnimation } from 'react-native'
+import { StyleSheet, Image, FlatList, LayoutAnimation, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Colors, Icon, Modal, Text, TouchableOpacity, View } from 'react-native-ui-lib'
 import Wapper from 'components/Wapper'
@@ -9,7 +9,8 @@ import NotificationModalApp from 'components/commons/NotificationModalApp'
 import LottieView from 'lottie-react-native'
 import lottie from 'configs/ui/lottie'
 import Avatar from 'components/Avatar'
-
+import Markdown from 'react-native-markdown-display';
+import { millisecondsToDate } from 'configs/ui/time'
 
 const MainNotifications = () => {
   const navigation = useNavigation()
@@ -95,6 +96,7 @@ const MainNotifications = () => {
         <View style={styles.textContainer}>
           <Text style={styles.userName}>{item.user}</Text>
           <Text numberOfLines={2} style={styles.actionText}>{item.content}</Text>
+          <Text text90BO>{millisecondsToDate(item?.create_at)}</Text>
         </View>
       </TouchableOpacity>
     )
@@ -103,6 +105,9 @@ const MainNotifications = () => {
   return (
     <Wapper renderleft funtleft={() => navigation.goBack()} title={t("notification.title")}>
       <View flex bg-white>
+        <View paddingH-5 center>
+          <Text text80BO color={Colors.yellow}>{t("messenge.delete_noti")}</Text>
+        </View>
         <FlatList
           refreshing={refreshing}
           onRefresh={handleRefes}
@@ -115,20 +120,27 @@ const MainNotifications = () => {
         />
       </View>
       <Modal visible={showNotiAdmin.status} statusBarTranslucent transparent>
-        <View center marginH-20 marginT-150 bg-white br30 padding-10 style={{ elevation: 20 }}>
-          <View center padding-10>
-            <LottieView source={lottie.Noti} style={{ width: 200, height: 200 }} loop autoPlay />
-            <View padding-10 row>
-              <Text center text50BO>Yumyarn noti</Text>
-            </View>
-            <Text center>{showNotiAdmin?.id?.content}</Text>
+        <View flex bg-tr_black center>
+          <View center marginH-10 bg-white br30 padding-10 style={{ elevation: 20, width: '98%', height: '90%' }}>
+            <ScrollView contentInsetAdjustmentBehavior="automatic">
+              <View center padding-10>
+                <LottieView source={lottie.Noti} style={{ width: 200, height: 200 }} loop autoPlay />
+                <View padding-10 row>
+                  <Text center text50BO>{t("chat.app_noti")}</Text>
+                </View>
+                <Markdown style={styles.text}>
+                  {showNotiAdmin?.id?.content}
+                </Markdown>
+              </View>
+            </ScrollView>
+            <TouchableOpacity marginT-40 style={{ width: '100%' }} centerH br100 marginH-10 padding-10 bg-yellow onPress={() => { setShowNotiAdmin({ status: false }) }}>
+              <Text text65BO color='white'>{t("chat.allow")}</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity marginT-40 style={{ width: '100%' }} centerH br100 marginH-10 padding-10 bg-yellow onPress={() => { setShowNotiAdmin({ status: false }) }}>
-            <Text text65BO color='white'>Allow</Text>
-          </TouchableOpacity>
+
         </View>
       </Modal>
-    </Wapper>
+    </Wapper >
   )
 }
 export default MainNotifications
@@ -170,5 +182,10 @@ const styles = StyleSheet.create({
     zIndex: 2,
     bottom: 0,
     right: 0,
+  },
+  text: {
+    text: {
+      color: 'black',
+    },
   }
 })

@@ -12,11 +12,9 @@ export const isCleanContent = (content) => {
     }
 
     if (filter.isProfane(content) || Vnfilter(content)) {
-        console.log(filter.isProfane(content));
         ToastAndroid.show(t("error.bad_words"), ToastAndroid.SHORT)
         return false
     } else {
-        console.log(filter.isProfane(content));
         return true
     }
 }

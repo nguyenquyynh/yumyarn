@@ -73,7 +73,8 @@
     "verify": "Kiểm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
     "policy": "chính sách bảo mật",
     "google": "Đăng nhập với Google",
-    "agree" : "Bạn phải đồng ý với chính sách của chúng tôi để tiếp tục truy cập !"
+    "agree" : "Bạn phải đồng ý với chính sách của chúng tôi để tiếp tục truy cập!",
+    "block": "Tài khoản của bạn đã bị chặn!"
   },
   "post": {
     "edit": "Chỉnh sửa",
@@ -177,7 +178,9 @@
     "repost": "Đăng lại"
   },
   "chat": {
-    "title": "Nhắn tin"
+    "title": "Nhắn tin",
+    "allow" : "Đã đọc",
+    "app_noti" : "Thông báo YumYarn"
   },
   "advertisement": {
     "title": "Đăng kí gói quảng bá"
@@ -223,13 +226,17 @@
     "seen": "Trạng thái đọc",
     "seen_d": "Mọi người có thể biết khi nào bạn đọc tin nhắn của họ, nhưng chỉ biết khi cả bạn và họ đều bật tính năng này",
     "auto_mes": "Tin nhắn tự động",
-    "auto_mes_d": "Gửi tin nhắn cho những ai tương tác với bài viết bạn quảng bá một cách tự dộng."
+    "auto_mes_d": "Gửi tin nhắn cho những ai tương tác với bài viết bạn quảng bá một cách tự dộng.",
+    "nofriends" : "Những ai theo dõi lẫn nhau sẽ được xem là bạn bè.",
+    "remember" : "Hãy bắt đầu làm bạn với ai đó nào!",
+    "delete_noti" : "Các thông báo sẽ tự động xóa sau 7 ngày."
   },
   "error": {
     "reported" : "Báo cào này của bạn đã gửi trước đó vui lòng đợi",
     "reporting": "Chúng tôi sẽ xem xét báo cáo của bạn.",
     "missinput": "Thiếu dữ liệu để xử lý.",
-    "bad_words" : "Nội dung chứa từ ngữ không phù hợp."
+    "bad_words" : "Nội dung chứa từ ngữ không phù hợp.",
+    "duplicatetag": "Nhãn này đã tồn tại trong bài viết."
   },
   "camera":{
     "off":"Tắt",
@@ -244,6 +251,13 @@
     "big": "Gói núi lửa",
     "limited": "Gói mặt trời",
     "date": "Ngày",
-    "code": "Mã thanh toán"
+    "code": "Mã thanh toán",
+    "not_chosse" : "Chọn gói thời gian bạn muốn !",
+    "dint_buy": "Bạn chưa mua gói quản cáo nào cho bài viết này !",
+    "benetfit": "Lợi ích khi mua gói:",
+    "top_post": "Các bài viết của bạn sẽ được ưu tiên trong danh sách cho người khác.",
+    "auto_review": "Bạn có thể thêm các tin nhắn tự động khi người dùng tương tác.",
+    "donate": "Hiện thị cho biết đây là \"Nội dung quảng cáo\" ",
+    "follow": "Theo dõi mức độ tương tác của người dùng với nội dung của bạn."
   }
 }

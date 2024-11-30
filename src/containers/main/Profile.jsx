@@ -8,7 +8,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { Image, Text, View, TouchableOpacity, Colors } from 'react-native-ui-lib';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import Avatar from 'components/Avatar';
 import { getTimeline, findUser } from 'src/hooks/api/profile';
@@ -102,6 +102,7 @@ const Profile = () => {
     }
   };
 
+
   useEffect(() => {
     const init = async () => {
       await getIdUser();
@@ -109,6 +110,13 @@ const Profile = () => {
     };
     init();
   }, []);
+
+  useFocusEffect(() => {
+    const init = async () => {
+      await getIdUser();
+    };
+    init()
+  })
 
   const filterDataNoDuplicate = (list) => {
     return list.reduce((acc, current) => {

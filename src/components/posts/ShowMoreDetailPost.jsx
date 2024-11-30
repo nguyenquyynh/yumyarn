@@ -38,7 +38,6 @@ const ShowMoreDetailPost = props => {
         { id: 3, role: post?.repost_by ? 'DIFF' : 'ME', img: "edit", title: "post.edit", disription: "post.edit_d", funt: handlerEditPost },
         { id: 4, role: ((post?.repost_by?._id === auth?._id) || (!post?.repost_by && post?.create_by?._id === auth?._id)) ? "ME" : 'DIFF', img: "remove", title: "post.remove", disription: "post.remove_d", funt: () => {setShownoti(); setDisable(false)} },
     ]
-
     return (
         <>
             <Modals modalVisible={disable} modalhiden={() => { setDisable(!disable) }}>

@@ -5,41 +5,44 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
+  ToastAndroid,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Wapper from 'components/Wapper';
-import {t} from 'lang';
+import { t } from 'lang';
 import {
   Colors,
   Icon,
   Image,
   PanningProvider,
   Text,
+  Toast,
   TouchableOpacity,
   View,
 } from 'react-native-ui-lib';
 import ButtonApp from 'components/ButtonApp';
 import IconApp from 'components/IconApp';
 import Modals from 'components/BottomSheetApp';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Video from 'react-native-video';
 import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
-import {createpost} from 'src/hooks/api/post';
+import { createpost } from 'src/hooks/api/post';
 import CameraApp from 'containers/camera/CameraApp';
 import NotificationModalApp from 'components/commons/NotificationModalApp';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import LoadingApp from 'components/commons/LoadingApp';
 import Avatar from 'components/Avatar';
-import {Upload} from 'src/libs/UploadImage';
+import { Upload } from 'src/libs/UploadImage';
 import LottieView from 'lottie-react-native';
 import lottie from 'configs/ui/lottie';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { isCleanContent } from 'src/middleware/contentmiddleware';
+import { validateHashtag } from 'src/libs/InputValidate';
 
-const MainPost = ({route}) => {
+const MainPost = ({ route }) => {
   const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);
-  const {address} = route.params || {};
+  const { address } = route.params || {};
   const [modelshow, setModelshow] = useState(false);
   const [open_camera, setopen_camera] = useState(false);
   const [isnotifiy, setIsnotifiy] = useState(false);
@@ -77,7 +80,7 @@ const MainPost = ({route}) => {
   };
 
   const onUploadMedia = async file => {
-    const {uri, type, name} = file;
+    const { uri, type, name } = file;
     try {
       const resault = await Upload(uri, type, name);
       return resault;
@@ -110,22 +113,14 @@ const MainPost = ({route}) => {
   const handleAddHashtag = () => {
     if (!isCleanContent(hashtag)) return
 
-    if (
-      hashtag
-        ?.trim()
-        ?.replace(/[^a-z0-9]/g, '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-    ) {
-      sethashtaglist(prev => [
-        ...prev,
-        hashtag
-          .trim()
-          .toLowerCase()
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/[^a-z0-9]/g, ''),
-      ]);
+    const key = validateHashtag(hashtag)
+    if (hashtaglist.findIndex((item) => item === key) > -1) {
+      ToastAndroid.show(t("error.duplicatetag"), ToastAndroid.SHORT)
+      return;
+    }
+
+    if (key) {
+      sethashtaglist(prev => [ ...prev,key ]);
       sethashtag('');
     }
   };
@@ -177,17 +172,17 @@ const MainPost = ({route}) => {
     }
   };
   // Render item media
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <View style={styles.imageWrapper}>
       {item.uri?.endsWith('.mp4') ? (
         <Video
-          source={{uri: item.uri}}
+          source={{ uri: item.uri }}
           style={styles.imageitem}
           paused
           controls
         />
       ) : (
-        <Image source={{uri: item.uri}} style={styles.imageitem} />
+        <Image source={{ uri: item.uri }} style={styles.imageitem} />
       )}
       <TouchableOpacity
         style={styles.removeIcon}
@@ -324,11 +319,11 @@ const MainPost = ({route}) => {
           <View
             bg-white
             padding-10
-            style={{width: '100%', minHeight: 150, maxHeight: 500}}>
+            style={{ width: '100%', minHeight: 150, maxHeight: 500 }}>
             <ScrollView>
               <View
                 flex
-                style={{flexDirection: 'row', flexWrap: 'wrap', gap: 5}}>
+                style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 5 }}>
                 {hashtaglist.map(item => (
                   <View key={item} bg-yellow row centerV paddingH-5 br40>
                     <Text marginR-5 color={Colors.white} text80BO>
@@ -345,7 +340,7 @@ const MainPost = ({route}) => {
               </View>
             </ScrollView>
             <View
-              style={{width: '100%'}}
+              style={{ width: '100%' }}
               br20
               row
               paddingV-5
@@ -400,7 +395,7 @@ const MainPost = ({route}) => {
               source={lottie.UpLoading}
               autoPlay
               loop
-              style={{width: 100, height: 100}}
+              style={{ width: 100, height: 100 }}
             />
           </View>
         </View>
@@ -421,7 +416,7 @@ const MainPost = ({route}) => {
         <View style={styles.body}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View row>
-              <Avatar source={{uri: user?.avatar}} size={40} />
+              <Avatar source={{ uri: user?.avatar }} size={40} />
               <View marginL-x>
                 <Text text70BO>{user?.name}</Text>
                 <Text text80T>@{user?.tagName}</Text>
@@ -438,7 +433,7 @@ const MainPost = ({route}) => {
             <View
               flex
               marginV-10
-              style={{flexWrap: 'wrap', flexDirection: 'row', gap: 5}}>
+              style={{ flexWrap: 'wrap', flexDirection: 'row', gap: 5 }}>
               {hashtaglist.map(item => (
                 <View bg-yellow row centerV paddingH-5 br40>
                   <Text marginR-5 color={Colors.white} text80BO>
@@ -455,7 +450,7 @@ const MainPost = ({route}) => {
               <View>
                 <Text
                   text80BO
-                  style={{borderRadius: 20, paddingHorizontal: 10}}
+                  style={{ borderRadius: 20, paddingHorizontal: 10 }}
                   bg-yellow
                   onPress={() => setShowHashtag(true)}>
                   #Hashtag
@@ -473,7 +468,7 @@ const MainPost = ({route}) => {
           </ScrollView>
         </View>
         <View bg-white style={styles.footer}>
-          <TouchableOpacity style={{width: '100%'}} onPress={handlerAddImage}>
+          <TouchableOpacity style={{ width: '100%' }} onPress={handlerAddImage}>
             <View style={styles.contentlocation}>
               <IconApp assetName={'diaphragm'} size={25} />
               <Text numberOfLines={1} style={styles.textloctation}>
@@ -482,7 +477,7 @@ const MainPost = ({route}) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{width: '100%'}}
+            style={{ width: '100%' }}
             onPress={() => {
               navigation.navigate('Adddrressscreen', {
                 back: 'Post',
