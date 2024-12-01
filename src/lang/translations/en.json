@@ -259,6 +259,12 @@
     "top_post": "Your posts will be prioritized in the list for others.",
     "auto_review": "You can add automated messages when users interact.",
     "donate": "Display indicating that this is \"Sponsored Content\"",
-    "follow": "Track user engagement with your content."
+    "follow": "Track user engagement with your content.",
+    "desrition": "Describe the issue you are facing",
+    "request": "Request Submitted:",
+    "create": "Create a New Request",
+    "create_description": "If you encounter any issues, you can create a new request for us, and we will try to assist you as soon as possible.",
+    "send_success": "We have received your request.",
+    "send_faild": "There was an issue during the request creation process. Please try again."
   }
 }
