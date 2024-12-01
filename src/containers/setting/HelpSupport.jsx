@@ -31,6 +31,7 @@ const HelpSupport = () => {
 
     const resault = await getHelp({ page: page + 1, limit: 10 })
     if (resault.status) {
+      setContent('')
       if (resault.data.length < 10) {
         setPage(null)
       } else {
