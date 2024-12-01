@@ -15,10 +15,11 @@ import { t } from 'lang';
 import Wapper from 'components/Wapper';
 import { getPostAdvs } from 'src/hooks/api/post';
 import RenderVideo from 'components/homes/RenderVideo';
-import { millisecondsToDate } from 'configs/ui/time';
+import { millisecondsToDate, millisecondsToDay } from 'configs/ui/time';
 import numberFormat from 'configs/ui/format';
 import LottieView from 'lottie-react-native';
 import lottie from 'configs/ui/lottie';
+import { Clock, Crown, Eye, FlameIcon, MessageCircle } from 'lucide-react-native';
 const MAX_WIDTH = Dimensions.get('window').width
 const Advertisement = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +44,7 @@ const Advertisement = () => {
   };
 
   const onLoadMore = async () => {
+    setIsLoading(true)
     await getPostAdvs(page)
       .then(resault => {
         if (Array.isArray(resault.data && resault.data.length > 0)) {
@@ -51,6 +53,7 @@ const Advertisement = () => {
         }
       })
       .catch(err => console.log(err))
+      .finally(() => setIsLoading(false))
   };
 
   useEffect(() => {
@@ -76,6 +79,7 @@ const Advertisement = () => {
                   navigation.navigate('PostDetail', { id: item?.post?._id, defaultdata: item?.post });
                 }}
                 style={{ overflow: 'hidden', borderRadius: 15 }}>
+
                 {data.item.endsWith('.mp4') ? (
                   <RenderVideo urlvideo={data.item} />
                 ) : (
@@ -85,6 +89,10 @@ const Advertisement = () => {
                     resizeMode="cover"
                   />
                 )}
+                <View abs paddingH-10 paddingV-1 center row br100 bg-yellow style={{ top: 10, right: 10 }}>
+                  <Crown color={'white'} size={15} />
+                  <Text marginL-5 color='white' text90BO>{millisecondsToDate(item?.end_vip)}</Text>
+                </View>
               </Pressable>
             )}
             key={item => item.id}
@@ -125,6 +133,26 @@ const Advertisement = () => {
             {item?.post?.address?.detail}
           </Text>
         </View>
+        <View marginT-10 style={{ width: '100%', }}>
+          <View row left centerV>
+            <Clock size={15} color={'red'} />
+            <Text marginL-5 text90L>{millisecondsToDate(item.start_vip)} {`-`} {millisecondsToDate(item.end_vip)}</Text>
+          </View>
+          <View row>
+            <View row left marginR-10 center>
+              <FlameIcon size={15} color={'red'} />
+              <Text marginL-5 text80H>{numberFormat(item?.fires || 0)}</Text>
+            </View>
+            <View row right marginR-10 center>
+              <MessageCircle size={15} color={'blue'}/>
+              <Text marginL-5 text80H>{numberFormat(item?.comments || 0)}</Text>
+            </View>
+            <View row right center>
+              <Eye size={15} color={'green'}/>
+              <Text marginL-5 text80H>{numberFormat(item?.comments || 0)}</Text>
+            </View>
+          </View>
+        </View>
       </View>
     )
   }
@@ -148,31 +176,17 @@ const Advertisement = () => {
             renderItem={({ item }) => (
               <View style={styles.postContainer}>
                 {Render(item)}
-                <View padding-3 paddingH-10 bg-puper style={{ width: '100%', }} spread row>
-                  <View row left >
-                    <Icon assetName='clock' size={15} marginR-3 />
-                    <Text text90BO>{millisecondsToDate(item.start_vip)} {`->`} {millisecondsToDate(item.end_vip)}</Text>
-                  </View>
-                  <View row spread>
-                    <View row left marginR-10>
-                      <Icon assetName='fire' size={15} marginH-3 />
-                      <Text text90BO>{numberFormat(item?.fires || 0)}</Text>
-                    </View>
-                    <View row right>
-                      <Icon assetName='send' size={15} marginH-3 />
-                      <Text text90BO>{numberFormat(item?.comments || 0)}</Text>
-                    </View>
-                  </View>
-                </View>
+
               </View>
             )}
             ListEmptyComponent={() => <View center style={{ width: '100%', height: Dimensions.get('window').height - 100 }}>
-            <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
-          </View>}
+              <LottieView source={lottie.Nodata} loop={false} autoPlay style={{ width: 150, height: 150 }} />
+            </View>}
             ListFooterComponent={() =>
-              isLoading && <ActivityIndicator style={{ marginBottom: 50 }} size="large" color="#0000ff" />
+              isLoading && <ActivityIndicator style={{ marginBottom: 10 }} size="large" color="#0000ff" />
             }
           />
+          { }
         </>
       </View>
     </Wapper>
@@ -186,7 +200,7 @@ const styles = StyleSheet.create({
   },
   postContainer: {
     alignItems: 'center', // Center items in the container
-    marginBottom: 20, // Add spacing between posts
+    marginBottom: 10, // Add spacing between posts
   },
   dateText: {
     fontSize: 16, // Set font size
@@ -212,6 +226,6 @@ const styles = StyleSheet.create({
     maxWidth: 500,
     alignSelf: 'center',
     position: 'relative',
-    elevation: 10
+    elevation: 2
   },
 });

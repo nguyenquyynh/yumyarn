@@ -3,8 +3,6 @@ import { auth_logout } from 'reducers/auth';
 import { store } from 'store/store';
 
 const url = process.env.BASEAPI_URL
-console.log(url);
-
 const AxiosInstance = (token = '', contentType = 'application/json') => {
     const axiosInstance = axios.create({
         baseURL: url

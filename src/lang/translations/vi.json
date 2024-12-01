@@ -258,6 +258,12 @@
     "top_post": "Các bài viết của bạn sẽ được ưu tiên trong danh sách cho người khác.",
     "auto_review": "Bạn có thể thêm các tin nhắn tự động khi người dùng tương tác.",
     "donate": "Hiện thị cho biết đây là \"Nội dung quảng cáo\" ",
-    "follow": "Theo dõi mức độ tương tác của người dùng với nội dung của bạn."
+    "follow": "Theo dõi mức độ tương tác của người dùng với nội dung của bạn.",
+    "desrition" : "Mô tả vấn đề bạn gặp phải",
+    "request" : "Yêu cầu đã gửi:",
+    "create": "Tạo yêu cầu mới",
+    "create_desription" : "Nếu bạn gặp vấn đề. Bạn có thể tạo một yêu cầu mới cho chúng tôi, chúng tôi sẽ cố gắng liên hỗ trợ bạn sớm nhất có thể.",
+    "send_success" : "Chúng tôi đã tiếp nhận yêu cầu của bạn.",
+    "send_faild" : "Có vấn đề xảy ra trong quas trình tạo yêu cầu. Hãy thử lại"
   }
 }

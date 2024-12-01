@@ -12,6 +12,7 @@ const ShowMoreDetailPost = props => {
     const navigation = useNavigation()
     const auth = useSelector(state => state.auth.user)
     const role = ((auth._id === create_post) || (auth._id === post?.repost_by?._id)) ? 'ME' : 'OTHER'
+    const roleAdv = ((auth._id === create_post) && (!post?.repost_by?._id)) ? 'ME' : 'DIFF'
 
     const handlerFollow = async () => {
         const follow = await createFollow(auth._id, create_post)
@@ -30,13 +31,13 @@ const ShowMoreDetailPost = props => {
     const option = [
         { id: 1, role: "OTHER", img: "follow", title: "post.follow", disription: "post.follow_d", funt: handlerFollow },
         {
-            id: 2, role: "ME", img: "recomment", title: "post.advertisement", disription: "post.advertisement_d", funt: () => {
+            id: 2, role: roleAdv, img: "recomment", title: "post.advertisement", disription: "post.advertisement_d", funt: () => {
                 setDisable(false)
                 navigation.navigate('BuyAdvertisement', { post: id_post })
             }
         },
         { id: 3, role: post?.repost_by ? 'DIFF' : 'ME', img: "edit", title: "post.edit", disription: "post.edit_d", funt: handlerEditPost },
-        { id: 4, role: ((post?.repost_by?._id === auth?._id) || (!post?.repost_by && post?.create_by?._id === auth?._id)) ? "ME" : 'DIFF', img: "remove", title: "post.remove", disription: "post.remove_d", funt: () => {setShownoti(); setDisable(false)} },
+        { id: 4, role: ((post?.repost_by?._id === auth?._id) || (!post?.repost_by && post?.create_by?._id === auth?._id)) ? "ME" : 'DIFF', img: "remove", title: "post.remove", disription: "post.remove_d", funt: () => { setShownoti(); setDisable(false) } },
     ]
     return (
         <>
