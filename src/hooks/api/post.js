@@ -217,6 +217,28 @@ export async function createReport(data) {
   }
 }
 
+export async function createHelp(data) {
+  try {
+    const resault = await AxiosInstance().post(
+      `${Model.REPORT}/help`, data
+    );
+    return resault
+  } catch (error) {
+    console.log(error + ' Lỗi');
+    return { status: false, data: error.data };
+  }
+}
+
+export async function getHelp(data) {
+  try {
+    const resault = await AxiosInstance().get(`${Model.REPORT}/help?page=${data?.page}&limit=${data.limit}`);
+    return resault
+  } catch (error) {
+    console.log(error);
+    return { status: false, data: error.data };
+  }
+}
+
 export async function getReport(data) {
   try {
     const resault = await AxiosInstance().get(`${Model.REPORT}/${ReportModel.ALL}?page=${data?.page}&limit=${data.limit}`);
