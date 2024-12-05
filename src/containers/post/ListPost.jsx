@@ -5,78 +5,86 @@ import {
   StyleSheet,
   ToastAndroid,
 } from 'react-native';
-import React, { memo, useEffect, useRef, useState } from 'react';
-import { createReport, createSaved, dePost, getPost } from 'src/hooks/api/post';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {createReport, createSaved, dePost, getPost} from 'src/hooks/api/post';
 import RenderPost from 'components/homes/RenderPost';
-import { createFollow } from 'src/hooks/api/follow';
-import { View } from 'react-native-ui-lib';
-import { t } from 'lang';
-import { useDispatch, useSelector } from 'react-redux';
-import { resetListPost, setListPost, updateFullListPost } from 'reducers/home';
-import { useIsFocused } from '@react-navigation/native';
+import {createFollow} from 'src/hooks/api/follow';
+import {View} from 'react-native-ui-lib';
+import {t} from 'lang';
+import {useDispatch, useSelector} from 'react-redux';
+import {resetListPost, setListPost, updateFullListPost} from 'reducers/home';
 
 const ListPost = props => {
-  const { idUser, scrollY, gotoDetail } = props;
+  const {idUser, scrollY, gotoDetail} = props;
   const dispatch = useDispatch();
   const listPost = useSelector(state => state.home.listPost);
   const [isLoading, setIsLoading] = useState(false);
   // const [dataPost, setDataPost] = useState([]);
-  // const [viewedItems, setViewedItems] = useState({});
+
   const [page, setPage] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [end, setEnd] = useState(false);
   const flatListRef = useRef(null);
   const socket = useSelector(state => state.fcm.socket);
-  const getItemLayout = (data, index) => ({
-    length: 400, // chiều cao của mỗi item
-    offset: 400 * index, // offset của mỗi item
-    index,
-  });
-  const sentItems = useRef(new Set());
 
-  const handleScroll = (event) => {
-    const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+  const [viewedPosts, setViewedPosts] = useState(new Set());
+  const timeoutRefs = useRef({});
 
-    const visibleItems = [];
-    const windowHeight = layoutMeasurement.height;
-    const contentHeight = contentSize.height;
-    const offsetY = contentOffset.y;
-    if (scrollY) {
-      scrollY.setValue(offsetY);
-    }
-    // for (let i = 0; i < listPost.length; i++) {
-    //   const itemHeight = 400;
-    //   const itemTop = i * itemHeight;
-    //   const itemBottom = itemTop + itemHeight;
+  const handleScroll = useCallback(
+    event => {
+      const {contentOffset} = event.nativeEvent;
+      const offsetY = contentOffset.y;
 
-    //   if (itemTop < offsetY + windowHeight && itemBottom > offsetY) {
-    //     visibleItems.push(listPost[i]._id);
-    //   }
-    // }
-    // setActiveItems(visibleItems);
-  };
+      if (scrollY) {
+        scrollY.setValue(offsetY);
+      }
+    },
+    [scrollY],
+  );
 
-  // useEffect(() => {
-  //   let intervalId;
-  //   if(isFocused){
-  //     intervalId = setInterval(() => {
-  //       activeItems.forEach(async (itemId) => {
-  //         try{
-  //           if (!sentItems.current.has(itemId)) {
-  //             sentItems.current.add(itemId);
-  //             console.log(idUser)
-  //             console.log(itemId)
-  //             socket.emit("seenPost", { _id: idUser, idPost: itemId });
-  //           }
-  //         }catch(error){
-  //           console.error('Error sending request', error)
-  //         }
-  //       });
-  //     }, 4000);
-  //   }
+  const onViewableItemsChanged = useCallback(
+    ({viewableItems}) => {
+      const visiblePostIds = new Set(viewableItems.map(item => item.item._id));
 
-  //   return () => clearInterval(intervalId);
-  // }, [activeItems,isFocused]);
+      // Xóa các timer của bài viết không còn trong vùng xem
+      const postIds = Object.keys(timeoutRefs.current);
+      for (const postId of postIds) {
+        if (!visiblePostIds.has(postId) && timeoutRefs?.current[postId]) {
+          clearTimeout(timeoutRefs.current[postId]);
+          timeoutRefs.current[postId] = null;
+        }
+      }
+      viewableItems.forEach(item => {
+        const postId = item.item._id;
+        if (!timeoutRefs.current[postId] && !viewedPosts.has(postId)) {
+          handleViewPost(postId);
+        }
+      });
+    },
+    [handleViewPost, viewedPosts],
+  );
+
+  const handleViewPost = useCallback(
+    postId => {
+      timeoutRefs.current[postId] = setTimeout(() => {
+        setViewedPosts(
+          prevViewedPosts => new Set([...prevViewedPosts, postId]),
+        );
+        socket.emit('seenPost', {_id: idUser, idPost: postId});
+        clearTimeout(timeoutRefs.current[postId]);
+      }, 4000);
+    },
+    [viewedPosts],
+  );
+
+  useEffect(() => {
+    //khi unmount thì hủy việc theo dõi lại
+    return () => {
+      for (const timerId in timeoutRefs.current) {
+        clearTimeout(timeoutRefs.current[timerId]);
+      }
+    };
+  }, []);
 
   const setDataPost = data => {
     dispatch(setListPost(data));
@@ -86,7 +94,7 @@ const ListPost = props => {
       const dataRequest = {
         id: idUser,
         page: page,
-        startingPoint: page == 1 ? null : listPost[listPost.length - 1]?._id
+        startingPoint: page == 1 ? null : listPost[listPost.length - 1]?._id,
       };
       const response = await getPost(dataRequest);
       if (response.status) {
@@ -134,12 +142,12 @@ const ListPost = props => {
     getPostData(idUser, 1);
   }, []);
 
-  const handleFollow = async (userIdPost) => {
+  const handleFollow = async userIdPost => {
     try {
       if (userIdPost) {
         const followUpdate = listPost?.map(ele => {
           if (ele.create_by._id == userIdPost) {
-            return { ...ele, follow: !ele.follow };
+            return {...ele, follow: !ele.follow};
           }
           return ele;
         });
@@ -175,7 +183,7 @@ const ListPost = props => {
     if (userIdPost) {
       const savePostUpdate = listPost?.map(ele => {
         if (ele.create_by._id == userIdPost) {
-          return { ...ele, isSaved: !ele.isSaved };
+          return {...ele, isSaved: !ele.isSaved};
         }
         return ele;
       });
@@ -205,23 +213,7 @@ const ListPost = props => {
       ToastAndroid.show(t(resault?.data), ToastAndroid.SHORT);
     }
   };
-  const viewabilityConfig = useRef({
-    waitForInteraction: true,
-    itemVisiblePercentThreshold: 99, // Hình ảnh được coi là đã xem khi 50% hiển thị trên màn hình
-    minimumViewTimeMillis: 10000,
-  }).current;
 
-  const onViewableItemsChanged = useRef(({ viewableItems, changed }) => {
-    changed.forEach(item => {
-      const key = item.key;
-      // && !viewedItems[key]
-      if (item) {
-        // setViewedItems(prevState => ({ ...prevState, [key]: true }));
-        // console.log(viewableItems);
-        // Thực hiện hành động khác khi ảnh được xem đủ 3 giây
-      }
-    });
-  }).current;
   return (
     <>
       <FlatList
@@ -235,7 +227,7 @@ const ListPost = props => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        key={({ index }) => index}
+        key={({index}) => index}
         keyExtractor={(_, index) => index.toString()}
         onEndReached={() => {
           handleLoadMore(page + 1);
@@ -243,32 +235,29 @@ const ListPost = props => {
         onEndReachedThreshold={0.6}
         initialNumToRender={5}
         maxToRenderPerBatch={5}
-        viewabilityConfig={viewabilityConfig}
         onViewableItemsChanged={onViewableItemsChanged}
-        renderItem={({ item, index }) => (
-          <View onLayout={(event) => {
-            // You might need onLayout to ensure accurate viewability calculations
-          }}>
-            <RenderPost
-              item={item}
-              idUser={idUser}
-              listPost={listPost}
-              setDataPost={setDataPost}
-              handlerSave={handlerSave}
-              handleReport={handleReport}
-              handlerRemove={handlerRemove}
-              handleFollow={handleFollow}
-              gotoDetail={gotoDetail}
-            />
-          </View>
-
+        viewabilityConfig={{
+          itemVisiblePercentThreshold: 80, // Thay đổi nếu cần
+        }}
+        renderItem={({item, index}) => (
+          <RenderPost
+            item={item}
+            idUser={idUser}
+            listPost={listPost}
+            setDataPost={setDataPost}
+            handlerSave={handlerSave}
+            handleReport={handleReport}
+            handlerRemove={handlerRemove}
+            handleFollow={handleFollow}
+            gotoDetail={gotoDetail}
+          />
         )}
         ListFooterComponent={() => {
           return (
             <>
               {isLoading && (
                 <ActivityIndicator
-                  style={{ marginBottom: 50 }}
+                  style={{marginBottom: 50}}
                   size="large"
                   color="#0000ff"
                 />
@@ -282,8 +271,8 @@ const ListPost = props => {
   );
 };
 
-export default memo(ListPost);
+export default ListPost;
 
 const styles = StyleSheet.create({
-  scrollview: { paddingTop: 50 },
+  scrollview: {paddingTop: 50},
 });

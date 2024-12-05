@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -39,7 +39,6 @@ const OtherProfile = ({ route }) => {
   const [dataUser, setDataUser] = useState({});
   const [statusFollow, setStatusFollow] = useState(false);
   const [report, setReport] = useState(false);
-
   async function loadTimeline(option) {
     switch (option) {
       case 'refress':

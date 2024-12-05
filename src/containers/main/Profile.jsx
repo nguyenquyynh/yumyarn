@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -201,7 +201,7 @@ const Profile = () => {
   );
 };
 
-export default memo(Profile);
+export default Profile;
 
 const styles = StyleSheet.create({
   container: {

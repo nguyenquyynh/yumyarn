@@ -20,6 +20,7 @@ const MainChat = ({ route }) => {
   const [endFriend, setEndFriend] = useState(false);
   const [endMessage, setEndMessage] = useState(false);
   const { _id } = route.params;
+  const [haveGo, setHaveGo] = useState(false);
   const getListFriend = async () => {
     try {
       if (!endFriend) {
@@ -70,12 +71,11 @@ const MainChat = ({ route }) => {
         socket.emit('listOnlineMessage', {
           listFriend: response.data,
         });
-        if (_id) {
-          navigation.getParent()?.setParams({ _id: null });
+        if (_id && !haveGo) {
           navigation.navigate('Chating', {
             friend: response.data?.find(item => item._id === _id),
           });
-          navigation.getParent()?.setParams({ _id: null });
+          setHaveGo(true)
         }
         setPage(0);
       }
@@ -91,24 +91,19 @@ const MainChat = ({ route }) => {
     refeshListMessage();
   }, []))
 
-  // useEffect(() => {
-  //   socket.on('getOnlineFriend', data => {
-  //     setListFriend(data);
-  //   });
-  //   socket.on('getOnlineMessage', data => {
-  //     setListMessage(data);
-  //   });
+  useEffect(() => {
+    socket.on('getOnlineFriend', data => {
+      setListFriend(data);
+    });
+    socket.on('getOnlineMessage', data => {
+      setListMessage(data);
+    });
 
-  //   socket.on('refesh_message', () => {
-  //     refeshListMessage();
-  //   });
-
-  //   return () => {
-  //     socket.off('getOnlineFriend');
-  //     socket.off('getOnlineMessage');
-  //     socket.off('refesh_message');
-  //   };
-  // }, []);
+    return () => {
+      socket.off('getOnlineFriend');
+      socket.off('getOnlineMessage');
+    };
+  }, []);
   return (
     <Wapper
       renderleft

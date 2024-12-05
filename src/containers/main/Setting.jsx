@@ -5,7 +5,7 @@ import {
   LayoutAnimation,
   StyleSheet,
 } from 'react-native';
-import React, { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Colors,
   Icon,
@@ -119,7 +119,7 @@ const Setting = () => {
   );
 };
 
-export default memo(Setting);
+export default Setting;
 
 const styles = StyleSheet.create({
   card_logout: {

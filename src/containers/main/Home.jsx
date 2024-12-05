@@ -102,7 +102,7 @@ const Home = () => {
   );
 };
 
-export default memo(Home);
+export default Home;
 
 const styles = StyleSheet.create({
   name: {

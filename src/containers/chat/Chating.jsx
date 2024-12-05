@@ -8,20 +8,20 @@ import {
   ActivityIndicator,
   LayoutAnimation,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { getOldMessage, seenMessage } from 'src/hooks/api/message';
-import { Icon, Image, Text, View } from 'react-native-ui-lib';
+import React, {useEffect, useRef, useState} from 'react';
+import {useSelector} from 'react-redux';
+import {getOldMessage, seenMessage} from 'src/hooks/api/message';
+import {Icon, Image, Text, View} from 'react-native-ui-lib';
 import Avatar from 'components/Avatar';
 import ItemChating from './ItemChating';
 import CustomCirlceOnline from './CustomCirlceOnline';
-import { useNavigation } from '@react-navigation/native';
-import { changeTime, transDate } from 'components/commons/ChangeMiliTopDate';
+import {useNavigation} from '@react-navigation/native';
+import {changeTime, transDate} from 'components/commons/ChangeMiliTopDate';
 import NotificationModalApp from 'components/commons/NotificationModalApp';
-import { t } from 'lang';
+import {t} from 'lang';
 
-const Chating = ({ route }) => {
-  const { friend } = route.params;
+const Chating = ({route}) => {
+  const {friend} = route.params;
   const navigation = useNavigation();
   const user = useSelector(state => state.auth.user);
   const socket = useSelector(state => state.fcm.socket);
@@ -50,21 +50,21 @@ const Chating = ({ route }) => {
         if (
           response.status &&
           response.data[response.data.length - 1]?._id !=
-          listMessage[listMessage.length - 1]?._id
+            listMessage[listMessage.length - 1]?._id
         ) {
           if (response.data.length === 0) {
             setEnd(true);
           }
-          if (
-            response.data.length === 0 &&
-            listMessage.length === 0 &&
-            ((friend?.message_recive_status == 'FRIEND' && !friend.isFriend) ||
-              friend?.message_recive_status == 'NOBODY')
-          ) {
-            setshowModal(true);
-          }
-
           await setlistMessage(prev => [...prev, ...response?.data]);
+        }
+
+        if (
+          response.data.length === 0 &&
+          listMessage.length === 0 &&
+          ((friend?.message_recive_status == 'FRIEND' && !friend.isFriend) ||
+            friend?.message_recive_status == 'NOBODY')
+        ) {
+          setshowModal(true);
         }
       }
     } catch (error) {
@@ -104,8 +104,6 @@ const Chating = ({ route }) => {
         LayoutAnimation.easeInEaseOut();
         setMessage('');
         scrollToStart();
-      } else {
-        Alert.alert('Thông báo', 'không được bỏ trống tin nhắn');
       }
     } catch (error) {
       console.log(error);
@@ -123,17 +121,19 @@ const Chating = ({ route }) => {
   };
 
   useEffect(() => {
-    const messageState = async () => {
-      await getMessage(listMessage);
-      await hanldeseenAllMessage();
-    };
-    messageState();
+    if(listMessage.length > 0 && !listMessage[0]?.seen && listMessage[0].receive_user == user._id){
+      hanldeseenAllMessage();
+    }
+  },[listMessage])
+
+  useEffect(() => {
+    getMessage(listMessage);
     socket.on('receive_message', data => {
       setlistMessage(prev => [data, ...prev]);
       LayoutAnimation.easeInEaseOut();
     });
 
-    socket.emit('onChat', { userId: user._id, friend: friend._id });
+    socket.emit('onChat', {userId: user._id, friend: friend._id});
     socket.on('CheckIsWritting', data => {
       if (data.user == friend._id) {
         setfriendIsWritting(data.data);
@@ -142,7 +142,7 @@ const Chating = ({ route }) => {
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
-        socket.emit('isWritting', { receiveName: friend._id, userId: user._id });
+        socket.emit('isWritting', {receiveName: friend._id, userId: user._id});
       },
     );
 
@@ -156,7 +156,7 @@ const Chating = ({ route }) => {
       },
     );
     return () => {
-      socket.emit('outChat', { userId: user._id });
+      socket.emit('outChat', {userId: user._id});
       socket.off('receive_message');
       socket.off('CheckIsWritting');
       keyboardDidShowListener.remove();
@@ -170,7 +170,7 @@ const Chating = ({ route }) => {
   };
 
   return (
-    <View style={{ position: 'relative', flex: 1, backgroundColor: 'white' }}>
+    <View style={{position: 'relative', flex: 1, backgroundColor: 'white'}}>
       <View style={styles.shadowContainer}>
         <View style={styles.containerIcon}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -185,12 +185,12 @@ const Chating = ({ route }) => {
               })
             }>
             <View style={styles.outlineImage}>
-              <Avatar source={{ uri: friend?.avatar }} size={50} />
+              <Avatar source={{uri: friend?.avatar}} size={50} />
               {friend?.isOnline &&
                 friend?.message_active_status &&
                 user?.message_active_status && <CustomCirlceOnline />}
             </View>
-            <View style={{ justifyContent: 'space-between' }}>
+            <View style={{justifyContent: 'space-between'}}>
               <Text text80BO>{friend.name}</Text>
               {friend?.message_active_status && user?.message_active_status && (
                 <Text>
@@ -200,15 +200,17 @@ const Chating = ({ route }) => {
             </View>
           </TouchableOpacity>
         </View>
-        {!socket && <View padding bg-red50>
-          <Text center>{t("app.discconect")}</Text>
-        </View>}
+        {!socket && (
+          <View padding bg-red50>
+            <Text center>{t('app.discconect')}</Text>
+          </View>
+        )}
       </View>
       <FlatList
         ref={refScoll}
         data={listMessage}
         keyExtractor={item => item._id}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <ItemChating item={item} user={user} friend={friend} />
         )}
         contentContainerStyle={{
@@ -226,7 +228,7 @@ const Chating = ({ route }) => {
 
       <View style={styles.containerChat}>
         {friendIsWritting && (
-          <Text style={{ position: 'absolute', top: 0, left: 20 }}>
+          <Text style={{position: 'absolute', top: 0, left: 20}}>
             {friend.name} đang nhập...
           </Text>
         )}
@@ -252,6 +254,7 @@ const Chating = ({ route }) => {
         title={'Thông báo'}
         content={'Người dùng đã tắt nhận tin nhắn từ người lạ'}
         asseticon={'dont'}
+        cancel={false}
         funt={() => {
           navigation.goBack();
         }}
@@ -282,7 +285,7 @@ const styles = StyleSheet.create({
   },
   shadowContainer: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 10, // Cho Android
