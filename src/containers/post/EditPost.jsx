@@ -7,57 +7,57 @@ import {
   StyleSheet,
   TextInput,
   ToastAndroid,
-} from 'react-native'
-import React, { useEffect, useState } from 'react'
-import Wapper from 'components/Wapper'
-import { t } from 'lang'
-import { Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib'
-import ButtonApp from 'components/ButtonApp'
-import IconApp from 'components/IconApp'
-import Modals from 'components/BottomSheetApp'
-import { useNavigation } from '@react-navigation/native'
-import Video from 'react-native-video'
-import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary'
-import { editmypost } from 'src/hooks/api/post'
-import CameraApp from 'containers/camera/CameraApp'
-import NotificationModalApp from 'components/commons/NotificationModalApp'
-import { useSelector } from 'react-redux'
-import { B } from 'configs/fonts'
-import LoadingApp from 'components/commons/LoadingApp'
-import Avatar from 'components/Avatar'
-import LottieView from 'lottie-react-native'
-import lottie from 'configs/ui/lottie'
-import { launchImageLibrary } from 'react-native-image-picker'
-import { isCleanContent } from 'src/middleware/contentmiddleware'
-import { Upload } from 'src/libs/UploadImage'
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import Wapper from 'components/Wapper';
+import { t } from 'lang';
+import { Colors, Icon, Image, Text, TouchableOpacity, View } from 'react-native-ui-lib';
+import ButtonApp from 'components/ButtonApp';
+import IconApp from 'components/IconApp';
+import Modals from 'components/BottomSheetApp';
+import { useNavigation } from '@react-navigation/native';
+import Video from 'react-native-video';
+import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
+import { editmypost } from 'src/hooks/api/post';
+import CameraApp from 'containers/camera/CameraApp';
+import NotificationModalApp from 'components/commons/NotificationModalApp';
+import { useSelector } from 'react-redux';
+import { B } from 'configs/fonts';
+import LoadingApp from 'components/commons/LoadingApp';
+import Avatar from 'components/Avatar';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { isCleanContent } from 'src/middleware/contentmiddleware';
+import { Upload } from 'src/libs/UploadImage';
 
 const EditPost = ({ route }) => {
-  const navigation = useNavigation()
-  const user = useSelector(state => state.auth.user)
-  const [post, setpost] = useState(route.params.post)
-  const address = route.params?.address || route.params.post?.address
-  const [modelshow, setModelshow] = useState(false)
-  const [statusAction, setStatusAction] = useState(false)
-  const [open_camera, setopen_camera] = useState(false)
-  const [isnotifiy, setIsnotifiy] = useState(false)
-  const [notifycontent, setNotifycontent] = useState('')
-  const [notifytitle, setNotifytitle] = useState('')
-  const [images, setImages] = useState(post?.media || [])
-  const [is_loading, setis_loading] = useState(false)
-  const [content, setcontent] = useState(post?.content)
-  const [hashtag, sethashtag] = useState('')
-  const [showHashtag, setShowHashtag] = useState(false)
-  const [hashtaglist, sethashtaglist] = useState(post?.hashtags || [])
+  const navigation = useNavigation();
+  const user = useSelector(state => state.auth.user);
+  const [post, setpost] = useState(route.params.post);
+  const address = route.params?.address || route.params.post?.address;
+  const [modelshow, setModelshow] = useState(false);
+  const [statusAction, setStatusAction] = useState(false);
+  const [open_camera, setopen_camera] = useState(false);
+  const [isnotifiy, setIsnotifiy] = useState(false);
+  const [notifycontent, setNotifycontent] = useState('');
+  const [notifytitle, setNotifytitle] = useState('');
+  const [images, setImages] = useState(post?.media || []);
+  const [is_loading, setis_loading] = useState(false);
+  const [content, setcontent] = useState(post?.content);
+  const [hashtag, sethashtag] = useState('');
+  const [showHashtag, setShowHashtag] = useState(false);
+  const [hashtaglist, sethashtaglist] = useState(post?.hashtags || []);
 
   // Hàm xóa ảnh
   const handleRemoveImage = item => {
-    setImages(images.filter(image => image !== item))
-  }
+    setImages(images.filter(image => image !== item));
+  };
 
   // Hàm show model 
   const handlerAddImage = () => {
-    setModelshow(true)
-  }
+    setModelshow(true);
+  };
 
   const buttonright = () => {
     return (
@@ -70,97 +70,97 @@ const EditPost = ({ route }) => {
         title={t('create_post.post')}
         onclick={checkCreatePost}
       />
-    )
-  }
+    );
+  };
 
   const onUploadMedia = async file => {
-    const { uri, type, name } = file
+    const { uri, type, name } = file;
     try {
-      const newData = await Upload(uri, type, name)
-      console.log(newData)
+      const newData = await Upload(uri, type, name);
+      console.log(newData);
 
-      return newData
+      return newData;
     } catch (error) {
-      console.log(error)
-      return null
+      console.log(error);
+      return null;
     }
-  }
+  };
 
   const checkCreatePost = async () => {
     if (!isCleanContent(content)) return
 
     if (content.trim() === '') {
-      setNotifytitle(t('title_model.content_error'))
-      setNotifycontent(t('title_model.post_faile'))
-      setIsnotifiy(true)
+      setNotifytitle(t('title_model.content_error'));
+      setNotifycontent(t('title_model.post_faile'));
+      setIsnotifiy(true);
     } else if (images.length <= 0) {
-      setNotifytitle(t('title_model.image_error'))
-      setNotifycontent(t('title_model.post_faile'))
-      setIsnotifiy(true)
+      setNotifytitle(t('title_model.image_error'));
+      setNotifycontent(t('title_model.post_faile'));
+      setIsnotifiy(true);
     } else if (!address) {
-      setNotifytitle(t('title_model.address_error'))
-      setNotifycontent(t('title_model.post_faile'))
-      setIsnotifiy(true)
+      setNotifytitle(t('title_model.address_error'));
+      setNotifycontent(t('title_model.post_faile'));
+      setIsnotifiy(true);
     } else {
-      editPost()
+      editPost();
     }
-  }
+  };
 
   const extractHashtags = inputString => {
-    const words = inputString.split(' ')
-    const result = []
+    const words = inputString.split(' ');
+    const result = [];
     for (let ele of words) {
       if (ele.startsWith('#')) {
-        result.push(ele.substring(1))
+        result.push(ele.substring(1));
       }
     }
-    return result
-  }
+    return result;
+  };
 
   const handleAddHashtag = () => {
-    if (!isCleanContent(hashtag)) return
+    if (!isCleanContent(hashtag)) return;
     const key = validateHashtag(hashtag)
     if (hashtaglist.findIndex((item) => item === key) > -1) {
       ToastAndroid.show(t("error.duplicatetag"), ToastAndroid.SHORT)
-      return
+      return;
     }
 
     if (key) {
-      sethashtaglist(prev => [...prev, key])
-      sethashtag('')
+      sethashtaglist(prev => [...prev, key]);
+      sethashtag('');
     }
-  }
+  };
 
   const hanldeRemoveHashtag = tag => {
-    sethashtaglist(hashtaglist.filter(item => item != tag))
-  }
+    sethashtaglist(hashtaglist.filter(item => item != tag));
+  };
 
   const editPost = async () => {
     if (!isCleanContent(content)) return
 
     try {
-      setis_loading(true)
+      setis_loading(true);
       const imageupclound = images.filter(
         item => typeof item === 'object' && item,
-      )
+      );
 
-      console.log(imageupclound)
+      console.log(imageupclound);
 
       const imageuporigin = images.filter(
         item => typeof item === 'string' && item,
-      )
+      );
 
       const upImage = async imageupclound => {
-        const uploadPromises = imageupclound.map(image => onUploadMedia(image))
-        const uploadedUrls = await Promise.all(uploadPromises)
+        const uploadPromises = imageupclound.map(image => onUploadMedia(image));
+        const uploadedUrls = await Promise.all(uploadPromises);
 
-        console.log('uploadedUrls', uploadedUrls)
+        console.log('uploadedUrls', uploadedUrls);
 
-        return uploadedUrls.filter(url => url !== null)
-      }
-      var validUrls = await upImage(imageupclound)
+        return uploadedUrls.filter(url => url !== null);
+      };
+      var validUrls = await upImage(imageupclound);
 
-      console.log('validUrls', validUrls)
+      console.log('validUrls', validUrls);
 
       const body = {
         _id: post?._id,
@@ -172,32 +172,32 @@ const EditPost = ({ route }) => {
         create_by: user?._id,
         hashtags: hashtaglist,
         content: content,
-      }
+      };
 
-      console.log(body)
+      console.log(body);
 
 
-      const response = await editmypost(body)
-      setStatusAction(response.status)
+      const response = await editmypost(body);
+      setStatusAction(response.status);
       if (response.status) {
-        setImages([])
-        sethashtag('')
-        setcontent('')
+        setImages([]);
+        sethashtag('');
+        setcontent('');
 
-        setNotifytitle(t('title_model.success'))
-        setNotifycontent(t('title_model.post_success'))
-        setIsnotifiy(true)
+        setNotifytitle(t('title_model.success'));
+        setNotifycontent(t('title_model.post_success'));
+        setIsnotifiy(true);
       } else {
-        setNotifytitle(t('title_model.error'))
-        setNotifycontent(t('title_model.post_faile'))
-        setIsnotifiy(true)
+        setNotifytitle(t('title_model.error'));
+        setNotifycontent(t('title_model.post_faile'));
+        setIsnotifiy(true);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setis_loading(false)
+      setis_loading(false);
     }
-  }
+  };
 
   // Render item media
   const renderItem = ({ item }) => (
@@ -224,7 +224,7 @@ const EditPost = ({ route }) => {
         <IconApp assetName={'cancel'} size={20} color={'red'} />
       </TouchableOpacity>
     </View>
-  )
+  );
   //Modal pick Media
   const renderModalPickImage = () => {
     return (
@@ -243,8 +243,8 @@ const EditPost = ({ route }) => {
           </TouchableOpacity>
         </View>
       </Modals>
-    )
-  }
+    );
+  };
   //Modal camera
   const rendermodalCamera = () => {
     return (
@@ -253,22 +253,22 @@ const EditPost = ({ route }) => {
           closeModal={() => setopen_camera(false)}
           updateListMedia={medias => {
             if (medias != null) {
-              const filename = medias.path.split('/').pop()
+              const filename = medias.path.split('/').pop();
               var one_media = {
                 id: images.length + 1,
                 type: medias.path.endsWith('.mp4') ? 'video/mp4' : 'image/jpeg',
                 uri: 'file://' + medias.path,
                 name: filename,
-              }
+              };
 
-              images.push(one_media)
+              images.push(one_media);
             }
-            setModelshow(!modelshow)
+            setModelshow(!modelshow);
           }}
         />
       </Modal>
-    )
-  }
+    );
+  };
 
   const selectMedia = async () => {
     let options = {
@@ -277,15 +277,15 @@ const EditPost = ({ route }) => {
       storageOptions: {
         skipBackup: true,
       },
-    }
+    };
 
     await launchImageLibrary(options, response => {
       if (response.didCancel) {
-        console.log('User cancelled media picker')
+        console.log('User cancelled media picker');
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.errorMessage)
+        console.log('ImagePicker Error: ', response.errorMessage);
       } else {
-        console.log(response.assets)
+        console.log(response.assets);
 
         const abc = response.assets.map(ele => {
           if (ele != null) {
@@ -294,18 +294,18 @@ const EditPost = ({ route }) => {
               type: ele.type,
               uri: ele.uri,
               name: ele.fileName,
-            }
+            };
           }
-        })
+        });
 
         if (abc) {
-          setImages(preved => [...preved, ...abc])
+          setImages(preved => [...preved, ...abc]);
         }
       }
-    })
+    });
 
-    setModelshow(false)
-  }
+    setModelshow(false);
+  };
 
   //Modal notify
   const renderNotification = () => {
@@ -315,17 +315,17 @@ const EditPost = ({ route }) => {
         modalVisible={isnotifiy}
         funt={() => {
           if (notifycontent == t('title_model.post_success')) {
-            navigation.navigate('Main')
+            navigation.navigate('Main');
           } else {
-            setIsnotifiy(false)
+            setIsnotifiy(false);
           }
         }}
         title={notifytitle}
         asseticon={statusAction ? 'done' : 'dont'}
         content={notifycontent}
       />
-    )
-  }
+    );
+  };
   if (is_loading) {
     return (
       <View flex>
@@ -340,7 +340,7 @@ const EditPost = ({ route }) => {
           </View>
         </View>
       </View>
-    )
+    );
   }
   const renderHashtag = () => {
     return (
@@ -350,7 +350,7 @@ const EditPost = ({ route }) => {
         statusBarTranslucent
         animationType="fade"
         onRequestClose={() => {
-          setShowHashtag(false)
+          setShowHashtag(false);
         }}>
         <View
           style={{
@@ -362,7 +362,7 @@ const EditPost = ({ route }) => {
           <TouchableOpacity
             flex
             onPress={() => {
-              setShowHashtag(false)
+              setShowHashtag(false);
             }}
           />
           <View
@@ -428,19 +428,19 @@ const EditPost = ({ route }) => {
           <TouchableOpacity
             flex
             onPress={() => {
-              setShowHashtag(false)
+              setShowHashtag(false);
             }}
           />
         </View>
       </Modal>
-    )
-  }
+    );
+  };
   return (
     <Wapper
       gadient
       renderleft
       funtleft={() => {
-        navigation.goBack()
+        navigation.goBack();
       }}
       iconleft={'back'}
       title={t('post.edit')}
@@ -515,7 +515,7 @@ const EditPost = ({ route }) => {
               navigation.navigate('Adddrressscreen', {
                 back: 'EditPost',
                 defaultlocation: post?.address,
-              })
+              });
             }}>
             <View style={styles.contentlocation}>
               <IconApp assetName={'location'} size={25} />
@@ -534,10 +534,10 @@ const EditPost = ({ route }) => {
       {renderHashtag()}
 
     </Wapper>
-  )
-}
+  );
+};
 
-export default EditPost
+export default EditPost;
 
 const styles = StyleSheet.create({
   container: {
@@ -652,4 +652,4 @@ const styles = StyleSheet.create({
   locationHint: {
     color: '#f00',
   },
-})
+});

@@ -6,10 +6,10 @@ import {
   StyleSheet,
   TextInput,
   ToastAndroid,
-} from 'react-native'
-import React, { useState } from 'react'
-import Wapper from 'components/Wapper'
-import { t } from 'lang'
+} from 'react-native';
+import React, { useState } from 'react';
+import Wapper from 'components/Wapper';
+import { t } from 'lang';
 import {
   Colors,
   Icon,
@@ -19,51 +19,51 @@ import {
   Toast,
   TouchableOpacity,
   View,
-} from 'react-native-ui-lib'
-import ButtonApp from 'components/ButtonApp'
-import IconApp from 'components/IconApp'
-import Modals from 'components/BottomSheetApp'
-import { useNavigation } from '@react-navigation/native'
-import Video from 'react-native-video'
-import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary'
-import { createpost } from 'src/hooks/api/post'
-import CameraApp from 'containers/camera/CameraApp'
-import NotificationModalApp from 'components/commons/NotificationModalApp'
-import { useSelector } from 'react-redux'
-import LoadingApp from 'components/commons/LoadingApp'
-import Avatar from 'components/Avatar'
-import { Upload } from 'src/libs/UploadImage'
-import LottieView from 'lottie-react-native'
-import lottie from 'configs/ui/lottie'
-import { launchImageLibrary } from 'react-native-image-picker'
-import { isCleanContent } from 'src/middleware/contentmiddleware'
-import { validateHashtag } from 'src/libs/InputValidate'
+} from 'react-native-ui-lib';
+import ButtonApp from 'components/ButtonApp';
+import IconApp from 'components/IconApp';
+import Modals from 'components/BottomSheetApp';
+import { useNavigation } from '@react-navigation/native';
+import Video from 'react-native-video';
+import ImageAndVideoLibary from 'containers/camera/ImageAndVideoLibary';
+import { createpost } from 'src/hooks/api/post';
+import CameraApp from 'containers/camera/CameraApp';
+import NotificationModalApp from 'components/commons/NotificationModalApp';
+import { useSelector } from 'react-redux';
+import LoadingApp from 'components/commons/LoadingApp';
+import Avatar from 'components/Avatar';
+import { Upload } from 'src/libs/UploadImage';
+import LottieView from 'lottie-react-native';
+import lottie from 'configs/ui/lottie';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { isCleanContent } from 'src/middleware/contentmiddleware';
+import { validateHashtag } from 'src/libs/InputValidate';
 
 const MainPost = ({ route }) => {
-  const navigation = useNavigation()
-  const user = useSelector(state => state.auth.user)
-  const { address } = route.params || {}
-  const [modelshow, setModelshow] = useState(false)
-  const [open_camera, setopen_camera] = useState(false)
-  const [isnotifiy, setIsnotifiy] = useState(false)
-  const [notifycontent, setNotifycontent] = useState('')
-  const [notifytitle, setNotifytitle] = useState('')
-  const [images, setImages] = useState([])
-  const [is_loading, setis_loading] = useState(false)
-  const [content, setcontent] = useState('')
-  const [showHashtag, setShowHashtag] = useState(false)
-  const [hashtag, sethashtag] = useState('')
-  const [hashtaglist, sethashtaglist] = useState([])
-  const [statusRequest, setStatusRequest] = useState(false)
+  const navigation = useNavigation();
+  const user = useSelector(state => state.auth.user);
+  const { address } = route.params || {};
+  const [modelshow, setModelshow] = useState(false);
+  const [open_camera, setopen_camera] = useState(false);
+  const [isnotifiy, setIsnotifiy] = useState(false);
+  const [notifycontent, setNotifycontent] = useState('');
+  const [notifytitle, setNotifytitle] = useState('');
+  const [images, setImages] = useState([]);
+  const [is_loading, setis_loading] = useState(false);
+  const [content, setcontent] = useState('');
+  const [showHashtag, setShowHashtag] = useState(false);
+  const [hashtag, sethashtag] = useState('');
+  const [hashtaglist, sethashtaglist] = useState([]);
+  const [statusRequest, setStatusRequest] = useState(false);
   // Hàm xóa ảnh
   const handleRemoveImage = id => {
-    setImages(images.filter(image => image.id !== id))
-  }
+    setImages(images.filter(image => image.id !== id));
+  };
 
   // Hàm show model
   const handlerAddImage = () => {
-    setModelshow(true)
-  }
+    setModelshow(true);
+  };
 
   const buttonright = () => {
     return (
@@ -76,39 +76,39 @@ const MainPost = ({ route }) => {
         title={t('create_post.post')}
         onclick={checkCreatePost}
       />
-    )
-  }
+    );
+  };
 
   const onUploadMedia = async file => {
-    const { uri, type, name } = file
+    const { uri, type, name } = file;
     try {
-      const resault = await Upload(uri, type, name)
-      return resault
+      const resault = await Upload(uri, type, name);
+      return resault;
     } catch (error) {
-      console.log(error)
-      return null
+      console.log(error);
+      return null;
     }
-  }
+  };
 
   const checkCreatePost = async () => {
     if (!isCleanContent(content)) return
 
     if (content.trim() === '') {
-      setNotifytitle(t('title_model.content_error'))
-      setNotifycontent(t('title_model.post_faile'))
-      setIsnotifiy(true)
+      setNotifytitle(t('title_model.content_error'));
+      setNotifycontent(t('title_model.post_faile'));
+      setIsnotifiy(true);
     } else if (images.length <= 0) {
-      setNotifytitle(t('title_model.image_error'))
-      setNotifycontent(t('title_model.post_faile'))
-      setIsnotifiy(true)
+      setNotifytitle(t('title_model.image_error'));
+      setNotifycontent(t('title_model.post_faile'));
+      setIsnotifiy(true);
     } else if (!address) {
-      setNotifytitle(t('title_model.address_error'))
-      setNotifycontent(t('title_model.post_faile'))
-      setIsnotifiy(true)
+      setNotifytitle(t('title_model.address_error'));
+      setNotifycontent(t('title_model.post_faile'));
+      setIsnotifiy(true);
     } else {
-      createPost()
+      createPost();
     }
-  }
+  };
 
   const handleAddHashtag = () => {
     if (!isCleanContent(hashtag)) return
@@ -116,29 +116,29 @@ const MainPost = ({ route }) => {
     const key = validateHashtag(hashtag)
     if (hashtaglist.findIndex((item) => item === key) > -1) {
       ToastAndroid.show(t("error.duplicatetag"), ToastAndroid.SHORT)
-      return
+      return;
     }
 
     if (key) {
-      sethashtaglist(prev => [ ...prev,key ])
-      sethashtag('')
+      sethashtaglist(prev => [ ...prev,key ]);
+      sethashtag('');
     }
-  }
+  };
 
   const hanldeRemoveHashtag = tag => {
-    sethashtaglist(hashtaglist.filter(item => item != tag))
-  }
+    sethashtaglist(hashtaglist.filter(item => item != tag));
+  };
 
   const createPost = async () => {
     if (!isCleanContent(content)) return
 
     try {
-      setis_loading(true)
-      const uploadPromises = images.map(image => onUploadMedia(image))
-      const uploadedUrls = await Promise.all(uploadPromises)
-      console.log('uploadedUrls', uploadedUrls)
+      setis_loading(true);
+      const uploadPromises = images.map(image => onUploadMedia(image));
+      const uploadedUrls = await Promise.all(uploadPromises);
+      console.log('uploadedUrls', uploadedUrls);
 
-      const validUrls = uploadedUrls.filter(url => url !== null)
+      const validUrls = uploadedUrls.filter(url => url !== null);
 
       const body = {
         media: validUrls,
@@ -149,28 +149,28 @@ const MainPost = ({ route }) => {
         create_by: user?._id,
         hashtags: hashtaglist,
         content: content,
-      }
-      const response = await createpost(body)
+      };
+      const response = await createpost(body);
 
-      setStatusRequest(response.status)
+      setStatusRequest(response.status);
       if (response.status) {
-        setImages([])
-        sethashtag('')
-        setcontent('')
-        setNotifytitle(t('title_model.success'))
-        setNotifycontent(t('title_model.post_success'))
-        setIsnotifiy(true)
+        setImages([]);
+        sethashtag('');
+        setcontent('');
+        setNotifytitle(t('title_model.success'));
+        setNotifycontent(t('title_model.post_success'));
+        setIsnotifiy(true);
       } else {
-        setNotifytitle(t('title_model.error'))
-        setNotifycontent(t('title_model.post_faile'))
-        setIsnotifiy(true)
+        setNotifytitle(t('title_model.error'));
+        setNotifycontent(t('title_model.post_faile'));
+        setIsnotifiy(true);
       }
-      setis_loading(false)
+      setis_loading(false);
     } catch (error) {
-      console.log(error)
-      setis_loading(false)
+      console.log(error);
+      setis_loading(false);
     }
-  }
+  };
   // Render item media
   const renderItem = ({ item }) => (
     <View style={styles.imageWrapper}>
@@ -190,7 +190,7 @@ const MainPost = ({ route }) => {
         <IconApp assetName={'cancel'} size={20} color={'red'} />
       </TouchableOpacity>
     </View>
-  )
+  );
   //Modal pick Media
   const renderModalPickImage = () => {
     return (
@@ -212,8 +212,8 @@ const MainPost = ({ route }) => {
           </TouchableOpacity>
         </View>
       </Modals>
-    )
-  }
+    );
+  };
   //Modal camera
   const rendermodalCamera = () => {
     return (
@@ -222,22 +222,22 @@ const MainPost = ({ route }) => {
           closeModal={() => setopen_camera(false)}
           updateListMedia={medias => {
             if (medias != null) {
-              const filename = medias.path.split('/').pop()
+              const filename = medias.path.split('/').pop();
               var one_media = {
                 id: images.length + 1,
                 type: medias.path.endsWith('.mp4') ? 'video/mp4' : 'image/jpeg',
                 uri: 'file://' + medias.path,
                 name: filename,
-              }
+              };
 
-              images.push(one_media)
+              images.push(one_media);
             }
-            setModelshow(!modelshow)
+            setModelshow(!modelshow);
           }}
         />
       </Modal>
-    )
-  }
+    );
+  };
 
   const selectMedia = async () => {
     let options = {
@@ -246,15 +246,15 @@ const MainPost = ({ route }) => {
       storageOptions: {
         skipBackup: true,
       },
-    }
+    };
 
     await launchImageLibrary(options, response => {
       if (response.didCancel) {
-        console.log('User cancelled media picker')
+        console.log('User cancelled media picker');
       } else if (response.errorCode) {
-        console.log('ImagePicker Error: ', response.errorMessage)
+        console.log('ImagePicker Error: ', response.errorMessage);
       } else {
-        console.log(response.assets)
+        console.log(response.assets);
 
         response.assets.map(ele => {
           if (ele != null) {
@@ -263,16 +263,16 @@ const MainPost = ({ route }) => {
               type: ele.type,
               uri: ele.uri,
               name: ele.fileName,
-            }
+            };
 
-            images.push(one_media)
+            images.push(one_media);
           }
         })
       }
-    })
+    });
 
-    setModelshow(false)
-  }
+    setModelshow(false);
+  };
   //Modal notify
   const renderNotification = () => {
     return (
@@ -282,16 +282,16 @@ const MainPost = ({ route }) => {
         title={notifytitle}
         funt={() => {
           if (notifycontent == t('title_model.post_success')) {
-            navigation.navigate('Main')
+            navigation.navigate('Main');
           } else {
-            setIsnotifiy(false)
+            setIsnotifiy(false);
           }
         }}
         asseticon={statusRequest ? 'done' : 'dont'}
         content={notifycontent}
       />
-    )
-  }
+    );
+  };
   //Model hastag
   const renderHashtag = () => {
     return (
@@ -301,7 +301,7 @@ const MainPost = ({ route }) => {
         statusBarTranslucent
         animationType="fade"
         onRequestClose={() => {
-          setShowHashtag(false)
+          setShowHashtag(false);
         }}>
         <View
           style={{
@@ -313,7 +313,7 @@ const MainPost = ({ route }) => {
           <TouchableOpacity
             flex
             onPress={() => {
-              setShowHashtag(false)
+              setShowHashtag(false);
             }}
           />
           <View
@@ -379,13 +379,13 @@ const MainPost = ({ route }) => {
           <TouchableOpacity
             flex
             onPress={() => {
-              setShowHashtag(false)
+              setShowHashtag(false);
             }}
           />
         </View>
       </Modal>
-    )
-  }
+    );
+  };
   if (is_loading) {
     return (
       <View flex>
@@ -400,14 +400,14 @@ const MainPost = ({ route }) => {
           </View>
         </View>
       </View>
-    )
+    );
   }
   return (
     <Wapper
       gadient
       renderleft
       funtleft={() => {
-        navigation.goBack()
+        navigation.goBack();
       }}
       iconleft={'back'}
       title={t('create_post.title')}
@@ -482,7 +482,7 @@ const MainPost = ({ route }) => {
               navigation.navigate('Adddrressscreen', {
                 back: 'Post',
                 defaultlocation: address,
-              })
+              });
             }}>
             <View style={styles.contentlocation}>
               <IconApp assetName={'location'} size={25} />
@@ -500,10 +500,10 @@ const MainPost = ({ route }) => {
       {renderNotification()}
       {renderHashtag()}
     </Wapper>
-  )
-}
+  );
+};
 
-export default MainPost
+export default MainPost;
 
 const styles = StyleSheet.create({
   container: {
@@ -617,4 +617,4 @@ const styles = StyleSheet.create({
   locationHint: {
     color: '#f00',
   },
-})
+});
