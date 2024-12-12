@@ -72,10 +72,10 @@ const MainChat = ({ route }) => {
           listFriend: response.data,
         });
         if (_id && !haveGo) {
+          setHaveGo(true)
           navigation.navigate('Chating', {
             friend: response.data?.find(item => item._id === _id),
           });
-          setHaveGo(true)
         }
         setPage(0);
       }
