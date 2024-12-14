@@ -25,8 +25,8 @@ class innitLocation {
 }
 const locationdefault = {
     detail: null,
-    latitude: 108.43975632,
-    longitude: 10.1946193,
+    latitude: 10.1946193,
+    longitude: 108.43975632,
     latitudeDelta: 0.005,
     longitudeDelta: 0.005
 }
@@ -108,7 +108,8 @@ const Adddrressscreen = ({ route }) => {
         setNearData([])
         setLoading(true)
         var keysearch = search.trim()
-        const locationsearch = `@${marker.latitude || loaction.latitude},${marker.longitude || loaction.longitude},16z`
+        const locationsearch = `@${loaction.latitude},${loaction.longitude},16z`
+        
         try {
             const data = await searchLocation(keysearch.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""), locationsearch)
             if (data.length > 0) {
@@ -203,10 +204,6 @@ const Adddrressscreen = ({ route }) => {
             flatListRef.current.scrollToIndex({ animated: true, index });
         }
     }
-    useEffect(() => {
-        console.log(currentIndex);
-
-    }, [currentIndex])
 
     return (
         <View flex>
@@ -228,7 +225,7 @@ const Adddrressscreen = ({ route }) => {
                         coordinate={coordinate}
                     >{pointLocation(marker)}
                     </MarkerAnimated>}
-                    {searchData.length ? searchData.map(element => {
+                    {searchData?.length ? searchData.map(element => {
                         const crood = {
                             latitude: element.latitude,
                             longitude: element.longitude,

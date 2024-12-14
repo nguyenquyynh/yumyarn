@@ -113,9 +113,9 @@ const SearchMap = ({ route }) => {
         setNearData([])
         setLoading(true)
         var keysearch = search.trim()
-        const locationsearch = `@${loaction.latitude},${loaction.longitude},16z`
+        const locationsearch = `@${marker.latitude || loaction.latitude},${marker.longitude || loaction.longitude},16z`
         try {
-            const data = await searchLocation(keysearch, locationsearch)
+            const data = await searchLocation(keysearch.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""), locationsearch)
             if (data.length > 0) {
                 const array = []
                 for (const item of data) {
