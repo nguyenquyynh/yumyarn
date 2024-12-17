@@ -17,8 +17,6 @@ const ShakeDetection = () => {
       .subscribe((acceleration) => {
         const value = 20
         // Math.floor(Math.random() * 50 + 50)
-        console.log(acceleration, value);
-
         // Kiểm tra nếu độ lớn lớn hơn một ngưỡng nhất định
         if (acceleration > value) { // Ngưỡng có thể thay đổi
           setShakeDetected(true);
