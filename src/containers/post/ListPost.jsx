@@ -105,12 +105,6 @@ const ListPost = props => {
           dispatch(setListPost(response.data));
           setPage(page);
         } else {
-          // if (
-          //   response.data[response.data.length - 1]._id ===
-          //   listPost[listPost.length - 1]._id
-          // ) {
-          //   return;
-          // }
           dispatch(setListPost(response.data));
           setPage(page);
         }
