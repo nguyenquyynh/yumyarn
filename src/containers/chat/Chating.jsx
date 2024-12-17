@@ -121,10 +121,14 @@ const Chating = ({route}) => {
   };
 
   useEffect(() => {
-    if(listMessage.length > 0 && !listMessage[0]?.seen && listMessage[0].receive_user == user._id){
+    if (
+      listMessage.length > 0 &&
+      !listMessage[0]?.seen &&
+      listMessage[0].receive_user == user._id
+    ) {
       hanldeseenAllMessage();
     }
-  },[listMessage])
+  }, [listMessage]);
 
   useEffect(() => {
     getMessage(listMessage);
@@ -173,7 +177,7 @@ const Chating = ({route}) => {
     <View style={{position: 'relative', flex: 1, backgroundColor: 'white'}}>
       <View style={styles.shadowContainer}>
         <View style={styles.containerIcon}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.replace('MainChat')}>
             <Icon assetName="back" size={22} />
           </TouchableOpacity>
           <TouchableOpacity
@@ -185,7 +189,16 @@ const Chating = ({route}) => {
               })
             }>
             <View style={styles.outlineImage}>
-              <Avatar source={{uri: friend?.avatar}} size={50} />
+              <Avatar
+                onPress={() =>
+                  navigation.navigate('OtherProfile', {
+                    name: friend?.name,
+                    _id: friend?._id,
+                  })
+                }
+                source={{uri: friend?.avatar}}
+                size={50}
+              />
               {friend?.isOnline &&
                 friend?.message_active_status &&
                 user?.message_active_status && <CustomCirlceOnline />}
