@@ -43,8 +43,6 @@ const ShowShareDetailPost = props => {
             u: user?._id
         }
         const resault = await rePost(body)
-        console.log(resault);
-        
         if (resault.status) {
             ToastAndroid.show(t("app.success"), ToastAndroid.SHORT)
         } else {

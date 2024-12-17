@@ -77,8 +77,6 @@ const EditPost = ({ route }) => {
     const { uri, type, name } = file;
     try {
       const newData = await Upload(uri, type, name);
-      console.log(newData);
-
       return newData;
     } catch (error) {
       console.log(error);
@@ -173,9 +171,6 @@ const EditPost = ({ route }) => {
         hashtags: hashtaglist,
         content: content,
       };
-
-      console.log(body);
-
 
       const response = await editmypost(body);
       setStatusAction(response.status);
@@ -285,8 +280,6 @@ const EditPost = ({ route }) => {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage);
       } else {
-        console.log(response.assets);
-
         const abc = response.assets.map(ele => {
           if (ele != null) {
             return {
