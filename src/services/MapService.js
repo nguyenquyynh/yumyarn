@@ -1,48 +1,26 @@
-
-export const searchLocation = async (keysearch, location) => {
+export const searchTest = async (keysearch, location) => {
     try {
-        const options = {
-            method: 'GET',
-            headers: {
-                'x-api-key': '6d1a90ca-1e57-48f5-8144-a5226c799308',
-                'Content-Type': 'application/json'
-            }
-        };
 
-        const fetchData = async (keysearch, location) => {
-            const url = new URL('https://api.hasdata.com/scrape/google-maps/search');
-            url.searchParams.append('q', keysearch);
-            url.searchParams.append('ll', location);
-            url.searchParams.append('hl', 'vi');
-            url.searchParams.append('domain', 'google.com.vn');
+        const resault = await fetch(`https://serpapi.com/search.json?engine=google_maps&q=${keysearch}&ll=${location}&api_key=${process.env.SEARCHPLACE_KEY}`, {
+            method: "GET"
+        }).then((data) => {
+            console.log(data);
 
-            return fetch(url, options)
-                .then(response => {
-                    if (!response.ok) {
-                        console.log(response);
-                        
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    return data.localResults;
-                })
-                .catch(error => {
-                    console.error('There has been a problem with your fetch operation:', error);
-                });
-        };
+            return data.json()
+        }).then((response) => {
+            console.log(response);
+            return response
 
-        // Sử dụng hàm fetchData
-        const data = await fetchData(keysearch, location)
-            .then(data => data)
-            .catch(error => console.error(error));
+        })
+            .catch((err) => console.log(err))
 
-        return data
+        console.log(resault?.local_results);
+        return resault?.local_results
     } catch (error) {
-        console.error("mmmmmmmmmmmm", error);
+        console.log(error);
         return null
     }
+
 }
 
 export const reverLocation = async (location) => {

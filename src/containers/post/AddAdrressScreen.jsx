@@ -6,7 +6,7 @@ import { t } from 'lang'
 import IconApp from 'components/IconApp'
 import Geolocation from "@react-native-community/geolocation";
 import { useNavigation } from '@react-navigation/native'
-import { reverLocation, searchLocation } from 'services/MapService'
+import { reverLocation, searchLocation, searchTest } from 'services/MapService'
 import LottieView from 'lottie-react-native'
 import lottie from 'configs/ui/lottie'
 import { isCleanContent } from 'src/middleware/contentmiddleware'
@@ -111,15 +111,15 @@ const Adddrressscreen = ({ route }) => {
         const locationsearch = `@${loaction.latitude},${loaction.longitude},16z`
         
         try {
-            const data = await searchLocation(keysearch.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""), locationsearch)
+            const data = await searchTest(keysearch.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""), locationsearch)
             if (data.length > 0) {
                 const array = []
                 for (const item of data) {
                     array.push({
                         name: item.title,
                         address: item.address,
-                        latitude: item.gpsCoordinates.latitude,
-                        longitude: item.gpsCoordinates.longitude,
+                        latitude: item.gps_coordinates.latitude,
+                        longitude: item.gps_coordinates.longitude,
                     })
                 }
                 setSearchData(array)

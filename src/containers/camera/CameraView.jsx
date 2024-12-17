@@ -171,7 +171,6 @@ const CameraView = props => {
         await camera_ref.current.startRecording({
           onRecordingError: error => console.log(error),
           onRecordingFinished: video => {
-            console.log(video);
             set_itemiamge(video);
           },
           flash: check_flash && !front_camera ? 'on' : 'off',
@@ -205,8 +204,7 @@ const CameraView = props => {
           enableAutoRedEyeReduction: true,
           enableShutterSound: true,
         });
-
-        console.log(photo);
+        
         set_itemiamge(photo);
       } catch (error) {
         console.log('Lỗi khi chụp ảnh:', error);

@@ -20,8 +20,6 @@ const ImageAndVideoLibary = (props) => {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage);
       } else {
-        console.log(response.assets);
-
         updateListMedia(response.assets)
       }
       closeModal(false)
