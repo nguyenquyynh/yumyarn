@@ -61,15 +61,15 @@
     "greeting": "Chào mừng đến với",
     "diversity": "TÌM KIẾM",
     "reality": "CHIA SẺ",
-    "help_one": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
-    "help_two": " It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
+    "help_two": "YumYarn cho phép người dùng đăng tải hình ảnh chất lượng cao về các món ăn mà họ yêu thích. Các bài đăng có thể đi kèm mô tả chi tiết về món ăn, địa điểm nhà hàng, giá cả và cảm nhận cá nhân. Ứng dụng khuyến khích sự sáng tạo và cảm hứng từ hình ảnh để xây dựng cộng đồng yêu thích ẩm thực.",
+    "help_one": "YumYarn là công cụ để tìm kiếm và khám phá những địa điểm ăn uống mới. Người dùng có thể xem đánh giá, bình luận và xếp hạng từ cộng đồng, giúp lựa chọn nhà hàng hoặc món ăn phù hợp với sở thích cá nhân. Ứng dụng này hỗ trợ xây dựng một cộng đồng tương tác với đam mê khám phá và thưởng thức ẩm thực."
   },
   "login": {
     "slogan1": "Kết nối bạn bè,",
     "slogan2": "thỏa mãn đam mê",
     "i_read": "Tôi chấp nhận ",
     "expired": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại!",
-    "register": "Tài khoảng của bạn đã được đăng kí! Kiểm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
+    "register": "Tài khoản của bạn đã được đăng kí! Kiểm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
     "verify": "Kiểm tra hộp thư Email bạn đã đăng kí để xác thực tài khoản",
     "policy": "chính sách bảo mật",
     "google": "Đăng nhập với Google",
